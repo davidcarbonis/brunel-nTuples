@@ -99,7 +99,8 @@
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 
 
-#include "RecoMET/METAlgorithms/interface/SigInputObj.h"
+// #include "RecoMET/METAlgorithms/interface/SigInputObj.h" // Header no longer found in this directory
+include "DataFormats/METReco/interface/SigInputObj.h"
 #include "RecoMET/METAlgorithms/interface/significanceAlgo.h"
 
 #include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
@@ -116,7 +117,8 @@
 #include "DataFormats/RecoCandidate/interface/IsoDeposit.h"
 #include "DataFormats/RecoCandidate/interface/IsoDepositVetos.h"
 #include "DataFormats/PatCandidates/interface/Isolation.h"
-#include "EGamma/EGammaAnalysisTools/interface/ElectronEffectiveArea.h"
+//#include "EGamma/EGammaAnalysisTools/interface/ElectronEffectiveArea.h"
+#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 
 //Pile-up reweighting
 //#include "../interface/LumiReWeighting.h"
