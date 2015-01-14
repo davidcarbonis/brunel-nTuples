@@ -75,7 +75,8 @@ process.goodOfflinePrimaryVertices = cms.EDFilter(
 process.load('CommonTools.RecoAlgos.HBHENoiseFilter_cfi')
 
 ## The CSC beam halo tight filter ____________________________________________||
-process.load('RecoMET.METAnalyzers.CSCHaloFilter_cfi')
+#process.load('RecoMET.METAnalyzers.CSCHaloFilter_cfi')
+process.load('RecoMET.METFilters.CSCTightHaloFilter_cfi')
 
 ## The HCAL laser filter _____________________________________________________||
 process.load("RecoMET.METFilters.hcalLaserEventFilter_cfi")
@@ -195,7 +196,7 @@ process.pfPileUpPF2PAT.checkClosestZVertex = False
 
 
 
-process.load('EGamma.EGammaAnalysisTools.electronIdMVAProducer_cfi')
+process.load('EgammaAnalysis.ElectronTools.electronIdMVAProducer_cfi')
 process.eidMVASequence = cms.Sequence(  process.mvaTrigV0 + process.mvaNonTrigV0 )
 #Electron ID
 process.patElectronsPF2PAT.electronIDSources.mvaTrigV0	 = cms.InputTag("mvaTrigV0")
@@ -311,9 +312,9 @@ process.source.fileNames = [
     #Danny's selection
 #    "file:/afs/cern.ch/work/l/leggat/FA8766A2-38EA-E111-9624-001A92811738.root",
 #    "file:eeMetDump/res/pickevents_1_1_NM8.root",
-    "file:synchFiles/data1.root",
-    "file:synchFiles/data2.root",
-    "file:synchFiles/data3.root"
+#    "file:synchFiles/data1.root",
+#    "file:synchFiles/data2.root",
+#    "file:synchFiles/data3.root"
 #    "file:synchFiles/synch1.root",
 #    "file:synchFiles/synch2.root",
 #    "file:synchFiles/synch3.root",
@@ -321,6 +322,7 @@ process.source.fileNames = [
 #    "file:synchFiles/synch5.root",
 #    "file:synchFiles/synch6.root"
 #        "file:/afs/cern.ch/work/j/jandrea/public/147DB408-446A-E311-8E63-00259073E32A.root"
+     "file:/store/mc/Summer12_DR53X/WZ_TuneZ2star_8TeV_pythia6_tauola/AODSIM/PU_S10_START53_V7A-v1/0000/00044E84-27CE-E111-B5C1-0024E8769965.root"
     ]
 
 process.maxEvents.input = cms.untracked.int32(-1)
