@@ -75,7 +75,8 @@ process.goodOfflinePrimaryVertices = cms.EDFilter(
 process.load('CommonTools.RecoAlgos.HBHENoiseFilter_cfi')
 
 ## The CSC beam halo tight filter ____________________________________________||
-process.load('RecoMET.METAnalyzers.CSCHaloFilter_cfi')
+#process.load('RecoMET.METAnalyzers.CSCHaloFilter_cfi')
+process.load('RecoMET.METFilters.CSCTightHaloFilter_cfi')
 
 ## The HCAL laser filter _____________________________________________________||
 process.load("RecoMET.METFilters.hcalLaserEventFilter_cfi")
@@ -126,10 +127,10 @@ process.filtersSeq = cms.Sequence(
 ####### PF2PAT Setup ##########
 ###############################
 
-# Default PF2PAT with AK5 jets. Make sure to turn ON the L1fastjet stuff.
+# Default PF2PAT with AK4 jets. Make sure to turn ON the L1fastjet stuff.
 from PhysicsTools.PatAlgos.tools.pfTools import *
 postfix = "PF2PAT"
-usePF2PAT(process,runPF2PAT=True, jetAlgo="AK5", runOnMC=False, postfix=postfix, pvCollection=cms.InputTag('goodOfflinePrimaryVertices'), typeIMetCorrections=True)
+usePF2PAT(process,runPF2PAT=True, jetAlgo="AK4", runOnMC=False, postfix=postfix, pvCollection=cms.InputTag('goodOfflinePrimaryVertices'), typeIMetCorrections=True)
 
 
 getattr(process,"pfNoPileUp"  +postfix).enable = True
@@ -195,12 +196,13 @@ process.pfPileUpPF2PAT.checkClosestZVertex = False
 
 
 
-process.load('EGamma.EGammaAnalysisTools.electronIdMVAProducer_cfi')
+#process.load('EGamma.EGammaAnalysisTools.electronIdMVAProducer_cfi')
+process.load('EgammaAnalysis.ElectronTools.electronIdMVAProducer_cfi')
 process.eidMVASequence = cms.Sequence(  process.mvaTrigV0 + process.mvaNonTrigV0 )
 #Electron ID
 process.patElectronsPF2PAT.electronIDSources.mvaTrigV0	 = cms.InputTag("mvaTrigV0")
 process.patElectronsPF2PAT.electronIDSources.mvaNonTrigV0 = cms.InputTag("mvaNonTrigV0") 
-process.patPF2PATSequencePF2PAT.replace( process.patElectronsPF2PAT, process.eidMVASequence * process.patElectronsPF2PAT )
+#process.patPF2PATSequencePF2PAT.replace( process.patElectronsPF2PAT, process.eidMVASequence * process.patElectronsPF2PAT )
 
 
 #Convesion Rejection
@@ -209,7 +211,7 @@ process.patConversionsPF2PAT = cms.EDProducer("PATConversionProducer",
                                              electronSource = cms.InputTag("selectedPatElectronsPF2PAT")      
                                              )
 					     
-process.patPF2PATSequencePF2PAT += process.patConversionsPF2PAT
+#process.patPF2PATSequencePF2PAT += process.patConversionsPF2PAT
 
 
 
@@ -241,11 +243,11 @@ process.selectedPatJetsPF2PAT.cut = cms.string("pt > 5.0")
 process.patseq = cms.Sequence(
   #  process.kt6PFJetsForIsolation*
     process.goodOfflinePrimaryVertices*
-    process.primaryVertexFilter * #removes events with no good pv (but if cuts to determine good pv change...)
-    process.filtersSeq *
-    getattr(process,"patPF2PATSequence"+postfix) # main PF2PAT
+    process.primaryVertexFilter #* #removes events with no good pv (but if cuts to determine good pv change...)
+#    process.filtersSeq *
+#    getattr(process,"patPF2PATSequence"+postfix) # main PF2PAT
 #   * process.flavorHistorySeq
-    )
+	)
 
 ####
 # The N-tupliser/cutFlow
