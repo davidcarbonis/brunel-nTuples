@@ -646,7 +646,7 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
     float AEff03 = getAEff03(ele.superCluster()->eta());
     electronSortedAEff03[ ID ][numEle[ ID ]-1] = AEff03;
     electronSortedRhoIso[ ID ][numEle[ ID ]-1] = rhoIso;
-    double combrelisorho = (ele.chargedHadronIso() + max(0.0, ele.neutralHadronIso() + ele.photonIso() - rhoIso*AEff03 ))/ele.pt();
+    double combrelisorho = (ele.chargedHadronIso() + std::max(0.0, ele.neutralHadronIso() + ele.photonIso() - rhoIso*AEff03 ))/ele.pt();
     electronSortedComRelIsoRho[ ID ][numEle[ ID ]-1]=combrelisorho;
     //(ele.trackIso()+ele.ecalIso()+ele.hcalIso())/ele.et();
 
@@ -951,7 +951,7 @@ void MakeTopologyNtuple::fillOtherJetInfo(const pat::Jet &jet, const size_t jeti
 
     if(0){ // very verbose.
       for(int itri=0; itri<(int)matchedtriggers.size(); itri++){
-	for(std::vector<std::string>::iterator it= matchedtriggers[itri].filterLabels().begin(), it_end=matchedtriggers[itri].filterLabels().end(); it!=it_end; it++){
+	for(std::vector<std::string>::const_iterator it= matchedtriggers[itri].filterLabels().begin(), it_end=matchedtriggers[itri].filterLabels().end(); it!=it_end; it++){
 	  
 	  //std::cout << *it<< std::endl;
 	}
