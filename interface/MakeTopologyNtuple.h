@@ -20,7 +20,7 @@ Implementation:
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 
-using namespace cu_ejetmet;
+//using namespace cu_ejetmet; // Compile errors in CMSSW_5_3_20
 
 class MakeTopologyNtuple : public edm::EDAnalyzer {
 public:
@@ -43,26 +43,29 @@ private:
   edm::InputTag eleLabel_;
   edm::InputTag muoLabel_;
   edm::InputTag jetLabel_;
-  edm::InputTag tauLabel_;
+  edm::InputTag genJetTag_;
+  edm::InputTag tauLabel_; 
   edm::InputTag metLabel_;
   edm::InputTag phoLabel_;
   edm::InputTag electronPFTag_;	
   edm::InputTag tauPFTag_;	
   edm::InputTag muonPFTag_;	
   edm::InputTag jetPFTag_;	
-  edm::InputTag genJetTag_;
   edm::InputTag jetPFRecoTag_;	
   edm::InputTag metPFTag_;	
   edm::InputTag jetJPTTag_;	
   edm::InputTag metJPTTag_;      
   edm::InputTag trigLabel_;
-  edm::InputTag ttGenEvent_;
   std::vector<std::string> fakeTrigLabelList_;
   std::vector<std::string> triggerList_;
   edm::InputTag l1TrigLabel_;
   edm::InputTag genParticles_;
   edm::InputTag pvLabel_;
   edm::InputTag rho_;
+
+  //Sets whether the sample is ttbar or not. Default is false. This affects top pt reweighting of the sample.
+  bool isttbar_;
+  edm::InputTag ttGenEvent_;
 
   std::map<std::string,int> hltpasses_;
   std::vector<std::string> hltnames_;
@@ -760,9 +763,6 @@ private:
   bool fillAll_;
   bool processingLoose_;
   
-  //Sets whether the sample is ttbar or not. Default is false. This affects top pt reweighting of the sample.
-  bool isttbar_;
-
 };
 
 namespace LHAPDF {
