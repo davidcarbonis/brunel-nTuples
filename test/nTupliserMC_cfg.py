@@ -35,12 +35,12 @@ process.MessageLogger.categories=cms.untracked.vstring('FwkJob'
                                                        )
 
 process.MessageLogger.cerr.INFO = cms.untracked.PSet(limit = cms.untracked.int32(0))
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(1000)
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(10000)
 process.options = cms.untracked.PSet(
                      wantSummary = cms.untracked.bool(True)
                      )
 
-process.GlobalTag.globaltag = cms.string('START53_V19::All')
+process.GlobalTag.globaltag = cms.string('START53_V26::All')
 
 #There's a bit in here about some btau tags that the code looks for. I don't know if this is significant, however. I'm going to ignore it for now.
 
@@ -75,8 +75,7 @@ process.goodOfflinePrimaryVertices = cms.EDFilter(
 process.load('CommonTools.RecoAlgos.HBHENoiseFilter_cfi')
 
 ## The CSC beam halo tight filter ____________________________________________||
-#process.load('RecoMET.METAnalyzers.CSCHaloFilter_cfi')
-process.load('RecoMET.METFilters.CSCTightHaloFilter_cfi')
+process.load('RecoMET.METAnalyzers.CSCHaloFilter_cfi')
 
 ## The HCAL laser filter _____________________________________________________||
 process.load("RecoMET.METFilters.hcalLaserEventFilter_cfi")
@@ -130,7 +129,7 @@ process.filtersSeq = cms.Sequence(
 # Default PF2PAT with AK5 jets. Make sure to turn ON the L1fastjet stuff.
 from PhysicsTools.PatAlgos.tools.pfTools import *
 postfix = "PF2PAT"
-usePF2PAT(process,runPF2PAT=True, jetAlgo="AK5", runOnMC=False, postfix=postfix, pvCollection=cms.InputTag('goodOfflinePrimaryVertices'), typeIMetCorrections=True)
+usePF2PAT(process,runPF2PAT=True, jetAlgo="AK5", runOnMC=True, postfix=postfix, pvCollection=cms.InputTag('goodOfflinePrimaryVertices'), typeIMetCorrections=True)
 
 
 getattr(process,"pfNoPileUp"  +postfix).enable = True
@@ -181,7 +180,7 @@ process.patElectronsPF2PAT.isolationValues = cms.PSet(
 
 #Now do a bit of JEC
 process.patJetCorrFactorsPF2PAT.payload = 'AK5PFchs'
-process.patJetCorrFactorsPF2PAT.levels = cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual'])
+process.patJetCorrFactorsPF2PAT.levels = cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute'])
 process.pfPileUpPF2PAT.checkClosestZVertex = False
 
 
@@ -191,12 +190,12 @@ process.pfPileUpPF2PAT.checkClosestZVertex = False
 ###############################
 
 
-process.load('EgammaAnalysis.ElectronTools.electronIdMVAProducer_cfi')
-process.eidMVASequence = cms.Sequence( process.mvaTrigV0 + process.mvaNonTrigV0 )
+#process.load('EGamma.EGammaAnalysisTools.electronIdMVAProducer_cfi')
+#process.eidMVASequence = cms.Sequence( process.mvaTrigV0 + process.mvaNonTrigV0 )
 
 
 
-process.load('EgammaAnalysis.ElectronTools.electronIdMVAProducer_cfi')
+process.load('EGamma.EGammaAnalysisTools.electronIdMVAProducer_cfi')
 process.eidMVASequence = cms.Sequence(  process.mvaTrigV0 + process.mvaNonTrigV0 )
 #Electron ID
 process.patElectronsPF2PAT.electronIDSources.mvaTrigV0	 = cms.InputTag("mvaTrigV0")
@@ -256,8 +255,8 @@ triggerStringName = 'HLT'
 
 process.load("NTupliser.SingleTop.MakeTopologyNtuple_cfi")
 process.makeTopologyNtuple.flavorHistoryTag=cms.bool(False) # change to false at your convenience
-process.makeTopologyNtuple.runMCInfo=cms.bool(False) # prevent checking gen info
-process.makeTopologyNtuple.doJERSmear=cms.bool(False)
+process.makeTopologyNtuple.runMCInfo=cms.bool(True) # prevent checking gen info
+process.makeTopologyNtuple.runPUReWeight=cms.bool(True) #Run the reweighting for MC. I think I'm doing this right, but I might check anyway.
 #process.makeTopologyNtuple.doCuts=cms.bool(True) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
 process.makeTopologyNtuple.triggerTag = cms.InputTag("TriggerResults","",triggerStringName) # or HLT, depends on file   
 
