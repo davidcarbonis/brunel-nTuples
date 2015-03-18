@@ -197,8 +197,9 @@ process.eidMVASequence = cms.Sequence( process.mvaTrigV0 + process.mvaNonTrigV0 
 
 
 #process.load('EGamma.EGammaAnalysisTools.electronIdMVAProducer_cfi')
-process.load('EgammaAnalysis.ElectronTools.electronIdMVAProducer_cfi')
-process.eidMVASequence = cms.Sequence(  process.mvaTrigV0 + process.mvaNonTrigV0 )
+#process.load('EgammaAnalysis.ElectronTools.electronIdMVAProducer_cfi')
+#process.eidMVASequence = cms.Sequence(  process.mvaTrigV0 + process.mvaNonTrigV0 )
+
 #Electron ID
 process.patElectronsPF2PAT.electronIDSources.mvaTrigV0	 = cms.InputTag("mvaTrigV0")
 process.patElectronsPF2PAT.electronIDSources.mvaNonTrigV0 = cms.InputTag("mvaNonTrigV0") 
@@ -310,7 +311,6 @@ process.p = cms.Path(
     )
 
 process.source.fileNames = [
-<<<<<<< HEAD
 	'root://xrootd.unl.edu//store/mc/Summer12_DR53X/WZJetsTo3LNu_matchingdown_8TeV_TuneZ2Star_madgraph_tauola/AODSIM/PU_S10_START53_V19-v1/00000/06A911BC-3CBB-E311-9AFD-00266CFACC38.root',
 	'root://xrootd.unl.edu//store/mc/Summer12_DR53X/WZJetsTo3LNu_matchingdown_8TeV_TuneZ2Star_madgraph_tauola/AODSIM/PU_S10_START53_V19-v1/00000/087BD118-47BB-E311-B826-848F69FD28AD.root',
 	'root://xrootd.unl.edu//store/mc/Summer12_DR53X/WZJetsTo3LNu_matchingdown_8TeV_TuneZ2Star_madgraph_tauola/AODSIM/PU_S10_START53_V19-v1/00000/08A01B54-4CBB-E311-93E0-7845C4FC35E1.root',
@@ -398,14 +398,13 @@ process.source.fileNames = [
 	'root://xrootd.unl.edu//store/mc/Summer12_DR53X/WZJetsTo3LNu_matchingdown_8TeV_TuneZ2Star_madgraph_tauola/AODSIM/PU_S10_START53_V19-v1/00000/FCA2F43C-48BB-E311-BC70-008CFA0025A4.root',
 	'root://xrootd.unl.edu//store/mc/Summer12_DR53X/WZJetsTo3LNu_matchingdown_8TeV_TuneZ2Star_madgraph_tauola/AODSIM/PU_S10_START53_V19-v1/00000/FCA56011-77BC-E311-BA4E-00A0D1EEE5CC.root',
 	'root://xrootd.unl.edu//store/mc/Summer12_DR53X/WZJetsTo3LNu_matchingdown_8TeV_TuneZ2Star_madgraph_tauola/AODSIM/PU_S10_START53_V19-v1/00000/FE218665-3FBB-E311-8176-00A0D1EEE0C0.root',
-	
-=======
+       
     #Danny's selection
 #    "file:/afs/cern.ch/work/l/leggat/FA8766A2-38EA-E111-9624-001A92811738.root",
 #    "file:eeMetDump/res/pickevents_1_1_NM8.root",
-    "file:synchFiles/data1.root",
-    "file:synchFiles/data2.root",
-    "file:synchFiles/data3.root"
+#    "file:synchFiles/data1.root",
+#    "file:synchFiles/data2.root",
+#    "file:synchFiles/data3.root"
 #    "file:synchFiles/synch1.root",
 #    "file:synchFiles/synch2.root",
 #    "file:synchFiles/synch3.root",
@@ -413,7 +412,6 @@ process.source.fileNames = [
 #    "file:synchFiles/synch5.root",
 #    "file:synchFiles/synch6.root"
 #        "file:/afs/cern.ch/work/j/jandrea/public/147DB408-446A-E311-8E63-00259073E32A.root"
->>>>>>> 87fbdd9b1645cce8fd6b42d2f9ffa884f7aa14cc
     ]
 
 process.maxEvents.input = cms.untracked.int32(-1)
