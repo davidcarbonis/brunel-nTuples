@@ -12,6 +12,7 @@
 */
 //
 // Original Author:  Freya Blekman
+// Modified by: Duncan Leggat, Alexander Morton
 //         Created:  Mon Feb 16 12:53:13 CET 2009
 // $Id: MakeTopologyNtuple.cc,v 1.115 2010/12/09 14:23:24 chadwick Exp $
 // Modified: Thur April 30 2009 
@@ -1285,6 +1286,11 @@ void MakeTopologyNtuple::fillMCInfo(const edm::Event& iEvent, const edm::EventSe
 	  genParE[nGenPar]=TCand.energy();
 	  genParPt[nGenPar]=TCand.pt();
 	  genParId[nGenPar]=TCand.pdgId();
+	  // ADM Edit 150318
+	  genParNumMothers[nGenPar]=TCand.numberOfMothers(); //150318 - ADM - Added so one can look for b's from gluon splitting - need to know how many parents
+	  genParMotherId[nGenPar]=TCand.mother()->pdgId(); //150318 - ADM - Added so one can look for b's from gluon splitting - need to know what parent was
+	  genParNumDaughters[nGenPar]=TCand.numberOfDaughters(); //150401 - ADM - Added so one can look for b's from gluon splitting - need to know how many daughters
+	  // End ADM Edit 150318
 	  genParCharge[nGenPar]=TCand.charge();
 	  nGenPar++;
 	}
@@ -2581,6 +2587,9 @@ void MakeTopologyNtuple::bookBranches(){
       mytree_->Branch("genParE", genParE, "genParE[nGenPar]/F");
       mytree_->Branch("genParPt", genParPt, "genParPt[nGenPar]/F");
       mytree_->Branch("genParId", genParId, "genParId[nGenPar]/I");
+      mytree_->Branch("genParNumMothers", genParNumMothers, "genParNumMothers[nGenPar]/I");
+      mytree_->Branch("genParMotherId", genParMotherId, "genParMotherId[nGenPar]/I");
+      mytree_->Branch("genParNumDaughters", genParNumDaughters, "genParNumDaughters[nGenPar]/I");
       mytree_->Branch("genParCharge", genParCharge, "genParCharge[nGenPar]/I");
   }
 

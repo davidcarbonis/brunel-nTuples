@@ -12,6 +12,7 @@ Implementation:
 */
 //
 // Original Author:  Freya Blekman
+// Modified by: Duncan Leggat, Alexander Morton
 //         Created:  Wed April 22 19:23:10 CET 2009
 // $Id: MakeTopologyNtuple.h,v 1.68 2010/11/05 15:32:16 chadwick Exp $
 //
@@ -681,6 +682,10 @@ private:
   float genParE[50];
   float genParPt[50];
   int genParId[50];
+  int genParNumMothers[50]; // 150318 - ADM - Added so one can look for b's from gluon splitting - need to know how many parents
+  int genParMotherId[50];  // 150318 - ADM - Added son one can look for b's from gluon splitting - need to know what parent was
+  int genParNumDaughters [50]; // 150318 - ADM - Added so one can look for b's from gluon splitting - need to know how many decay product(s)
+  int genParDaughterId[50][50]; // 150318 - ADM - Added so one can look for b's from gluon splitting - need to know what decay product(s) are
   int genParCharge[50];
 //PDF info
     float genPDFScale;
