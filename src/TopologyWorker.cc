@@ -662,8 +662,8 @@ void TopologyWorker::sanda() {
 
 
 void TopologyWorker::planes_sphe(double& pnorm, double& p2, double& p3) {
-      float SPH=-1;
-      float APL=-1;
+  //        float SPH=-1; Variables aren't used. Bad practice. Commented out so if needed, can be reintroduced.
+  //        float APL=-1; Variables aren't used. Bad practice. Commented out so if needed, can be reintroduced.
 // C...Calculate matrix to be diagonalized.
       float P[1000][6];
       double SM[4][4],SV[4][4];
@@ -710,12 +710,14 @@ void TopologyWorker::planes_sphe(double& pnorm, double& p2, double& p3) {
          } // 130
          PS=PS+PWT*PA*PA;
        } //140
-// C...Very low multiplicities (0 or 1) not considered.
+
+      // Variables SPH and APL aren't used. Bad practice. Commented out so if needed, can be reintroduced.     
+/*     // C...Very low multiplicities (0 or 1) not considered.
       if(NP<2) {
         SPH=-1.;
         APL=-1.;
 	return;	
-      }
+	}*/
       for (J1=1;J1<4;J1++) { // 160
          for (J2=J1;J2<4;J2++) { // 150
             SM[J1][J2]=SM[J1][J2]/PS;
@@ -788,11 +790,13 @@ void TopologyWorker::planes_sphe(double& pnorm, double& p2, double& p3) {
       P[N+2][1]=SGN*(P[N+1][2]*P[N+3][3]-P[N+1][3]*P[N+3][2]);
       P[N+2][2]=SGN*(P[N+1][3]*P[N+3][1]-P[N+1][1]*P[N+3][3]);
       P[N+2][3]=SGN*(P[N+1][1]*P[N+3][2]-P[N+1][2]*P[N+3][1]);
- 
+
+// Variables SPH and APL aren't used. Bad practice. Commented out so if needed, can be reintroduced.     
+      /* 
 // C...Calculate sphericity and aplanarity. Select storing option.
       SPH=1.5*(P[N+2][4]+P[N+3][4]);
       APL=1.5*P[N+3][4];
-
+      */
       } // check 1
 
       // so assume now we have Sphericity axis, which one give the minimal Pts
@@ -894,8 +898,8 @@ void TopologyWorker::planes_sphe(double& pnorm, double& p2, double& p3) {
 
 
 void TopologyWorker::planes_sphe_wei(double& pnorm, double& p2, double& p3) {
-      float SPH=-1;
-      float APL=-1;
+  //      float SPH=-1; // This vairable is set but not used! Bad practice.
+  //      float APL=-1; // This vairable is set but not used! Bad practice.
 // C...Calculate matrix to be diagonalized.
       float P[1000][6];
       double SM[4][4],SV[4][4];
@@ -942,12 +946,15 @@ void TopologyWorker::planes_sphe_wei(double& pnorm, double& p2, double& p3) {
          } // 130
          PS=PS+PWT*PA*PA;
        } //140
+
+// Variables SPH and APL aren't used. Bad practice. Commented out so if needed, can be reintroduced.     
+      /*
 // C...Very low multiplicities (0 or 1) not considered.
       if(NP<2) {
         SPH=-1.;
         APL=-1.;
 	return;	
-      }
+	}*/
       for (J1=1;J1<4;J1++) { // 160
          for (J2=J1;J2<4;J2++) { // 150
             SM[J1][J2]=SM[J1][J2]/PS;
@@ -1020,11 +1027,13 @@ void TopologyWorker::planes_sphe_wei(double& pnorm, double& p2, double& p3) {
       P[N+2][1]=SGN*(P[N+1][2]*P[N+3][3]-P[N+1][3]*P[N+3][2]);
       P[N+2][2]=SGN*(P[N+1][3]*P[N+3][1]-P[N+1][1]*P[N+3][3]);
       P[N+2][3]=SGN*(P[N+1][1]*P[N+3][2]-P[N+1][2]*P[N+3][1]);
- 
+
+// Variables SPH and APL aren't used. Bad practice. Commented out so if needed, can be reintroduced.
+/*   
 // C...Calculate sphericity and aplanarity. Select storing option.
       SPH=1.5*(P[N+2][4]+P[N+3][4]);
       APL=1.5*P[N+3][4];
-
+*/
       } // check 1
 
       // so assume now we have Sphericity axis, which one give the minimal Pts
@@ -1491,4 +1500,5 @@ void TopologyWorker::CalcHTstuff(){
 }
 
 /////////////////////////////////////////////////
+
 

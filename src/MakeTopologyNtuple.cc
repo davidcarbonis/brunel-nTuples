@@ -4,14 +4,13 @@
 // Class:      MakeTopologyNtuple
 // %
 /**\class MakeTopologyNtuple MakeTopologyNtuple.cc FreyaAnalysis/MakeTopologyNtuple/src/MakeTopologyNtuplecc
-
    Description: <one line class summary>
-
    Implementation:
    <Notes on implementation>
 */
 //
 // Original Author:  Freya Blekman
+// Modified by: Duncan Leggat, Alexander Morton
 //         Created:  Mon Feb 16 12:53:13 CET 2009
 // $Id: MakeTopologyNtuple.cc,v 1.115 2010/12/09 14:23:24 chadwick Exp $
 // Modified: Thur April 30 2009 
@@ -99,8 +98,7 @@
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 
 
-// #include "RecoMET/METAlgorithms/interface/SigInputObj.h" // Header no longer found in this directory
-include "DataFormats/METReco/interface/SigInputObj.h"
+#include "RecoMET/METAlgorithms/interface/SigInputObj.h"
 #include "RecoMET/METAlgorithms/interface/significanceAlgo.h"
 
 #include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
@@ -117,7 +115,6 @@ include "DataFormats/METReco/interface/SigInputObj.h"
 #include "DataFormats/RecoCandidate/interface/IsoDeposit.h"
 #include "DataFormats/RecoCandidate/interface/IsoDepositVetos.h"
 #include "DataFormats/PatCandidates/interface/Isolation.h"
-//#include "EGamma/EGammaAnalysisTools/interface/ElectronEffectiveArea.h"
 #include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 
 //Pile-up reweighting
@@ -648,7 +645,7 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
     float AEff03 = getAEff03(ele.superCluster()->eta());
     electronSortedAEff03[ ID ][numEle[ ID ]-1] = AEff03;
     electronSortedRhoIso[ ID ][numEle[ ID ]-1] = rhoIso;
-    double combrelisorho = (ele.chargedHadronIso() + max(0.0, ele.neutralHadronIso() + ele.photonIso() - rhoIso*AEff03 ))/ele.pt();
+    double combrelisorho = (ele.chargedHadronIso() + std::max(0.0, ele.neutralHadronIso() + ele.photonIso() - rhoIso*AEff03 ))/ele.pt();
     electronSortedComRelIsoRho[ ID ][numEle[ ID ]-1]=combrelisorho;
     //(ele.trackIso()+ele.ecalIso()+ele.hcalIso())/ele.et();
 
@@ -953,7 +950,7 @@ void MakeTopologyNtuple::fillOtherJetInfo(const pat::Jet &jet, const size_t jeti
 
     if(0){ // very verbose.
       for(int itri=0; itri<(int)matchedtriggers.size(); itri++){
-	for(std::vector<std::string>::iterator it= matchedtriggers[itri].filterLabels().begin(), it_end=matchedtriggers[itri].filterLabels().end(); it!=it_end; it++){
+	for(std::vector<std::string>::const_iterator it= matchedtriggers[itri].filterLabels().begin(), it_end=matchedtriggers[itri].filterLabels().end(); it!=it_end; it++){
 	  
 	  //std::cout << *it<< std::endl;
 	}
@@ -1133,7 +1130,7 @@ void MakeTopologyNtuple::fillBTagInfo(const pat::Jet &jet, const size_t jetindex
     vertexL3D = svTagInfo->flightDistance(0, false).value();
     vertexL3DErr = svTagInfo->flightDistance(0, false).error();
     vertexL3DSig = svTagInfo->flightDistance(0, false).significance();
-    // get the invariant mass: sqrt(EÂ² - pxÂ² - pyÂ² - pzÂ²)
+    // get the invariant mass: sqrt(E² - px² - py² - pz²)
     vertexMass = trackFourVectorSum.M();
 
     jetSortedSVX[ ID ][jetindex] = svTagInfo->secondaryVertex( 0 ).x();
@@ -1287,6 +1284,11 @@ void MakeTopologyNtuple::fillMCInfo(const edm::Event& iEvent, const edm::EventSe
 	  genParE[nGenPar]=TCand.energy();
 	  genParPt[nGenPar]=TCand.pt();
 	  genParId[nGenPar]=TCand.pdgId();
+	  // ADM Edit 150318
+	  genParNumMothers[nGenPar]=TCand.numberOfMothers(); //150318 - ADM - Added so one can look for b's from gluon splitting - need to know how many parents
+	  genParMotherId[nGenPar]=TCand.mother()->pdgId(); //150318 - ADM - Added so one can look for b's from gluon splitting - need to know what parent was
+	  genParNumDaughters[nGenPar]=TCand.numberOfDaughters(); //150401 - ADM - Added so one can look for b's from gluon splitting - need to know how many daughters
+	  // End ADM Edit 150318
 	  genParCharge[nGenPar]=TCand.charge();
 	  nGenPar++;
 	}
@@ -1435,7 +1437,7 @@ void MakeTopologyNtuple::fillMCInfo(const edm::Event& iEvent, const edm::EventSe
   {
 //CTEQ 6.6 General
       float best_fit = 1.0;
-// loop over all (error) pdfâ€™s
+// loop over all (error) pdfs
 // subpdf is the index in the pdf set, 0 = best fit, 1-40 = error pdfs up and down.
 //  for (int subpdf = 0; subpdf < LHADPDF::numberPDF(0); subpdf++)
       for (int subpdf = 0; subpdf < 44; subpdf++) 
@@ -1453,7 +1455,7 @@ void MakeTopologyNtuple::fillMCInfo(const edm::Event& iEvent, const edm::EventSe
       }
 //MRST 2006 NLO
       best_fit = 1.0;
-// loop over all (error) pdfâ€™s
+// loop over all (error) pdfs
 // subpdf is the index in the pdf set, 0 = best fit, 1-40 = error pdfs up and down.
 //  for (int subpdf = 0; subpdf < LHADPDF::numberPDF(0); subpdf++)
       for (int subpdf = 0; subpdf < 31; subpdf++)
@@ -1632,7 +1634,6 @@ void MakeTopologyNtuple::fillJets(const edm::Event& iEvent, const edm::EventSetu
     else if( ID == "AK5PF" ){ eleCol ="Calo"; } //Pass for reco PF jets 
     else if( jet.isPFJet() ){ eleCol = "PF"; }                          
     else{ eleCol = "Calo"; } //For backup.                              
-
     if (!jetIDLoose(jet))
       continue;
     if (jetID(jet,eleCol,(float)jet.pt()))
@@ -2503,7 +2504,6 @@ void MakeTopologyNtuple::bookBranches(){
   /*
   bookJetBranches("AK5PF", "AK5PF");
   bookPFJetBranches("AK5PF", "AK5PF");
-
   bookJetBranches("JPT", "JPT");
   bookJPTJetBranches("JPT", "JPT");
   bookMETBranches("JPT", "TC");
@@ -2583,6 +2583,9 @@ void MakeTopologyNtuple::bookBranches(){
       mytree_->Branch("genParE", genParE, "genParE[nGenPar]/F");
       mytree_->Branch("genParPt", genParPt, "genParPt[nGenPar]/F");
       mytree_->Branch("genParId", genParId, "genParId[nGenPar]/I");
+      mytree_->Branch("genParNumMothers", genParNumMothers, "genParNumMothers[nGenPar]/I");
+      mytree_->Branch("genParMotherId", genParMotherId, "genParMotherId[nGenPar]/I");
+      mytree_->Branch("genParNumDaughters", genParNumDaughters, "genParNumDaughters[nGenPar]/I");
       mytree_->Branch("genParCharge", genParCharge, "genParCharge[nGenPar]/I");
   }
 
@@ -3833,7 +3836,6 @@ bool MakeTopologyNtuple::photonConversionVeto(const pat::Electron &electron, flo
         rho= _________
     
                  Pt    , where C=-0.003, B=3.8T, e is charge of the track in unit of positron, Pt the transverse momentum of the track                              
-
     */
       
     TrackWithinConeRho[numTrackWithinCone-1]=correctFactor_*magneticField_*generalTracksCharge[nGeneral]/generalTracksPt[nGeneral];
@@ -3992,7 +3994,6 @@ bool MakeTopologyNtuple::muonID(const pat::Muon &muo){
   //number of muon station hits
   if (muo.numberOfMatchedStations() < muoMtchdStns_)
     return false;
-
   if(muo.globalTrack()->normalizedChi2() >= muoNormChi2_)
     return false;
   chi2Muons++;
@@ -4060,3 +4061,4 @@ float MakeTopologyNtuple::getAEff03(float eta){
 
 //define this as a plug-in
 DEFINE_FWK_MODULE(MakeTopologyNtuple);
+

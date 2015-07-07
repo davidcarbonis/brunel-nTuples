@@ -4,14 +4,13 @@
 // Class:      MakeTopologyNtuple
 // %
 /**\class MakeTopologyNtuple MakeTopologyNtuple.cc FreyaAnalysis/MakeTopologyNtuple/src/MakeTopologyNtuplecc
-
 Description: <one line class summary>
-
 Implementation:
 <Notes on implementation>
 */
 //
 // Original Author:  Freya Blekman
+// Modified by: Duncan Leggat, Alexander Morton
 //         Created:  Wed April 22 19:23:10 CET 2009
 // $Id: MakeTopologyNtuple.h,v 1.68 2010/11/05 15:32:16 chadwick Exp $
 //
@@ -20,7 +19,7 @@ Implementation:
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 
-using namespace cu_ejetmet;
+//using namespace cu_ejetmet; // Compile errors in CMSSW_5_3_20
 
 class MakeTopologyNtuple : public edm::EDAnalyzer {
 public:
@@ -43,26 +42,29 @@ private:
   edm::InputTag eleLabel_;
   edm::InputTag muoLabel_;
   edm::InputTag jetLabel_;
-  edm::InputTag tauLabel_;
+  edm::InputTag genJetTag_;
+  edm::InputTag tauLabel_; 
   edm::InputTag metLabel_;
   edm::InputTag phoLabel_;
   edm::InputTag electronPFTag_;	
   edm::InputTag tauPFTag_;	
   edm::InputTag muonPFTag_;	
   edm::InputTag jetPFTag_;	
-  edm::InputTag genJetTag_;
   edm::InputTag jetPFRecoTag_;	
   edm::InputTag metPFTag_;	
   edm::InputTag jetJPTTag_;	
   edm::InputTag metJPTTag_;      
   edm::InputTag trigLabel_;
-  edm::InputTag ttGenEvent_;
   std::vector<std::string> fakeTrigLabelList_;
   std::vector<std::string> triggerList_;
   edm::InputTag l1TrigLabel_;
   edm::InputTag genParticles_;
   edm::InputTag pvLabel_;
   edm::InputTag rho_;
+
+  //Sets whether the sample is ttbar or not. Default is false. This affects top pt reweighting of the sample.
+  bool isttbar_;
+  edm::InputTag ttGenEvent_;
 
   std::map<std::string,int> hltpasses_;
   std::vector<std::string> hltnames_;
@@ -678,6 +680,10 @@ private:
   float genParE[50];
   float genParPt[50];
   int genParId[50];
+  int genParNumMothers[50]; // 150318 - ADM - Added so one can look for b's from gluon splitting - need to know how many parents
+  int genParMotherId[50];  // 150318 - ADM - Added son one can look for b's from gluon splitting - need to know what parent was
+  int genParNumDaughters [50]; // 150318 - ADM - Added so one can look for b's from gluon splitting - need to know how many decay product(s)
+  int genParDaughterId[50][50]; // 150318 - ADM - Added so one can look for b's from gluon splitting - need to know what decay product(s) are
   int genParCharge[50];
 //PDF info
     float genPDFScale;
@@ -760,9 +766,6 @@ private:
   bool fillAll_;
   bool processingLoose_;
   
-  //Sets whether the sample is ttbar or not. Default is false. This affects top pt reweighting of the sample.
-  bool isttbar_;
-
 };
 
 namespace LHAPDF {
@@ -786,3 +789,4 @@ namespace LHAPDF {
     double getQ2max(int nset, int member);
     void extrapolate(bool extrapolate=true);
 }
+
