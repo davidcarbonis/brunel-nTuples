@@ -27,4 +27,3 @@ process.printTree = cms.EDAnalyzer("ParticleListDrawer",
 )
 
 process.p = cms.Path(process.printTree)
-
