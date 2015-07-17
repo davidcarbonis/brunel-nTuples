@@ -127,10 +127,10 @@ process.filtersSeq = cms.Sequence(
 ####### PF2PAT Setup ##########
 ###############################
 
-# Default PF2PAT with AK5 jets. Make sure to turn ON the L1fastjet stuff.
+# Default PF2PAT with AK4 jets. Make sure to turn ON the L1fastjet stuff.
 from PhysicsTools.PatAlgos.tools.pfTools import *
 postfix = "PF2PAT"
-usePF2PAT(process,runPF2PAT=True, jetAlgo="AK5", runOnMC=True, postfix=postfix, pvCollection=cms.InputTag('goodOfflinePrimaryVertices'), typeIMetCorrections=True)
+usePF2PAT(process,runPF2PAT=True, jetAlgo="AK4", runOnMC=True, postfix=postfix, pvCollection=cms.InputTag('goodOfflinePrimaryVertices'), typeIMetCorrections=True)
 
 
 getattr(process,"pfNoPileUp"  +postfix).enable = True
@@ -180,7 +180,7 @@ process.patElectronsPF2PAT.isolationValues = cms.PSet(
 #process.patPF2PATSequencePF2PAT.replace( process.patElectronsPF2PAT, process.eidMVASequence * process.patElectronsPF2PAT )
 
 #Now do a bit of JEC
-process.patJetCorrFactorsPF2PAT.payload = 'AK5PFchs'
+process.patJetCorrFactorsPF2PAT.payload = 'AK4PFchs'
 #process.patJetCorrFactorsPF2PAT.levels = cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute'])
 process.patJetCorrFactorsPF2PAT.levels = cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual'])
 
@@ -227,7 +227,7 @@ process.patPF2PATSequencePF2PAT += process.patConversionsPF2PAT
 #### Selections Setup #########
 ###############################
 
-# AK5 Jets
+# AK4 Jets
 #   PF
 process.selectedPatJetsPF2PAT.cut = cms.string("pt > 5.0")
 
