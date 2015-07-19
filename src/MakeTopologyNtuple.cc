@@ -98,7 +98,8 @@
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 
 
-#include "RecoMET/METAlgorithms/interface/SigInputObj.h"
+// #include "RecoMET/METAlgorithms/interface/SigInputObj.h" 	// No longer found here for CMSSW_7_X_X onwards
+#include "DataFormats/METReco/interface/SigInputObj.h"		// New location of SigInputObj.h
 #include "RecoMET/METAlgorithms/interface/significanceAlgo.h"
 
 #include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
