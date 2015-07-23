@@ -79,6 +79,10 @@
 //Including this for top pt reweighting
 #include "AnalysisDataFormats/TopObjects/interface/TtGenEvent.h"
 
+// Including this for hit patterns - needed for getting the lost number of tracker hits
+#include "DataFormats/TrackReco/interface/HitPattern.h"
+
+
 #include "TH1D.h"
 #include "TH2D.h"
 #include "TClonesArray.h"
@@ -651,7 +655,18 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
     //(ele.trackIso()+ele.ecalIso()+ele.hcalIso())/ele.et();
 
     // pass electron to photonConversionVeto and see if it comes from photon conversion
-    electronSortedMissingInnerLayers[ ID ][ numEle[ ID ] - 1 ] = ele.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
+
+    // Old version
+    //   electronSortedMissingInnerLayers[ ID ][ numEle[ ID ] - 1 ] = ele.gsfTrack()->trackerExpectedHitsInner().numberOfHits(); 
+    // Need to replace this with numberOfLostHits() or numberOfLostTrackerHits(HitPattern::TRACK_HITS or HitPattern::MISSING_INNER_HITS)
+
+    electronSortedMissingInnerLayers[ ID ][ numEle[ ID ] -1] = ele.gsfTrack()->hitPattern().numberOfLostTrackerHits(reco::HitPattern::MISSING_INNER_HITS);
+
+    // Potential new version:
+    //    electronSortedMissingInnerLayers[ ID ][ numEle[ ID ] -1] = ele.gsfTrack()->numberOfLostHits();
+    
+    //    std::cout << "ele.gsfTrack()->numberOfLostHits(): " << ele.gsfTrack()->numberOfLostHits() << std::endl;
+
     electronSortedHoverE[ ID ][ numEle[ ID ] - 1 ] = ele.hadronicOverEm();
     electronSortedDeltaPhiSC[ ID ][ numEle[ ID ] - 1 ] = ele.deltaPhiSuperClusterTrackAtVtx();
     electronSortedDeltaEtaSC[ ID ][ numEle[ ID ] - 1 ] = ele.deltaEtaSuperClusterTrackAtVtx();
@@ -3772,7 +3787,7 @@ bool MakeTopologyNtuple::tightElectronID(const pat::Electron & ele, bool forZVet
     return false;
 
   //Putting in a cut based on the number of missing hits
-  if (ele.gsfTrack()->trackerExpectedHitsInner().numberOfHits() > 1)
+  //  if (ele.gsfTrack()->trackerExpectedHitsInner().numberOfHits() > 1)
     return false;
   //This has apparently been taken out of the most recent iteration of Rebeca's code, so I'll comment it out for now.
   if(!ele.passConversionVeto())
