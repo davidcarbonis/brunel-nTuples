@@ -1,5 +1,6 @@
 #Set up the pat environment
-from PhysicsTools.PatAlgos.patTemplate_cfg import *
+import FWCore.ParameterSet.Config as cms
+process = cms.Process("PAT")
 
 from PhysicsTools.PatAlgos.tools.coreTools import *
 
@@ -12,7 +13,6 @@ process.load("PhysicsTools.PatAlgos.patSequences_cff")
 ####### Global Setup ##########
 ###############################
 
-
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.load("TrackingTools/TransientTrack/TransientTrackBuilder_cfi")
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
@@ -24,7 +24,13 @@ process.load("FWCore.Framework.test.cmsExceptionsFatal_cff")
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 process.load("PhysicsTools.HepMCCandAlgos.genParticles_cfi")
 process.load('Configuration.StandardSequences.Services_cff')
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+
+process.load('Configuration.Geometry.GeometryRecoDB_cff')
+#process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
+
+process.load("Configuration.StandardSequences.MagneticField_cff")
+
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger.destinations = ['cerr']
 process.MessageLogger.statistics = []
@@ -40,13 +46,14 @@ process.options = cms.untracked.PSet(
                      wantSummary = cms.untracked.bool(True)
                      )
 
-process.GlobalTag.globaltag = cms.string('START53_V19::All')
+from Configuration.AlCa.GlobalTag import GlobalTag
+process.GlobalTag.globaltag = cms.string('MCRUN2_74_V9')
 
 #There's a bit in here about some btau tags that the code looks for. I don't know if this is significant, however. I'm going to ignore it for now.
 
-
 #Import jet reco things. Apparently this makes cmsRun crash.
 process.load('RecoJets.Configuration.RecoPFJets_cff')
+
 
 #Now do cool fast jet correction things!
 
@@ -117,7 +124,7 @@ process.filtersSeq = cms.Sequence(
 
 
 #Gen Setup - I'm unsure what this does, and I can't actually do it anyway as I don't think TopQuarkAnalysis actually exists? Or I may have to import it. I don't really know what this does. I assume this is related to that bit of global tags that I didn't do, so I might just ignore this for now.
-#process.load("TopQuarkAnalysis.TopEventProducers.sequences.ttGenEvent_cff")
+#process.load("TopQuarkAnalysis.TopEventProducers.sequencepfIsolatedMuonsPF2PATs.ttGenEvent_cff")
 
 
 
@@ -129,9 +136,10 @@ process.filtersSeq = cms.Sequence(
 
 # Default PF2PAT with AK4 jets. Make sure to turn ON the L1fastjet stuff.
 from PhysicsTools.PatAlgos.tools.pfTools import *
-postfix = "PF2PAT"
-usePF2PAT(process,runPF2PAT=True, jetAlgo="AK4", runOnMC=True, postfix=postfix, pvCollection=cms.InputTag('goodOfflinePrimaryVertices'), typeIMetCorrections=True)
 
+postfix = "PF2PAT"
+
+usePF2PAT(process,runPF2PAT=True, jetAlgo="AK4", runOnMC=True, postfix=postfix, pvCollection=cms.InputTag('goodOfflinePrimaryVertices'), typeIMetCorrections=True)
 
 getattr(process,"pfNoPileUp"  +postfix).enable = True
 getattr(process,"pfNoMuon"    +postfix).enable = False
@@ -192,15 +200,18 @@ process.pfPileUpPF2PAT.checkClosestZVertex = False
 ###### Electron ID ############
 ###############################
 
-
 #process.load('EGamma.EGammaAnalysisTools.electronIdMVAProducer_cfi')
 process.load('EgammaAnalysis.ElectronTools.electronIdMVAProducer_cfi')
-process.eidMVASequence = cms.Sequence(  process.mvaTrigV0 + process.mvaNonTrigV0 )
+process.eidMVASequence = cms.Sequence( process.mvaTrigV0 + process.mvaNonTrigV0 )
+
 
 #Electron ID
-process.patElectronsPF2PAT.electronIDSources.mvaTrigV0	 = cms.InputTag("mvaTrigV0")
+process.patElectronsPF2PAT.electronIDSources.mvaTrigV0    = cms.InputTag("mvaTrigV0")
 process.patElectronsPF2PAT.electronIDSources.mvaNonTrigV0 = cms.InputTag("mvaNonTrigV0") 
-process.patPF2PATSequencePF2PAT.replace( process.patElectronsPF2PAT, process.eidMVASequence * process.patElectronsPF2PAT )
+
+process.patPF2PATSequenceElectrons = cms.Sequence( process.eidMVASequence * process.patElectronsPF2PAT )
+
+#process.patPF2PATSequencePF2PAT.replace( process.patElectronsPF2PAT, process.eidMVASequence * process.patElectronsPF2PAT )
 
 
 #Convesion Rejection
@@ -209,9 +220,9 @@ process.patConversionsPF2PAT = cms.EDProducer("PATConversionProducer",
                                              electronSource = cms.InputTag("selectedPatElectronsPF2PAT")      
                                              )
 					     
-process.patPF2PATSequencePF2PAT += process.patConversionsPF2PAT
+#process.patPF2PATSequencePF2PAT += process.patConversionsPF2PAT
 
-
+process.patPF2PATSequenceElectrons += process.patConversionsPF2PAT
 
 
 ###############################
@@ -243,7 +254,8 @@ process.patseq = cms.Sequence(
     process.goodOfflinePrimaryVertices*
     process.primaryVertexFilter * #removes events with no good pv (but if cuts to determine good pv change...)
     process.filtersSeq *
-    getattr(process,"patPF2PATSequence"+postfix) # main PF2PAT
+#    getattr(process,"patPF2PATSequence"+postfix) # main PF2PAT
+    process.patPF2PATSequenceElectrons
 #   * process.flavorHistorySeq
     )
 
@@ -302,18 +314,36 @@ process.makeTopologyNtuple.muonPFTag = cms.InputTag("selectedPatMuonsPF2PAT")
 process.makeTopologyNtuple.jetPFTag = cms.InputTag("selectedPatJetsPF2PAT")
 process.makeTopologyNtuple.metPFTag = cms.InputTag("patType1CorrectedPFMetPF2PAT")                                                                                  
 #For now this is just the patseq, but soon this will also involve the ntupliser. And then minor corrections for the data version which will include more filters and such.
+
 process.p = cms.Path(
     process.patseq
 *    process.makeTopologyNtuple
     )
 
-process.source.fileNames = [
-	'root://xrootd.unl.edu//store/mc/Summer12_DR53X/WZJetsTo3LNu_matchingdown_8TeV_TuneZ2Star_madgraph_tauola/AODSIM/PU_S10_START53_V19-v1/00000/06A911BC-3CBB-E311-9AFD-00266CFACC38.root',	
-    ]
+## Source
+process.source = cms.Source("PoolSource",
+    fileNames = cms.untracked.vstring()
+)
 
-process.maxEvents.input = cms.untracked.int32(-1)
+## Maximal Number of Events
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
+
+process.source.fileNames = [
+	#'root://xrootd.unl.edu//store/mc/Summer12_DR53X/WZJetsTo3LNu_matchingdown_8TeV_TuneZ2Star_madgraph_tauola/AODSIM/PU_S10_START53_V19-v1/00000/06A911BC-3CBB-E311-9AFD-00266CFACC38.root',
+        'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/WZTo3LNu_TuneCUETP8M1_13TeV-powheg-pythia8/AODSIM/Asympt25ns_MCRUN2_74_V9-v1/60000/02E34918-E717-E511-AD0A-001E675A6630.root'
+        ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
+from PhysicsTools.PatAlgos.patEventContent_cff import patEventContentNoCleaning
+process.out = cms.OutputModule("PoolOutputModule",
+                               fileName = cms.untracked.string('patTuple.root'),
+                               ## save only events passing the full path
+                               #SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
+                               ## save PAT output; you need a '*' to unpack the list of commands
+                               ## 'patEventContent'
+                               outputCommands = cms.untracked.vstring('drop *', *patEventContentNoCleaning )
+                               )
+
 process.out.outputCommands += patEventContent
 process.out.outputCommands += patTriggerEventContent
 process.out.outputCommands += patExtraAodEventContent
@@ -327,13 +357,8 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string('Data_o
 process.options.wantSummary = False
 process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
-#To run with pat output:
-#process.Fin = cms.EndPath(process.out)
-#process.schedule = cms.Schedule(process.p, process.Fin)
-
 #Removing pat output (coz we really don't need it now)
 del process.out
-del process.outpath
 
 process.schedule = cms.Schedule(process.p)
 

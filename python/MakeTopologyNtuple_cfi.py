@@ -6,7 +6,7 @@ makeTopologyNtuple = cms.EDAnalyzer('MakeTopologyNtuple',
                                     tauTag      = cms.InputTag("cleanPatTaus"),
                                     muonTag     = cms.InputTag("cleanPatMuons"),
                                     jetTag      = cms.InputTag("cleanPatJets"),
-                                    genJetTag   = cms.InputTag("ak5GenJetsNoNu"),
+                                    genJetTag   = cms.InputTag("ak4GenJetsNoNu"),
                                     photonTag   = cms.InputTag("cleanPatPhotons"),
                                     metTag      = cms.InputTag("patMETs"),
                                     # PF

@@ -33,7 +33,6 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
-//#include "FWCore/ParameterSet/interface/InputTag.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
@@ -51,16 +50,12 @@
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 
-///This dirty .h removes 20% of the muons in the sample
-////#include "DataFormats/MuonReco/interface/Muon.h"
-
 #include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 //JEC
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
-//#include "NTupliser/SingleTop/interface/TopologyWorker.h"
 
 #include "RecoBTag/Records/interface/BTagPerformanceRecord.h"
 #include "CondFormats/PhysicsToolsObjects/interface/BinningPointByMap.h"
@@ -102,14 +97,14 @@
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 
 
-// #include "RecoMET/METAlgorithms/interface/SigInputObj.h" 	// No longer found here for CMSSW_7_X_X onwards
-#include "DataFormats/METReco/interface/SigInputObj.h"		// New location of SigInputObj.h
+#include "DataFormats/METReco/interface/SigInputObj.h"
 #include "RecoMET/METAlgorithms/interface/significanceAlgo.h"
 
 #include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
 #include "TrackingTools/TransientTrack/interface/TransientTrack.h"
 #include "TrackingTools/IPTools/interface/IPTools.h"
+
 #include "DataFormats/GeometryCommonDetAlgo/interface/Measurement1D.h"
 #include "RecoLocalCalo/EcalRecAlgos/interface/EcalSeverityLevelAlgo.h"
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
@@ -123,7 +118,6 @@
 #include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 
 //Pile-up reweighting
-//#include "../interface/LumiReWeighting.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 #include "Math/LorentzVector.h"
 
