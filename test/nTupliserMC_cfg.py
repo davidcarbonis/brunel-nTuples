@@ -183,10 +183,6 @@ process.patElectronsPF2PAT.isolationValues = cms.PSet(
     pfPhotons = cms.InputTag("elPFIsoValueGamma03PFIdPF2PAT")
     )
 
-#process.patElectronsPF2PAT.electronIDSources.mvaTrigV0    = cms.InputTag("mvaTrigV0")
-#process.patElectronsPF2PAT.electronIDSources.mvaNonTrigV0 = cms.InputTag("mvaNonTrigV0")
-#process.patPF2PATSequencePF2PAT.replace( process.patElectronsPF2PAT, process.eidMVASequence * process.patElectronsPF2PAT )
-
 #Now do a bit of JEC
 process.patJetCorrFactorsPF2PAT.payload = 'AK4PFchs'
 #process.patJetCorrFactorsPF2PAT.levels = cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute'])
@@ -202,8 +198,13 @@ process.pfPileUpPF2PAT.checkClosestZVertex = False
 
 #process.load('EGamma.EGammaAnalysisTools.electronIdMVAProducer_cfi')
 process.load('EgammaAnalysis.ElectronTools.electronIdMVAProducer_cfi')
-process.eidMVASequence = cms.Sequence( process.mvaTrigV0 + process.mvaNonTrigV0 )
 
+## update electron tag as module being loaded has not been updated for post 7_0_X use
+process.mvaTrigV0.electronTag = cms.InputTag('gedGsfElectrons')
+process.mvaNonTrigV0.electronTag = cms.InputTag('gedGsfElectrons')
+
+
+process.eidMVASequence = cms.Sequence( process.mvaTrigV0 + process.mvaNonTrigV0 )
 
 #Electron ID
 process.patElectronsPF2PAT.electronIDSources.mvaTrigV0    = cms.InputTag("mvaTrigV0")
