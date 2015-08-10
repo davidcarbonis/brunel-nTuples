@@ -199,10 +199,13 @@ process.pfPileUpPF2PAT.checkClosestZVertex = False
 #process.load('EGamma.EGammaAnalysisTools.electronIdMVAProducer_cfi')
 process.load('EgammaAnalysis.ElectronTools.electronIdMVAProducer_cfi')
 
-## update electron tag as module being loaded has not been updated for post 7_0_X use
+## update electron tag as module being loaded has not been updated for post 7_4_X use
 process.mvaTrigV0.electronTag = cms.InputTag('gedGsfElectrons')
 process.mvaNonTrigV0.electronTag = cms.InputTag('gedGsfElectrons')
 
+## Added rho tag as module uses rho from jets not produced in CMSSW_7_4_X
+process.mvaTrigV0.rhoTag = cms.InputTag('ak4PFJets', 'rho')
+process.mvaNonTrigV0.rhoTag = cms.InputTag('ak4PFJets', 'rho')
 
 process.eidMVASequence = cms.Sequence( process.mvaTrigV0 + process.mvaNonTrigV0 )
 
