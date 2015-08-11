@@ -57,7 +57,7 @@ process.load('RecoJets.Configuration.RecoPFJets_cff')
 
 #Now do cool fast jet correction things!
 
-process.kt6PFJets.doRhoFastjet = True
+process.ak4PFJets.doRhoFastjet = True
 
 process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
                                            vertexCollection = cms.InputTag('offlinePrimaryVertices'),
@@ -203,9 +203,9 @@ process.load('EgammaAnalysis.ElectronTools.electronIdMVAProducer_cfi')
 process.mvaTrigV0.electronTag = cms.InputTag('gedGsfElectrons')
 process.mvaNonTrigV0.electronTag = cms.InputTag('gedGsfElectrons')
 
-## Added rho tag as module uses rho from jets not produced in CMSSW_7_4_X
-process.mvaTrigV0.rhoTag = cms.InputTag('ak4PFJets', 'rho')
-process.mvaNonTrigV0.rhoTag = cms.InputTag('ak4PFJets', 'rho')
+## Added rho tag as module uses rho from jets not produced in CMSSW_7_4_X - ak4PFJets
+process.mvaTrigV0.rhoTag = cms.InputTag("ak4PFJets", "rho")
+process.mvaNonTrigV0.rhoTag = cms.InputTag("ak4PFJets", "rho")
 
 process.eidMVASequence = cms.Sequence( process.mvaTrigV0 + process.mvaNonTrigV0 )
 
@@ -334,7 +334,8 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 
 process.source.fileNames = [
 	#'root://xrootd.unl.edu//store/mc/Summer12_DR53X/WZJetsTo3LNu_matchingdown_8TeV_TuneZ2Star_madgraph_tauola/AODSIM/PU_S10_START53_V19-v1/00000/06A911BC-3CBB-E311-9AFD-00266CFACC38.root',
-        'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/WZTo3LNu_TuneCUETP8M1_13TeV-powheg-pythia8/AODSIM/Asympt25ns_MCRUN2_74_V9-v1/60000/02E34918-E717-E511-AD0A-001E675A6630.root'
+        'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/WZTo3LNu_TuneCUETP8M1_13TeV-powheg-pythia8/AODSIM/Asympt25ns_MCRUN2_74_V9-v1/60000/02E34918-E717-E511-AD0A-001E675A6630.root',
+#        'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/TTJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/AODSIM/Asympt50ns_MCRUN2_74_V9A-v1/00000/006A97CE-D301-E511-8072-0025905A60A6.root',
         ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
@@ -364,5 +365,5 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #Removing pat output (coz we really don't need it now)
 del process.out
 
-process.schedule = cms.Schedule(process.p)
+process.schedule = cms.Schedule( process.p )
 
