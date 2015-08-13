@@ -1,4 +1,4 @@
-from CRABClient.UserUtilities import config
+from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
 
 config.General.requestName = 'WZJets_ScaleDown_MC_150813'
