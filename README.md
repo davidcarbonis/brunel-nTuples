@@ -11,4 +11,10 @@ Stuff that I know needs to be fixed before run2:
 
 -getByLabels need to be changed to consumes
 
-Enjoy, future students.
+Enjoy, future students. Duncan.
+
+//////////////////////////////////
+
+CMSSW_5_3_20 branch can be used for CMSSW_5_3_X generally speaking. Hasn't been checked for earlier runs.
+
+Alexander.
