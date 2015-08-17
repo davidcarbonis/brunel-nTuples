@@ -1,7 +1,7 @@
 from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
 
-config.General.requestName = 'WZJets_ScaleDown_MC_150813'
+config.General.requestName = 'tqZ_4flavour_3leptons'
 config.General.workArea = 'crab_projects'
 
 config.JobType.pluginName = 'Analysis'
@@ -13,10 +13,10 @@ config.Data.inputDataset = '/WZJetsTo3LNu_scaledown_8TeV_TuneZ2Star_madgraph_tau
 config.Data.inputDBS = 'global'
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 10
-config.Data.outLFNDirBase = '/store/user/%s/nTuples/WZ/150813/MC/test' % (getUsernameFromSiteDB())
+config.Data.outLFNDirBase = '/store/user/%s/nTuples/tqZ_4flavour_3lepton/150817/MC/test' % (getUsernameFromSiteDB())
 
 config.Data.publication = False
-config.Data.publishDataName = 'CRAB3_MC_nTupilisation_WZ_test_150813'
+config.Data.publishDataName = 'CRAB3_MC_nTuplisation_tqZ_4flavour_3leptons_170815'
 
 config.Site.storageSite = 'T2_UK_London_Brunel'
 
