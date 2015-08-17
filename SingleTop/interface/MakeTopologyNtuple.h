@@ -4,9 +4,7 @@
 // Class:      MakeTopologyNtuple
 // %
 /**\class MakeTopologyNtuple MakeTopologyNtuple.cc FreyaAnalysis/MakeTopologyNtuple/src/MakeTopologyNtuplecc
-
 Description: <one line class summary>
-
 Implementation:
 <Notes on implementation>
 */
@@ -791,3 +789,4 @@ namespace LHAPDF {
     double getQ2max(int nset, int member);
     void extrapolate(bool extrapolate=true);
 }
+

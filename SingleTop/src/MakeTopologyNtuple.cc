@@ -4,9 +4,7 @@
 // Class:      MakeTopologyNtuple
 // %
 /**\class MakeTopologyNtuple MakeTopologyNtuple.cc FreyaAnalysis/MakeTopologyNtuple/src/MakeTopologyNtuplecc
-
    Description: <one line class summary>
-
    Implementation:
    <Notes on implementation>
 */
@@ -1132,7 +1130,7 @@ void MakeTopologyNtuple::fillBTagInfo(const pat::Jet &jet, const size_t jetindex
     vertexL3D = svTagInfo->flightDistance(0, false).value();
     vertexL3DErr = svTagInfo->flightDistance(0, false).error();
     vertexL3DSig = svTagInfo->flightDistance(0, false).significance();
-    // get the invariant mass: sqrt(EÂ² - pxÂ² - pyÂ² - pzÂ²)
+    // get the invariant mass: sqrt(E² - px² - py² - pz²)
     vertexMass = trackFourVectorSum.M();
 
     jetSortedSVX[ ID ][jetindex] = svTagInfo->secondaryVertex( 0 ).x();
@@ -1439,7 +1437,7 @@ void MakeTopologyNtuple::fillMCInfo(const edm::Event& iEvent, const edm::EventSe
   {
 //CTEQ 6.6 General
       float best_fit = 1.0;
-// loop over all (error) pdfâ€™s
+// loop over all (error) pdf.s
 // subpdf is the index in the pdf set, 0 = best fit, 1-40 = error pdfs up and down.
 //  for (int subpdf = 0; subpdf < LHADPDF::numberPDF(0); subpdf++)
       for (int subpdf = 0; subpdf < 44; subpdf++) 
@@ -1457,7 +1455,7 @@ void MakeTopologyNtuple::fillMCInfo(const edm::Event& iEvent, const edm::EventSe
       }
 //MRST 2006 NLO
       best_fit = 1.0;
-// loop over all (error) pdfâ€™s
+// loop over all (error) pdf.s
 // subpdf is the index in the pdf set, 0 = best fit, 1-40 = error pdfs up and down.
 //  for (int subpdf = 0; subpdf < LHADPDF::numberPDF(0); subpdf++)
       for (int subpdf = 0; subpdf < 31; subpdf++)
@@ -1636,7 +1634,6 @@ void MakeTopologyNtuple::fillJets(const edm::Event& iEvent, const edm::EventSetu
     else if( ID == "AK5PF" ){ eleCol ="Calo"; } //Pass for reco PF jets 
     else if( jet.isPFJet() ){ eleCol = "PF"; }                          
     else{ eleCol = "Calo"; } //For backup.                              
-
     if (!jetIDLoose(jet))
       continue;
     if (jetID(jet,eleCol,(float)jet.pt()))
@@ -2507,7 +2504,6 @@ void MakeTopologyNtuple::bookBranches(){
   /*
   bookJetBranches("AK5PF", "AK5PF");
   bookPFJetBranches("AK5PF", "AK5PF");
-
   bookJetBranches("JPT", "JPT");
   bookJPTJetBranches("JPT", "JPT");
   bookMETBranches("JPT", "TC");
@@ -3840,7 +3836,6 @@ bool MakeTopologyNtuple::photonConversionVeto(const pat::Electron &electron, flo
         rho= _________
     
                  Pt    , where C=-0.003, B=3.8T, e is charge of the track in unit of positron, Pt the transverse momentum of the track                              
-
     */
       
     TrackWithinConeRho[numTrackWithinCone-1]=correctFactor_*magneticField_*generalTracksCharge[nGeneral]/generalTracksPt[nGeneral];
@@ -3999,7 +3994,6 @@ bool MakeTopologyNtuple::muonID(const pat::Muon &muo){
   //number of muon station hits
   if (muo.numberOfMatchedStations() < muoMtchdStns_)
     return false;
-
   if(muo.globalTrack()->normalizedChi2() >= muoNormChi2_)
     return false;
   chi2Muons++;
@@ -4067,3 +4061,4 @@ float MakeTopologyNtuple::getAEff03(float eta){
 
 //define this as a plug-in
 DEFINE_FWK_MODULE(MakeTopologyNtuple);
+
