@@ -9,7 +9,7 @@ config.JobType.psetName = 'nTupliserMC_cfg.py'
 config.JobType.inputFiles = ['pileup_MC_Summer12.root', 'run2012C_v2.root', 'run2012A_13Jul.root', 'run2012B_13Jul.root']
 
 
-config.Data.inputDataset = '/WZJetsTo3LNu_scaledown_8TeV_TuneZ2Star_madgraph_tauola/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM'
+config.Data.inputDataset = '/tZq_4f_3leptons_8TeV-amcatnlo-pythia8_TuneCUETP8M1/Summer12DR53X-PU_S10_START53_V19-v1/AODSIM'
 config.Data.inputDBS = 'global'
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 10
