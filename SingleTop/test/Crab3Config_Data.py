@@ -3,6 +3,7 @@ config = config()
 
 config.General.requestName = 'tqZ_4flavour_3leptons'
 config.General.workArea = 'crab_projects'
+config.General.transferOutputs=False
 
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'nTupliserData_cfg.py'
