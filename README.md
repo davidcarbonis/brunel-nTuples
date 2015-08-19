@@ -15,6 +15,6 @@ Enjoy, future students. Duncan.
 
 //////////////////////////////////
 
-CMSSW_5_3_20 branch can be used for CMSSW_5_3_X generally speaking. Hasn't been checked for earlier runs.
+CMSSW_5_3_X branch can be used for CMSSW_5_3_20 onwards generally speaking. Hasn't been checked for earlier runs.
 
 Alexander.
