@@ -41,7 +41,7 @@ process.MessageLogger.categories=cms.untracked.vstring('FwkJob'
                                                        )
 
 process.MessageLogger.cerr.INFO = cms.untracked.PSet(limit = cms.untracked.int32(0))
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(10000)
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(100)
 process.options = cms.untracked.PSet(
                      wantSummary = cms.untracked.bool(True)
                      )
@@ -79,6 +79,7 @@ process.goodOfflinePrimaryVertices = cms.EDFilter(
     src = cms.InputTag( 'offlinePrimaryVertices' ) )
 
 ## The iso-based HBHE noise filter ___________________________________________||
+process.load('CommonTools.RecoAlgos.HBHENoiseFilterResultProducer_cfi')
 process.load('CommonTools.RecoAlgos.HBHENoiseFilter_cfi')
 
 ## The CSC beam halo tight filter ____________________________________________||
@@ -111,6 +112,7 @@ process.goodVertices = cms.EDFilter(
       )
 
 process.filtersSeq = cms.Sequence(
+    process.HBHENoiseFilterResultProducer *
     process.HBHENoiseFilter *
     process.CSCTightHaloFilter *
     process.hcalLaserEventFilter *
@@ -196,33 +198,18 @@ process.pfPileUpPF2PAT.checkClosestZVertex = False
 ###### Electron ID ############
 ###############################
 
-#process.load('EGamma.EGammaAnalysisTools.electronIdMVAProducer_cfi')
-process.load('EgammaAnalysis.ElectronTools.electronIdMVAProducer_cfi')
 
-## update electron tag as module being loaded has not been updated for post 7_4_X use
-process.mvaTrigV0.electronTag = cms.InputTag('gedGsfElectrons')
-process.mvaNonTrigV0.electronTag = cms.InputTag('gedGsfElectrons')
+from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 
-process.eidMVASequence = cms.Sequence( process.mvaTrigV0 + process.mvaNonTrigV0 )
+switchOnVIDElectronIdProducer(process, DataFormat.AOD)
 
-#Electron ID
-process.patElectronsPF2PAT.electronIDSources.mvaTrigV0    = cms.InputTag("mvaTrigV0")
-process.patElectronsPF2PAT.electronIDSources.mvaNonTrigV0 = cms.InputTag("mvaNonTrigV0") 
+# define which IDs we want to produce
+my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
 
-process.patPF2PATSequenceElectrons = cms.Sequence( process.eidMVASequence * process.patElectronsPF2PAT )
+#add them to the VID producer
+for idmod in my_id_modules:
+    setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 
-#process.patPF2PATSequencePF2PAT.replace( process.patElectronsPF2PAT, process.eidMVASequence * process.patElectronsPF2PAT )
-
-
-#Convesion Rejection
-# this should be your last selected electron collection name since currently index is used to match with electron later. We can fix this using reference pointer.
-process.patConversionsPF2PAT = cms.EDProducer("PATConversionProducer",
-                                             electronSource = cms.InputTag("selectedPatElectronsPF2PAT")      
-                                             )
-					     
-#process.patPF2PATSequencePF2PAT += process.patConversionsPF2PAT
-
-process.patPF2PATSequenceElectrons += process.patConversionsPF2PAT
 
 
 ###############################
@@ -255,7 +242,8 @@ process.patseq = cms.Sequence(
     process.primaryVertexFilter * #removes events with no good pv (but if cuts to determine good pv change...)
     process.filtersSeq *
 #    getattr(process,"patPF2PATSequence"+postfix) # main PF2PAT
-    process.patPF2PATSequenceElectrons
+#    process.patPF2PATSequenceElectrons
+    process.egmGsfElectronIDSequence
 #   * process.flavorHistorySeq
     )
 
