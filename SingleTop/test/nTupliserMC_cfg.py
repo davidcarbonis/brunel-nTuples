@@ -26,7 +26,6 @@ process.load("PhysicsTools.HepMCCandAlgos.genParticles_cfi")
 process.load('Configuration.StandardSequences.Services_cff')
 
 process.load('Configuration.Geometry.GeometryRecoDB_cff')
-#process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 
 process.load("Configuration.StandardSequences.MagneticField_cff")
@@ -241,8 +240,6 @@ process.patseq = cms.Sequence(
     process.goodOfflinePrimaryVertices*
     process.primaryVertexFilter * #removes events with no good pv (but if cuts to determine good pv change...)
     process.filtersSeq *
-#    getattr(process,"patPF2PATSequence"+postfix) # main PF2PAT
-#    process.patPF2PATSequenceElectrons
     process.egmGsfElectronIDSequence
 #   * process.flavorHistorySeq
     )
@@ -303,18 +300,13 @@ process.makeTopologyNtuple.jetPFTag = cms.InputTag("selectedPatJetsPF2PAT")
 process.makeTopologyNtuple.metPFTag = cms.InputTag("patType1CorrectedPFMetPF2PAT")                                                                                  
 #For now this is just the patseq, but soon this will also involve the ntupliser. And then minor corrections for the data version which will include more filters and such.
 
-process.p = cms.Path(
-    process.patseq
-*    process.makeTopologyNtuple
-    )
-
 ## Source
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring()
 )
 
 ## Maximal Number of Events
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 
 process.source.fileNames = [
 	#'root://xrootd.unl.edu//store/mc/Summer12_DR53X/WZJetsTo3LNu_matchingdown_8TeV_TuneZ2Star_madgraph_tauola/AODSIM/PU_S10_START53_V19-v1/00000/06A911BC-3CBB-E311-9AFD-00266CFACC38.root',
@@ -324,12 +316,13 @@ process.source.fileNames = [
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
 from PhysicsTools.PatAlgos.patEventContent_cff import patEventContentNoCleaning
+
 process.out = cms.OutputModule("PoolOutputModule",
                                fileName = cms.untracked.string('patTuple.root'),
                                ## save only events passing the full path
-                               #SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
+                               SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
                                ## save PAT output; you need a '*' to unpack the list of commands
-                               ## 'patEventContent'
+                               #'patEventContent'
                                outputCommands = cms.untracked.vstring('drop *', *patEventContentNoCleaning )
                                )
 
@@ -337,6 +330,7 @@ process.out.outputCommands += patEventContent
 process.out.outputCommands += patTriggerEventContent
 process.out.outputCommands += patExtraAodEventContent
 process.out.outputCommands += cms.untracked.vstring('keep *_flavorHistoryFilter_*_*','keep *_TriggerResults_*_*','keep *_selectedPat*_*_*', 'keep *_*goodOfflinePrimaryVertices*_*_*','keep double_*_rho_*', 'keep patMuons_*_*_*', 'keep *MET*_*_*_*', 'keep *_*MET*_*_*')
+
 
 #PAT output and various other outpath stuff which is a bit dumb coz I'm probably not even gonna use the outpath. Nevermind.
 process.out.fileName = cms.untracked.string('Data_out.root')
@@ -348,6 +342,11 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
 #Removing pat output (coz we really don't need it now)
 del process.out
+
+process.p = cms.Path(
+    process.patseq 
+*    process.makeTopologyNtuple
+    )
 
 process.schedule = cms.Schedule( process.p )
 
