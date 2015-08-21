@@ -135,7 +135,7 @@ process.filtersSeq = cms.Sequence(
 ####### PF2PAT Setup ##########
 ###############################
 
-# Default PF2PAT with AK4 jets. Make sure to turn ON the L1fastjet stuff.
+# Default PF2PAT with AK4 jets. Make sure to turn ON the L1fausePF2PATstjet stuff.
 from PhysicsTools.PatAlgos.tools.pfTools import *
 
 postfix = "PF2PAT"
@@ -152,7 +152,6 @@ getattr(process,"pfNoJet"     +postfix).enable = False
 #            cms.InputTag("combinedSecondaryVertexBJetTagsAODPF2PAT"),
 #            cms.InputTag("combinedSecondaryVertexMVABJetTagsAODPF2PAT"),
 #            )
-
 
 
 #Gsf Electrons
@@ -210,7 +209,6 @@ for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 
 
-
 ###############################
 ###### Bare KT 0.6 jets ####### Because why not?
 ###############################
@@ -240,6 +238,7 @@ process.patseq = cms.Sequence(
     process.goodOfflinePrimaryVertices*
     process.primaryVertexFilter * #removes events with no good pv (but if cuts to determine good pv change...)
     process.filtersSeq *
+    process.patDefaultSequence *
     process.egmGsfElectronIDSequence
 #   * process.flavorHistorySeq
     )
@@ -293,11 +292,11 @@ process.makeTopologyNtuple.doCuts = cms.bool(False)
 process.makeTopologyNtuple.runCutFlow=cms.double(0)
 
 #Make the inputs for the n-tupliser right.
-process.makeTopologyNtuple.electronPFTag = cms.InputTag("selectedPatElectronsPF2PAT")
-process.makeTopologyNtuple.tauPFTag = cms.InputTag("selectedPatTausPF2PAT")
-process.makeTopologyNtuple.muonPFTag = cms.InputTag("selectedPatMuonsPF2PAT")
-process.makeTopologyNtuple.jetPFTag = cms.InputTag("selectedPatJetsPF2PAT")
-process.makeTopologyNtuple.metPFTag = cms.InputTag("patType1CorrectedPFMetPF2PAT")                                                                                  
+process.makeTopologyNtuple.electronPFTag = cms.InputTag("selectedPatElectrons")
+process.makeTopologyNtuple.tauPFTag = cms.InputTag("selectedPatTaus")
+process.makeTopologyNtuple.muonPFTag = cms.InputTag("selectedPatMuons")
+process.makeTopologyNtuple.jetPFTag = cms.InputTag("selectedPatJets")
+process.makeTopologyNtuple.metPFTag = cms.InputTag("patType1CorrectedPFMet")                                                                                  
 #For now this is just the patseq, but soon this will also involve the ntupliser. And then minor corrections for the data version which will include more filters and such.
 
 ## Source
@@ -320,9 +319,8 @@ from PhysicsTools.PatAlgos.patEventContent_cff import patEventContentNoCleaning
 process.out = cms.OutputModule("PoolOutputModule",
                                fileName = cms.untracked.string('patTuple.root'),
                                ## save only events passing the full path
-                               SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
+                               #SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
                                ## save PAT output; you need a '*' to unpack the list of commands
-                               #'patEventContent'
                                outputCommands = cms.untracked.vstring('drop *', *patEventContentNoCleaning )
                                )
 
@@ -341,7 +339,7 @@ process.options.wantSummary = False
 process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
 #Removing pat output (coz we really don't need it now)
-del process.out
+#del process.out
 
 process.p = cms.Path(
     process.patseq 
@@ -350,3 +348,4 @@ process.p = cms.Path(
 
 process.schedule = cms.Schedule( process.p )
 
+process.outpath = cms.EndPath( process.out )
