@@ -1,4 +1,4 @@
-// -*- C++ -*-
+ // -*- C++ -*-
 //
 // Package:    MakeTopologyNtuple
 // Class:      MakeTopologyNtuple
@@ -2188,8 +2188,30 @@ MakeTopologyNtuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
   double weightA = 1.0;
   double weightB = 1.0;
   double weightC = 1.0;
-  //  numVert = 0;
-  numVert = Tnpv; // Moved from line 2216
+  numVert = 0;
+
+  // Get numVerts now that runPUReWeight is turned off
+
+  if (! runPUReWeight_){
+
+    edm::Handle < std::vector< PileupSummaryInfo > > pileupSummaryInfo_;
+    iEvent.getByLabel ("addPileupInfo", pileupSummaryInfo_);
+    
+    std::vector<PileupSummaryInfo>::const_iterator PVI;
+
+    float Tnpv = -1;
+    for (PVI = pileupSummaryInfo_->begin(); PVI != pileupSummaryInfo_->end(); PVI++){
+      
+      int BX = PVI->getBunchCrossing();
+      
+      if (BX == 0) {
+	
+	Tnpv = pileupSummaryInfo_->begin()->getTrueNumInteractions();
+	continue;
+      }
+    }
+    numVert = Tnpv; 
+  }
 
   if (runPUReWeight_){
     //LumiWeightsA = LumiReWeighting("pileup_MC_Summer12.root","run2012A_13Jul.root", "pileup", "pileup");
@@ -2215,7 +2237,7 @@ MakeTopologyNtuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
 	continue;
       }
     }
-
+    numVert = Tnpv; 
     lumiWeightA = LumiWeightsA.weight( Tnpv);
     lumiWeightB = LumiWeightsB.weight( Tnpv);
     lumiWeightC = LumiWeightsC.weight( Tnpv);
@@ -2242,6 +2264,7 @@ MakeTopologyNtuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
     }
 
   }
+
   pileUpWeightA = weightA;
   pileUpWeightB = weightB;
   pileUpWeightC = weightC;
