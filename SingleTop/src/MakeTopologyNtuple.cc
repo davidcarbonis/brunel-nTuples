@@ -2190,28 +2190,26 @@ MakeTopologyNtuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
   double weightC = 1.0;
   numVert = 0;
 
-  // Get numVerts now that runPUReWeight is turned off
+  // Get numVerts regardless of whether runPUReWeight is turned on/off
 
-  if (! runPUReWeight_){
-
-    edm::Handle < std::vector< PileupSummaryInfo > > pileupSummaryInfo_;
-    iEvent.getByLabel ("addPileupInfo", pileupSummaryInfo_);
+  edm::Handle < std::vector< PileupSummaryInfo > > pileupSummaryInfo_;
+  iEvent.getByLabel ("addPileupInfo", pileupSummaryInfo_);
     
-    std::vector<PileupSummaryInfo>::const_iterator PVI;
+  std::vector<PileupSummaryInfo>::const_iterator PVI;
 
-    float Tnpv = -1;
-    for (PVI = pileupSummaryInfo_->begin(); PVI != pileupSummaryInfo_->end(); PVI++){
+  float Tnpv = -1;
+  for (PVI = pileupSummaryInfo_->begin(); PVI != pileupSummaryInfo_->end(); PVI++){
       
-      int BX = PVI->getBunchCrossing();
+    int BX = PVI->getBunchCrossing();
       
-      if (BX == 0) {
+    if (BX == 0) {
 	
-	Tnpv = pileupSummaryInfo_->begin()->getTrueNumInteractions();
-	continue;
-      }
+      Tnpv = pileupSummaryInfo_->begin()->getTrueNumInteractions();
+      continue;
     }
-    numVert = Tnpv; 
   }
+  numVert = Tnpv; 
+  
 
   if (runPUReWeight_){
     //LumiWeightsA = LumiReWeighting("pileup_MC_Summer12.root","run2012A_13Jul.root", "pileup", "pileup");
@@ -2220,7 +2218,7 @@ MakeTopologyNtuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
     double lumiWeightA = 1.0;
     double lumiWeightB = 1.0;
     double lumiWeightC = 1.0;
-    
+    /*
     edm::Handle < std::vector< PileupSummaryInfo > > pileupSummaryInfo_;
     iEvent.getByLabel ("addPileupInfo", pileupSummaryInfo_);
     
@@ -2236,7 +2234,7 @@ MakeTopologyNtuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
 	Tnpv = pileupSummaryInfo_->begin()->getTrueNumInteractions();
 	continue;
       }
-    }
+    }*/
     numVert = Tnpv; 
     lumiWeightA = LumiWeightsA.weight( Tnpv);
     lumiWeightB = LumiWeightsB.weight( Tnpv);
