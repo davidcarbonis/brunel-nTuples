@@ -2188,7 +2188,9 @@ MakeTopologyNtuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
   double weightA = 1.0;
   double weightB = 1.0;
   double weightC = 1.0;
-  numVert = 0;
+  //  numVert = 0;
+  numVert = Tnpv; // Moved from line 2216
+
   if (runPUReWeight_){
     //LumiWeightsA = LumiReWeighting("pileup_MC_Summer12.root","run2012A_13Jul.root", "pileup", "pileup");
     //LumiWeightsB = LumiReWeighting("pileup_MC_Summer12.root","run2012B_13Jul.root", "pileup", "pileup");
@@ -2213,7 +2215,7 @@ MakeTopologyNtuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
 	continue;
       }
     }
-    numVert = Tnpv;
+
     lumiWeightA = LumiWeightsA.weight( Tnpv);
     lumiWeightB = LumiWeightsB.weight( Tnpv);
     lumiWeightC = LumiWeightsC.weight( Tnpv);
