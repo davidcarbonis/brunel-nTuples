@@ -296,7 +296,8 @@ process.makeTopologyNtuple.electronPFTag = cms.InputTag("selectedPatElectrons")
 process.makeTopologyNtuple.tauPFTag = cms.InputTag("selectedPatTaus")
 process.makeTopologyNtuple.muonPFTag = cms.InputTag("selectedPatMuons")
 process.makeTopologyNtuple.jetPFTag = cms.InputTag("selectedPatJets")
-process.makeTopologyNtuple.metPFTag = cms.InputTag("patType1CorrectedPFMet")                                                                                  
+process.makeTopologyNtuple.metPFTag = cms.InputTag("corrPfMetType1")#  patType1CorrectedPFMet
+process.makeTopologyNtuple.rho = cms.InputTag("fixedGridRhoAll")                                                                          
 #For now this is just the patseq, but soon this will also involve the ntupliser. And then minor corrections for the data version which will include more filters and such.
 
 ## Source
