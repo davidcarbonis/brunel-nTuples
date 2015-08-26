@@ -129,8 +129,6 @@ process.filtersSeq = cms.Sequence(
 
 
 
-
-
 ###############################
 ####### PF2PAT Setup ##########
 ###############################
@@ -230,7 +228,17 @@ process.selectedPatJetsPF2PAT.cut = cms.string("pt > 5.0")
 #process.load("PhysicsTools.HepMCCandAlgos.flavorHistoryPaths_cfi")
 #process.flavorHistoryFilter.pathToSelect = cms.int32(-1)
 
+###############################
+#### MET Corrections Setup #########
+###############################
 
+from PhysicsTools.PatUtils.tools.runType1PFMEtUncertainties import runType1PFMEtUncertainties
+runType1PFMEtUncertainties(process,addToPatDefaultSequence=True,
+                           jetCollection="selectedPatJets",
+                           electronCollection="selectedPatElectrons",
+                           muonCollection="selectedPatMuons",
+                           tauCollection="selectedPatTaus",
+                           )
 
 #Letting pat run
 process.patseq = cms.Sequence(
@@ -296,9 +304,14 @@ process.makeTopologyNtuple.electronPFTag = cms.InputTag("selectedPatElectrons")
 process.makeTopologyNtuple.tauPFTag = cms.InputTag("selectedPatTaus")
 process.makeTopologyNtuple.muonPFTag = cms.InputTag("selectedPatMuons")
 process.makeTopologyNtuple.jetPFTag = cms.InputTag("selectedPatJets")
-process.makeTopologyNtuple.metPFTag = cms.InputTag("corrPfMetType1")#  patType1CorrectedPFMet
+#process.makeTopologyNtuple.metPFTag = cms.InputTag("patPFMetT1")#  patType1CorrectedPFMet ##  TEMP removal
 process.makeTopologyNtuple.rho = cms.InputTag("fixedGridRhoAll")                                                                          
-#For now this is just the patseq, but soon this will also involve the ntupliser. And then minor corrections for the data version which will include more filters and such.
+
+##electronIdMva Stuff.
+#process.makeTopologyNtuple.eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp90")
+process.makeTopologyNtuple.eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80")
+process.makeTopologyNtuple.mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
+process.makeTopologyNtuple.mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories")
 
 ## Source
 process.source = cms.Source("PoolSource",

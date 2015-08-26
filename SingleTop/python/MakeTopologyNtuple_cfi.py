@@ -106,6 +106,11 @@ makeTopologyNtuple = cms.EDAnalyzer('MakeTopologyNtuple',
                                     jetPtCutLoose = cms.double(20.),
                                     
                                     #electron ID (tight, for analysis)
+
+                                    eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80"),
+                                    mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"),
+                                    mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories"),
+
                                     runSwissCross = cms.bool(True),
                                     runReweightTest = cms.bool(False), #This is just a little test to see what happens when using the default reweight class, i.e. whether it breaks like my one does.
                                     runPDFUncertainties = cms.bool(False),
