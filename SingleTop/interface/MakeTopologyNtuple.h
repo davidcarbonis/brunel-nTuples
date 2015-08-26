@@ -39,6 +39,15 @@ private:
   std::map<std::string,TH1D*> histocontainer_; // simple map to contain all histograms. Histograms are booked in the beginJob() method
   std::map<std::string,TH2D*> histocontainer2D_; // simple map to contain all histograms. Histograms are booked in the beginJob() method (2D)
   
+  // ID decisions objects
+  edm::EDGetTokenT<edm::ValueMap<bool> > eleLooseIdMapToken_;
+  //      edm::EDGetTokenT<edm::ValueMap<bool> > eleMediumIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > eleTightIdMapToken_;
+
+  // MVA values and categories (optional)
+  edm::EDGetTokenT<edm::ValueMap<float> > mvaValuesMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<int> > mvaCategoriesMapToken_;
+
   edm::InputTag eleLabel_;
   edm::InputTag muoLabel_;
   edm::InputTag jetLabel_;
@@ -170,7 +179,7 @@ private:
   void fillLooseJetInfo(const pat::Jet &jet, const size_t jetindex, float jetPt, std::string ID);
   void fillZVeto(const edm::Event &, const edm::EventSetup&, edm::InputTag, std::string);
   void fillMuons(const edm::Event&, const edm::EventSetup&, edm::InputTag, std::string);
-  void fillPhotons(const edm::Event&, const edm::EventSetup&, edm::InputTag, std::string);
+  void fillPhotons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<edm::View<pat::Photon>>, std::string);
   void fillTaus(const edm::Event&, const edm::EventSetup&, edm::InputTag, std::string);
   void fillElectrons(const edm::Event&, const edm::EventSetup&, edm::InputTag, std::string);
   void fillMissingET(const edm::Event&, const edm::EventSetup&,edm::InputTag, std::string);
