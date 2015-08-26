@@ -562,7 +562,7 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
 	const pat::Electron& ele = electrons[jele];
     
         // look up id decisions
-        bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
+        //bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
         //bool isPassMedium = (*medium_id_decisions)[ele];
         bool isPassTight  = (*tight_id_decisions)[ele.gsfTrack()]; // NEW
 
@@ -737,6 +737,8 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
       size_t jele = etSortedIndex[iele];         
       const pat::Electron& ele = electrons[jele];
       
+	bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
+
 
       //If the electron passes the loose criteria but fails the tight, it is a loose electron and should be vetoed on.
       /* Old Id Method
