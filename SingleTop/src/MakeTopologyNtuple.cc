@@ -1234,6 +1234,25 @@ void MakeTopologyNtuple::fillZVeto(const edm::Event& iEvent, const edm::EventSet
   iEvent.getByLabel(eleIn_,electronHandle);
   const edm::View<pat::Electron> & electrons = *electronHandle;
 
+    // Get the electron ID data from the event stream.
+    // Note: this implies that the VID ID modules have been run upstream.
+    // If you need more info, check with the EGM group.
+
+    edm::Handle<edm::ValueMap<bool> > loose_id_decisions;
+    //   edm::Handle<edm::ValueMap<bool> > medium_id_decisions;
+    edm::Handle<edm::ValueMap<bool> > tight_id_decisions; 
+
+    iEvent.getByToken(eleLooseIdMapToken_,loose_id_decisions);
+    //    iEvent.getByToken(eleMediumIdMapToken_,medium_id_decisions);
+    iEvent.getByToken(eleTightIdMapToken_,tight_id_decisions);
+
+    // Get MVA values and categories (optional)
+    edm::Handle<edm::ValueMap<float> > mvaValues;
+    edm::Handle<edm::ValueMap<int> > mvaCategories;
+    iEvent.getByToken(mvaValuesMapToken_,mvaValues);
+    iEvent.getByToken(mvaCategoriesMapToken_,mvaCategories);
+
+
   std::vector<math::XYZTLorentzVector> candidatestoloopover;
   std::vector<bool> passedtight;
   
@@ -1248,13 +1267,23 @@ void MakeTopologyNtuple::fillZVeto(const edm::Event& iEvent, const edm::EventSet
   for ( size_t iele=0; iele<etSortedIndex.size() && numEle[ ID ]<(int)NELECTRONSMAX; ++iele ) {
     size_t jele = etSortedIndex[iele];
     const pat::Electron& ele = electrons[jele];
+
+    // look up id decisions
+   bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
+    //bool isPassMedium = (*medium_id_decisions)[ele];
+   bool isPassTight  = (*tight_id_decisions)[ele.gsfTrack()]; // NEW
+
     
-    if(!looseElectronID(ele, true))
-      continue;
+    // Old Electron Loose Id
+    /*if(!looseElectronID(ele, true))
+      continue;*/
   
+    if(!isPassLoose)
+      continue;
+
     math::XYZTLorentzVector elecand(ele.px(),ele.py(),ele.pz(),ele.energy());
-    bool tightcand=tightElectronID(ele, true); // Old Electron Id
-    passedtight.push_back(tightcand);
+//    bool tightcand=tightElectronID(ele, true); // Old Electron Id
+    passedtight.push_back(isPassTight);
     candidatestoloopover.push_back(elecand);
     
   }// end of electron loop
