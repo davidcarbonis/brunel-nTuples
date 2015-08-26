@@ -125,6 +125,13 @@
 
 MakeTopologyNtuple::MakeTopologyNtuple(const edm::ParameterSet& iConfig):
     histocontainer_(),
+
+    eleLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"))),
+    //    eleMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"))),
+    eleTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTightIdMap"))),
+    mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap"))),
+    mvaCategoriesMapToken_(consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaCategoriesMap"))),
+
     eleLabel_(iConfig.getParameter<edm::InputTag>("electronTag")),
     muoLabel_(iConfig.getParameter<edm::InputTag>("muonTag")),
     jetLabel_(iConfig.getParameter<edm::InputTag>("jetTag")),
@@ -321,10 +328,10 @@ MakeTopologyNtuple::~MakeTopologyNtuple()
 //
 // member functions
 //
-void MakeTopologyNtuple::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::InputTag phoIn_, std::string ID)
+void MakeTopologyNtuple::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::EDGetTokenT<edm::View<pat::Photon>> phoIn_, std::string ID)
 {
     edm::Handle<edm::View<pat::Photon> > phoHandle;
-    iEvent.getByLabel(phoIn_,phoHandle);
+    iEvent.getByToken(phoIn_,phoHandle);
     const edm::View<pat::Photon> & photons = *phoHandle;
     for(edm::View<pat::Photon>::const_iterator photon_iter = photons.begin(); photon_iter!=photons.end() && nphotons[ ID ]<NPHOTONSMAX; ++photon_iter){
 
@@ -494,7 +501,7 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
     fillGeneralTracks(iEvent, iSetup);
   
     // note that the fillJets() method needs electrons, due to the fact that we do our own 'cross' cleaning
-    edm::Handle<edm::View<pat::Electron> > electronHandle;
+    edm::Handle<edm::View<pat::Electron> > electronHandle; //changed handle from pat::Electron to reco::GsfElectron
     iEvent.getByLabel(eleIn_,electronHandle);
     const edm::View<pat::Electron> & electrons = *electronHandle;
 
@@ -502,6 +509,25 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
     edm::Handle<double> rhoHand_;
     iEvent.getByLabel(rho_,rhoHand_);
     rhoIso = *(rhoHand_.product());
+
+    // Get the electron ID data from the event stream.
+    // Note: this implies that the VID ID modules have been run upstream.
+    // If you need more info, check with the EGM group.
+
+    edm::Handle<edm::ValueMap<bool> > loose_id_decisions;
+    //   edm::Handle<edm::ValueMap<bool> > medium_id_decisions;
+    edm::Handle<edm::ValueMap<bool> > tight_id_decisions; 
+
+    iEvent.getByToken(eleLooseIdMapToken_,loose_id_decisions);
+    //    iEvent.getByToken(eleMediumIdMapToken_,medium_id_decisions);
+    iEvent.getByToken(eleTightIdMapToken_,tight_id_decisions);
+
+    // Get MVA values and categories (optional)
+    edm::Handle<edm::ValueMap<float> > mvaValues;
+    edm::Handle<edm::ValueMap<int> > mvaCategories;
+    iEvent.getByToken(mvaValuesMapToken_,mvaValues);
+    iEvent.getByToken(mvaCategoriesMapToken_,mvaCategories);
+
 
     //   !!!
     // IMPORTAnT: DO NOT CUT ON THE OBJECTS BEFORE THEY ARE SORTED, cuts should be applied in the second loop!!!
@@ -530,18 +556,27 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
     // now loop again, in the correct order
     numEle[ ID ]=0;
     numLooseEle[ ID ]=0;
+
     for ( size_t iele=0; iele<etSortedIndex.size() && numEle[ ID ]<(int)NELECTRONSMAX; ++iele ) {
 	size_t jele = etSortedIndex[iele];
 	const pat::Electron& ele = electrons[jele];
     
-	if(!tightElectronID(ele))
-	    continue;
+        // look up id decisions
+        bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
+        //bool isPassMedium = (*medium_id_decisions)[ele];
+        bool isPassTight  = (*tight_id_decisions)[ele.gsfTrack()]; // NEW
+
+       	/*if(!tightElectronID(ele)) // If not tight - old method 
+	  continue;*/
+
+	if(!isPassTight) // If not tight
+	  continue;
     
 	int photonConversionTag=-1;
     
 	numEle[ ID ]++;
 
-//Impact param significance
+	//Impact param significance
 	if(pvHandle.isValid())
 	{
 	    std::vector<reco::Vertex> pv = *pvHandle;
@@ -614,7 +649,7 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
     electronSortedGsfPz[ ID ][numEle[ ID ]-1] = ele.ecalDrivenMomentum().pz();
     electronSortedGsfE[ ID ][numEle[ ID ]-1] = ele.ecalDrivenMomentum().energy();
 
-    electronSortedSuperClusterEta[ ID ][numEle[ ID ]-1]=ele.superCluster()->eta();
+    electronSortedSuperClusterEta[ ID ][numEle[ ID ]-1]=ele.superCluster()->eta(); 
     electronSortedSuperClusterE[ ID ][numEle[ ID ]-1]=ele.superCluster()->energy();
     electronSortedSuperClusterPhi[ ID ][numEle[ ID ]-1]=ele.superCluster()->phi();
     electronSortedSuperClusterSigmaEtaEta[ ID ][numEle[ ID ]-1]=ele.scSigmaEtaEta();
@@ -637,14 +672,14 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
     electronSortedComRelIso[ ID ][numEle[ ID ]-1]+=	electronSortedECalIso03[ ID ][numEle[ ID ]-1];
     electronSortedComRelIso[ ID ][numEle[ ID ]-1]+=	electronSortedHCalIso03[ ID ][numEle[ ID ]-1];
     electronSortedComRelIso[ ID ][numEle[ ID ]-1]/=electronSortedEt[ ID ][numEle[ ID ]-1];
-    electronSortedChHadIso[ ID ][numEle[ ID ]-1] = ele.chargedHadronIso();
+    electronSortedChHadIso[ ID ][numEle[ ID ]-1] = ele.chargedHadronIso(); 
     electronSortedNtHadIso[ ID ][numEle[ ID ]-1] = ele.neutralHadronIso();
-    electronSortedGammaIso[ ID ][numEle[ ID ]-1] = ele.photonIso();
-    electronSortedComRelIsodBeta[ ID ][numEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt() ;
+    electronSortedGammaIso[ ID ][numEle[ ID ]-1] = ele.photonIso(); 
+    electronSortedComRelIsodBeta[ ID ][numEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt();
     float AEff03 = getAEff03(ele.superCluster()->eta());
     electronSortedAEff03[ ID ][numEle[ ID ]-1] = AEff03;
     electronSortedRhoIso[ ID ][numEle[ ID ]-1] = rhoIso;
-    double combrelisorho = (ele.chargedHadronIso() + std::max(0.0, ele.neutralHadronIso() + ele.photonIso() - rhoIso*AEff03 ))/ele.pt();
+    double combrelisorho = (ele.chargedHadronIso() + std::max(0.0, ele.neutralHadronIso() + ele.photonIso() - rhoIso*AEff03 ))/ele.pt(); 
     electronSortedComRelIsoRho[ ID ][numEle[ ID ]-1]=combrelisorho;
     //(ele.trackIso()+ele.ecalIso()+ele.hcalIso())/ele.et();
 
@@ -685,10 +720,10 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
     if(check_triggers_){
     }
     //if(ele.genParticleRef().ref().isValid()){
-    if(! ele.genParticleRef().isNull()){
-      genElectronSortedEt[ ID ][numEle[ ID ]-1]=ele.genLepton()->et();
-      genElectronSortedEta[ ID ][numEle[ ID ]-1]=ele.genLepton()->eta();
-      genElectronSortedTheta[ ID ][numEle[ ID ]-1]=ele.genLepton()->theta();
+    if(! ele.genParticleRef().isNull()){ 
+      genElectronSortedEt[ ID ][numEle[ ID ]-1]=ele.genLepton()->et(); 
+      genElectronSortedEta[ ID ][numEle[ ID ]-1]=ele.genLepton()->eta(); 
+      genElectronSortedTheta[ ID ][numEle[ ID ]-1]=ele.genLepton()->theta(); 
       genElectronSortedPhi[ ID ][numEle[ ID ]-1]=ele.genLepton()->phi();
       genElectronSortedPx[ ID ][numEle[ ID ]-1]=ele.genLepton()->px();
       genElectronSortedPy[ ID ][numEle[ ID ]-1]=ele.genLepton()->py();
@@ -704,9 +739,13 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
       
 
       //If the electron passes the loose criteria but fails the tight, it is a loose electron and should be vetoed on.
-      if(!looseElectronID(ele))
+      /* Old Id Method
+	 if(!looseElectronID(ele))
+	 continue;*/
+            
+      if(!isPassLoose)
 	continue;
-      
+
       numLooseEle[ID]++;
       looseElectronSortedEt[ ID ][numLooseEle[ ID ]-1]=ele.et();
       looseElectronSortedPt[ ID ][numLooseEle[ ID ]-1]=ele.pt();
@@ -1212,7 +1251,7 @@ void MakeTopologyNtuple::fillZVeto(const edm::Event& iEvent, const edm::EventSet
       continue;
   
     math::XYZTLorentzVector elecand(ele.px(),ele.py(),ele.pz(),ele.energy());
-    bool tightcand=tightElectronID(ele, true);
+    bool tightcand=tightElectronID(ele, true); // Old Electron Id
     passedtight.push_back(tightcand);
     candidatestoloopover.push_back(elecand);
     
@@ -2282,7 +2321,7 @@ MakeTopologyNtuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
 
   //  fillJets(iEvent,iSetup, jetLabel_, "Calo");
   //Putting MET info before jets so it can be used for jet smearing.
-  fillMissingET(iEvent,iSetup, metPFTag_, "PF");
+  //  fillMissingET(iEvent,iSetup, metPFTag_, "PF"); // TEMP for debugging
 
   fillJets(iEvent,iSetup, jetPFTag_, "PF");
 
