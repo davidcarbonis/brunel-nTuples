@@ -20,6 +20,8 @@ CMSSW_7_4_0 branch contains code from CMSSW_5_3_X branch which is being modified
 As data taking is using CMSSW_7_4_X, the branch is named CMSSW_7_4_0 until the earliest release for Run 2 data which this can be run on is established.
 Development is currently being undertaken in CMSSW_7_4_7.
 
+git cms-merge-topic ikrav:egm_id_747_v2 needs to be executed in order for electron Id and MVA to work.
+
 To be continued ...
 
 Alexander.
