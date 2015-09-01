@@ -233,26 +233,14 @@ process.selectedPatJetsPF2PAT.cut = cms.string("pt > 5.0")
 ###############################
 #### MET Corrections Setup ####
 ###############################
-#from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromAOD
-##default configuration for miniAOD reprocessing, change the isData flag to run on data
-#runMetCorAndUncFromMiniAOD(process, isData=False)#MC
-##runMetCorAndUncFromMiniAOD(process, isData=True)#Data
-
-#### the lines below remove the L2L3 residual uncertainties when processing data
-#process.patPFMetT1T2Corr.jetCorrLabelRes = cms.InputTag("L3Absolute")
-#process.patPFMetT1T2SmearCorr.jetCorrLabelRes = cms.InputTag("L3Absolute")
-#process.patPFMetT2Corr.jetCorrLabelRes = cms.InputTag("L3Absolute")
-#process.patPFMetT2SmearCorr.jetCorrLabelRes = cms.InputTag("L3Absolute")
-#process.shiftedPatJetEnDown.jetCorrLabelUpToL3Res = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
-#process.shiftedPatJetEnUp.jetCorrLabelUpToL3Res = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
-
-from PhysicsTools.PatUtils.tools.runType1PFMEtUncertainties import runType1PFMEtUncertainties
-runType1PFMEtUncertainties(process,addToPatDefaultSequence=True,
-                           jetCollection="selectedPatJets",
-                           electronCollection="selectedPatElectrons",
-                           muonCollection="selectedPatMuons",
-                           tauCollection="selectedPatTaus",
-                           )
+process.load("PhysicsTools.PatUtils.patPFMETCorrections_cff")
+#from PhysicsTools.PatUtils.tools.runType1PFMEtUncertainties import runType1PFMEtUncertainties
+#runType1PFMEtUncertainties(process,addToPatDefaultSequence=True,
+#                           jetCollection="selectedPatJets",
+#                           electronCollection="selectedPatElectrons",
+#                           muonCollection="selectedPatMuons",
+#                           tauCollection="selectedPatTaus",
+#                           )
 
 ###############################
 #### Running EVERYTHING #######
@@ -266,6 +254,7 @@ process.patseq = cms.Sequence(
     process.primaryVertexFilter * #removes events with no good pv (but if cuts to determine good pv change...)
     process.filtersSeq *
     process.patDefaultSequence *
+    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence
 #   * process.flavorHistorySeq
     )
