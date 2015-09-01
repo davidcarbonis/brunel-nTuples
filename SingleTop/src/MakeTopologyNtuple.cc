@@ -1,3 +1,4 @@
+
 // -*- C++ -*-
 //
 // Package:    MakeTopologyNtuple
@@ -486,6 +487,7 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
     // 	return;
     // ran_eleloop_=true;
   
+
     // info for 'default conversion finder
     edm::Handle<reco::TrackCollection> generalTracks;
     iEvent.getByLabel("generalTracks", generalTracks);
@@ -538,6 +540,7 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
 	float et =electron_iter->et();
 	electronEts.push_back(et);
     }
+
 //    if( ID == "PF" ){ std::cout << "N PF ele: " << electronEts.size() << std::endl; }
     std::vector<int> etSortedIndex = 
 	IndexSorter< std::vector<float> >(electronEts,true)();
@@ -556,22 +559,24 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
     // now loop again, in the correct order
     numEle[ ID ]=0;
     numLooseEle[ ID ]=0;
+  std::cout << __FILE__ << " : " << __LINE__ << std::endl;
 
     for ( size_t iele=0; iele<etSortedIndex.size() && numEle[ ID ]<(int)NELECTRONSMAX; ++iele ) {
+	std::cout << __FILE__ << " : " << __LINE__ << std::endl;
 	size_t jele = etSortedIndex[iele];
+	std::cout << __FILE__ << " : " << __LINE__ << std::endl;
+
 	const pat::Electron& ele = electrons[jele];
-    
+	std::cout << __FILE__ << " : " << __LINE__ << std::endl;
+
         // look up id decisions
         //bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
         //bool isPassMedium = (*medium_id_decisions)[ele];
         bool isPassTight  = (*tight_id_decisions)[ele.gsfTrack()]; // NEW
 
-       	/*if(!tightElectronID(ele)) // If not tight - old method 
-	  continue;*/
-
 	if(!isPassTight) // If not tight
 	  continue;
-    
+
 	int photonConversionTag=-1;
     
 	numEle[ ID ]++;
@@ -685,16 +690,7 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
 
     // pass electron to photonConversionVeto and see if it comes from photon conversion
 
-    // Old version
-    //   electronSortedMissingInnerLayers[ ID ][ numEle[ ID ] - 1 ] = ele.gsfTrack()->trackerExpectedHitsInner().numberOfHits(); 
-    // Need to replace this with numberOfLostHits() or numberOfLostTrackerHits(HitPattern::TRACK_HITS or HitPattern::MISSING_INNER_HITS)
-
     electronSortedMissingInnerLayers[ ID ][ numEle[ ID ] -1] = ele.gsfTrack()->hitPattern().numberOfLostTrackerHits(reco::HitPattern::MISSING_INNER_HITS);
-
-    // Potential new version:
-    //    electronSortedMissingInnerLayers[ ID ][ numEle[ ID ] -1] = ele.gsfTrack()->numberOfLostHits();
-    
-    //    std::cout << "ele.gsfTrack()->numberOfLostHits(): " << ele.gsfTrack()->numberOfLostHits() << std::endl;
 
     electronSortedHoverE[ ID ][ numEle[ ID ] - 1 ] = ele.hadronicOverEm();
     electronSortedDeltaPhiSC[ ID ][ numEle[ ID ] - 1 ] = ele.deltaPhiSuperClusterTrackAtVtx();
@@ -737,14 +733,8 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
       size_t jele = etSortedIndex[iele];         
       const pat::Electron& ele = electrons[jele];
       
-	bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
-
-
-      //If the electron passes the loose criteria but fails the tight, it is a loose electron and should be vetoed on.
-      /* Old Id Method
-	 if(!looseElectronID(ele))
-	 continue;*/
-            
+      bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
+       
       if(!isPassLoose)
 	continue;
 
