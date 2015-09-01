@@ -2342,7 +2342,7 @@ MakeTopologyNtuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
 
   //  fillJets(iEvent,iSetup, jetLabel_, "Calo");
   //Putting MET info before jets so it can be used for jet smearing.
-  //  fillMissingET(iEvent,iSetup, metPFTag_, "PF"); // TEMP for debugging
+  fillMissingET(iEvent,iSetup, metPFTag_, "PF"); // TEMP for debugging
 
   fillJets(iEvent,iSetup, jetPFTag_, "PF");
 

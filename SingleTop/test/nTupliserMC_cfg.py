@@ -133,12 +133,15 @@ process.filtersSeq = cms.Sequence(
 ####### PF2PAT Setup ##########
 ###############################
 
+#process.options.allowUnscheduled = cms.untracked.bool( True )
+
 # Default PF2PAT with AK4 jets. Make sure to turn ON the L1fausePF2PATstjet stuff.
 from PhysicsTools.PatAlgos.tools.pfTools import *
 
+jetAlgo="AK4"
 postfix = "PF2PAT"
 
-usePF2PAT(process,runPF2PAT=True, jetAlgo="AK4", runOnMC=True, postfix=postfix, pvCollection=cms.InputTag('goodOfflinePrimaryVertices'), typeIMetCorrections=True)
+usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=True, postfix=postfix, pvCollection=cms.InputTag('goodOfflinePrimaryVertices'), typeIMetCorrections=True)
 
 getattr(process,"pfNoPileUp"  +postfix).enable = True
 getattr(process,"pfNoMuon"    +postfix).enable = False
@@ -194,7 +197,6 @@ process.pfPileUpPF2PAT.checkClosestZVertex = False
 ###### Electron ID ############
 ###############################
 
-
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 
 switchOnVIDElectronIdProducer(process, DataFormat.AOD)
@@ -229,8 +231,20 @@ process.selectedPatJetsPF2PAT.cut = cms.string("pt > 5.0")
 #process.flavorHistoryFilter.pathToSelect = cms.int32(-1)
 
 ###############################
-#### MET Corrections Setup #########
+#### MET Corrections Setup ####
 ###############################
+#from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromAOD
+##default configuration for miniAOD reprocessing, change the isData flag to run on data
+#runMetCorAndUncFromMiniAOD(process, isData=False)#MC
+##runMetCorAndUncFromMiniAOD(process, isData=True)#Data
+
+#### the lines below remove the L2L3 residual uncertainties when processing data
+#process.patPFMetT1T2Corr.jetCorrLabelRes = cms.InputTag("L3Absolute")
+#process.patPFMetT1T2SmearCorr.jetCorrLabelRes = cms.InputTag("L3Absolute")
+#process.patPFMetT2Corr.jetCorrLabelRes = cms.InputTag("L3Absolute")
+#process.patPFMetT2SmearCorr.jetCorrLabelRes = cms.InputTag("L3Absolute")
+#process.shiftedPatJetEnDown.jetCorrLabelUpToL3Res = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
+#process.shiftedPatJetEnUp.jetCorrLabelUpToL3Res = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
 
 from PhysicsTools.PatUtils.tools.runType1PFMEtUncertainties import runType1PFMEtUncertainties
 runType1PFMEtUncertainties(process,addToPatDefaultSequence=True,
@@ -239,6 +253,11 @@ runType1PFMEtUncertainties(process,addToPatDefaultSequence=True,
                            muonCollection="selectedPatMuons",
                            tauCollection="selectedPatTaus",
                            )
+
+###############################
+#### Running EVERYTHING #######
+###############################
+
 
 #Letting pat run
 process.patseq = cms.Sequence(
@@ -304,7 +323,7 @@ process.makeTopologyNtuple.electronPFTag = cms.InputTag("selectedPatElectrons")
 process.makeTopologyNtuple.tauPFTag = cms.InputTag("selectedPatTaus")
 process.makeTopologyNtuple.muonPFTag = cms.InputTag("selectedPatMuons")
 process.makeTopologyNtuple.jetPFTag = cms.InputTag("selectedPatJets")
-#process.makeTopologyNtuple.metPFTag = cms.InputTag("patPFMetT1")#  patType1CorrectedPFMet ##  TEMP removal
+process.makeTopologyNtuple.metPFTag = cms.InputTag("patPFMetT1")#  patType1CorrectedPFMet ##  TEMP removal
 process.makeTopologyNtuple.rho = cms.InputTag("fixedGridRhoAll")                                                                          
 
 ##electronIdMva Stuff.
