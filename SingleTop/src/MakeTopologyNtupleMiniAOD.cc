@@ -500,7 +500,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     // 	return;
     // ran_eleloop_=true;
   
-
     // info for 'default conversion finder
     edm::Handle< vector<pat::PackedCandidate> > lostTracks;
     iEvent.getByToken(trackToken_, lostTracks);
