@@ -51,6 +51,9 @@ private:
   edm::EDGetTokenT<edm::ValueMap<float> > mvaValuesMapToken_;
   edm::EDGetTokenT<edm::ValueMap<int> > mvaCategoriesMapToken_;
 
+  edm::EDGetTokenT<std::vector<pat::PackedCandidate> > trackToken_;
+  edm::EDGetTokenT<reco::ConversionCollection> conversionsToken_;
+
   edm::InputTag eleLabel_;
   edm::InputTag muoLabel_;
   edm::InputTag jetLabel_;
@@ -60,17 +63,20 @@ private:
   edm::InputTag phoLabel_;
   edm::InputTag electronPFTag_;	
   edm::InputTag tauPFTag_;	
-  edm::InputTag muonPFTag_;	
+  //  edm::InputTag muonPFTag_;	
+  edm::EDGetTokenT<pat::MuonCollection> patMuonsToken_;
   edm::InputTag jetPFTag_;	
   edm::InputTag jetPFRecoTag_;	
-  edm::InputTag metPFTag_;	
+  //  edm::InputTag metPFTag_;
+  edm::EDGetTokenT<pat::METCollection> patMetToken_;
   edm::InputTag jetJPTTag_;	
   edm::InputTag metJPTTag_;      
   edm::InputTag trigLabel_;
   std::vector<std::string> fakeTrigLabelList_;
   std::vector<std::string> triggerList_;
   edm::InputTag l1TrigLabel_;
-  edm::InputTag genParticles_;
+  //  edm::InputTag genParticles_;
+  edm::EDGetTokenT<reco::GenParticleCollection> genParticlesToken_;
   edm::InputTag pvLabel_;
   edm::InputTag rho_;
 
@@ -181,11 +187,11 @@ private:
   void fillMCJetInfo(int empty, const size_t jetindex, std::string ID, bool fillMC);
   void fillLooseJetInfo(const pat::Jet &jet, const size_t jetindex, float jetPt, std::string ID);
   void fillZVeto(const edm::Event &, const edm::EventSetup&, edm::InputTag, std::string);
-  void fillMuons(const edm::Event&, const edm::EventSetup&, edm::InputTag, std::string);
-  void fillPhotons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<edm::View<pat::Photon>>, std::string);
+  void fillMuons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::MuonCollection>, std::string);
+  void fillPhotons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::PhotonCollection>, std::string);
   void fillTaus(const edm::Event&, const edm::EventSetup&, edm::InputTag, std::string);
   void fillElectrons(const edm::Event&, const edm::EventSetup&, edm::InputTag, std::string);
-  void fillMissingET(const edm::Event&, const edm::EventSetup&,edm::InputTag, std::string);
+  void fillMissingET(const edm::Event&, const edm::EventSetup&,edm::EDGetTokenT<pat::METCollection>, std::string);
   void fillEventInfo(const edm::Event&, const edm::EventSetup&);
   void fillMCInfo(const edm::Event&, const edm::EventSetup&);
   void fillTriggerData(const edm::Event&);

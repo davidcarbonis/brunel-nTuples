@@ -30,6 +30,8 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
+process.load('PhysicsTools.PatAlgos.slimming.unpackedTracksAndVertices_cfi')
+
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger.destinations = ['cerr']
 process.MessageLogger.statistics = []
@@ -210,15 +212,6 @@ process.pfPileUpPF2PAT.checkClosestZVertex = False
 
 
 ###############################
-###### Bare KT 0.6 jets ####### Because why not?
-###############################
-
-#from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
-# For electron (effective area) isolation
-#process.kt6PFJetsForIsolation = kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
-#mprocess.kt6PFJetsForIsolation.Rho_EtaMax = cms.double(2.5)
-
-###############################
 #### Selections Setup #########
 ###############################
 
@@ -233,7 +226,7 @@ process.selectedPatJetsPF2PAT.cut = cms.string("pt > 5.0")
 ###############################
 #### MET Corrections Setup ####
 ###############################
-process.load("PhysicsTools.PatUtils.patPFMETCorrections_cff")
+#process.load("PhysicsTools.PatUtils.patPFMETCorrections_cff")
 #from PhysicsTools.PatUtils.tools.runType1PFMEtUncertainties import runType1PFMEtUncertainties
 #runType1PFMEtUncertainties(process,addToPatDefaultSequence=True,
 #                           jetCollection="selectedPatJets",
@@ -249,13 +242,12 @@ process.load("PhysicsTools.PatUtils.patPFMETCorrections_cff")
 
 #Letting pat run
 process.patseq = cms.Sequence(
-  #  process.kt6PFJetsForIsolation*
     process.goodOfflinePrimaryVertices*
     process.primaryVertexFilter * #removes events with no good pv (but if cuts to determine good pv change...)
     process.filtersSeq *
-    process.patDefaultSequence *
-    process.producePatPFMETCorrections #*
-#    process.egmGsfElectronIDSequence
+    process.patDefaultSequence
+#   * process.producePatPFMETCorrections 
+#   * process.egmGsfElectronIDSequence
 #   * process.flavorHistorySeq
     )
 
@@ -308,11 +300,11 @@ process.makeTopologyNtupleMiniAOD.doCuts = cms.bool(False)
 process.makeTopologyNtupleMiniAOD.runCutFlow=cms.double(0)
 
 #Make the inputs for the n-tupliser right.
-process.makeTopologyNtupleMiniAOD.electronPFTag = cms.InputTag("selectedPatElectrons")
-process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("selectedPatTaus")
-process.makeTopologyNtupleMiniAOD.muonPFTag = cms.InputTag("selectedPatMuons")
-process.makeTopologyNtupleMiniAOD.jetPFTag = cms.InputTag("selectedPatJets")
-process.makeTopologyNtupleMiniAOD.metPFTag = cms.InputTag("pfMetT1")#  patType1CorrectedPFMet ##  TEMP removal
+process.makeTopologyNtupleMiniAOD.electronPFTag = cms.InputTag("slimmedElectrons")
+process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
+process.makeTopologyNtupleMiniAOD.muonPFTag = cms.InputTag("slimmedMuons")
+process.makeTopologyNtupleMiniAOD.jetPFTag = cms.InputTag("slimmedJets")
+process.makeTopologyNtupleMiniAOD.metPFTag = cms.InputTag("slimmedMETs")
 process.makeTopologyNtupleMiniAOD.rho = cms.InputTag("fixedGridRhoAll")                                                                          
 
 ##electronIdMva Stuff.
@@ -365,8 +357,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
-    process.patseq 
-*    process.makeTopologyNtupleMiniAOD
+    process.makeTopologyNtupleMiniAOD
     )
 
 process.schedule = cms.Schedule( process.p )

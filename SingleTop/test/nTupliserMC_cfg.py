@@ -197,16 +197,16 @@ process.pfPileUpPF2PAT.checkClosestZVertex = False
 ###### Electron ID ############
 ###############################
 
-from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
+#from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 
-switchOnVIDElectronIdProducer(process, DataFormat.AOD)
+#switchOnVIDElectronIdProducer(process, DataFormat.miniAOD)
 
-# define which IDs we want to produce
-my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
+## define which IDs we want to produce
+#my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
 
-#add them to the VID producer
-for idmod in my_id_modules:
-    setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+##add them to the VID producer
+#for idmod in my_id_modules:
+#    setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 
 
 ###############################
@@ -254,8 +254,8 @@ process.patseq = cms.Sequence(
     process.primaryVertexFilter * #removes events with no good pv (but if cuts to determine good pv change...)
     process.filtersSeq *
     process.patDefaultSequence *
-    process.producePatPFMETCorrections *
-    process.egmGsfElectronIDSequence
+    process.producePatPFMETCorrections #*
+#    process.egmGsfElectronIDSequence
 #   * process.flavorHistorySeq
     )
 
@@ -316,10 +316,10 @@ process.makeTopologyNtuple.metPFTag = cms.InputTag("patPFMetT1")#  patType1Corre
 process.makeTopologyNtuple.rho = cms.InputTag("fixedGridRhoAll")                                                                          
 
 ##electronIdMva Stuff.
-process.makeTopologyNtuple.eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp90")
-process.makeTopologyNtuple.eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80")
-process.makeTopologyNtuple.mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
-process.makeTopologyNtuple.mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories")
+#process.makeTopologyNtuple.eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp90")
+#process.makeTopologyNtuple.eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80")
+#process.makeTopologyNtuple.mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
+#process.makeTopologyNtuple.mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories")
 
 ## Source
 process.source = cms.Source("PoolSource",
@@ -331,7 +331,8 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 
 process.source.fileNames = [
 	#'root://xrootd.unl.edu//store/mc/Summer12_DR53X/WZJetsTo3LNu_matchingdown_8TeV_TuneZ2Star_madgraph_tauola/AODSIM/PU_S10_START53_V19-v1/00000/06A911BC-3CBB-E311-9AFD-00266CFACC38.root',
-        'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/WZTo3LNu_TuneCUETP8M1_13TeV-powheg-pythia8/AODSIM/Asympt25ns_MCRUN2_74_V9-v1/60000/02E34918-E717-E511-AD0A-001E675A6630.root',
+        #'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/WZTo3LNu_TuneCUETP8M1_13TeV-powheg-pythia8/AODSIM/Asympt25ns_MCRUN2_74_V9-v1/60000/02E34918-E717-E511-AD0A-001E675A6630.root',
+    'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/WZTo3LNu_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/60000/008E7FBF-9218-E511-81E0-001E675A5244.root',
 #        'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/TTJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/AODSIM/Asympt50ns_MCRUN2_74_V9A-v1/00000/006A97CE-D301-E511-8072-0025905A60A6.root',
         ]
 

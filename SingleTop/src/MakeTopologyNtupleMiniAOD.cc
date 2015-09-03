@@ -72,6 +72,11 @@
 #include "DataFormats/EgammaCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/Lepton.h"
 
+// Includes for conversion
+#include "DataFormats/EgammaCandidates/interface/Conversion.h"
+#include "DataFormats/EgammaCandidates/interface/ConversionFwd.h"
+#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
+
 //Including this for top pt reweighting
 #include "AnalysisDataFormats/TopObjects/interface/TtGenEvent.h"
 
@@ -126,6 +131,7 @@
 
 MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iConfig):
     histocontainer_(),
+
     /*
     eleLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"))),
     //    eleMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"))),
@@ -133,6 +139,10 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap"))),
     mvaCategoriesMapToken_(consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaCategoriesMap"))),
     */
+
+    trackToken_(consumes<vector<pat::PackedCandidate> >(iConfig.getParameter<edm::InputTag>("trackToken"))),
+    conversionsToken_(consumes<vector<reco::Conversion> >(iConfig.getParameter<edm::InputTag>("conversionsToken"))),
+
     eleLabel_(iConfig.getParameter<edm::InputTag>("electronTag")),
     muoLabel_(iConfig.getParameter<edm::InputTag>("muonTag")),
     jetLabel_(iConfig.getParameter<edm::InputTag>("jetTag")),
@@ -142,17 +152,20 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     phoLabel_(iConfig.getParameter<edm::InputTag>("photonTag")), 
     electronPFTag_(iConfig.getParameter<edm::InputTag>("electronPFTag")),
     tauPFTag_(iConfig.getParameter<edm::InputTag>("tauPFTag")),
-    muonPFTag_(iConfig.getParameter<edm::InputTag>("muonPFTag")),
+    //    muonPFTag_(iConfig.getParameter<edm::InputTag>("muonPFTag")),
+    patMuonsToken_(mayConsume<pat::MuonCollection>(iConfig.getParameter<edm::InputTag>("muonPFToken"))),
     jetPFTag_(iConfig.getParameter<edm::InputTag>("jetPFTag")),
     jetPFRecoTag_(iConfig.getParameter<edm::InputTag>("jetPFRecoTag")),
-    metPFTag_(iConfig.getParameter<edm::InputTag>("metPFTag")),
+    //    metPFTag_(iConfig.getParameter<edm::InputTag>("metPFTag")),
+    patMetToken_(mayConsume<pat::METCollection>(iConfig.getParameter<edm::InputTag>("metPFToken"))),
     //    jetJPTTag_(iConfig.getParameter<edm::InputTag>("jetJPTTag")),
     //    metJPTTag_(iConfig.getParameter<edm::InputTag>("metJPTTag")),
     trigLabel_(iConfig.getParameter<edm::InputTag>("triggerTag")),
     fakeTrigLabelList_(iConfig.getParameter<std::vector<std::string> >("fakeTriggerList")),
     triggerList_(iConfig.getParameter<std::vector<std::string> >("triggerList")),
     l1TrigLabel_(iConfig.getParameter<edm::InputTag>("l1TriggerTag")),
-    genParticles_(iConfig.getParameter<edm::InputTag>("genParticles")),  
+    //    genParticles_(iConfig.getParameter<edm::InputTag>("genParticles")),  
+    genParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticles"))),
     pvLabel_(iConfig.getParameter<edm::InputTag>("primaryVertexTag")),
     rho_(iConfig.getParameter<edm::InputTag>("rho")),
     isttbar_(iConfig.getParameter<bool>("isttBar")),
@@ -329,12 +342,12 @@ MakeTopologyNtupleMiniAOD::~MakeTopologyNtupleMiniAOD()
 //
 // member functions
 //
-void MakeTopologyNtupleMiniAOD::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::EDGetTokenT<edm::View<pat::Photon>> phoIn_, std::string ID)
+void MakeTopologyNtupleMiniAOD::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::EDGetTokenT<pat::PhotonCollection> phoIn_, std::string ID)
 {
-    edm::Handle<edm::View<pat::Photon> > phoHandle;
+    edm::Handle<pat::PhotonCollection> phoHandle;
     iEvent.getByToken(phoIn_,phoHandle);
-    const edm::View<pat::Photon> & photons = *phoHandle;
-    for(edm::View<pat::Photon>::const_iterator photon_iter = photons.begin(); photon_iter!=photons.end() && nphotons[ ID ]<NPHOTONSMAX; ++photon_iter){
+    const pat::PhotonCollection & photons = *phoHandle;
+    for(pat::PhotonCollection::const_iterator photon_iter = photons.begin(); photon_iter!=photons.end() && nphotons[ ID ]<NPHOTONSMAX; ++photon_iter){
 
 	photon_e[ ID ][nphotons[ ID ]]=photon_iter->energy();
 	photon_phi[ ID ][nphotons[ ID ]]=photon_iter->phi();
@@ -405,11 +418,11 @@ void MakeTopologyNtupleMiniAOD::fillEventInfo(const edm::Event& iEvent, const ed
 	}
     }
 }
-void MakeTopologyNtupleMiniAOD::fillMissingET(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::InputTag metIn_, std::string ID){
+void MakeTopologyNtupleMiniAOD::fillMissingET(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::EDGetTokenT<pat::METCollection> metIn_, std::string ID){
 
   
-    edm::Handle<edm::View<pat::MET> > metHandle;
-    iEvent.getByLabel(metIn_,metHandle);
+    edm::Handle<pat::METCollection> metHandle;
+    iEvent.getByToken(metIn_,metHandle);
 
     metEt[ ID ] = metHandle->front().et();
     metEtRaw[ ID ] = metHandle->front().et();
@@ -489,14 +502,14 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
   
 
     // info for 'default conversion finder
-    edm::Handle<reco::TrackCollection> generalTracks;
-    iEvent.getByLabel("generalTracks", generalTracks);
+    edm::Handle< vector<pat::PackedCandidate> > lostTracks;
+    iEvent.getByToken(trackToken_, lostTracks);
     edm::ESHandle<MagneticField> magneticField;
     iSetup.get<IdealMagneticFieldRecord>().get(magneticField);
     // over-ride the magnetic field supplied from the configfile:
-    double realMagfield=magneticField_;
+    //    double realMagfield=magneticField_;
 //    if(magneticField->inTesla(GlobalPoint(0.,0.,0.)).z()>0) //Accept 0?
-      realMagfield=magneticField->inTesla(GlobalPoint(0.,0.,0.)).z();
+//    realMagfield=magneticField->inTesla(GlobalPoint(0.,0.,0.)).z();
     //  needs beam spot
     fillBeamSpot(iEvent,iSetup);
     // and tracks for photon conversion checks:
@@ -506,6 +519,10 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     edm::Handle<edm::View<pat::Electron> > electronHandle; //changed handle from pat::Electron to reco::GsfElectron
     iEvent.getByLabel(eleIn_,electronHandle);
     const edm::View<pat::Electron> & electrons = *electronHandle;
+
+    // Electron conversions
+    edm::Handle<reco::ConversionCollection> Conversions;
+    iEvent.getByToken(conversionsToken_, Conversions);
 
     //Get the rho isolation co-efficient here
     edm::Handle<double> rhoHand_;
@@ -700,13 +717,11 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     // calculate dcot and dist using the egamma code...
     // use fixed magnetic field for now:
     
-    //      infoconversions = findconversions.getConversionInfo(ele,generalTracks,realMagfield,0.45); //0.45 = minFracOfSharedHits
-    ConversionFinder findconversions; 
-    ConversionInfo infoconversions;
-    infoconversions = findconversions.getConversionInfo(ele,generalTracks,realMagfield);
-    electronSortedPhotonConversionTag[ ID ][numEle[ ID ]-1] = findconversions.isFromConversion(infoconversions, 0.02, 0.02); 
-    electronSortedPhotonConversionDist[ ID ][numEle[ ID ]-1] = infoconversions.dist();
-    electronSortedPhotonConversionDcot[ ID ][numEle[ ID ]-1] = infoconversions.dcot();
+    // ELECTRON CONVERSIONS
+
+    electronSortedPhotonConversionTag[ ID ][numEle[ ID ]-1] = ConversionTools::hasMatchedConversion(ele, Conversions, beamSpotPoint_);
+    electronSortedPhotonConversionDist[ ID ][numEle[ ID ]-1] = 0;//infoconversions.dist();
+    electronSortedPhotonConversionDcot[ ID ][numEle[ ID ]-1] = 0;//infoconversions.dcot();
     electronSortedPhotonConversionVeto[ID][numEle[ID]-1] = ele.passConversionVeto();
 
       // and using our private code
@@ -749,12 +764,12 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::InputTag muIn_, std::string ID){
+void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::EDGetTokenT<pat::MuonCollection> muIn_, std::string ID){
     
   // ran_muonloop_=true;
-  edm::Handle<edm::View<pat::Muon> > muonHandle;
-  iEvent.getByLabel(muIn_,muonHandle);
-  const edm::View<pat::Muon> & muons = *muonHandle;
+  edm::Handle<pat::MuonCollection> muonHandle;
+  iEvent.getByToken(muIn_,muonHandle);
+  const pat::MuonCollection & muons = *muonHandle;
 
   fillBeamSpot(iEvent,iSetup);
   fillGeneralTracks(iEvent, iSetup);
@@ -766,7 +781,7 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
 
   // muons
   muonEts.clear();
-  for(edm::View<pat::Muon>::const_iterator muon_iter = muons.begin(); muon_iter!=muons.end(); ++muon_iter){
+  for(pat::MuonCollection::const_iterator muon_iter = muons.begin(); muon_iter!=muons.end(); ++muon_iter){
     float et =muon_iter->et();// should already be corrected
     muonEts.push_back(et);
   }
@@ -1006,8 +1021,10 @@ void MakeTopologyNtupleMiniAOD::fillOtherJetInfo(const pat::Jet &jet, const size
 
   if( runMCInfo_ )
   {
-      edm::Handle<reco::GenParticleCollection> genParticles;
-      iEvent.getByLabel(genParticles_,genParticles);
+    std::cout << __LINE__ << " : " << __FILE__ << std::endl;
+    edm::Handle<reco::GenParticleCollection> genParticles;
+    iEvent.getByToken(genParticlesToken_, genParticles);
+    std::cout << __LINE__ << " : " << __FILE__ << std::endl;
       for( size_t k = 0; k < genParticles->size(); k++ )
       {
 	  const reco::Candidate & TCand = (*genParticles)[ k ];
@@ -1320,9 +1337,9 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
   processPtHat_=genEventInfo->qScale();
   weight_=genEventInfo->weight();
   processId_=genEventInfo->signalProcessID();
-  
+
   edm::Handle<reco::GenParticleCollection> genParticles;
-  iEvent.getByLabel(genParticles_,genParticles);
+    iEvent.getByToken(genParticlesToken_, genParticles);
   //  std::cout<< " Number of genParticles: "<< genPart.size() << std::endl;
   //  fillJets(iEvent,iSetup);// needed to do additional MC truth matching.
   nGenPar=0;
@@ -1720,12 +1737,12 @@ void MakeTopologyNtupleMiniAOD::fillGeneralTracks(const edm::Event& iEvent, cons
     return;
   ran_tracks_=true;
   
-  edm::Handle<reco::TrackCollection> generalTracks;
-  iEvent.getByLabel("generalTracks", generalTracks);
+  edm::Handle< std::vector<pat::PackedCandidate> > lostTracks;
+  iEvent.getByToken(trackToken_, lostTracks);
 
   numGeneralTracks=0;
 
-  for (reco::TrackCollection::const_iterator trit=generalTracks->begin(); trit!=generalTracks->end() && numGeneralTracks < (int)NTRACKSMAX; trit++){
+  for (vector<pat::PackedCandidate>::const_iterator trit=lostTracks->begin(); trit!=lostTracks->end() && numGeneralTracks < (int)NTRACKSMAX; trit++){
     generalTracksPt[numGeneralTracks]=trit->pt();
     generalTracksEta[numGeneralTracks]=trit->eta();
     generalTracksTheta[numGeneralTracks]=trit->theta();
@@ -2337,14 +2354,14 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
 
 
   //  fillMuons(iEvent,iSetup, muoLabel_, "Calo");
-  fillMuons(iEvent,iSetup, muonPFTag_, "PF");
-  //  fillElectrons(iEvent,iSetup, electronPFTag_, "PF");
+  fillMuons(iEvent,iSetup, patMuonsToken_, "PF");
+  //  fillElectrons(iEvent,iSetup, electronPFTag_, "PF"); // TEMP for debugging.
 
   //  fillJets(iEvent,iSetup, jetLabel_, "Calo");
   //Putting MET info before jets so it can be used for jet smearing.
-  fillMissingET(iEvent,iSetup, metPFTag_, "PF"); // TEMP for debugging
+  fillMissingET(iEvent,iSetup, patMetToken_, "PF"); // TEMP for debugging
 
-  fillJets(iEvent,iSetup, jetPFTag_, "PF");
+  //  fillJets(iEvent,iSetup, jetPFTag_, "PF"); // TEMP for debuggings
 
 
   //  fillJets(iEvent,iSetup, jetPFRecoTag_, "AK5PF");

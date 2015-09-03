@@ -14,12 +14,12 @@ makeTopologyNtuple = cms.EDAnalyzer('MakeTopologyNtuple',
                                     tauPFTag      = cms.InputTag("selectedPatTausPFlow"),
                                     muonPFTag     = cms.InputTag("selectedPatMuonsPFlow"),
                                     jetPFTag      = cms.InputTag("selectedPatJetsPFlow"),
-                                    jetPFRecoTag  = cms.InputTag("selectedPatJetsAK5PF"),
-#                                    photonPFTag   = cms.InputTag("cleanPatPhotons"), #
-                                    metPFTag      = cms.InputTag("patType1CorrectedPFMETPF2PAT"),
+                                    jetPFRecoTag  = cms.InputTag("selectedPatJetsAK4PF"),
+#                                    photonPFTag   = cms.InputTag("cleanPatPhotons"), 
+                                    metPFTag      = cms.InputTag("patPFMetT1"),
                                     # JPT
-                                    jetJPTTag         = cms.InputTag("selectedPatJetsAK5JPT"),
-                                    metJPTTag      = cms.InputTag("patMETsTC"),
+                                    #jetJPTTag         = cms.InputTag("selectedPatJetsAK4JPT"),
+                                    #metJPTTag      = cms.InputTag("patMETsTC"),
                                     primaryVertexTag = cms.InputTag("offlinePrimaryVertices"),
                                     rho              = cms.InputTag("kt6PFJets", "rho"),
                                     triggerTag  = cms.InputTag("TriggerResults","","HLT8E29"),
@@ -107,10 +107,10 @@ makeTopologyNtuple = cms.EDAnalyzer('MakeTopologyNtuple',
                                     
                                     #electron ID (tight, for analysis)
 
-                                    eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp90"),
-                                    eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80"),
-                                    mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"),
-                                    mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories"),
+                                    #eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp90"),
+                                    #eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80"),
+                                    #mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"),
+                                    #mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories"),
 
                                     runSwissCross = cms.bool(True),
                                     runReweightTest = cms.bool(False), #This is just a little test to see what happens when using the default reweight class, i.e. whether it breaks like my one does.

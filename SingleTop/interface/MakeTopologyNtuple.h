@@ -16,6 +16,10 @@ Implementation:
 //
 //
 
+#ifndef __MAKE_TOPOLOGY_NTUPLE_AOD_H__
+#define __MAKE_TOPOLOGY_NTUPLE_AOD_H__
+
+
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 
@@ -799,3 +803,4 @@ namespace LHAPDF {
     void extrapolate(bool extrapolate=true);
 }
 
+#endif

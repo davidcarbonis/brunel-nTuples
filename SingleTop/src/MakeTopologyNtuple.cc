@@ -126,13 +126,13 @@
 
 MakeTopologyNtuple::MakeTopologyNtuple(const edm::ParameterSet& iConfig):
     histocontainer_(),
-
+    /*
     eleLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"))),
     //    eleMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"))),
     eleTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTightIdMap"))),
     mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap"))),
     mvaCategoriesMapToken_(consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaCategoriesMap"))),
-
+    */
     eleLabel_(iConfig.getParameter<edm::InputTag>("electronTag")),
     muoLabel_(iConfig.getParameter<edm::InputTag>("muonTag")),
     jetLabel_(iConfig.getParameter<edm::InputTag>("jetTag")),
@@ -146,8 +146,8 @@ MakeTopologyNtuple::MakeTopologyNtuple(const edm::ParameterSet& iConfig):
     jetPFTag_(iConfig.getParameter<edm::InputTag>("jetPFTag")),
     jetPFRecoTag_(iConfig.getParameter<edm::InputTag>("jetPFRecoTag")),
     metPFTag_(iConfig.getParameter<edm::InputTag>("metPFTag")),
-    jetJPTTag_(iConfig.getParameter<edm::InputTag>("jetJPTTag")),
-    metJPTTag_(iConfig.getParameter<edm::InputTag>("metJPTTag")),
+    //    jetJPTTag_(iConfig.getParameter<edm::InputTag>("jetJPTTag")),
+    //    metJPTTag_(iConfig.getParameter<edm::InputTag>("metJPTTag")),
     trigLabel_(iConfig.getParameter<edm::InputTag>("triggerTag")),
     fakeTrigLabelList_(iConfig.getParameter<std::vector<std::string> >("fakeTriggerList")),
     triggerList_(iConfig.getParameter<std::vector<std::string> >("triggerList")),
@@ -2338,7 +2338,7 @@ MakeTopologyNtuple::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
 
   //  fillMuons(iEvent,iSetup, muoLabel_, "Calo");
   fillMuons(iEvent,iSetup, muonPFTag_, "PF");
-  fillElectrons(iEvent,iSetup, electronPFTag_, "PF");
+  //  fillElectrons(iEvent,iSetup, electronPFTag_, "PF");
 
   //  fillJets(iEvent,iSetup, jetLabel_, "Calo");
   //Putting MET info before jets so it can be used for jet smearing.
