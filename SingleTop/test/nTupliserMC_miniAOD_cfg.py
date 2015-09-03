@@ -108,7 +108,7 @@ process.load('RecoMET.METFilters.trackingPOGFilters_cff')
 process.goodVertices = cms.EDFilter(
       "VertexSelector",
         filter = cms.bool(False),
-        src = cms.InputTag("offlinePrimaryVertices"),
+        src = cms.InputTag("offlineSlimmedPrimaryVertices"),
         cut = cms.string("!isFake && ndof > 4 && abs(z) <= 24 && position.rho < 2")
       )
 
@@ -272,10 +272,8 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 process.p = cms.Path(
     process.goodOfflinePrimaryVertices*
     process.primaryVertexFilter * #removes events with no good pv (but if cuts to determine good pv change...)
-    process.filtersSeq *
-#   * process.producePatPFMETCorrections *
-#   * process.egmGsfElectronIDSequence *
-
+#    process.filtersSeq *
+#    process.producePatPFMETCorrections *
 #    process.egmGsfElectronIDSequence *
     process.makeTopologyNtupleMiniAOD
     )
