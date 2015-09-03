@@ -57,7 +57,8 @@ private:
   edm::InputTag eleLabel_;
   edm::InputTag muoLabel_;
   edm::InputTag jetLabel_;
-  edm::InputTag genJetTag_;
+  //  edm::InputTag genJetTag_; // Need to replace
+  edm::EDGetTokenT<reco::GenJetCollection> genJetsToken_;
   edm::InputTag tauLabel_; 
   edm::InputTag metLabel_;
 
@@ -65,7 +66,8 @@ private:
   edm::EDGetTokenT<pat::ElectronCollection> patElectronsToken_;
   edm::InputTag tauPFTag_;	
   edm::EDGetTokenT<pat::MuonCollection> patMuonsToken_;
-  edm::InputTag jetPFTag_;	
+  //  edm::InputTag jetPFTag_;	// Need to replace
+  edm::EDGetTokenT<pat::JetCollection> patJetsToken_;
   edm::InputTag jetPFRecoTag_;	
   edm::EDGetTokenT<pat::METCollection> patMetToken_;
   edm::InputTag jetJPTTag_;	
@@ -175,7 +177,7 @@ private:
 
   // and an ntuple (filling in the methods)
   void fillBeamSpot(const edm::Event&, const edm::EventSetup&);
-  void fillJets(const edm::Event&, const edm::EventSetup&, edm::InputTag, std::string);
+  void fillJets(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::JetCollection>, std::string);
   void fillBTagInfo(const pat::Jet &jet, const size_t jetindex, std::string ID);
   void fillBTagInfoNew(const pat::Jet &jet, const size_t jetindex, std::string ID);
   void fillBIDParameters(const edm::EventSetup&, std::string);

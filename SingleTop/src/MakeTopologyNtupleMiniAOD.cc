@@ -145,8 +145,9 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
 
     eleLabel_(iConfig.getParameter<edm::InputTag>("electronTag")),
     muoLabel_(iConfig.getParameter<edm::InputTag>("muonTag")),
-    jetLabel_(iConfig.getParameter<edm::InputTag>("jetTag")),
-    genJetTag_(iConfig.getParameter<edm::InputTag>("genJetTag")),
+    jetLabel_(iConfig.getParameter<edm::InputTag>("jetLabel")),
+    //    genJetTag_(iConfig.getParameter<edm::InputTag>("genJetTag")), // Need to replace
+    genJetsToken_(consumes<reco::GenJetCollection>(iConfig.getParameter<edm::InputTag>("genJetToken"))),
     tauLabel_(iConfig.getParameter<edm::InputTag>("tauTag")),
     metLabel_(iConfig.getParameter<edm::InputTag>("metTag")),
 
@@ -154,7 +155,8 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     patElectronsToken_(mayConsume<pat::ElectronCollection>(iConfig.getParameter<edm::InputTag>("electronPFToken"))),
     tauPFTag_(iConfig.getParameter<edm::InputTag>("tauPFTag")),
     patMuonsToken_(mayConsume<pat::MuonCollection>(iConfig.getParameter<edm::InputTag>("muonPFToken"))),
-    jetPFTag_(iConfig.getParameter<edm::InputTag>("jetPFTag")),
+    //   jetPFTag_(iConfig.getParameter<edm::InputTag>("jetPFTag")), // Need to replace
+    patJetsToken_(consumes<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("jetPFToken"))),
     jetPFRecoTag_(iConfig.getParameter<edm::InputTag>("jetPFRecoTag")),
     patMetToken_(mayConsume<pat::METCollection>(iConfig.getParameter<edm::InputTag>("metPFToken"))),
     //    jetJPTTag_(iConfig.getParameter<edm::InputTag>("jetJPTTag")),
@@ -1019,22 +1021,20 @@ void MakeTopologyNtupleMiniAOD::fillOtherJetInfo(const pat::Jet &jet, const size
 
   if( runMCInfo_ )
   {
-    std::cout << __LINE__ << " : " << __FILE__ << std::endl;
     edm::Handle<reco::GenParticleCollection> genParticles;
     iEvent.getByToken(genParticlesToken_, genParticles);
-    std::cout << __LINE__ << " : " << __FILE__ << std::endl;
-      for( size_t k = 0; k < genParticles->size(); k++ )
+    for( size_t k = 0; k < genParticles->size(); k++ )
       {
-	  const reco::Candidate & TCand = (*genParticles)[ k ];
-	  if(abs(TCand.pdgId())==5 || abs(TCand.pdgId())==4)
+	const reco::Candidate & TCand = (*genParticles)[ k ];
+	if(abs(TCand.pdgId())==5 || abs(TCand.pdgId())==4)
 	  {
-	      float deltaR=reco::deltaR(jetSortedEta[ ID ][jetindex],jetSortedPhi[ ID ][jetindex],TCand.eta(),TCand.phi());	
-	      if(abs(TCand.pdgId())==5 && (deltaR<genJetSortedClosestB[ ID ][jetindex] || genJetSortedClosestB[ ID ][jetindex]<0)){
-		  genJetSortedClosestB[ ID ][jetindex]=deltaR;
-	      }
-	      else if(abs(TCand.pdgId())==4 && (deltaR<genJetSortedClosestC[ ID ][jetindex] || genJetSortedClosestC[ ID ][jetindex]<0)){
-		  genJetSortedClosestC[ ID ][jetindex]=deltaR;
-	      }
+	    float deltaR=reco::deltaR(jetSortedEta[ ID ][jetindex],jetSortedPhi[ ID ][jetindex],TCand.eta(),TCand.phi());	
+	    if(abs(TCand.pdgId())==5 && (deltaR<genJetSortedClosestB[ ID ][jetindex] || genJetSortedClosestB[ ID ][jetindex]<0)){
+	      genJetSortedClosestB[ ID ][jetindex]=deltaR;
+	    }
+	    else if(abs(TCand.pdgId())==4 && (deltaR<genJetSortedClosestC[ ID ][jetindex] || genJetSortedClosestC[ ID ][jetindex]<0)){
+	      genJetSortedClosestC[ ID ][jetindex]=deltaR;
+	    }
 	  }
       }
   }
@@ -1045,10 +1045,11 @@ void MakeTopologyNtupleMiniAOD::fillOtherJetInfo(const pat::Jet &jet, const size
 void MakeTopologyNtupleMiniAOD::fillMCJetInfo(const reco::GenJet &jet, const size_t jetindex, std::string ID, bool runMC){
   
   if (runMC){
+    std::cout << __LINE__ << " :" << __FILE__ << std::endl;
     if (jet.getGenConstituents().size() > 0 )
-      genJetSortedPID[ ID ][jetindex]=jet.getGenConstituent(0)->pdgId();
+      std::cout << __LINE__ << " :" << __FILE__ << std::endl;
+    genJetSortedPID[ ID ][jetindex]=jet.getGenConstituent(0)->pdgId();
     genJetSortedEt[ ID ][jetindex]=jet.et();
-
     genJetSortedPt[ ID ][jetindex]=jet.pt();
     genJetSortedEta[ ID ][jetindex]=jet.eta();
     genJetSortedTheta[ ID ][jetindex]=jet.theta();
@@ -1068,10 +1069,7 @@ void MakeTopologyNtupleMiniAOD::fillMCJetInfo(const reco::GenJet &jet, const siz
     genJetSortedPID[ ID ][jetindex]=0;
     genJetSortedClosestB[ ID ][jetindex]=-1;
     genJetSortedClosestC[ ID ][jetindex]=-1;
-
   }
-  
-
   
 
 }
@@ -1561,19 +1559,19 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::InputTag jetIn_, std::string ID){
+void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::EDGetTokenT<pat::JetCollection> jetIn_, std::string ID){
 
   // if(ran_jetloop_)
   //   return;
   // ran_jetloop_=true;
 
-  edm::Handle<edm::View<pat::Jet> > jetHandle;
-  iEvent.getByLabel(jetIn_,jetHandle);
-  const edm::View<pat::Jet> & jets = *jetHandle;
+  edm::Handle<pat::JetCollection> jetHandle;
+  iEvent.getByToken(jetIn_,jetHandle);
+  const pat::JetCollection & jets = *jetHandle;
 
-  edm::Handle<edm::View<reco::GenJet> > genJetHandle;
+  edm::Handle<reco::GenJetCollection> genJetHandle;
   if (runMCInfo_){
-    iEvent.getByLabel(genJetTag_,genJetHandle);
+    iEvent.getByToken(genJetsToken_,genJetHandle);
   }
 
   // check that the electrons are filled, if not do so:
@@ -1584,7 +1582,7 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
   //   !!!
   correctedJetEts.clear();
 
-  for(edm::View<pat::Jet>::const_iterator jet_iter = jets.begin(); jet_iter!=jets.end(); ++jet_iter)
+  for(pat::JetCollection::const_iterator jet_iter = jets.begin(); jet_iter!=jets.end(); ++jet_iter)
   {
       if( useResidualJEC_ )//Correct the Et with residuals first
       {
@@ -1631,16 +1629,15 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
     else if( ID == "AK5PF" ){ eleCol ="Calo"; } //Pass for reco PF jets
     else if( jet.isPFJet() ){ eleCol = "PF"; }
     else{ eleCol = "Calo"; } //For backup.
-    
     fillOtherJetInfo(jet,numJet[ ID ], ID, iEvent);
     //Do jet smearing here.
     if (runMCInfo_){
       float delR = 9999.;
       reco::GenJet assocJet;
-      const edm::View<reco::GenJet> & genJets = *genJetHandle;
+      const reco::GenJetCollection & genJets = *genJetHandle;
       int genJetIndex = 0;
       int tempIndex = 0;
-      for (edm::View<reco::GenJet>::const_iterator genJet = genJets.begin(); genJet != genJets.end(); genJet++){
+      for (reco::GenJetCollection::const_iterator genJet = genJets.begin(); genJet != genJets.end(); genJet++){
 	double dphi = jet.phi() - genJet->phi();
 	if (dphi>TMath::Pi()) dphi=2*TMath::Pi()-dphi;
 	if (dphi<-TMath::Pi()) dphi=-2*TMath::Pi()-dphi;
@@ -1655,10 +1652,13 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
 	}
 	genJetIndex++;
       }
+    std::cout << __LINE__ << " : " << __FILE__ << std::endl;
       if (delR < 999.){
 	genJetUsed[tempIndex] = true;
 	//Make a fill MC info section here that will fill with the associated jet.
+	std::cout << __LINE__ << " : " << __FILE__ << std::endl;
 	fillMCJetInfo(assocJet,numJet[ID],ID,true);
+	std::cout << __LINE__ << " : " << __FILE__ << std::endl;
 	if (doJERSmear_ && assocJet.pt() > 15.0 ){
 	  double corrFactorJEC = 0.0;
 	  if (fabs(jet.eta()) <= 1.1) corrFactorJEC = 0.066;
@@ -1686,8 +1686,6 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
     }else{
       fillMCJetInfo(0,numJet[ID],ID,false);
     }
-
-
     
     if(jetIDLoose(jet,jetSortedPt[ID][numJet[ID]])){
       numLooseBJets[ID]++;
@@ -1727,6 +1725,7 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
     
   }
   */
+    std::cout << __LINE__ << " : " << __FILE__ << std::endl;
 }
 
 void MakeTopologyNtupleMiniAOD::fillGeneralTracks(const edm::Event& iEvent, const edm::EventSetup& iSetup){
@@ -2353,15 +2352,15 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
 
   //  fillMuons(iEvent,iSetup, muoLabel_, "Calo");
   fillMuons(iEvent,iSetup, patMuonsToken_, "PF");
-  //  fillElectrons(iEvent,iSetup, patElectronToken_, "PF"); // TEMP for debugging.
+  //  fillElectrons(iEvent,iSetup, patElectronsToken_, "PF"); // TEMP for debugging.
 
   //  fillJets(iEvent,iSetup, jetLabel_, "Calo");
   //Putting MET info before jets so it can be used for jet smearing.
   fillMissingET(iEvent,iSetup, patMetToken_, "PF"); // TEMP for debugging
 
-  //  fillJets(iEvent,iSetup, jetPFTag_, "PF"); // TEMP for debuggings
+  fillJets(iEvent,iSetup, patJetsToken_, "PF"); // TEMP for debuggings
 
-
+  std::cout << __LINE__ << " : " << __FILE__ << std::endl;
   //  fillJets(iEvent,iSetup, jetPFRecoTag_, "AK5PF");
   // fillJets(iEvent,iSetup, jetJPTTag_, "JPT");
 

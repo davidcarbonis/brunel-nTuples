@@ -201,7 +201,7 @@ process.pfPileUpPF2PAT.checkClosestZVertex = False
 
 #from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 
-#switchOnVIDElectronIdProducer(process, DataFormat.miniAOD)
+#switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
 
 ## define which IDs we want to produce
 #my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
@@ -303,7 +303,7 @@ process.makeTopologyNtupleMiniAOD.runCutFlow=cms.double(0)
 process.makeTopologyNtupleMiniAOD.electronPFTag = cms.InputTag("slimmedElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFTag = cms.InputTag("slimmedMuons")
-process.makeTopologyNtupleMiniAOD.jetPFTag = cms.InputTag("slimmedJets")
+process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("slimmedJets")
 process.makeTopologyNtupleMiniAOD.metPFTag = cms.InputTag("slimmedMETs")
 process.makeTopologyNtupleMiniAOD.rho = cms.InputTag("fixedGridRhoAll")                                                                          
 
@@ -357,6 +357,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
+#    process.egmGsfElectronIDSequence *
     process.makeTopologyNtupleMiniAOD
     )
 
