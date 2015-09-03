@@ -60,23 +60,21 @@ private:
   edm::InputTag genJetTag_;
   edm::InputTag tauLabel_; 
   edm::InputTag metLabel_;
-  //  edm::InputTag phoLabel_;
+
   edm::EDGetTokenT<pat::PhotonCollection> patPhotonsToken_;
-  edm::InputTag electronPFTag_;	
+  edm::EDGetTokenT<pat::ElectronCollection> patElectronsToken_;
   edm::InputTag tauPFTag_;	
-  //  edm::InputTag muonPFTag_;	
   edm::EDGetTokenT<pat::MuonCollection> patMuonsToken_;
   edm::InputTag jetPFTag_;	
   edm::InputTag jetPFRecoTag_;	
-  //  edm::InputTag metPFTag_;
   edm::EDGetTokenT<pat::METCollection> patMetToken_;
   edm::InputTag jetJPTTag_;	
-  edm::InputTag metJPTTag_;      
+  edm::InputTag metJPTTag_;     
+ 
   edm::InputTag trigLabel_;
   std::vector<std::string> fakeTrigLabelList_;
   std::vector<std::string> triggerList_;
   edm::InputTag l1TrigLabel_;
-  //  edm::InputTag genParticles_;
   edm::EDGetTokenT<reco::GenParticleCollection> genParticlesToken_;
   edm::InputTag pvLabel_;
   edm::InputTag rho_;
@@ -191,7 +189,7 @@ private:
   void fillMuons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::MuonCollection>, std::string);
   void fillPhotons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::PhotonCollection>, std::string);
   void fillTaus(const edm::Event&, const edm::EventSetup&, edm::InputTag, std::string);
-  void fillElectrons(const edm::Event&, const edm::EventSetup&, edm::InputTag, std::string);
+  void fillElectrons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::ElectronCollection>, std::string);
   void fillMissingET(const edm::Event&, const edm::EventSetup&,edm::EDGetTokenT<pat::METCollection>, std::string);
   void fillEventInfo(const edm::Event&, const edm::EventSetup&);
   void fillMCInfo(const edm::Event&, const edm::EventSetup&);

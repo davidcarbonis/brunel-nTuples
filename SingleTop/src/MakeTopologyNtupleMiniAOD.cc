@@ -149,15 +149,13 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     genJetTag_(iConfig.getParameter<edm::InputTag>("genJetTag")),
     tauLabel_(iConfig.getParameter<edm::InputTag>("tauTag")),
     metLabel_(iConfig.getParameter<edm::InputTag>("metTag")),
-    //    phoLabel_(iConfig.getParameter<edm::InputTag>("photonTag")), 
+
     patPhotonsToken_(mayConsume<pat::PhotonCollection>(iConfig.getParameter<edm::InputTag>("photonToken"))),
-    electronPFTag_(iConfig.getParameter<edm::InputTag>("electronPFTag")),
+    patElectronsToken_(mayConsume<pat::ElectronCollection>(iConfig.getParameter<edm::InputTag>("electronPFToken"))),
     tauPFTag_(iConfig.getParameter<edm::InputTag>("tauPFTag")),
-    //    muonPFTag_(iConfig.getParameter<edm::InputTag>("muonPFTag")),
     patMuonsToken_(mayConsume<pat::MuonCollection>(iConfig.getParameter<edm::InputTag>("muonPFToken"))),
     jetPFTag_(iConfig.getParameter<edm::InputTag>("jetPFTag")),
     jetPFRecoTag_(iConfig.getParameter<edm::InputTag>("jetPFRecoTag")),
-    //    metPFTag_(iConfig.getParameter<edm::InputTag>("metPFTag")),
     patMetToken_(mayConsume<pat::METCollection>(iConfig.getParameter<edm::InputTag>("metPFToken"))),
     //    jetJPTTag_(iConfig.getParameter<edm::InputTag>("jetJPTTag")),
     //    metJPTTag_(iConfig.getParameter<edm::InputTag>("metJPTTag")),
@@ -165,8 +163,8 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     fakeTrigLabelList_(iConfig.getParameter<std::vector<std::string> >("fakeTriggerList")),
     triggerList_(iConfig.getParameter<std::vector<std::string> >("triggerList")),
     l1TrigLabel_(iConfig.getParameter<edm::InputTag>("l1TriggerTag")),
-    //    genParticles_(iConfig.getParameter<edm::InputTag>("genParticles")),  
     genParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticles"))),
+
     pvLabel_(iConfig.getParameter<edm::InputTag>("primaryVertexTag")),
     rho_(iConfig.getParameter<edm::InputTag>("rho")),
     isttbar_(iConfig.getParameter<bool>("isttBar")),
@@ -495,7 +493,7 @@ void MakeTopologyNtupleMiniAOD::fillBeamSpot(const edm::Event& iEvent, const edm
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::InputTag eleIn_, std::string ID){
+void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::EDGetTokenT<pat::ElectronCollection> eleIn_, std::string ID){
     
     // if(ran_eleloop_)
     // 	return;
@@ -516,9 +514,9 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     fillGeneralTracks(iEvent, iSetup);
   
     // note that the fillJets() method needs electrons, due to the fact that we do our own 'cross' cleaning
-    edm::Handle<edm::View<pat::Electron> > electronHandle; //changed handle from pat::Electron to reco::GsfElectron
-    iEvent.getByLabel(eleIn_,electronHandle);
-    const edm::View<pat::Electron> & electrons = *electronHandle;
+    edm::Handle<pat::ElectronCollection> electronHandle; //changed handle from pat::Electron to reco::GsfElectron
+    iEvent.getByToken(eleIn_,electronHandle);
+    const pat::ElectronCollection & electrons = *electronHandle;
 
     // Electron conversions
     edm::Handle<reco::ConversionCollection> Conversions;
@@ -553,7 +551,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     //   !!!
 
     electronEts.clear();
-    for(edm::View<pat::Electron>::const_iterator electron_iter = electrons.begin(); electron_iter!=electrons.end(); ++electron_iter){
+    for(pat::ElectronCollection::const_iterator electron_iter = electrons.begin(); electron_iter!=electrons.end(); ++electron_iter){
 	float et =electron_iter->et();
 	electronEts.push_back(et);
     }
@@ -2355,7 +2353,7 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
 
   //  fillMuons(iEvent,iSetup, muoLabel_, "Calo");
   fillMuons(iEvent,iSetup, patMuonsToken_, "PF");
-  //  fillElectrons(iEvent,iSetup, electronPFTag_, "PF"); // TEMP for debugging.
+  //  fillElectrons(iEvent,iSetup, patElectronToken_, "PF"); // TEMP for debugging.
 
   //  fillJets(iEvent,iSetup, jetLabel_, "Calo");
   //Putting MET info before jets so it can be used for jet smearing.

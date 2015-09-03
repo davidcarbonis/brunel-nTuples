@@ -12,7 +12,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            photonToken = cms.InputTag("slimmedPhotons"),
                                            metTag      = cms.InputTag("patMETs"),
                                            # PF
-                                           electronPFTag = cms.InputTag("slimmedElectrons"),
+                                           electronPFToken = cms.InputTag("slimmedElectrons"),
                                            tauPFTag      = cms.InputTag("slimmedTaus"),
                                            muonPFToken     = cms.InputTag("slimmedMuons"),
                                            jetPFTag      = cms.InputTag("slimmedJets"),
