@@ -77,7 +77,7 @@ process.goodOfflinePrimaryVertices = cms.EDFilter(
                              maxZ = cms.double( 24. ) ,
                              maxRho = cms.double( 2. ) ) ,
     filter = cms.bool( True) ,
-    src = cms.InputTag( 'offlinePrimaryVertices' ) )
+    src = cms.InputTag( 'offlineSlimmedPrimaryVertices' ) )
 
 ## The iso-based HBHE noise filter ___________________________________________||
 process.load('CommonTools.RecoAlgos.HBHENoiseFilterResultProducer_cfi')
@@ -131,67 +131,6 @@ process.filtersSeq = cms.Sequence(
 
 
 
-###############################
-####### PF2PAT Setup ##########
-###############################
-
-#process.options.allowUnscheduled = cms.untracked.bool( True )
-
-# Default PF2PAT with AK4 jets. Make sure to turn ON the L1fausePF2PATstjet stuff.
-from PhysicsTools.PatAlgos.tools.pfTools import *
-
-jetAlgo="AK4"
-postfix = "PF2PAT"
-
-usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=True, postfix=postfix, pvCollection=cms.InputTag('goodOfflinePrimaryVertices'), typeIMetCorrections=True)
-
-getattr(process,"pfNoPileUp"  +postfix).enable = True
-getattr(process,"pfNoMuon"    +postfix).enable = False
-getattr(process,"pfNoElectron"+postfix).enable = False
-getattr(process,"pfNoTau"     +postfix).enable = False
-getattr(process,"pfNoJet"     +postfix).enable = False
-
-#process.patJetsPF2PAT.discriminatorSources = cms.VInputTag(
-#            cms.InputTag("combinedSecondaryVertexBJetTagsAODPF2PAT"),
-#            cms.InputTag("combinedSecondaryVertexMVABJetTagsAODPF2PAT"),
-#            )
-
-
-#Gsf Electrons
-#useGsfElectrons(process, postfix, "03")
-
-#process.pfIsolatedMuonsPF2PAT.doDeltaBetaCorrection = True
-process.pfIsolatedMuonsPF2PAT.isolationCut = cms.double(9999.)
-process.pfIsolatedMuonsPF2PAT.combinedIsolationCut = cms.double(9999.)
-#process.pfSelectedMuonsPF2PAT.cut = cms.string('pt > 10. && abs(eta) < 2.5')
-process.pfIsolatedMuonsPF2PAT.isolationValueMapsCharged = cms.VInputTag(cms.InputTag("muPFIsoValueCharged04PF2PAT"))
-process.pfIsolatedMuonsPF2PAT.deltaBetaIsolationValueMap = cms.InputTag("muPFIsoValuePU04PF2PAT")
-process.pfIsolatedMuonsPF2PAT.isolationValueMapsNeutral = cms.VInputTag(cms.InputTag("muPFIsoValueNeutral04PF2PAT"), cms.InputTag("muPFIsoValueGamma04PF2PAT"))
-
-process.pfIsolatedElectronsPF2PAT.isolationCut = cms.double(9999.)
-process.pfIsolatedElectronsPF2PAT.combinedIsolationCut = cms.double(9999.)
-#process.pfIsolatedElectronsPF2PAT.doDeltaBetaCorrection = True
-#process.pfSelectedElectronsPF2PAT.cut = cms.string('pt > 15. && abs(eta) < 2.5')
-process.pfIsolatedElectronsPF2PAT.isolationValueMapsCharged = cms.VInputTag(cms.InputTag("elPFIsoValueCharged03PFIdPF2PAT"))
-process.pfIsolatedElectronsPF2PAT.deltaBetaIsolationValueMap = cms.InputTag("elPFIsoValuePU03PFIdPF2PAT")
-process.pfIsolatedElectronsPF2PAT.isolationValueMapsNeutral = cms.VInputTag(cms.InputTag("elPFIsoValueNeutral03PFIdPF2PAT"), cms.InputTag("elPFIsoValueGamma03PFIdPF2PAT"))
-
-
-#I don't think I need these right now, but it can't hurt to include them. Unless it breaks my code. Which is entirely possible. It did! I knew it!
-process.patElectronsPF2PAT.isolationValues = cms.PSet(
-    pfChargedHadrons = cms.InputTag("elPFIsoValueCharged03PFIdPF2PAT"),
-    pfChargedAll = cms.InputTag("elPFIsoValueChargedAll03PFIdPF2PAT"),
-    pfPUChargedHadrons = cms.InputTag("elPFIsoValuePU03PFIdPF2PAT"),
-    pfNeutralHadrons = cms.InputTag("elPFIsoValueNeutral03PFIdPF2PAT"),
-    pfPhotons = cms.InputTag("elPFIsoValueGamma03PFIdPF2PAT")
-    )
-
-#Now do a bit of JEC
-process.patJetCorrFactorsPF2PAT.payload = 'AK4PFchs'
-#process.patJetCorrFactorsPF2PAT.levels = cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute'])
-process.patJetCorrFactorsPF2PAT.levels = cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual'])
-
-process.pfPileUpPF2PAT.checkClosestZVertex = False
 
 
 
@@ -211,17 +150,6 @@ process.pfPileUpPF2PAT.checkClosestZVertex = False
 #    setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 
 
-###############################
-#### Selections Setup #########
-###############################
-
-# AK4 Jets
-#   PF
-process.selectedPatJetsPF2PAT.cut = cms.string("pt > 5.0")
-
-# Flavor history stuff - don't really know what this is, but it was in the other one too so I guess I need to include it.
-#process.load("PhysicsTools.HepMCCandAlgos.flavorHistoryPaths_cfi")
-#process.flavorHistoryFilter.pathToSelect = cms.int32(-1)
 
 ###############################
 #### MET Corrections Setup ####
@@ -235,21 +163,6 @@ process.selectedPatJetsPF2PAT.cut = cms.string("pt > 5.0")
 #                           tauCollection="selectedPatTaus",
 #                           )
 
-###############################
-#### Running EVERYTHING #######
-###############################
-
-
-#Letting pat run
-process.patseq = cms.Sequence(
-    process.goodOfflinePrimaryVertices*
-    process.primaryVertexFilter * #removes events with no good pv (but if cuts to determine good pv change...)
-    process.filtersSeq *
-    process.patDefaultSequence
-#   * process.producePatPFMETCorrections 
-#   * process.egmGsfElectronIDSequence
-#   * process.flavorHistorySeq
-    )
 
 ####
 # The N-tupliser/cutFlow
@@ -357,6 +270,12 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
+    process.goodOfflinePrimaryVertices*
+    process.primaryVertexFilter * #removes events with no good pv (but if cuts to determine good pv change...)
+    process.filtersSeq *
+#   * process.producePatPFMETCorrections *
+#   * process.egmGsfElectronIDSequence *
+
 #    process.egmGsfElectronIDSequence *
     process.makeTopologyNtupleMiniAOD
     )
