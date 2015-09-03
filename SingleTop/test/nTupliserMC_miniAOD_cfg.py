@@ -61,7 +61,7 @@ process.load('RecoJets.Configuration.RecoPFJets_cff')
 process.ak4PFJets.doRhoFastjet = True
 
 process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
-                                           vertexCollection = cms.InputTag('offlinePrimaryVertices'),
+                                           vertexCollection = cms.InputTag('offlineSlimmedPrimaryVertices'),
                                            minimumNDOF = cms.uint32(4) ,
                                            maxAbsZ = cms.double(24),
                                            maxd0 = cms.double(2)
