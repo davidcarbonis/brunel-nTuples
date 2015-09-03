@@ -1045,10 +1045,10 @@ void MakeTopologyNtupleMiniAOD::fillOtherJetInfo(const pat::Jet &jet, const size
 void MakeTopologyNtupleMiniAOD::fillMCJetInfo(const reco::GenJet &jet, const size_t jetindex, std::string ID, bool runMC){
   
   if (runMC){
-    std::cout << __LINE__ << " :" << __FILE__ << std::endl;
-    if (jet.getGenConstituents().size() > 0 )
-      std::cout << __LINE__ << " :" << __FILE__ << std::endl;
-    genJetSortedPID[ ID ][jetindex]=jet.getGenConstituent(0)->pdgId();
+    //    Not releveant for MiniAOD
+    //    if (jet.getGenConstituents().size() > 0 )
+    //    genJetSortedPID[ ID ][jetindex]=jet.getGenConstituent(0)->pdgId();
+    genJetSortedPID[ ID ][jetindex]=jet.pdgId();
     genJetSortedEt[ ID ][jetindex]=jet.et();
     genJetSortedPt[ ID ][jetindex]=jet.pt();
     genJetSortedEta[ ID ][jetindex]=jet.eta();
@@ -1652,13 +1652,10 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
 	}
 	genJetIndex++;
       }
-    std::cout << __LINE__ << " : " << __FILE__ << std::endl;
       if (delR < 999.){
 	genJetUsed[tempIndex] = true;
 	//Make a fill MC info section here that will fill with the associated jet.
-	std::cout << __LINE__ << " : " << __FILE__ << std::endl;
 	fillMCJetInfo(assocJet,numJet[ID],ID,true);
-	std::cout << __LINE__ << " : " << __FILE__ << std::endl;
 	if (doJERSmear_ && assocJet.pt() > 15.0 ){
 	  double corrFactorJEC = 0.0;
 	  if (fabs(jet.eta()) <= 1.1) corrFactorJEC = 0.066;
@@ -1725,7 +1722,6 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
     
   }
   */
-    std::cout << __LINE__ << " : " << __FILE__ << std::endl;
 }
 
 void MakeTopologyNtupleMiniAOD::fillGeneralTracks(const edm::Event& iEvent, const edm::EventSetup& iSetup){
@@ -2360,7 +2356,6 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
 
   fillJets(iEvent,iSetup, patJetsToken_, "PF"); // TEMP for debuggings
 
-  std::cout << __LINE__ << " : " << __FILE__ << std::endl;
   //  fillJets(iEvent,iSetup, jetPFRecoTag_, "AK5PF");
   // fillJets(iEvent,iSetup, jetJPTTag_, "JPT");
 
