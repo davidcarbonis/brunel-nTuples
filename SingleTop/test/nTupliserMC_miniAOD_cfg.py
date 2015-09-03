@@ -138,16 +138,16 @@ process.filtersSeq = cms.Sequence(
 ###### Electron ID ############
 ###############################
 
-#from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
+from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 
-#switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
+switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
 
-## define which IDs we want to produce
-#my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
+# define which IDs we want to produce
+my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
 
-##add them to the VID producer
-#for idmod in my_id_modules:
-#    setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+#add them to the VID producer
+for idmod in my_id_modules:
+    setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 
 
 
@@ -274,7 +274,7 @@ process.p = cms.Path(
     process.primaryVertexFilter * #removes events with no good pv (but if cuts to determine good pv change...)
 #    process.filtersSeq *
 #    process.producePatPFMETCorrections *
-#    process.egmGsfElectronIDSequence *
+    process.egmGsfElectronIDSequence *
     process.makeTopologyNtupleMiniAOD
     )
 

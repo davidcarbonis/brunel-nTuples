@@ -132,13 +132,12 @@
 MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iConfig):
     histocontainer_(),
 
-    /*
+    
     eleLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"))),
     //    eleMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"))),
     eleTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTightIdMap"))),
     mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap"))),
     mvaCategoriesMapToken_(consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaCategoriesMap"))),
-    */
 
     trackToken_(consumes<vector<pat::PackedCandidate> >(iConfig.getParameter<edm::InputTag>("trackToken"))),
     conversionsToken_(consumes<vector<reco::Conversion> >(iConfig.getParameter<edm::InputTag>("conversionsToken"))),
@@ -146,7 +145,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     eleLabel_(iConfig.getParameter<edm::InputTag>("electronTag")),
     muoLabel_(iConfig.getParameter<edm::InputTag>("muonTag")),
     jetLabel_(iConfig.getParameter<edm::InputTag>("jetLabel")),
-    //    genJetTag_(iConfig.getParameter<edm::InputTag>("genJetTag")), // Need to replace
     genJetsToken_(consumes<reco::GenJetCollection>(iConfig.getParameter<edm::InputTag>("genJetToken"))),
     tauLabel_(iConfig.getParameter<edm::InputTag>("tauTag")),
     metLabel_(iConfig.getParameter<edm::InputTag>("metTag")),
@@ -155,7 +153,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     patElectronsToken_(mayConsume<pat::ElectronCollection>(iConfig.getParameter<edm::InputTag>("electronPFToken"))),
     tauPFTag_(iConfig.getParameter<edm::InputTag>("tauPFTag")),
     patMuonsToken_(mayConsume<pat::MuonCollection>(iConfig.getParameter<edm::InputTag>("muonPFToken"))),
-    //   jetPFTag_(iConfig.getParameter<edm::InputTag>("jetPFTag")), // Need to replace
     patJetsToken_(consumes<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("jetPFToken"))),
     jetPFRecoTag_(iConfig.getParameter<edm::InputTag>("jetPFRecoTag")),
     patMetToken_(mayConsume<pat::METCollection>(iConfig.getParameter<edm::InputTag>("metPFToken"))),
@@ -2348,13 +2345,13 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
 
   //  fillMuons(iEvent,iSetup, muoLabel_, "Calo");
   fillMuons(iEvent,iSetup, patMuonsToken_, "PF");
-  //  fillElectrons(iEvent,iSetup, patElectronsToken_, "PF"); // TEMP for debugging.
+  fillElectrons(iEvent,iSetup, patElectronsToken_, "PF"); 
 
   //  fillJets(iEvent,iSetup, jetLabel_, "Calo");
   //Putting MET info before jets so it can be used for jet smearing.
-  fillMissingET(iEvent,iSetup, patMetToken_, "PF"); // TEMP for debugging
+  fillMissingET(iEvent,iSetup, patMetToken_, "PF");
 
-  fillJets(iEvent,iSetup, patJetsToken_, "PF"); // TEMP for debuggings
+  fillJets(iEvent,iSetup, patJetsToken_, "PF"); 
 
   //  fillJets(iEvent,iSetup, jetPFRecoTag_, "AK5PF");
   // fillJets(iEvent,iSetup, jetJPTTag_, "JPT");
