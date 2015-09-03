@@ -42,15 +42,6 @@ private:
   std::map<std::string,TH1D*> histocontainer_; // simple map to contain all histograms. Histograms are booked in the beginJob() method
   std::map<std::string,TH2D*> histocontainer2D_; // simple map to contain all histograms. Histograms are booked in the beginJob() method (2D)
   
-  // ID decisions objects
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleLooseIdMapToken_;
-  //      edm::EDGetTokenT<edm::ValueMap<bool> > eleMediumIdMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleTightIdMapToken_;
-
-  // MVA values and categories (optional)
-  edm::EDGetTokenT<edm::ValueMap<float> > mvaValuesMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<int> > mvaCategoriesMapToken_;
-
   edm::EDGetTokenT<std::vector<pat::PackedCandidate> > trackToken_;
   edm::EDGetTokenT<reco::ConversionCollection> conversionsToken_;
 
@@ -84,6 +75,15 @@ private:
   //Sets whether the sample is ttbar or not. Default is false. This affects top pt reweighting of the sample.
   bool isttbar_;
   edm::InputTag ttGenEvent_;
+
+  // ID decisions objects
+  edm::EDGetTokenT<edm::ValueMap<bool> > eleLooseIdMapToken_;
+  //      edm::EDGetTokenT<edm::ValueMap<bool> > eleMediumIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > eleTightIdMapToken_;
+
+  // MVA values and categories (optional)
+  edm::EDGetTokenT<edm::ValueMap<float> > mvaValuesMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<int> > mvaCategoriesMapToken_;
 
   std::map<std::string,int> hltpasses_;
   std::vector<std::string> hltnames_;

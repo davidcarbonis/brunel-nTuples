@@ -130,10 +130,6 @@ process.filtersSeq = cms.Sequence(
 #process.load("TopQuarkAnalysis.TopEventProducers.sequencepfIsolatedMuonsPF2PATs.ttGenEvent_cff")
 
 
-
-
-
-
 ###############################
 ###### Electron ID ############
 ###############################
@@ -149,19 +145,31 @@ my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID
 for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 
-
-
 ###############################
-#### MET Corrections Setup ####
+##### MET Uncertainities ######
 ###############################
-#process.load("PhysicsTools.PatUtils.patPFMETCorrections_cff")
+
+##from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+#default configuration for miniAOD reprocessing, change the isData flag to run on data
+#runMetCorAndUncFromMiniAOD(process, isData=False)#MC
+##runMetCorAndUncFromMiniAOD(process, isData=True)#Data
+
+#### the lines below remove the L2L3 residual uncertainties when processing data
+#process.patPFMetT1T2Corr.jetCorrLabelRes = cms.InputTag("L3Absolute")
+#process.patPFMetT1T2SmearCorr.jetCorrLabelRes = cms.InputTag("L3Absolute")
+#process.patPFMetT2Corr.jetCorrLabelRes = cms.InputTag("L3Absolute")
+#process.patPFMetT2SmearCorr.jetCorrLabelRes = cms.InputTag("L3Absolute")
+#process.shiftedPatJetEnDown.jetCorrLabelUpToL3Res = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
+#process.shiftedPatJetEnUp.jetCorrLabelUpToL3Res = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
+
 #from PhysicsTools.PatUtils.tools.runType1PFMEtUncertainties import runType1PFMEtUncertainties
-#runType1PFMEtUncertainties(process,addToPatDefaultSequence=True,
-#                           jetCollection="selectedPatJets",
-#                           electronCollection="selectedPatElectrons",
-#                           muonCollection="selectedPatMuons",
-#                           tauCollection="selectedPatTaus",
-#                           )
+#runType1PFMEtUncertainties(process,addToPatDefaultSequence=False,
+#                           photonCollection="slimmedPhotons",
+#                           jetCollection="slimmedJets",
+#                           electronCollection="slimmedElectrons",
+#                           muonCollection="slimmedMuons",
+#                           tauCollection="slimmedTaus")
+
 
 
 ####
@@ -221,10 +229,10 @@ process.makeTopologyNtupleMiniAOD.metPFTag = cms.InputTag("slimmedMETs")
 process.makeTopologyNtupleMiniAOD.rho = cms.InputTag("fixedGridRhoAll")                                                                          
 
 ##electronIdMva Stuff.
-#process.makeTopologyNtupleMiniAOD.eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp90")
-#process.makeTopologyNtupleMiniAOD.eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80")
-#process.makeTopologyNtupleMiniAOD.mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
-#process.makeTopologyNtupleMiniAOD.mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories")
+process.makeTopologyNtupleMiniAOD.eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp90")
+process.makeTopologyNtupleMiniAOD.eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80")
+process.makeTopologyNtupleMiniAOD.mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
+process.makeTopologyNtupleMiniAOD.mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories")
 
 ## Source
 process.source = cms.Source("PoolSource",

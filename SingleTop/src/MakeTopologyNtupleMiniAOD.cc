@@ -132,13 +132,6 @@
 MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iConfig):
     histocontainer_(),
 
-    
-    eleLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"))),
-    //    eleMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"))),
-    eleTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTightIdMap"))),
-    mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap"))),
-    mvaCategoriesMapToken_(consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaCategoriesMap"))),
-
     trackToken_(consumes<vector<pat::PackedCandidate> >(iConfig.getParameter<edm::InputTag>("trackToken"))),
     conversionsToken_(consumes<vector<reco::Conversion> >(iConfig.getParameter<edm::InputTag>("conversionsToken"))),
 
@@ -168,6 +161,15 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     rho_(iConfig.getParameter<edm::InputTag>("rho")),
     isttbar_(iConfig.getParameter<bool>("isttBar")),
     ttGenEvent_(iConfig.getParameter<edm::InputTag>("ttGenEvent")),
+
+
+    eleLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"))),
+    //    eleMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"))),
+    eleTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTightIdMap"))),
+    mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap"))),
+    mvaCategoriesMapToken_(consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaCategoriesMap"))),
+
+
     hltnames_(0),
     btaggingparamnames_(iConfig.getParameter<std::vector<std::string> >("btagParameterizationList")),
     btaggingparaminputtypes_(iConfig.getParameter<std::vector<std::string> >("btagParameterizationMode")),
@@ -573,21 +575,16 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     // now loop again, in the correct order
     numEle[ ID ]=0;
     numLooseEle[ ID ]=0;
-  std::cout << __FILE__ << " : " << __LINE__ << std::endl;
 
     for ( size_t iele=0; iele<etSortedIndex.size() && numEle[ ID ]<(int)NELECTRONSMAX; ++iele ) {
-	std::cout << __FILE__ << " : " << __LINE__ << std::endl;
 	size_t jele = etSortedIndex[iele];
-	std::cout << __FILE__ << " : " << __LINE__ << std::endl;
 
 	const pat::Electron& ele = electrons[jele];
-	std::cout << __FILE__ << " : " << __LINE__ << std::endl;
-
+	std::cout << __LINE__ << " : " << __FILE__ << std::endl;
         // look up id decisions
         //bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
-        //bool isPassMedium = (*medium_id_decisions)[ele];
         bool isPassTight  = (*tight_id_decisions)[ele.gsfTrack()]; // NEW
-
+	std::cout << __LINE__ << " : " << __FILE__ << std::endl;
 	if(!isPassTight) // If not tight
 	  continue;
 
