@@ -60,7 +60,8 @@ private:
   edm::InputTag genJetTag_;
   edm::InputTag tauLabel_; 
   edm::InputTag metLabel_;
-  edm::InputTag phoLabel_;
+  //  edm::InputTag phoLabel_;
+  edm::EDGetTokenT<pat::PhotonCollection> patPhotonsToken_;
   edm::InputTag electronPFTag_;	
   edm::InputTag tauPFTag_;	
   //  edm::InputTag muonPFTag_;	

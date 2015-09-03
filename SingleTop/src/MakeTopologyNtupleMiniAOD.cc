@@ -149,7 +149,8 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     genJetTag_(iConfig.getParameter<edm::InputTag>("genJetTag")),
     tauLabel_(iConfig.getParameter<edm::InputTag>("tauTag")),
     metLabel_(iConfig.getParameter<edm::InputTag>("metTag")),
-    phoLabel_(iConfig.getParameter<edm::InputTag>("photonTag")), 
+    //    phoLabel_(iConfig.getParameter<edm::InputTag>("photonTag")), 
+    patPhotonsToken_(mayConsume<pat::PhotonCollection>(iConfig.getParameter<edm::InputTag>("photonToken"))),
     electronPFTag_(iConfig.getParameter<edm::InputTag>("electronPFTag")),
     tauPFTag_(iConfig.getParameter<edm::InputTag>("tauPFTag")),
     //    muonPFTag_(iConfig.getParameter<edm::InputTag>("muonPFTag")),
@@ -342,10 +343,10 @@ MakeTopologyNtupleMiniAOD::~MakeTopologyNtupleMiniAOD()
 //
 // member functions
 //
-void MakeTopologyNtupleMiniAOD::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::EDGetTokenT<pat::PhotonCollection> phoIn_, std::string ID)
+void MakeTopologyNtupleMiniAOD::fillPhotons(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::EDGetTokenT<pat::PhotonCollection> phoToken_, std::string ID)
 {
     edm::Handle<pat::PhotonCollection> phoHandle;
-    iEvent.getByToken(phoIn_,phoHandle);
+    iEvent.getByToken(phoToken_,phoHandle);
     const pat::PhotonCollection & photons = *phoHandle;
     for(pat::PhotonCollection::const_iterator photon_iter = photons.begin(); photon_iter!=photons.end() && nphotons[ ID ]<NPHOTONSMAX; ++photon_iter){
 
