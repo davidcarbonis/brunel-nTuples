@@ -584,7 +584,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
         // look up id decisions
         //bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
         bool isPassTight  = (*tight_id_decisions)[refel]; // NEW
-	std::cout << __LINE__ << " : " << __FILE__ << std::endl;
 	if(!isPassTight) // If not tight
 	  continue;
 
