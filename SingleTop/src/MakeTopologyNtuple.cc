@@ -559,15 +559,11 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
     // now loop again, in the correct order
     numEle[ ID ]=0;
     numLooseEle[ ID ]=0;
-  std::cout << __FILE__ << " : " << __LINE__ << std::endl;
 
     for ( size_t iele=0; iele<etSortedIndex.size() && numEle[ ID ]<(int)NELECTRONSMAX; ++iele ) {
-	std::cout << __FILE__ << " : " << __LINE__ << std::endl;
 	size_t jele = etSortedIndex[iele];
-	std::cout << __FILE__ << " : " << __LINE__ << std::endl;
 
 	const pat::Electron& ele = electrons[jele];
-	std::cout << __FILE__ << " : " << __LINE__ << std::endl;
 
         // look up id decisions
         //bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
@@ -618,7 +614,9 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
     electronSortedPz[ ID ][numEle[ ID ]-1]=ele.pz();
     electronSortedCharge[ ID ][numEle[ ID ]-1]=ele.charge();
     //    std::cout << "Ele.eta: " << ele.eta() << "  " << electronSortedEta[ ID ][numEle[ ID ]-1] << std::endl;
+    std::cout << __LINE__ << " : " << __FILE__ << std::endl; std::cout << "BOO"<< std::endl;
     electronSortedMVA[ ID ][numEle[ ID ]-1]=ele.electronID("mvaTrigV0");
+    std::cout << __LINE__ << " : " << __FILE__ << std::endl;
     //    std::cout << "Debug ele.mva: " << ele.mva() << "   " << electronSortedMVA[ ID ][numEle[ ID ]-1] << std::endl;
     
     //sortedIDQuality expects a cic-like cut. This is now deprecated, so I'm commenting these out.
@@ -742,7 +740,9 @@ void MakeTopologyNtuple::fillElectrons(const edm::Event& iEvent, const edm::Even
       looseElectronSortedEt[ ID ][numLooseEle[ ID ]-1]=ele.et();
       looseElectronSortedPt[ ID ][numLooseEle[ ID ]-1]=ele.pt();
       looseElectronSortedEta[ ID ][numLooseEle[ ID ]-1]=ele.eta();
+      std::cout << __LINE__ << " : " << __FILE__ << std::endl;
       looseElectronSortedMVA[ ID ][numLooseEle[ ID ]-1]=ele.electronID("mvaTrigV0");
+      std::cout << __LINE__ << " : " << __FILE__ << std::endl;
       looseElectronSortedRelIso[ ID ][numLooseEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt() ;
     }
     
