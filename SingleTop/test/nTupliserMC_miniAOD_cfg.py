@@ -10,24 +10,23 @@ from PhysicsTools.PatAlgos.tools.coreTools import *
 ####### Global Setup ##########
 ###############################
 
+process.load('Configuration.Geometry.GeometryRecoDB_cff')
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
+process.load("Configuration.StandardSequences.MagneticField_cff")
+process.load('PhysicsTools.PatAlgos.slimming.unpackedTracksAndVertices_cfi')
+
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.load("TrackingTools/TransientTrack/TransientTrackBuilder_cfi")
-process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 
-process.load("RecoBTag.PerformanceDB.BTagPerformanceDB1107")
-process.load("RecoBTag.PerformanceDB.PoolBTagPerformanceDB1107")
+process.load('RecoBTag.Configuration.RecoBTag_cff')
+process.load('RecoJets.Configuration.RecoJetAssociations_cff')
+process.load('RecoJets.Configuration.RecoJetAssociations_cff')
+process.load('TrackingTools.TransientTrack.TransientTrackBuilder_cfi')
 
 process.load("FWCore.Framework.test.cmsExceptionsFatal_cff")
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 process.load("PhysicsTools.HepMCCandAlgos.genParticles_cfi")
 process.load('Configuration.StandardSequences.Services_cff')
-
-process.load('Configuration.Geometry.GeometryRecoDB_cff')
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
-
-process.load("Configuration.StandardSequences.MagneticField_cff")
-
-process.load('PhysicsTools.PatAlgos.slimming.unpackedTracksAndVertices_cfi')
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger.destinations = ['cerr']
@@ -39,7 +38,7 @@ process.MessageLogger.categories=cms.untracked.vstring('FwkJob'
                                                        )
 
 process.MessageLogger.cerr.INFO = cms.untracked.PSet(limit = cms.untracked.int32(0))
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(100)
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(10000)
 process.options = cms.untracked.PSet(
                      wantSummary = cms.untracked.bool(True)
                      )
@@ -51,6 +50,11 @@ process.GlobalTag.globaltag = cms.string('MCRUN2_74_V9')
 
 #Import jet reco things. Apparently this makes cmsRun crash.
 process.load('RecoJets.Configuration.RecoPFJets_cff')
+
+process.ak4JetTracksAssociatorAtVertexPF.jets = cms.InputTag("ak4PFJetsCHS")
+process.ak4JetTracksAssociatorAtVertexPF.tracks = cms.InputTag("unpackedTracksAndVertices")
+process.impactParameterTagInfos.primaryVertex = cms.InputTag("unpackedTracksAndVertices")
+process.inclusiveSecondaryVertexFinderTagInfos.extSVCollection = cms.InputTag("unpackedTracksAndVertices","secondary","")
 
 
 #Now do cool fast jet correction things!
@@ -121,10 +125,6 @@ process.filtersSeq = cms.Sequence(
 #    * process.ecalLaserCorrFilter # To be fixed
 #    * process.trkPOGFilters
     )
-
-
-#Gen Setup - I'm unsure what this does, and I can't actually do it anyway as I don't think TopQuarkAnalysis actually exists? Or I may have to import it. I don't really know what this does. I assume this is related to that bit of global tags that I didn't do, so I might just ignore this for now.
-#process.load("TopQuarkAnalysis.TopEventProducers.sequencepfIsolatedMuonsPF2PATs.ttGenEvent_cff")
 
 
 ###############################
@@ -237,7 +237,7 @@ process.source = cms.Source("PoolSource",
 )
 
 ## Maximal Number of Events
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source.fileNames = [
 	#'root://xrootd.unl.edu//store/mc/Summer12_DR53X/WZJetsTo3LNu_matchingdown_8TeV_TuneZ2Star_madgraph_tauola/AODSIM/PU_S10_START53_V19-v1/00000/06A911BC-3CBB-E311-9AFD-00266CFACC38.root',
