@@ -578,12 +578,12 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 
     for ( size_t iele=0; iele<etSortedIndex.size() && numEle[ ID ]<(int)NELECTRONSMAX; ++iele ) {
 	size_t jele = etSortedIndex[iele];
-
-	const pat::Electron& ele = electrons[jele];
-	std::cout << __LINE__ << " : " << __FILE__ << std::endl;
+	//const pat::Electron& ele = electrons[jele];
+	const pat::Electron& ele = (*electronHandle)[jele];
+	pat::ElectronRef refel(electronHandle, jele);
         // look up id decisions
         //bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
-        bool isPassTight  = (*tight_id_decisions)[ele.gsfTrack()]; // NEW
+        bool isPassTight  = (*tight_id_decisions)[refel]; // NEW
 	std::cout << __LINE__ << " : " << __FILE__ << std::endl;
 	if(!isPassTight) // If not tight
 	  continue;
@@ -629,7 +629,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     electronSortedPz[ ID ][numEle[ ID ]-1]=ele.pz();
     electronSortedCharge[ ID ][numEle[ ID ]-1]=ele.charge();
     //    std::cout << "Ele.eta: " << ele.eta() << "  " << electronSortedEta[ ID ][numEle[ ID ]-1] << std::endl;
-    electronSortedMVA[ ID ][numEle[ ID ]-1]=ele.electronID("mvaTrigV0");
+    //    electronSortedMVA[ ID ][numEle[ ID ]-1]=ele.electronID("mvaTrigV0"); // Triggering MVA not avaliable for 2015 yet - not pushing this back
     //    std::cout << "Debug ele.mva: " << ele.mva() << "   " << electronSortedMVA[ ID ][numEle[ ID ]-1] << std::endl;
     
     //sortedIDQuality expects a cic-like cut. This is now deprecated, so I'm commenting these out.
@@ -740,9 +740,11 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     //Fill a list of loose electrons
     for ( size_t iele=0; iele<etSortedIndex.size() && numEle[ ID ]<(int)NELECTRONSMAX; ++iele ) {
       size_t jele = etSortedIndex[iele];         
-      const pat::Electron& ele = electrons[jele];
-      
-      bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
+      //     const pat::Electron& ele = electrons[jele];
+      const pat::Electron& ele = (*electronHandle)[jele];
+      pat::ElectronRef refel(electronHandle, jele);
+ 
+      bool isPassLoose = (*loose_id_decisions)[refel]; // NEW
        
       if(!isPassLoose)
 	continue;
@@ -751,7 +753,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       looseElectronSortedEt[ ID ][numLooseEle[ ID ]-1]=ele.et();
       looseElectronSortedPt[ ID ][numLooseEle[ ID ]-1]=ele.pt();
       looseElectronSortedEta[ ID ][numLooseEle[ ID ]-1]=ele.eta();
-      looseElectronSortedMVA[ ID ][numLooseEle[ ID ]-1]=ele.electronID("mvaTrigV0");
+      //      looseElectronSortedMVA[ ID ][numLooseEle[ ID ]-1]=ele.electronID("mvaTrigV0"); // Triggering MVA not avaliable for 2015 yet - not pushing this back
       looseElectronSortedRelIso[ ID ][numLooseEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt() ;
     }
     
