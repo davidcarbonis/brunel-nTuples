@@ -42,7 +42,7 @@ process.MessageLogger.categories=cms.untracked.vstring('FwkJob'
                                                        )
 
 process.MessageLogger.cerr.INFO = cms.untracked.PSet(limit = cms.untracked.int32(0))
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(100)
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(10000)
 process.options = cms.untracked.PSet(
                      wantSummary = cms.untracked.bool(True)
                      )
@@ -115,12 +115,12 @@ process.goodVertices = cms.EDFilter(
 process.filtersSeq = cms.Sequence(
     process.HBHENoiseFilterResultProducer *
     process.HBHENoiseFilter *
-    process.CSCTightHaloFilter *
-    process.hcalLaserEventFilter *
-    process.EcalDeadCellTriggerPrimitiveFilter *
+#    process.CSCTightHaloFilter *
+#    process.hcalLaserEventFilter *
+#    process.EcalDeadCellTriggerPrimitiveFilter *
     process.goodVertices *
     process.trackingFailureFilter *
-    process.eeBadScFilter *
+#    process.eeBadScFilter *
     process.ecalLaserCorrFilter *
     process.trkPOGFilters
     )
@@ -270,7 +270,7 @@ process.out.outputCommands += cms.untracked.vstring('keep *_flavorHistoryFilter_
 process.out.fileName = cms.untracked.string('Data_out.root')
 
 #NTuple output
-process.TFileService = cms.Service("TFileService", fileName = cms.string('Data_output.root') )
+process.TFileService = cms.Service("TFileService", fileName = cms.string('Data_test.root') )
 process.options.wantSummary = False
 process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
