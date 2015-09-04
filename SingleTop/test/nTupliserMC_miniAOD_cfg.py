@@ -4,9 +4,6 @@ process = cms.Process("customPAT")
 
 from PhysicsTools.PatAlgos.tools.coreTools import *
 
-#Import the pat configurations
-process.load("PhysicsTools.PatAlgos.patSequences_cff")
-
 #Setting up various environmental stuff that makes all of this jazz actually work.
 
 ###############################
@@ -42,7 +39,7 @@ process.MessageLogger.categories=cms.untracked.vstring('FwkJob'
                                                        )
 
 process.MessageLogger.cerr.INFO = cms.untracked.PSet(limit = cms.untracked.int32(0))
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(10000)
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(100)
 process.options = cms.untracked.PSet(
                      wantSummary = cms.untracked.bool(True)
                      )
@@ -113,16 +110,16 @@ process.goodVertices = cms.EDFilter(
       )
 
 process.filtersSeq = cms.Sequence(
-    process.HBHENoiseFilterResultProducer *
-    process.HBHENoiseFilter *
-#    process.CSCTightHaloFilter *
-#    process.hcalLaserEventFilter *
-#    process.EcalDeadCellTriggerPrimitiveFilter *
-    process.goodVertices *
-    process.trackingFailureFilter *
-#    process.eeBadScFilter *
-    process.ecalLaserCorrFilter *
-    process.trkPOGFilters
+    process.HBHENoiseFilterResultProducer
+  * process.HBHENoiseFilter
+#  * process.CSCTightHaloFilter # To be fixed
+  * process.hcalLaserEventFilter
+  * process.EcalDeadCellTriggerPrimitiveFilter
+  * process.goodVertices 
+#    * process.trackingFailureFilter # To be fixed
+#    * process.eeBadScFilter # To be fixed
+#    * process.ecalLaserCorrFilter # To be fixed
+#    * process.trkPOGFilters
     )
 
 
@@ -280,7 +277,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 process.p = cms.Path(
     process.goodOfflinePrimaryVertices*
     process.primaryVertexFilter * #removes events with no good pv (but if cuts to determine good pv change...)
-#    process.filtersSeq *
+    process.filtersSeq *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *
     process.makeTopologyNtupleMiniAOD
