@@ -713,8 +713,8 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     // ELECTRON CONVERSIONS
 
     electronSortedPhotonConversionTag[ ID ][numEle[ ID ]-1] = ConversionTools::hasMatchedConversion(ele, Conversions, beamSpotPoint_);
-    electronSortedPhotonConversionDist[ ID ][numEle[ ID ]-1] = 0;//infoconversions.dist(); // TEMP to be fixed
-    electronSortedPhotonConversionDcot[ ID ][numEle[ ID ]-1] = 0;//infoconversions.dcot(); // TEMP to be fixed
+    electronSortedPhotonConversionDist[ ID ][numEle[ ID ]-1] = ele.convDist(); 
+    electronSortedPhotonConversionDcot[ ID ][numEle[ ID ]-1] = ele.convDcot();
     electronSortedPhotonConversionVeto[ID][numEle[ID]-1] = ele.passConversionVeto();
 
       // and using our private code
