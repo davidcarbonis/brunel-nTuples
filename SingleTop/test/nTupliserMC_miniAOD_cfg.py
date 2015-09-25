@@ -91,7 +91,7 @@ process.goodVertices = cms.EDFilter(
       )
 
 process.filtersSeq = cms.Sequence(
-    *process.primaryVertexFilter
+    process.primaryVertexFilter
 #  * process.goodVertices 
 #    * process.trkPOGFilters
     )
