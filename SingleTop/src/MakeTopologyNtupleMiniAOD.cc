@@ -156,7 +156,7 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     triggerList_(iConfig.getParameter<std::vector<std::string> >("triggerList")),
     l1TrigLabel_(iConfig.getParameter<edm::InputTag>("l1TriggerTag")),
     genParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticles"))),
-
+    genSimParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genSimParticles"))),
     pvLabel_(iConfig.getParameter<edm::InputTag>("primaryVertexTag")),
     rho_(iConfig.getParameter<edm::InputTag>("rho")),
     isttbar_(iConfig.getParameter<bool>("isttBar")),
@@ -940,7 +940,7 @@ void MakeTopologyNtupleMiniAOD::fillOtherJetInfo(const pat::Jet &jet, const size
   jetSortedPx[ ID ][jetindex]=jet.px();
   jetSortedPy[ ID ][jetindex]=jet.py();
   jetSortedPz[ ID ][jetindex]=jet.pz();
-  jetSortedNtracksInJet[ ID ][jetindex]=jet.associatedTracks().size();
+  jetSortedNtracksInJet[ ID ][jetindex]=jet.associatedTracks().size(); // Need to fix
   jetSortedN90Hits[ ID ][jetindex]=jet.jetID().n90Hits;
   jetSortedfHPD[ ID ][jetindex]=jet.jetID().fHPD;
   jetSortedJetCharge[ ID ][jetindex]=jet.jetCharge();
@@ -1017,7 +1017,8 @@ void MakeTopologyNtupleMiniAOD::fillOtherJetInfo(const pat::Jet &jet, const size
   if( runMCInfo_ )
   {
     edm::Handle<reco::GenParticleCollection> genParticles;
-    iEvent.getByToken(genParticlesToken_, genParticles);
+    iEvent.getByToken(genSimParticlesToken_, genParticles);
+    if(!genParticles.isValid()) {iEvent.getByToken(genParticlesToken_, genParticles);}
     for( size_t k = 0; k < genParticles->size(); k++ )
       {
 	const reco::Candidate & TCand = (*genParticles)[ k ];
@@ -1038,12 +1039,17 @@ void MakeTopologyNtupleMiniAOD::fillOtherJetInfo(const pat::Jet &jet, const size
 }
 
 void MakeTopologyNtupleMiniAOD::fillMCJetInfo(const reco::GenJet &jet, const size_t jetindex, std::string ID, bool runMC){
-  
+
   if (runMC){
-    //    Not releveant for MiniAOD
-    //    if (jet.getGenConstituents().size() > 0 )
-    //    genJetSortedPID[ ID ][jetindex]=jet.getGenConstituent(0)->pdgId();
-    genJetSortedPID[ ID ][jetindex]=jet.pdgId();
+    //    Not every status-1 GEN particle is saved in miniAOD and thus some of the constituents may be missing. Skip GenConstituent pdgId of such events.
+    edm::Ptr<reco::Candidate> const &constituent = jet.sourceCandidatePtr(0); // Get pointer to the first genConstituent.
+
+    if ( !constituent.isNull() or not constituent.isAvailable() )
+    {
+      genJetSortedPID[ ID ][jetindex]=constituent.get()->pdgId();
+    } 
+    else { genJetSortedPID[ ID ][jetindex]=0; }
+
     genJetSortedEt[ ID ][jetindex]=jet.et();
     genJetSortedPt[ ID ][jetindex]=jet.pt();
     genJetSortedEta[ ID ][jetindex]=jet.eta();
@@ -1314,18 +1320,20 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
   //Get the top gen events for top pt reweighting - so I guess this is irrelevant.
 
   edm::Handle<GenEventInfoProduct> genEventInfo;
+  /*
   if( isMCatNLO_ )
   {
     iEvent.getByLabel("pdfInfoFixing",genEventInfo);
   }
-  else{  iEvent.getByLabel("generator", genEventInfo); }
+  else{  */iEvent.getByLabel("generator", genEventInfo); //}
   
   processPtHat_=genEventInfo->qScale();
   weight_=genEventInfo->weight();
   processId_=genEventInfo->signalProcessID();
 
   edm::Handle<reco::GenParticleCollection> genParticles;
-    iEvent.getByToken(genParticlesToken_, genParticles);
+  iEvent.getByToken(genSimParticlesToken_, genParticles);
+  if (!genParticles.isValid()) {iEvent.getByToken(genParticlesToken_, genParticles);}
   //  std::cout<< " Number of genParticles: "<< genPart.size() << std::endl;
   //  fillJets(iEvent,iSetup);// needed to do additional MC truth matching.
   nGenPar=0;
@@ -1561,7 +1569,7 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
 
   edm::Handle<reco::GenJetCollection> genJetHandle;
   if (runMCInfo_){
-    iEvent.getByToken(genJetsToken_,genJetHandle);
+    iEvent.getByToken(genJetsToken_, genJetHandle);
   }
 
   // check that the electrons are filled, if not do so:

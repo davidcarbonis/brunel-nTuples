@@ -69,6 +69,7 @@ private:
   std::vector<std::string> triggerList_;
   edm::InputTag l1TrigLabel_;
   edm::EDGetTokenT<reco::GenParticleCollection> genParticlesToken_;
+  edm::EDGetTokenT<reco::GenParticleCollection> genSimParticlesToken_;
   edm::InputTag pvLabel_;
   edm::InputTag rho_;
 

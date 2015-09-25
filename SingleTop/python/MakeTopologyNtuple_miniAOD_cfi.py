@@ -87,6 +87,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            l1TriggerTag = cms.InputTag("gtDigis"),                                    
                                            checkTriggers = cms.bool(True),
                                            genParticles = cms.InputTag("prunedGenParticles"),
+					   genSimParticles = cms.InputTag("prunedGenParticles"),
                                            runMCInfo = cms.bool(True), # if set to true will skip MCInfo section
                                            doJERSmear = cms.bool(True), # as run MC is true, may as well be true too.
                                            runPUReWeight = cms.bool(False), #Run pile-up reweighting. Don't do if this is data I guess.
