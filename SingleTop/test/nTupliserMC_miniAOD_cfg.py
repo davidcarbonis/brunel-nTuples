@@ -80,29 +80,6 @@ process.goodOfflinePrimaryVertices = cms.EDFilter(
     filter = cms.bool( True) ,
     src = cms.InputTag( 'offlineSlimmedPrimaryVertices' ) )
 
-## The iso-based HBHE noise filter ___________________________________________||
-process.load('CommonTools.RecoAlgos.HBHENoiseFilterResultProducer_cfi')
-process.load('CommonTools.RecoAlgos.HBHENoiseFilter_cfi')
-
-## The CSC beam halo tight filter ____________________________________________||
-#process.load('RecoMET.METAnalyzers.CSCHaloFilter_cfi')
-process.load('RecoMET.METFilters.CSCTightHaloFilter_cfi')
-
-## The HCAL laser filter _____________________________________________________||
-process.load("RecoMET.METFilters.hcalLaserEventFilter_cfi")
-
-## The ECAL dead cell trigger primitive filter _______________________________||
-process.load('RecoMET.METFilters.EcalDeadCellTriggerPrimitiveFilter_cfi')
-
-## The EE bad SuperCrystal filter ____________________________________________||
-process.load('RecoMET.METFilters.eeBadScFilter_cfi')
-
-## The ECAL laser correction filter
-process.load('RecoMET.METFilters.ecalLaserCorrFilter_cfi')
-
-## The tracking failure filter _______________________________________________||
-process.load('RecoMET.METFilters.trackingFailureFilter_cfi')
-
 ## The tracking POG filters __________________________________________________||
 process.load('RecoMET.METFilters.trackingPOGFilters_cff')
 
@@ -114,15 +91,8 @@ process.goodVertices = cms.EDFilter(
       )
 
 process.filtersSeq = cms.Sequence(
-    process.HBHENoiseFilterResultProducer
-  * process.HBHENoiseFilter
-#  * process.CSCTightHaloFilter # To be fixed
-  * process.hcalLaserEventFilter
-  * process.EcalDeadCellTriggerPrimitiveFilter
-  * process.goodVertices 
-#    * process.trackingFailureFilter # To be fixed
-#    * process.eeBadScFilter # To be fixed
-#    * process.ecalLaserCorrFilter # To be fixed
+    *process.primaryVertexFilter
+#  * process.goodVertices 
 #    * process.trkPOGFilters
     )
 
