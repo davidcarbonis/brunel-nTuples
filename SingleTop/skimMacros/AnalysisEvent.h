@@ -373,6 +373,7 @@ public :
 
    //Gen info
    Int_t           nGenPar;
+   Int_t 	   genParStatus[30]; //[nGenPar]
    Float_t         genParEta[30];   //[nGenPar]
    Float_t         genParPhi[30];   //[nGenPar]
    Float_t         genParE[30];   //[nGenPar]
