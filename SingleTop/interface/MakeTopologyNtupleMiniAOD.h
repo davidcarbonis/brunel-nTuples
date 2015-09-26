@@ -695,6 +695,7 @@ private:
   // gen particle vars
   int NGENPARMAX;
   int nGenPar;
+  int genParStatus[50]; // 150927 - ADM - Added as Pythia 8 uses different status codes - cannot just select events which are used in the matrix element calculation!
   float genParEta[50];
   float genParPhi[50];
   float genParE[50];
