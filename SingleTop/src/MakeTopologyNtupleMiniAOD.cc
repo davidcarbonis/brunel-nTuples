@@ -940,7 +940,7 @@ void MakeTopologyNtupleMiniAOD::fillOtherJetInfo(const pat::Jet &jet, const size
   jetSortedPx[ ID ][jetindex]=jet.px();
   jetSortedPy[ ID ][jetindex]=jet.py();
   jetSortedPz[ ID ][jetindex]=jet.pz();
-  jetSortedNtracksInJet[ ID ][jetindex]=jet.associatedTracks().size(); // Need to fix
+  jetSortedNtracksInJet[ ID ][jetindex]=jet.associatedTracks().size(); // Need to fix - not a high priority as currently not used in the analysis
   jetSortedN90Hits[ ID ][jetindex]=jet.jetID().n90Hits;
   jetSortedfHPD[ ID ][jetindex]=jet.jetID().fHPD;
   jetSortedJetCharge[ ID ][jetindex]=jet.jetCharge();
@@ -1312,29 +1312,24 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
   if(ran_mcloop_)
     return;
   ran_mcloop_=true;
-  
   bool found_b=false;
   int W_hadronic=0;
   int W_leptonic=0;
-  
+
   //Get the top gen events for top pt reweighting - so I guess this is irrelevant.
 
   edm::Handle<GenEventInfoProduct> genEventInfo;
-  /*
-  if( isMCatNLO_ )
-  {
-    iEvent.getByLabel("pdfInfoFixing",genEventInfo);
-  }
-  else{  */iEvent.getByLabel("generator", genEventInfo); //}
+
+  if ( isMCatNLO_ )
+  { iEvent.getByLabel("pdfInfoFixing",genEventInfo); }
+  else { iEvent.getByLabel("generator", genEventInfo); }
   
   processPtHat_=genEventInfo->qScale();
   weight_=genEventInfo->weight();
   processId_=genEventInfo->signalProcessID();
-
   edm::Handle<reco::GenParticleCollection> genParticles;
   iEvent.getByToken(genSimParticlesToken_, genParticles);
   if (!genParticles.isValid()) {iEvent.getByToken(genParticlesToken_, genParticles);}
-  //  std::cout<< " Number of genParticles: "<< genPart.size() << std::endl;
   //  fillJets(iEvent,iSetup);// needed to do additional MC truth matching.
   nGenPar=0;
 
@@ -1350,11 +1345,17 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
     topPtReweight = sqrt(exp(0.148 - 0.00129 * topPt) * exp(0.148 - 0.00129 * tBarPt));
     histocontainer_["topPtWeightSum"]->Fill(0.,topPtReweight);
   }
-  
+
   for( size_t k = 0; k < genParticles->size(); k++ ){
     
     const reco::Candidate & TCand = (*genParticles)[ k ];
-    if(TCand.status()==3){
+/*    std::cout << "Status: " << TCand.status() << std::endl;
+    std::cout << "pdgId: " << TCand.pdgId() << std::endl;
+    std::cout << "pT: " << TCand.pt() << std::endl;
+    std::cout << "#Mothers: " << TCand.numberOfMothers() << std::endl;
+    std::cout << "#Daughters: " << TCand.numberOfDaughters() << std::endl; */
+
+//    if(TCand.status()==3){ // Pythia 6 criteria - MC generators now use Pythia 8 - will store status instead of cutting on it.
       if(abs(TCand.pdgId())<=18 || abs(TCand.pdgId())==24 || abs(TCand.pdgId())==23) {
 	// only do this for particles with reasonable pT:
 	if(nGenPar<NGENPARMAX){
@@ -1370,11 +1371,14 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
 	  genParMotherId[nGenPar]=TCand.mother()->pdgId(); //150318 - ADM - Added so one can look for b's from gluon splitting - need to know what parent was
 	  genParNumDaughters[nGenPar]=TCand.numberOfDaughters(); //150401 - ADM - Added so one can look for b's from gluon splitting - need to know how many daughters
 	  // End ADM Edit 150318
+	  // ADM Edit 150927
+          genParStatus[nGenPar] = TCand.status(); //150927 - ADM - Added so that generator level status is now saved.
+	  // End ADM Edit 150927
 	  genParCharge[nGenPar]=TCand.charge();
 	  nGenPar++;
 	}
       }
-    }
+//    }
     if(abs(TCand.pdgId())==5 || abs(TCand.pdgId())==4){
 //       for(int ijet=0; ijet<numJet; ijet++){
 // //    	float deltaR=reco::deltaR(jetSortedEta[ijet],jetSortedPhi[ijet],TCand.eta(),TCand.phi());	
@@ -2362,9 +2366,7 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
 
 
   //  fillElectrons(iEvent,iSetup, eleLabel_, "Calo");
-
   fillMCInfo(iEvent,iSetup);
-
   //  fillMissingET(iEvent,iSetup, metLabel_, "Calo");
 
 
