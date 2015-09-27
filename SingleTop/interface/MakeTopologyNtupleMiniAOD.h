@@ -201,8 +201,6 @@ private:
   void fillGeneralTracks(const edm::Event&, const edm::EventSetup&);
   void fillFlavorHistory(const edm::Event&, const edm::EventSetup&);
   // ID functions
-  bool looseElectronID(const pat::Electron &, bool = false);
-  bool tightElectronID(const pat::Electron &, bool = false);
   bool jetID(const pat::Jet &,const size_t jetindex, std::string, float);
   bool jetIDLoose(const pat::Jet &, float);
   bool muonID(const pat::Muon &);

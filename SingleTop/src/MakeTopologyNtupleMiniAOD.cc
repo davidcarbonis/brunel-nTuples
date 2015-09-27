@@ -3784,104 +3784,11 @@ void MakeTopologyNtupleMiniAOD::fillTriggerData(const edm::Event& iEvent)
     }
   }
 }
+
 /////////////
 // identification functions!
-bool MakeTopologyNtupleMiniAOD::looseElectronID(const pat::Electron & ele, bool forZVeto){
-  ////std::cout << "looseElectronID CHECK" << std::endl;
-  // return true if object is good
-//Check for Zveto over ride
-//   bool eleCut  = false;
-//   if( doCuts_ || forZVeto ){ eleCut = true; }
+/////////////
 
-   if ( !doCuts_ && !forZVeto ) return true;
-
-   if(ignore_emIDtight_)
-    return true;
-
-   if(ele.electronID("mvaTrigV0") < eleMvaCut_)//|| ele.electronID("mvaTrigV0") > 1.0))
-     return false;
-  
-  //  std::cout << " ele (" << eleIDqualityLoose_ << ") : " << ele.et() << " " << ele.eta() << " " << ele.ecalIso() << " " << ele.hcalIso() << " " << ele.trackIso() << " " << ele.gsfTrack()->dxy(beamSpotPoint_) << std::endl;
-  if(ele.pt()<=eleEtCutLoose_)
-    return false;
-  if(fabs(ele.eta())>=eleEtaCutLoose_)
-    return false;
-
-  //  if (fabs(ele.superClusterPosition().eta()) >= 1.4442 && fabs(ele.superClusterPosition().Eta()) <= 1.5660)
-  //  return false;
-  //consistancy in my relIso calculation.
-  //  float AEff03 = ElectronEffectiveArea::GetElectronEffectiveArea(ElectronEffectiveArea::kEleGammaAndNeutralHadronIso03, ele.superCluster()->eta(), ElectronEffectiveArea::kEleEAFall11MC);
-  //double combreliso = (ele.chargedHadronIso() + max(0.0, ele.neutralHadronIso() + ele.photonIso() - rhoIso*AEff03 ));
-  //dBeta corrections
-  double combreliso = ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ) ;
-  //  double combreliso = ele.ecalIso()+ele.hcalIso()+ele.trackIso();
-  combreliso/=ele.pt();
-  if(combreliso>=eleIsoCutLoose_ )
-    return false;
-  if(fabs( ele.gsfTrack()->dxy(beamSpotPoint_) )>= eled0CutLoose_)
-    return false;
-  return true;
-
-}
-
-bool MakeTopologyNtupleMiniAOD::tightElectronID(const pat::Electron & ele, bool forZVeto){
-  // return true if object is good
-////std::cout << "tightElectronID CHECK" << std::endl;
-
-//Check for Zveto over ride
-//   bool eleCut = false;
-//   if( doCuts_ || forZVeto ){ eleCut = true; }
-  if ( !doCuts_ && !forZVeto ) return true;
-  eleDebugNumberTotal++;
-  if(ignore_emIDtight_)
-    return true;
-  //  std::cout<< "mva of electron:" <<  ele.electronID("mvaTrigV0") << "  " <<ele.mva() << std::endl;
-  //if(ele.mva() < eleMvaCut_) //|| ele.electronID("mvaTrigV0") > 1.0))
-
-  eleDebugNumbermvaID++;
-  //  std::cout << " ele (" << eleIDquality_ << ") : " << ele.et() << " " << ele.eta() << " " << ele.ecalIso() << " " << ele.hcalIso() << " " << ele.trackIso() << " " << ele.gsfTrack()->dxy(beamSpotPoint_) << std::endl;
-  // Putting the cuts into the same order as Rebeca's just in case that makes some difference? Which it definitely shouldn't.
-  if(ele.pt()<=eleEtCut_)
-    return false;
-  eleDebugNumberEt++;
-  if(fabs(ele.eta())>=eleEtaCut_ )
-    return false;
-  if(fabs( ele.gsfTrack()->dxy(beamSpotPoint_) )>= eled0Cut_ )
-    return false;
-
-  //Putting in a cut based on the number of missing hits
-  //  if (ele.gsfTrack()->trackerExpectedHitsInner().numberOfHits() > 1)
-    return false;
-  //This has apparently been taken out of the most recent iteration of Rebeca's code, so I'll comment it out for now.
-  if(!ele.passConversionVeto())
-    return false;
-  //  if(fabs(ele.superClusterPosition().eta()) >= 1.4442 && fabs(ele.superClusterPosition().Eta()) <= 1.5660)
-  //  return false;
-  if(ele.electronID("mvaTrigV0") <= eleMvaCut_ || ele.electronID("mvaTrigV0") >= 1.0)
-    return false;
-  
-
-  eleDebugNumberEta++;
-  //  if(fabs(ele.eta())>eleECALbadLo_ && fabs(ele.eta())<eleECALbadHi_ )
-  //    return false;
-  //  eleDebugNumberCrack++;
-  //For calculating relIso with rho corrections
-  //  float AEff03 = ElectronEffectiveArea::GetElectronEffectiveArea(ElectronEffectiveArea::kEleGammaAndNeutralHadronIso03, ele.superCluster()->eta(), ElectronEffectiveArea::kEleEAFall11MC);
-  //  double combrelisorho = (ele.chargedHadronIso() + max(0.0, ele.neutralHadronIso() + ele.photonIso() - rhoIso*AEff03 ));
-  // Changing combreliso here to be consistant with Rebeca - hopefully that'll give me the ~80 events I'm missing. dBeta corrections
-  double combreliso = ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ) ;
-  //  double combreliso = ele.ecalIso()+ele.hcalIso()+ele.trackIso();
-  combreliso/=ele.pt();
-  if(combreliso>=eleIsoCut_ )
-    return false;
-  eleDebugNumberIso++;
-
-  eleDebugNumberD0++;
-
-  eleDebugNumberConV++;
-  //  std::cout << "Finds a true tight electron" << std::endl;
-  return true;
-}
 bool MakeTopologyNtupleMiniAOD::photonConversionVeto(const pat::Electron &electron, float &dist, float &Dcot){
   // return true if object is good (so not a conversion)
 ////std::cout << "photonConversionVeto CHECK" << std::endl;  
