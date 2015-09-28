@@ -310,6 +310,7 @@ private:
   std::map< std::string, std::vector<float> > electronSortedPz;
   std::map< std::string, std::vector<int> > electronSortedCharge;
   std::map< std::string, std::vector<float> > electronSortedMVA;
+  std::map< std::string, std::vector<int> > electronSortedMVAcategory;
   //  std::map< std::string, std::vector<int> > electronSortedIDQuality;
   //std::map< std::string, std::vector<int> > electronSortedIDQualityLoose;
   std::map< std::string, std::vector<float> > electronSortedChargedHadronIso;
@@ -402,6 +403,7 @@ private:
   std::map< std::string, std::vector<float> > looseElectronSortedPt;
   std::map< std::string, std::vector<float> > looseElectronSortedEta;
   std::map< std::string, std::vector<float> > looseElectronSortedMVA;
+  std::map< std::string, std::vector<int> > looseElectronSortedMVAcategory;
   std::map< std::string, std::vector<float> > looseElectronSortedRelIso;
   
 
