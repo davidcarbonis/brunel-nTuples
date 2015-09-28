@@ -5,7 +5,7 @@ config.General.requestName = 'WZJets_ScaleDown_MC_150306'
 config.General.workArea = 'crab_projects'
 
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'nTupliserMC_cfg.py'
+config.JobType.psetName = 'nTupliserMC_miniAOD_cfg.py'
 
 config.Data.inputDataset = '/WZJetsTo3LNu_scaledown_8TeV_TuneZ2Star_madgraph_tauola/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM'
 config.Data.inputDBS = 'global'
