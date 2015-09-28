@@ -30,7 +30,7 @@ int main(int argc, char* argv[]){
       continue;
     }
 
-    TChain * datasetChain = new TChain("makeTopologyNtuple/tree");
+    TChain * datasetChain = new TChain("makeTopologyNtupleMiniAOD/tree");
     datasetChain->Add(line.c_str());
     
     //    std::cout << line;
@@ -41,7 +41,7 @@ int main(int argc, char* argv[]){
 
     //stupid long conversion between int and string.
 
-    TFile outFile(("/nfs/data/tZqSkims/" + datasetName + "/skimFile"+numName+".root").c_str(),"RECREATE");
+    TFile outFile(("/nfs/data/tZqSkimsRun2/" + datasetName + "/skimFile"+numName+".root").c_str(),"RECREATE");
   
     int numberOfEvents = datasetChain->GetEntries();
     AnalysisEvent * event = new AnalysisEvent(false,"",datasetChain);
