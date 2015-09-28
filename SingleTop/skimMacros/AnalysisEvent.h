@@ -37,6 +37,7 @@ public :
    Float_t         elePF2PATPT[20];   //[numElePF2PAT]
    Int_t           elePF2PATCharge[20];   //[numElePF2PAT]
    Float_t         elePF2PATMVA[20];   //[numElePF2PAT]
+   Int_t	   elePF2PATMVAcategory[20];   //[numElePF2PAT]
    Float_t         elePF2PATImpactTransDist[20];   //[numElePF2PAT]
    Float_t         elePF2PATImpactTransError[20];   //[numElePF2PAT]
    Float_t         elePF2PATImpactTransSignificance[20];   //[numElePF2PAT]
@@ -115,6 +116,7 @@ public :
    Float_t         elePF2PATlooseElectronSortedPt[20];   //[numLooseElePF2PAT]
    Float_t         elePF2PATlooseElectronSortedEta[20];   //[numLooseElePF2PAT]
    Float_t         elePF2PATlooseElectronSortedMVA[20];   //[numLooseElePF2PAT]
+   Int_t	   elePF2PATlooseElectronSortedMVAcategory[20];   //[numLooseElePF2PAT]
    Float_t         elePF2PATlooseElectronSortedRelIso[20];   //[numLooseElePF2PAT]
    Int_t           numMuonPF2PAT;
    Int_t           numLooseMuonPF2PAT;
