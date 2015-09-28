@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
     numNamePlus = convert1.str();
     
     struct stat buffer;
-    if (stat(("/nfs/data/tZqSkims/" + datasetName + "/skimFile"+numNamePlus+".root").c_str(), &buffer) == 0) {
+    if (stat(("/nfs/data/tZqSkimsRun2/" + datasetName + "/skimFile"+numNamePlus+".root").c_str(), &buffer) == 0) {
       fileNum++;
       continue;
     }
