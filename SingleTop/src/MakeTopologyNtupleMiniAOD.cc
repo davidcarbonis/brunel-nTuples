@@ -584,9 +584,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
         // look up id decisions
         //bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
         bool isPassTight  = (*tight_id_decisions)[refel]; // NEW
-	/*	std::cout << "mvaValues: " << (*mvaValues)[refel] << std::endl;
-	std::cout << "mvaCategories: " << (*mvaCategories)[refel] << std::endl;
-	std::cout << " " << std::endl;*/
 
 	if(!isPassTight) // If not tight
 	  continue;
@@ -636,7 +633,9 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     electronSortedMVA[ ID ][numEle[ ID ]-1] = (*mvaValues)[refel]; // Non-triggering MVA
     electronSortedMVAcategory[ ID ][numEle[ ID ]-1] = (*mvaCategories)[refel];
     //    std::cout << "Debug ele.mva: " << ele.mva() << "   " << electronSortedMVA[ ID ][numEle[ ID ]-1] << std::endl;
-    
+    //    std::cout << "mvaValues: " << (*mvaValues)[refel] << std::endl;
+    //    std::cout << "mvaCategories: " << (*mvaCategories)[refel] << std::endl;
+
     //sortedIDQuality expects a cic-like cut. This is now deprecated, so I'm commenting these out.
     //    electronSortedIDQuality[ ID ][numEle[ ID ]-1]=(int)ele.electronID(eleIDqualty_);
     //    electronSortedIDQualityLoose[ ID ][numEle[ ID ]-1]=(int)ele.electronID(eleIDqualityLoose_);
@@ -2865,7 +2864,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   mytree_->Branch( (prefix + "PT").c_str(), &electronSortedPt[ ID ][0], (prefix + "PT[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "Charge").c_str(), &electronSortedCharge[ ID ][0], (prefix + "Charge[numEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "MVA").c_str(), &electronSortedMVA[ ID ][0], (prefix + "MVA[numEle" + name + "]/F").c_str());
-  mytree_->Branch( (prefix + "MVAcategory").c_str(), &electronSortedMVAcategory[ ID ][0], (prefix + "MVAcategory[numEle" + name + "]/F").c_str());
+  mytree_->Branch( (prefix + "MVAcategory").c_str(), &electronSortedMVAcategory[ ID ][0], (prefix + "MVAcategory[numEle" + name + "]/I").c_str());
 
   mytree_->Branch( (prefix + "ImpactTransDist").c_str(), &electronSortedImpactTransDist[ ID ][0], (prefix + "ImpactTransDist[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "ImpactTransError").c_str(), &electronSortedImpactTransError[ ID ][0], (prefix + "ImpactTransError[numEle" + name + "]/F").c_str());
@@ -2961,7 +2960,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   mytree_->Branch( (prefix + "looseElectronSortedPt").c_str(), &looseElectronSortedPt[ ID ][0], (prefix + "looseElectronPt[numLooseEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedEta").c_str(), &looseElectronSortedEta[ ID ][0], (prefix + "looseElectronEta[numLooseEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedMVA").c_str(), &looseElectronSortedMVA[ ID ][0], (prefix + "looseElectronMVA[numLooseEle" + name + "]/F").c_str());
-  mytree_->Branch( (prefix + "looseElectronSortedMVAcategory").c_str(), &looseElectronSortedMVAcategory[ ID ][0], (prefix + "looseElectronMVAcategory[numLooseEle" + name + "]/F").c_str());
+  mytree_->Branch( (prefix + "looseElectronSortedMVAcategory").c_str(), &looseElectronSortedMVAcategory[ ID ][0], (prefix + "looseElectronMVAcategory[numLooseEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedRelIso").c_str(), &looseElectronSortedRelIso[ ID ][0], (prefix + "looseElectronRelIso[numLooseEle" + name + "]/F").c_str());
 
 //Also handle z candidates
