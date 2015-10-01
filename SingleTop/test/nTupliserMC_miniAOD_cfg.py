@@ -188,6 +188,7 @@ process.makeTopologyNtupleMiniAOD.doCuts = cms.bool(False)
 process.makeTopologyNtupleMiniAOD.runCutFlow=cms.double(0)
 
 #Make the inputs for the n-tupliser right.
+process.makeTopologyNtupleMiniAOD.conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions", "RECO"),
 process.makeTopologyNtupleMiniAOD.electronPFTag = cms.InputTag("slimmedElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFTag = cms.InputTag("slimmedMuons")

@@ -1,13 +1,13 @@
 from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
 
-config.General.requestName = 'DoubleMuon_Run2015C_Golden38T25ns_Data_151010'
+config.General.requestName = 'DoubleEG_Run2015C_Golden38T25ns_Data_151010'
 config.General.workArea = 'crab_projects'
 
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'nTupliserData_miniAOD_cfg.py'
 
-config.Data.inputDataset = '/DoubleMuon/Run2015C-PromptReco-v1/MINIAOD'
+config.Data.inputDataset = '/DoubleEG/Run2015C-PromptReco-v1/MINIAOD'
 config.Data.inputDBS = 'global'
 config.Data.splitting = 'LumiBased'
 config.Data.unitsPerJob = 20
@@ -16,6 +16,6 @@ config.Data.runRange = '253659-256464'
 config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB())
 
 config.Data.publication = False
-config.Data.publishDataName = 'CRAB3_Data_nTupilisation_DoubleMuon_Run2015C_Golden38T25ns_151001'
+config.Data.publishDataName = 'CRAB3_Data_nTupilisation_DoubleEG_Run2015C_Golden38T25ns_151001'
 
 config.Site.storageSite = 'T2_UK_London_Brunel'

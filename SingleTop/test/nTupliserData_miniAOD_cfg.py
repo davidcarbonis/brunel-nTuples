@@ -23,9 +23,9 @@ process.load('RecoJets.Configuration.RecoJetAssociations_cff')
 process.load('RecoJets.Configuration.RecoJetAssociations_cff')
 process.load('TrackingTools.TransientTrack.TransientTrackBuilder_cfi')
 
-process.load("FWCore.Framework.test.cmsExceptionsFatal_cff")
-process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
-process.load("PhysicsTools.HepMCCandAlgos.genParticles_cfi")
+process.load("FWCore.Framework.test.cmsExceptionsFatal_cff") 
+process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi") 
+process.load("PhysicsTools.HepMCCandAlgos.genParticles_cfi") 
 process.load('Configuration.StandardSequences.Services_cff')
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
@@ -44,7 +44,7 @@ process.options = cms.untracked.PSet(
                      )
 
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag.globaltag = cms.string('MCRUN2_74_V9')
+process.GlobalTag.globaltag = cms.string('74X_dataRun2_v2')
 
 #There's a bit in here about some btau tags that the code looks for. I don't know if this is significant, however. I'm going to ignore it for now.
 
@@ -188,6 +188,7 @@ process.makeTopologyNtupleMiniAOD.doCuts = cms.bool(False)
 process.makeTopologyNtupleMiniAOD.runCutFlow=cms.double(0)
 
 #Make the inputs for the n-tupliser right.
+process.makeTopologyNtupleMiniAOD.conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions", "RECO"),
 process.makeTopologyNtupleMiniAOD.electronPFTag = cms.InputTag("slimmedElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFTag = cms.InputTag("slimmedMuons")
