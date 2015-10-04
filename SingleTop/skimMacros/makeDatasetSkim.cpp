@@ -76,6 +76,7 @@ int main(int argc, char* argv[]){
     delete event;
     delete outTree;
     fileNum++;
+    std::cerr << "" << std::endl;
   }
 
 }
