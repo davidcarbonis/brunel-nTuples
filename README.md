@@ -22,7 +22,7 @@ Development is currently being undertaken in CMSSW_7_4_7.
 
 git cms-merge-topic ikrav:egm_id_747_v2 needs to be executed in order for electron Id and MVA to work.
 
-(git cms-merge-topic -u cms-met:METCorUnc74X needs to be executed in order for MET corrections to work?) Not needed to run, but may be used soon. Don't install unless you know what you are doing ...
+Due to MET filter issues when creating MiniAOD v1 for Run2015B data, the HBHE HCAL filter must be enabled in the nTupliser cfg for Data!
 
 This version currently only works for miniAOD inputs.
 
