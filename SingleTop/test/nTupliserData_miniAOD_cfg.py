@@ -61,6 +61,26 @@ process.inclusiveSecondaryVertexFinderTagInfos.extSVCollection = cms.InputTag("u
 
 process.ak4PFJets.doRhoFastjet = True
 
+
+##___________________________HCAL_Noise_Filter________________________________||
+process.load('CommonTools.RecoAlgos.HBHENoiseFilterResultProducer_cfi')
+process.HBHENoiseFilterResultProducer.minZeros = cms.int32(99999)
+process.HBHENoiseFilterResultProducer.IgnoreTS4TS5ifJetInLowBVRegion=cms.bool(False) 
+process.HBHENoiseFilterResultProducer.defaultDecision = cms.string("HBHENoiseFilterResultRun2Loose")
+
+process.ApplyBaselineHBHENoiseFilter = cms.EDFilter('BooleanFlagFilter',
+   inputLabel = cms.InputTag('HBHENoiseFilterResultProducer','HBHENoiseFilterResult'),
+   reverseDecision = cms.bool(False)
+)
+
+process.ApplyBaselineHBHEIsoNoiseFilter = cms.EDFilter('BooleanFlagFilter',
+   inputLabel = cms.InputTag('HBHENoiseFilterResultProducer','HBHEIsoNoiseFilterResult'),
+   reverseDecision = cms.bool(False)
+)
+##___________________________HCAL_Noise_Filter________________________________||
+
+
+
 process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
                                            vertexCollection = cms.InputTag('offlineSlimmedPrimaryVertices'),
                                            minimumNDOF = cms.uint32(4) ,
@@ -92,6 +112,8 @@ process.goodVertices = cms.EDFilter(
 
 process.filtersSeq = cms.Sequence(
     process.primaryVertexFilter
+   *process.HBHENoiseFilterResultProducer
+   *ApplyBaselineHBHENoiseFilter
 #  * process.goodVertices 
 #    * process.trkPOGFilters
     )
@@ -188,7 +210,6 @@ process.makeTopologyNtupleMiniAOD.doCuts = cms.bool(False)
 process.makeTopologyNtupleMiniAOD.runCutFlow=cms.double(0)
 
 #Make the inputs for the n-tupliser right.
-process.makeTopologyNtupleMiniAOD.conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions", "RECO"),
 process.makeTopologyNtupleMiniAOD.electronPFTag = cms.InputTag("slimmedElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFTag = cms.InputTag("slimmedMuons")
