@@ -1,22 +1,20 @@
-from CRABClient.UserUtilities import config
+from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
 
-config.General.requestName = 't-chan_5f_MC_150928'
+config.General.requestName = 'TTW_MC_151006'
 config.General.workArea = 'crab_projects'
 
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'nTupliserMC_miniAOD_cfg.py'
+config.JobType.inputFiles = ['pileup_MC_Summer12.root', 'run2012A_13Jul.root', 'run2012B_13Jul.root', 'run2012C_v2.root']
 
-config.Data.inputDataset = '/ST_t-channel_5f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM'
+config.Data.inputDataset = '/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM'
 config.Data.inputDBS = 'global'
 config.Data.splitting = 'FileBased'
-config.Data.unitsPerJob = 10
-config.Data.outLFN = '/store/user/almorton/nTuples/t-chan_5f/150928/MC/'
-
-#config.Data.outLFN = '/store/user/<subdir>' # or '/store/group/<subdir>'
+config.Data.unitsPerJob = 1
+config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB())
 
 config.Data.publication = False
-config.Data.publishDataName = 'CRAB3_MC_nTupilisation_t-chan_5f_150928'
+config.Data.publishDataName = 'CRAB3_MC_nTupilisation_TTW_151006'
 
 config.Site.storageSite = 'T2_UK_London_Brunel'
-
