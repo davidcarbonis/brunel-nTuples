@@ -16,15 +16,13 @@ Enjoy, future students.
 //////////////////////////////////
 
 
-CMSSW_7_4_7 branch contains code from CMSSW_5_3_X branch which is being modified to work for Run 2 data.
-As data taking is using CMSSW_7_4_X, the branch is named CMSSW_7_4_7 as the version which data and MC is currently avaliable for (and which electron VID and MET uncertainities are avlaiable for).
-Development is currently being undertaken in CMSSW_7_4_7.
+CMSSW_7_4_14 branch contains code from CMSSW_7_4_7 branch which is being modified to work for Run 2 miniAOD v2 data and MC.
+As data taking is using CMSSW_7_4_X, the branch is named CMSSW_7_4_14 as the version which data and MC is currently avaliable for (and which electron VID and MET uncertainities are avlaiable for).
+Development is currently being undertaken in CMSSW_7_4_14.
 
-git cms-merge-topic ikrav:egm_id_747_v2 needs to be executed in order for electron Id and MVA to work.
+git cms-merge-topic ikrav:egm_id_7.4.12_v1 needs to be executed in order for electron Id and MVA to work.
 
-(git cms-merge-topic -u cms-met:METCorUnc74X needs to be executed in order for MET corrections to work?) Not needed to run, but may be used soon. Don't install unless you know what you are doing ...
-
-This version currently only works for miniAOD inputs.
+This version currently only works for miniAOD v2 inputs.
 
 To be continued ...
 
