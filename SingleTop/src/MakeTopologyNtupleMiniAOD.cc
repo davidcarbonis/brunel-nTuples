@@ -431,8 +431,8 @@ void MakeTopologyNtupleMiniAOD::fillMissingET(const edm::Event& iEvent, const ed
     metPx[ ID ] = metHandle->front().px();
     metPy[ ID ] = metHandle->front().py();
     metScalarEt[ ID ] = metHandle->front().sumEt();
-    metEtUncorrected[ ID ] = metHandle->front().uncorrectedPt();
-    metPhiUncorrected[ ID ] = metHandle->front().uncorrectedPhi();
+    metEtUncorrected[ ID ] = metHandle->front().uncorPt();
+    metPhiUncorrected[ ID ] = metHandle->front().uncorPhi();
 
     if(metHandle->front().isCaloMET()){
 	metMaxEtEM[ ID ] = metHandle->front().maxEtInEmTowers();
