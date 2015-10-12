@@ -2289,7 +2289,7 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
     double lumiWeightC = 1.0;
     
     edm::Handle < std::vector< PileupSummaryInfo > > pileupSummaryInfo_;
-    iEvent.getByLabel ("addPileupInfo", pileupSummaryInfo_);
+    iEvent.getByLabel ("slimmedAddPileupInfo", pileupSummaryInfo_); // miniAODv1 uses "addPileupInfo", miniAODv2 uses "slimmedAddPileupInfo"
     
     std::vector<PileupSummaryInfo>::const_iterator PVI;
 
