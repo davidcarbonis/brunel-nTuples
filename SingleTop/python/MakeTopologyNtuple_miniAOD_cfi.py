@@ -28,61 +28,40 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            fakeTriggerList = cms.vstring(), # empty. You can add fake triggers that are run on the fly to this list. No check on the process name is made so when duplicates are available only the latest one is added.
                                            
                                            triggerList = cms.vstring(                                                              #Updated Triggers
-        #Menu 5E33
-        'HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v12',
-        'HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v13',
-        'HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v14',
-        'HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v15',
-        'HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v16',
-        'HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v17',
-        'HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v18',
-        'HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v19',
-        'HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v1',
-        'HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v2',
-        'HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v3',
-        'HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v4',
-        'HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v5',
-        'HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v6',
-        'HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v7',
-        'HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v8',
-        'HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v9',
-        'HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v1',
-        'HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v2',
-        'HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v3',
-        'HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v4',
-        'HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v5',
-        'HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v6',
-        'HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v7',
-        'HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v8',
-        'HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v9',
-        'HLT_Mu17_Mu8_v13',
-        'HLT_Mu17_Mu8_v14',
-        'HLT_Mu17_Mu8_v15',
-        'HLT_Mu17_Mu8_v16',
-        'HLT_Mu17_Mu8_v17',
-        'HLT_Mu17_Mu8_v18',
-        'HLT_Mu17_Mu8_v19',
-        'HLT_Mu17_Mu8_v15',
-        'HLT_Mu17_Mu8_v14',
-        'HLT_Mu17_Mu8_v20',
-        'HLT_Mu17_Mu8_v21',
-        'HLT_Mu17_Mu8_v22',
-        'HLT_Mu17_TkMu8_v6',
-        'HLT_Mu17_TkMu8_v7',
-        'HLT_Mu17_TkMu8_v8',
-        'HLT_Mu17_TkMu8_v9',
-        'HLT_Mu17_TkMu8_v10',
-        'HLT_Mu17_TkMu8_v11',
-        'HLT_Mu17_TkMu8_v12',
-        'HLT_Mu17_TkMu8_v13',
-        'HLT_Mu17_TkMu8_v14',
-        #MC Menu
-        'HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_v9',
-        'HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_v9',
-        'HLT_Mu17_Mu8_v12',
-        'HLT_Mu17_TkMu8_v5',
-        'HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v11'
-        #Menu 7E33
+        #Menu 5E33 - Run2015(A)-B (50ns)
+        'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2', #DoubleElectron
+        'HLT_IsoMu20_v2 ', #DoubleMuon
+        'HLT_IsoMu20_eta2p1_v2 ', #DoubleMuon
+        'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', #DoubleMuon
+        'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2', #DoubleMuon
+        'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron
+        'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron
+
+        #Menu 7E33 - Run2015C (25ns)
+        #'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2', #DoubleElectron, commented out as used in previous menu, no need to repeat
+        #'HLT_IsoMu20_v2 ', #DoubleMuonn, commented out as used in previous menu, no need to repeat
+        #'HLT_IsoMu20_eta2p1_v2 ', #DoubleMuonn, commented out as used in previous menu, no need to repeat
+        #'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', #DoubleMuonn, commented out as used in previous menu, no need to repeat
+        #'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2', #DoubleMuonn, commented out as used in previous menu, no need to repeat
+        #'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron, commented out as used in previous menu, no need to repeat
+        #'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron, commented out as used in previous menu, no need to repeat
+
+        #Menu 14E33 - Run2015D (25ns)
+        'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3', #DoubleElectron
+        'HLT_IsoMu18_v1', #DoubleMuon
+        #'HLT_IsoMu20_eta2p1_v2 ', #DoubleMuonn, commented out as used in previous menu, no need to repeat
+        #'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', #DoubleMuonn, commented out as used in previous menu, no need to repeat
+        #'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2', #DoubleMuonn, commented out as used in previous menu, no need to repeat
+        'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3', #Muon+Electron
+        'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v3', #Muon+Electron
+
+        #MC Menu (25ns + 50ns)
+        'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1', #DoubleElectron
+        'HLT_IsoMu20_v1', # DoubleMuon
+        'HLT_IsoMu20_eta2p1_v1', #DoubleMuon
+        'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1', #Muon+Electron
+        'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v1' #Muon+Electron
+        
         ),
                                            l1TriggerTag = cms.InputTag("gtDigis"),                                    
                                            checkTriggers = cms.bool(True),
