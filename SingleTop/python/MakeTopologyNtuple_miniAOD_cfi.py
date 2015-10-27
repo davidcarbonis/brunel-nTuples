@@ -3,7 +3,7 @@ import FWCore.ParameterSet.Config as cms
 makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            # "Calo"
                                            trackToken  = cms.InputTag("lostTracks"),
-                                           conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions", "PAT"),
+                                           conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions", "RECO"),
                                            electronTag = cms.InputTag("slimmedElectrons"),
                                            tauTag      = cms.InputTag("slimmedTaus"),
                                            muonTag     = cms.InputTag("slimmedMuons"),
@@ -89,10 +89,10 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            
                                            #electron ID (tight, for analysis)
 
-                                           eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp90"),
-                                           eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80"),
-                                           mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"),
-                                           mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories"),
+                                           eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp90"),
+                                           eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp80"),
+                                           mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15Trig25nsV1Values"),
+                                           mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15Trig25nsV1Categories"),
 
                                            runSwissCross = cms.bool(True),
                                            runReweightTest = cms.bool(False), #This is just a little test to see what happens when using the default reweight class, i.e. whether it breaks like my one does.
