@@ -629,7 +629,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     electronSortedPz[ ID ][numEle[ ID ]-1]=ele.pz();
     electronSortedCharge[ ID ][numEle[ ID ]-1]=ele.charge();
     //    std::cout << "Ele.eta: " << ele.eta() << "  " << electronSortedEta[ ID ][numEle[ ID ]-1] << std::endl;
-    //    electronSortedMVA[ ID ][numEle[ ID ]-1]=ele.electronID("mvaTrigV0"); // Triggering MVA not avaliable for 2015 yet - not pushing this back
+    //    electronSortedMVA[ ID ][numEle[ ID ]-1]=ele.electronID("mvaEleID-Spring15-25ns-Trig-V1-wp80"); // Triggering MVA not avaliable for 2015 yet - not pushing this back
     electronSortedMVA[ ID ][numEle[ ID ]-1] = (*mvaValues)[refel]; // Non-triggering MVA
     electronSortedMVAcategory[ ID ][numEle[ ID ]-1] = (*mvaCategories)[refel];
     //    std::cout << "Debug ele.mva: " << ele.mva() << "   " << electronSortedMVA[ ID ][numEle[ ID ]-1] << std::endl;
