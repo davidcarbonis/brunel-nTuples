@@ -196,7 +196,7 @@ process.makeTopologyNtupleMiniAOD.metPFTag = cms.InputTag("slimmedMETs")
 process.makeTopologyNtupleMiniAOD.rho = cms.InputTag("fixedGridRhoAll")                                                                          
 
 ##electronIdMva Stuff.
-process.makeTopologyNtupleMiniAOD.eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp90")
+process.makeTopologyNtupleMiniAOD.eleMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp90")
 process.makeTopologyNtupleMiniAOD.eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp90")
 process.makeTopologyNtupleMiniAOD.mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15Trig25nsV1Values")
 process.makeTopologyNtupleMiniAOD.mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15Trig25nsV1Categories")

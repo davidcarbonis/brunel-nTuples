@@ -2,7 +2,7 @@ from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 
 config = config()
 
-config.General.requestName = 'ZZ2l2nu_151027'
+config.General.requestName = 'ZZ2l2nu_151029'
 config.General.workArea = 'crab_projects'
 
 config.JobType.pluginName = 'Analysis'
@@ -16,7 +16,7 @@ config.Data.unitsPerJob = 1
 config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB())
 
 config.Data.publication = False
-config.Data.publishDataName = 'CRAB3_MC_nTupilisation_ZZ2l2nu_151027'
+config.Data.publishDataName = 'CRAB3_MC_nTupilisation_ZZ2l2nu_151029'
 
 config.Site.storageSite = 'T2_UK_London_Brunel'
 

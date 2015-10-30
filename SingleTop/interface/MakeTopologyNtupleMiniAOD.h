@@ -78,8 +78,8 @@ private:
   edm::InputTag ttGenEvent_;
 
   // ID decisions objects
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleLooseIdMapToken_;
-  //      edm::EDGetTokenT<edm::ValueMap<bool> > eleMediumIdMapToken_;
+  //edm::EDGetTokenT<edm::ValueMap<bool> > eleLooseIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > eleMediumIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > eleTightIdMapToken_;
 
   // MVA values and categories (optional)

@@ -163,8 +163,8 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     ttGenEvent_(iConfig.getParameter<edm::InputTag>("ttGenEvent")),
 
 
-    eleLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"))),
-    //    eleMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"))),
+    //    eleLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"))),
+    eleMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"))),
     eleTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTightIdMap"))),
     mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap"))),
     mvaCategoriesMapToken_(consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaCategoriesMap"))),
@@ -532,12 +532,12 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     // Note: this implies that the VID ID modules have been run upstream.
     // If you need more info, check with the EGM group.
 
-    edm::Handle<edm::ValueMap<bool> > loose_id_decisions;
-    //   edm::Handle<edm::ValueMap<bool> > medium_id_decisions;
+    //    edm::Handle<edm::ValueMap<bool> > loose_id_decisions;
+    edm::Handle<edm::ValueMap<bool> > medium_id_decisions;
     edm::Handle<edm::ValueMap<bool> > tight_id_decisions; 
 
-    iEvent.getByToken(eleLooseIdMapToken_,loose_id_decisions);
-    //    iEvent.getByToken(eleMediumIdMapToken_,medium_id_decisions);
+    //   iEvent.getByToken(eleLooseIdMapToken_,loose_id_decisions);
+    iEvent.getByToken(eleMediumIdMapToken_,medium_id_decisions);
     iEvent.getByToken(eleTightIdMapToken_,tight_id_decisions);
 
     // Get MVA values and categories (optional)
@@ -582,10 +582,10 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	const pat::Electron& ele = (*electronHandle)[jele];
 	pat::ElectronRef refel(electronHandle, jele);
         // look up id decisions
-        //bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
-        bool isPassTight  = (*tight_id_decisions)[refel]; // NEW
+        bool isPassMedium = (*medium_id_decisions)[refel]; // NEW
+        // bool isPassTight  = (*tight_id_decisions)[refel]; // NEW
 
-	if(!isPassTight) // If not tight
+	if(!isPassMedium) // If not tight
 	  continue;
 
 	int photonConversionTag=-1;
@@ -748,9 +748,9 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       const pat::Electron& ele = (*electronHandle)[jele];
       pat::ElectronRef refel(electronHandle, jele);
  
-      bool isPassLoose = (*loose_id_decisions)[refel]; // NEW
+      bool isPassMedium = (*medium_id_decisions)[refel]; // NEW - whilst selection is for medium electrons, there is no loose Loose ID cut - using medium instead
        
-      if(!isPassLoose)
+      if(!isPassMedium)
 	continue;
 
       numLooseEle[ID]++;
@@ -1249,12 +1249,12 @@ void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent, const edm::E
     // Note: this implies that the VID ID modules have been run upstream.
     // If you need more info, check with the EGM group.
 
-    edm::Handle<edm::ValueMap<bool> > loose_id_decisions;
-    //   edm::Handle<edm::ValueMap<bool> > medium_id_decisions;
+    //   edm::Handle<edm::ValueMap<bool> > loose_id_decisions;
+    edm::Handle<edm::ValueMap<bool> > medium_id_decisions;
     edm::Handle<edm::ValueMap<bool> > tight_id_decisions; 
 
-    iEvent.getByToken(eleLooseIdMapToken_,loose_id_decisions);
-    //    iEvent.getByToken(eleMediumIdMapToken_,medium_id_decisions);
+    //   iEvent.getByToken(eleLooseIdMapToken_,loose_id_decisions);
+    iEvent.getByToken(eleMediumIdMapToken_,medium_id_decisions);
     iEvent.getByToken(eleTightIdMapToken_,tight_id_decisions);
 
     // Get MVA values and categories (optional)
@@ -1280,16 +1280,16 @@ void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent, const edm::E
     const pat::Electron& ele = electrons[jele];
 
     // look up id decisions
-   bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
-    //bool isPassMedium = (*medium_id_decisions)[ele];
-   bool isPassTight  = (*tight_id_decisions)[ele.gsfTrack()]; // NEW
+   //   bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
+    bool isPassMedium = (*medium_id_decisions)[ele.gsfTrack()]; // NEW - current electron selection requires medium ID
+   //   bool isPassTight  = (*tight_id_decisions)[ele.gsfTrack()]; // NEW
   
-    if(!isPassLoose)
+    if(!isPassMedium)
       continue;
 
     math::XYZTLorentzVector elecand(ele.px(),ele.py(),ele.pz(),ele.energy());
 //    bool tightcand=tightElectronID(ele, true); // Old Electron Id
-    passedtight.push_back(isPassTight);
+    passedtight.push_back(isPassMedium);
     candidatestoloopover.push_back(elecand);
     
   }// end of electron loop
