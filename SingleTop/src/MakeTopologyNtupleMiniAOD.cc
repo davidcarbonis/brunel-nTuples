@@ -132,8 +132,8 @@
 MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iConfig):
     histocontainer_(),
 
-    trackToken_(consumes<vector<pat::PackedCandidate> >(iConfig.getParameter<edm::InputTag>("trackToken"))),
-    conversionsToken_(consumes<vector<reco::Conversion> >(iConfig.getParameter<edm::InputTag>("conversionsToken"))),
+    trackToken_(consumes<std::vector<pat::PackedCandidate> >(iConfig.getParameter<edm::InputTag>("trackToken"))),
+    conversionsToken_(consumes<std::vector<reco::Conversion> >(iConfig.getParameter<edm::InputTag>("conversionsToken"))),
 
     eleLabel_(iConfig.getParameter<edm::InputTag>("electronTag")),
     muoLabel_(iConfig.getParameter<edm::InputTag>("muonTag")),
@@ -501,7 +501,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     // ran_eleloop_=true;
   
     // info for 'default conversion finder
-    edm::Handle< vector<pat::PackedCandidate> > lostTracks;
+    edm::Handle< std::vector<pat::PackedCandidate> > lostTracks;
     iEvent.getByToken(trackToken_, lostTracks);
     edm::ESHandle<MagneticField> magneticField;
     iSetup.get<IdealMagneticFieldRecord>().get(magneticField);
@@ -1744,7 +1744,7 @@ void MakeTopologyNtupleMiniAOD::fillGeneralTracks(const edm::Event& iEvent, cons
 
   numGeneralTracks=0;
 
-  for (vector<pat::PackedCandidate>::const_iterator trit=lostTracks->begin(); trit!=lostTracks->end() && numGeneralTracks < (int)NTRACKSMAX; trit++){
+  for (std::vector<pat::PackedCandidate>::const_iterator trit=lostTracks->begin(); trit!=lostTracks->end() && numGeneralTracks < (int)NTRACKSMAX; trit++){
     generalTracksPt[numGeneralTracks]=trit->pt();
     generalTracksEta[numGeneralTracks]=trit->eta();
     generalTracksTheta[numGeneralTracks]=trit->theta();
