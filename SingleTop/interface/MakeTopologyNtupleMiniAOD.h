@@ -79,6 +79,10 @@ private:
   bool isttbar_;
   edm::InputTag ttGenEvent_;
 
+  // Generator level info
+  edm::EDGetTokenT<GenEventInfoProduct> pdfInfoToken_;
+  edm::EDGetTokenT<GenEventInfoProduct> generatorToken_;
+
   // ID decisions objects
   //edm::EDGetTokenT<edm::ValueMap<bool> > eleLooseIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > eleMediumIdMapToken_;
