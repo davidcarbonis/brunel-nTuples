@@ -4,7 +4,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            # "Calo"
 					   beamSpotToken = cms.InputTag("offlineBeamSpot"),
                                            trackToken  = cms.InputTag("lostTracks"),
-                                           conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions", "RECO"),
+                                           conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions", "PAT"),
                                            electronTag = cms.InputTag("slimmedElectrons"),
                                            tauTag      = cms.InputTag("slimmedTaus"),
                                            muonTag     = cms.InputTag("slimmedMuons"),
@@ -25,6 +25,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            #metJPTTag      = cms.InputTag("patMETsTC"),
                                            primaryVertexToken = cms.InputTag("offlineSlimmedPrimaryVertices"),
                                            rhoToken           = cms.InputTag("kt6PFJets", "rho"),
+					   pileupToken	      = cms.InputTag("slimmedAddPileupInfo"),
                                            triggerToken  = cms.InputTag("TriggerResults","","HLT"),
                                            fakeTriggerList = cms.vstring(), # empty. You can add fake triggers that are run on the fly to this list. No check on the process name is made so when duplicates are available only the latest one is added.
                                            

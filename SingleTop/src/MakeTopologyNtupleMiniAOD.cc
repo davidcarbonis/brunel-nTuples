@@ -159,6 +159,8 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     genSimParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genSimParticles"))),
     pvLabel_(consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("primaryVertexToken"))),
     rhoToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoToken"))),
+    pileupToken_(mayConsume<std::vector< PileupSummaryInfo > >(iConfig.getParameter<edm::InputTag>("pileupToken"))),
+
     isttbar_(iConfig.getParameter<bool>("isttBar")),
     ttGenEvent_(iConfig.getParameter<edm::InputTag>("ttGenEvent")),
 
@@ -2290,7 +2292,7 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
     double lumiWeightC = 1.0;
     
     edm::Handle < std::vector< PileupSummaryInfo > > pileupSummaryInfo_;
-    iEvent.getByLabel ("slimmedAddPileupInfo", pileupSummaryInfo_); // miniAODv1 uses "addPileupInfo", miniAODv2 uses "slimmedAddPileupInfo"
+    iEvent.getByToken (pileupToken_, pileupSummaryInfo_); // miniAODv1 uses "addPileupInfo", miniAODv2 uses "slimmedAddPileupInfo"
     
     std::vector<PileupSummaryInfo>::const_iterator PVI;
 
