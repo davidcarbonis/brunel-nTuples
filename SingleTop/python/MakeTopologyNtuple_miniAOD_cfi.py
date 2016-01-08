@@ -18,7 +18,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            jetPFToken    = cms.InputTag("slimmedJets"),
                                            jetPFRecoTag  = cms.InputTag("slimmedJets"),
                                            #                                    photonPFTag   = cms.InputTag("slimmedPhotons"), 
-                                           metPFToken      = cms.InputTag("slimmedMETsNoHF"),
+                                           metPFToken      = cms.InputTag("slimmedMETs"),
                                            # JPT
                                            #jetJPTTag         = cms.InputTag("selectedPatJetsAK4JPT"),
                                            #metJPTTag      = cms.InputTag("patMETsTC"),
