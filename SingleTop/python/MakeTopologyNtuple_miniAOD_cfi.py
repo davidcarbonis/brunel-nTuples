@@ -4,7 +4,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            # "Calo"
 					   beamSpotToken = cms.InputTag("offlineBeamSpot"),
                                            trackToken  = cms.InputTag("lostTracks"),
-                                           conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions", "PAT"),
+                                           conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions", "RECO"),
                                            electronTag = cms.InputTag("slimmedElectrons"),
                                            tauTag      = cms.InputTag("slimmedTaus"),
                                            muonTag     = cms.InputTag("slimmedMuons"),
