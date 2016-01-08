@@ -213,7 +213,8 @@ process.source.fileNames = [
 	#'root://xrootd.unl.edu//store/mc/Summer12_DR53X/WZJetsTo3LNu_matchingdown_8TeV_TuneZ2Star_madgraph_tauola/AODSIM/PU_S10_START53_V19-v1/00000/06A911BC-3CBB-E311-9AFD-00266CFACC38.root',
         #'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/WZTo3LNu_TuneCUETP8M1_13TeV-powheg-pythia8/AODSIM/Asympt25ns_MCRUN2_74_V9-v1/60000/02E34918-E717-E511-AD0A-001E675A6630.root',
 #        'root://xrootd.unl.edu//store/data/Run2015D/DoubleMuon/MINIAOD/PromptReco-v4/000/258/159/00000/0C6D4AB0-6F6C-E511-8A64-02163E0133CD.root',
-	'root://xrootd.unl.edu//store/data/Run2015C/DoubleEG/MINIAOD/PromptReco-v1/000/253/620/00000/02C689A6-1C40-E511-8422-02163E014324.root',
+#	'root://xrootd.unl.edu//store/data/Run2015C/DoubleEG/MINIAOD/PromptReco-v1/000/253/620/00000/02C689A6-1C40-E511-8422-02163E014324.root',
+	'root://xrootd.unl.edu//store/data/Run2015C_25ns/DoubleEG/MINIAOD/16Dec2015-v1/20000/00D3DF54-58B3-E511-BFE8-0025904C6414.root',
         ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
