@@ -41,7 +41,8 @@ private:
   edm::Service<TFileService> fs;
   std::map<std::string,TH1D*> histocontainer_; // simple map to contain all histograms. Histograms are booked in the beginJob() method
   std::map<std::string,TH2D*> histocontainer2D_; // simple map to contain all histograms. Histograms are booked in the beginJob() method (2D)
-  
+
+  edm::EDGetTokenT<reco::BeamSpot> beamSpotToken_;
   edm::EDGetTokenT<std::vector<pat::PackedCandidate> > trackToken_;
   edm::EDGetTokenT<reco::ConversionCollection> conversionsToken_;
 
@@ -64,13 +65,13 @@ private:
   edm::InputTag jetJPTTag_;	
   edm::InputTag metJPTTag_;     
  
-  edm::InputTag trigLabel_;
+  edm::EDGetTokenT<edm::TriggerResults> trigToken_;
   std::vector<std::string> fakeTrigLabelList_;
   std::vector<std::string> triggerList_;
   edm::InputTag l1TrigLabel_;
   edm::EDGetTokenT<reco::GenParticleCollection> genParticlesToken_;
   edm::EDGetTokenT<reco::GenParticleCollection> genSimParticlesToken_;
-  edm::InputTag pvLabel_;
+  edm::EDGetTokenT<reco::VertexCollection> pvLabel_;
   edm::InputTag rho_;
 
   //Sets whether the sample is ttbar or not. Default is false. This affects top pt reweighting of the sample.

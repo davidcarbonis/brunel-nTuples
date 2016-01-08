@@ -1,4 +1,3 @@
-
 // -*- C++ -*-
 //
 // Package:    MakeTopologyNtuple
@@ -132,6 +131,7 @@
 MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iConfig):
     histocontainer_(),
 
+    beamSpotToken_(consumes<reco::BeamSpot>(iConfig.getParameter<edm::InputTag>("beamSpotToken"))),
     trackToken_(consumes<std::vector<pat::PackedCandidate> >(iConfig.getParameter<edm::InputTag>("trackToken"))),
     conversionsToken_(consumes<std::vector<reco::Conversion> >(iConfig.getParameter<edm::InputTag>("conversionsToken"))),
 
@@ -151,13 +151,13 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     patMetToken_(mayConsume<pat::METCollection>(iConfig.getParameter<edm::InputTag>("metPFToken"))),
     //    jetJPTTag_(iConfig.getParameter<edm::InputTag>("jetJPTTag")),
     //    metJPTTag_(iConfig.getParameter<edm::InputTag>("metJPTTag")),
-    trigLabel_(iConfig.getParameter<edm::InputTag>("triggerTag")),
+    trigToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("triggerToken"))),
     fakeTrigLabelList_(iConfig.getParameter<std::vector<std::string> >("fakeTriggerList")),
     triggerList_(iConfig.getParameter<std::vector<std::string> >("triggerList")),
     l1TrigLabel_(iConfig.getParameter<edm::InputTag>("l1TriggerTag")),
     genParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticles"))),
     genSimParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genSimParticles"))),
-    pvLabel_(iConfig.getParameter<edm::InputTag>("primaryVertexTag")),
+    pvLabel_(consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("primaryVertexToken"))),
     rho_(iConfig.getParameter<edm::InputTag>("rho")),
     isttbar_(iConfig.getParameter<bool>("isttBar")),
     ttGenEvent_(iConfig.getParameter<edm::InputTag>("ttGenEvent")),
@@ -391,8 +391,8 @@ void MakeTopologyNtupleMiniAOD::fillEventInfo(const edm::Event& iEvent, const ed
     evtlumiblock = iEvent.luminosityBlock(); // or even: iEvent.luminosityBlock() might work, depending on the release) 
   
     // also add pv:
-    edm::Handle<std::vector<reco::Vertex> > pvHandle;
-    iEvent.getByLabel(pvLabel_,pvHandle);
+    edm::Handle<reco::VertexCollection> pvHandle;
+    iEvent.getByToken(pvLabel_,pvHandle);
   
     pvX=pvY=pvZ=pvRho=-999999;
     numPv=pvDX=pvDY=pvDZ=0;
@@ -473,8 +473,9 @@ void MakeTopologyNtupleMiniAOD::fillBeamSpot(const edm::Event& iEvent, const edm
     ran_PV_=true;
   
     reco::BeamSpot beamSpot;
+
     edm::Handle<reco::BeamSpot> beamSpotHandle;
-    iEvent.getByLabel("offlineBeamSpot", beamSpotHandle);
+    iEvent.getByToken(beamSpotToken_, beamSpotHandle);
 
     if ( beamSpotHandle.isValid() )
     {
@@ -562,8 +563,8 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	IndexSorter< std::vector<float> >(electronEts,true)();
 
 //Primary vertex
-    edm::Handle<std::vector<reco::Vertex> > pvHandle;
-    iEvent.getByLabel(pvLabel_,pvHandle);
+    edm::Handle<reco::VertexCollection> pvHandle;
+    iEvent.getByToken(pvLabel_,pvHandle);
 
 //Rechits for cleaning
     edm::Handle<EcalRecHitCollection> recHits;
@@ -3717,7 +3718,7 @@ void MakeTopologyNtupleMiniAOD::fillTriggerData(const edm::Event& iEvent)
 
   }
   edm::Handle<edm::TriggerResults> hltResults;
-  iEvent.getByLabel(trigLabel_, hltResults);
+  iEvent.getByToken(trigToken_, hltResults);
 
   if(hltResults.product()->wasrun()){
 
