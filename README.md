@@ -16,13 +16,11 @@ Enjoy, future students.
 //////////////////////////////////
 
 
-CMSSW_7_6_1 branch contains code from CMSSW_7_4_14 branch which is modified to work for Run 2 miniAOD v2 data and MC.
-As data/MC reprocessing taking is using CMSSW_7_6_X, the branch is named CMSSW_7_6_1 as the version which data and MC is currently avaliable for (and which electron VID and MET uncertainities are avlaiable for).
+CMSSW_7_6_3 branch contains code from CMSSW_7_4_14 branch which is modified to work for Run 2 miniAOD v2 data and MC.
+As data/MC reprocessing taking is using CMSSW_7_6_X, the branch is named CMSSW_7_6_3 as the version which data and MC is currently avaliable for (and which electron VID and MET uncertainities are avlaiable for).
 Development is being undertaken in.
 
-git cms-merge-topic ikrav:egm_id_7.4.12_v1 needs to be executed in order for electron Id and MVA to work. (Still the case for 76X?)
-
-This version only works for miniAOD v2 inputs.
+This version only works for miniAOD2015 v2 inputs.
 
 To be continued ...
 
