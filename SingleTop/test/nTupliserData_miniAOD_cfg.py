@@ -194,6 +194,7 @@ process.makeTopologyNtupleMiniAOD.muonPFTag = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("slimmedJets")
 process.makeTopologyNtupleMiniAOD.metPFTag = cms.InputTag("slimmedMETs")
 process.makeTopologyNtupleMiniAOD.rhoToken = cms.InputTag("fixedGridRhoAll")
+process.makeTopologyNtupleMiniAOD.conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions", "RECO")
 
 ##electronIdMva Stuff.
 process.makeTopologyNtupleMiniAOD.eleMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp90")
