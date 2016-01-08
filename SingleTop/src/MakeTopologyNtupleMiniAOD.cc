@@ -158,7 +158,7 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     genParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticles"))),
     genSimParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genSimParticles"))),
     pvLabel_(consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("primaryVertexToken"))),
-    rho_(iConfig.getParameter<edm::InputTag>("rho")),
+    rhoToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoToken"))),
     isttbar_(iConfig.getParameter<bool>("isttBar")),
     ttGenEvent_(iConfig.getParameter<edm::InputTag>("ttGenEvent")),
 
@@ -526,7 +526,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 
     //Get the rho isolation co-efficient here
     edm::Handle<double> rhoHand_;
-    iEvent.getByLabel(rho_,rhoHand_);
+    iEvent.getByToken(rhoToken_,rhoHand_);
     rhoIso = *(rhoHand_.product());
 
     // Get the electron ID data from the event stream.

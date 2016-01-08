@@ -72,7 +72,7 @@ private:
   edm::EDGetTokenT<reco::GenParticleCollection> genParticlesToken_;
   edm::EDGetTokenT<reco::GenParticleCollection> genSimParticlesToken_;
   edm::EDGetTokenT<reco::VertexCollection> pvLabel_;
-  edm::InputTag rho_;
+  edm::EDGetTokenT<double> rhoToken_;
 
   //Sets whether the sample is ttbar or not. Default is false. This affects top pt reweighting of the sample.
   bool isttbar_;

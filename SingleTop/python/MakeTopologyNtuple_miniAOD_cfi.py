@@ -24,7 +24,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            #jetJPTTag         = cms.InputTag("selectedPatJetsAK4JPT"),
                                            #metJPTTag      = cms.InputTag("patMETsTC"),
                                            primaryVertexToken = cms.InputTag("offlineSlimmedPrimaryVertices"),
-                                           rho              = cms.InputTag("kt6PFJets", "rho"),
+                                           rhoToken           = cms.InputTag("kt6PFJets", "rho"),
                                            triggerToken  = cms.InputTag("TriggerResults","","HLT"),
                                            fakeTriggerList = cms.vstring(), # empty. You can add fake triggers that are run on the fly to this list. No check on the process name is made so when duplicates are available only the latest one is added.
                                            
