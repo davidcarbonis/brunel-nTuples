@@ -163,9 +163,8 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
 
     isttbar_(iConfig.getParameter<bool>("isttBar")),
     ttGenEvent_(iConfig.getParameter<edm::InputTag>("ttGenEvent")),
-
-    pdfInfoToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("pdfInfoFixing"))),
-    generatorToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("generator"))),
+    pdfInfoToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("pdfInfoFixingToken"))),
+    generatorToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("generatorToken"))),
 
     //    eleLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"))),
     eleMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"))),
@@ -1332,10 +1331,13 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
 
   edm::Handle<GenEventInfoProduct> genEventInfo;
 
-  if ( isMCatNLO_ )
-  { iEvent.getByToken(pdfInfoToken_,genEventInfo); }
-  else { iEvent.getByToken(generatorToken_, genEventInfo); }
-  
+  if ( isMCatNLO_ ){
+    iEvent.getByToken(pdfInfoToken_,genEventInfo);
+  }
+  else {
+    iEvent.getByLabel("generator", genEventInfo);
+  }
+
   processPtHat_=genEventInfo->qScale();
   weight_=genEventInfo->weight();
   processId_=genEventInfo->signalProcessID();
