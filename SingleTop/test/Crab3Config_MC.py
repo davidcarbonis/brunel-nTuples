@@ -6,7 +6,7 @@ config.General.requestName = 'tqZ_4flavour_3leptons_ext1'
 config.General.workArea = 'crab_projects'
 
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'nTupliserMC_miniAOD_cfg.py'
+config.JobType.psetName = 'nTupliserMC_cfg.py'
 config.JobType.inputFiles = ['pileup_MC_Summer12.root', 'run2012A_13Jul.root', 'run2012B_13Jul.root', 'run2012C_v2.root']
 
 config.Data.inputDataset = '/tZq_4f_3leptons_8TeV-amcatnlo-pythia8_TuneCUETP8M1/Summer12DR53X-PU_S10_START53_V19_ext1-v1/AODSIM'
