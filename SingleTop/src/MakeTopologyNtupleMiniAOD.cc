@@ -1335,7 +1335,7 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
     iEvent.getByToken(pdfInfoToken_,genEventInfo);
   }
   else {
-    iEvent.getByLabel("generator", genEventInfo);
+    iEvent.getByToken(generatorToken_,genEventInfo);
   }
 
   processPtHat_=genEventInfo->qScale();
