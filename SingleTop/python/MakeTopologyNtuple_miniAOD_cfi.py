@@ -158,11 +158,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 
 
                                            
-                                           btagAlgorithmsToNtuple = cms.vstring("trackCountingHighPurBJetTags","trackCountingHighEffBJetTags",
-                                                                                "jetProbabilityBJetTags", "jetBProbabilityBJetTags", "softElectronBJetTags","softMuonBJetTags","softMuonNoIPBJetTags",
-                                                                                "simpleSecondaryVertexHighEffBJetTags","simpleSecondaryVertexNegativeBJetTags",
-                                                                                "combinedSecondaryVertexMVABJetTags", "simpleSecondaryVertexHighPurBJetTags",
-										"pfCombinedInclusiveSecondaryVertexV2BJetTags"
+                                           btagAlgorithmsToNtuple = cms.vstring("pfJetProbabilityBJetTags","pfCombinedInclusiveSecondaryVertexV2BJetTags", "pfCombinedMVAV2BJetTags"
                                                                                 
                                                                                 ),
                                            # Btagging parameterizations to look at (the vectors btagParameterizationList and btagParameterizationMode are coupled!). Documentation on algo names (go in btagParamerizationList) and parameterizations (go in btagParameterizationMode) are available on this twiki:
