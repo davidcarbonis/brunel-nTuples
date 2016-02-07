@@ -39,6 +39,7 @@
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "SimDataFormats/GeneratorProducts/interface/HepMCProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
+#include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/PdfInfo.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
@@ -1239,6 +1240,15 @@ void MakeTopologyNtuple::fillMCInfo(const edm::Event& iEvent, const edm::EventSe
   int W_leptonic=0;
   
   //Get the top gen events for top pt reweighting - so I guess this is irrelevant.
+  edm::Handle<LHEEventProduct> EventHandle;
+  iEvent.getByLabel("externalLHEProducer",EventHandle);
+
+  weight_muF0p5_ = EventHandle->weights()[2].wgt; // muF = 0.5 | muR = 1
+  weight_muF2_ = EventHandle->weights()[1].wgt; // muF = 2 | muR = 1
+  weight_muR0p5_ = EventHandle->weights()[6].wgt; // muF = 1 | muR = 0.5
+  weight_muR2_ = EventHandle->weights()[3].wgt; // muF = 1 | muR = 2
+
+  origWeightForNorm_ = EventHandle->originalXWGTUP();
 
   edm::Handle<GenEventInfoProduct> genEventInfo;
   if( isMCatNLO_ )
@@ -2571,6 +2581,12 @@ void MakeTopologyNtuple::bookBranches(){
   mytree_->Branch("PileUpWeightRunA", &pileUpWeightA, "pileUpWeight/D");
   mytree_->Branch("PileUpWeightRunB", &pileUpWeightB, "pileUpWeight/D");
   mytree_->Branch("PileUpWeightRunC", &pileUpWeightC, "pileUpWeight/D");
+
+  mytree_->Branch("weight_muF0p5", &weight_muF0p5_, "weight_muF0p5/D");
+  mytree_->Branch("weight_muF2", &weight_muF2_, "weight_muF2/D");
+  mytree_->Branch("weight_muR0p5", &weight_muR0p5_, "weight_muR0p5/D");
+  mytree_->Branch("weight_muR2", &weight_muR2_, "weight_muR2/D");
+  mytree_->Branch("origWeightForNorm", &origWeightForNorm_, "origWeightForNorm/D");
 
   while(HLT_fakeTriggerValues.size()<fakeTrigLabelList_.size())
     HLT_fakeTriggerValues.push_back(-99);
