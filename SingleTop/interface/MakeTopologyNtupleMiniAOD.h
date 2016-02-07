@@ -80,6 +80,7 @@ private:
   edm::InputTag ttGenEvent_;
 
   // Generator level info
+  edm::EDGetTokenT<LHEEventProduct> externalLHEToken_;
   edm::EDGetTokenT<GenEventInfoProduct> pdfInfoToken_;
   edm::EDGetTokenT<GenEventInfoProduct> generatorToken_;
 
@@ -231,6 +232,12 @@ private:
   float getAEff03(float); //Used to get the effective area of the electron. Because ElectronEffectiveArea.h is outdated. FIXME in future releases.
   
   TTree *mytree_;
+
+  float weight_muF0p5_;
+  float weight_muF2_;
+  float weight_muR0p5_;
+  float weight_muR2_;
+  float origWeightForNorm_;
 
   int processId_; int genMyProcId;
   float processPtHat_;
