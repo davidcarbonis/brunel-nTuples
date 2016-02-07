@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
     numNamePlus = convert1.str();
     
     struct stat buffer;
-    if (stat(("/nfs/data/tZqSkims/" + datasetName + "/skimFile"+numNamePlus+".root").c_str(), &buffer) == 0) {
+    if (stat(("/scratch/data/tZqSkims/" + datasetName + "/skimFile"+numNamePlus+".root").c_str(), &buffer) == 0) {
       fileNum++;
       continue;
     }
@@ -41,7 +41,7 @@ int main(int argc, char* argv[]){
 
     //stupid long conversion between int and string.
 
-    TFile outFile(("/nfs/data/tZqSkims/" + datasetName + "/skimFile"+numName+".root").c_str(),"RECREATE");
+    TFile outFile(("/scratch/data/tZqSkims/" + datasetName + "/skimFile"+numName+".root").c_str(),"RECREATE");
   
     int numberOfEvents = datasetChain->GetEntries();
     AnalysisEvent * event = new AnalysisEvent(false,"",datasetChain);
@@ -53,13 +53,13 @@ int main(int argc, char* argv[]){
       for (int j = 0; j < event->numElePF2PAT; j++){
 	if (event->elePF2PATPT[j] < 9) continue;
 	if (fabs(event->elePF2PATEta[j]) > 2.7) continue;
-	if (event->elePF2PATComRelIsoRho[j]/event->elePF2PATPT[j] > 0.5) continue;
+//	if (event->elePF2PATComRelIsoRho[j]/event->elePF2PATPT[j] > 0.5) continue;
 	if (event->elePF2PATMVA[j] < 0.) continue;
 	numLeps++;
       }
       for (int j = 0; j < event->numMuonPF2PAT; j++){
 	if (event->muonPF2PATPt[j] < 9) continue;
-	if (event->muonPF2PATComRelIsodBeta[j] > 0.5) continue;
+//	if (event->muonPF2PATComRelIsodBeta[j] > 0.5) continue;
 	if (fabs(event->muonPF2PATEta[j]) > 2.8) continue;
 	numLeps++;
       }
