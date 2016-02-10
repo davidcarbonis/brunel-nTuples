@@ -217,6 +217,7 @@ public :
    Float_t         jetPF2PATSVDY[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATSVDZ[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATBDiscriminator[40];   //[numJetPF2PAT]
+   Float_t	   jetPF2PATCDiscriminator[40];   //[numJetPF2PAT]
    Int_t           jetPF2PATNConstituents[40];   //[numJetPF2PAT]
    Int_t           jetPF2PATPID[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATClosestBPartonDeltaR[40];   //[numJetPF2PAT]
@@ -235,17 +236,10 @@ public :
    Float_t         looseJetPF2PATPt[40];   //[numLooseBJetsPF2PAT]
    Float_t         looseJetPF2PATEta[40];   //[numLooseBJetsPF2PAT]
    Float_t         looseJetPF2PATBDisc[40];   //[numLooseBJetsPF2PAT]
-   Float_t         jetPF2PATBtagDisc_trackCountingHighPurBJetTags[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATBtagDisc_trackCountingHighEffBJetTags[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATBtagDisc_jetProbabilityBJetTags[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATBtagDisc_jetBProbabilityBJetTags[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATBtagDisc_softElectronBJetTags[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATBtagDisc_softMuonBJetTags[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATBtagDisc_softMuonNoIPBJetTags[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATBtagDisc_simpleSecondaryVertexHighEffBJetTags[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATBtagDisc_simpleSecondaryVertexNegativeBJetTags[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATBtagDisc_combinedSecondaryVertexMVABJetTags[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATBtagDisc_simpleSecondaryVertexHighPurBJetTags[40];   //[numJetPF2PAT]
+   Float_t         looseJetPF2PATCDisc[40];   //[numLooseCJetsPF2PAT]
+   Float_t         jetPF2PATBtagDisc_pfJetProbabilityBJetTags[40];   //[numJetPF2PAT]
+   Float_t         jetPF2PATBtagDisc_pfCombinedInclusiveSecondaryVertexV2BJetTags[40];   //[numJetPF2PAT]
+   Float_t         jetPF2PATBtagDisc_pfCombinedMVAV2BJetTags[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATMuEnergy[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATMuEnergyFraction[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATNeutralHadEnergy[40];   //[numJetPF2PAT]
@@ -319,6 +313,11 @@ public :
    Double_t        PileUpWeightRunA;
    Double_t        PileUpWeightRunB;
    Double_t        PileUpWeightRunC;
+   Double_t	   weight_muF0p5;
+   Double_t	   weight_muF2;
+   Double_t	   weight_muR0p5;
+   Double_t	   weight_muR2;
+   Double_t	   origWeightForNorm;
    //   Int_t           numVert;
 
    //2015 Data Triggers
@@ -334,7 +333,7 @@ public :
    Int_t           HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3;
    Int_t           HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v3;
 
-   //MC Triggers
+    //MC Triggers
    Int_t           HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1;
    Int_t           HLT_IsoMu20_v1;
    Int_t           HLT_IsoMu20_eta2p1_v1;
@@ -547,6 +546,7 @@ public :
    TBranch        *b_jetPF2PATSVDY;   //!
    TBranch        *b_jetPF2PATSVDZ;   //!
    TBranch        *b_jetPF2PATBDiscriminator;   //!
+   TBranch        *b_jetPF2PATCDiscriminator;   //!
    TBranch        *b_jetPF2PATNConstituents;   //!
    TBranch        *b_jetPF2PATPID;   //!
    TBranch        *b_jetPF2PATClosestBPartonDeltaR;   //!
@@ -565,17 +565,10 @@ public :
    TBranch        *b_looseJetPF2PATPt;   //!
    TBranch        *b_looseJetPF2PATEta;   //!
    TBranch        *b_looseJetPF2PATBDisc;   //!
-   TBranch        *b_jetPF2PATBtagDisc_trackCountingHighPurBJetTags;   //!
-   TBranch        *b_jetPF2PATBtagDisc_trackCountingHighEffBJetTags;   //!
-   TBranch        *b_jetPF2PATBtagDisc_jetProbabilityBJetTags;   //!
-   TBranch        *b_jetPF2PATBtagDisc_jetBProbabilityBJetTags;   //!
-   TBranch        *b_jetPF2PATBtagDisc_softElectronBJetTags;   //!
-   TBranch        *b_jetPF2PATBtagDisc_softMuonBJetTags;   //!
-   TBranch        *b_jetPF2PATBtagDisc_softMuonNoIPBJetTags;   //!
-   TBranch        *b_jetPF2PATBtagDisc_simpleSecondaryVertexHighEffBJetTags;   //!
-   TBranch        *b_jetPF2PATBtagDisc_simpleSecondaryVertexNegativeBJetTags;   //!
-   TBranch        *b_jetPF2PATBtagDisc_combinedSecondaryVertexMVABJetTags;   //!
-   TBranch        *b_jetPF2PATBtagDisc_simpleSecondaryVertexHighPurBJetTags;   //!
+   TBranch        *b_looseJetPF2PATCDisc;   //!
+   TBranch        *b_jetPF2PATBtagDisc_pfJetProbabilityBJetTags;   //!
+   TBranch        *b_jetPF2PATBtagDisc_pfCombinedInclusiveSecondaryVertexV2BJetTags;   //!
+   TBranch        *b_jetPF2PATBtagDisc_pfCombinedMVAV2BJetTags;   //!
    TBranch        *b_jetPF2PATMuEnergy;   //!
    TBranch        *b_jetPF2PATMuEnergyFraction;   //!
    TBranch        *b_jetPF2PATNeutralHadEnergy;   //!
@@ -647,6 +640,11 @@ public :
    TBranch        *b_nTriggerBits;   //!
    TBranch        *b_TriggerBits;   //!
    TBranch        *b_pileUpWeight;   //!
+   TBranch	  *b_weight_muF0p5;   //!
+   TBranch	  *b_weight_muF2;   //!
+   TBranch	  *b_weight_muR0p5;   //!
+   TBranch	  *b_weight_muR2;   //!
+   TBranch	  *b_origWeightForNorm;   //!
    //   TBranch        *b_numVert;    //!
    TBranch        *b_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2;
    TBranch        *b_HLT_IsoMu20_v2;
@@ -681,12 +679,18 @@ public :
    std::vector<int> muonIndexLoose;
    std::vector<int> jetIndex;
    std::vector<int> bTagIndex; 
+
    std::pair<TLorentzVector,TLorentzVector> zPairLeptons;
    std::pair<float,float> zPairRelIso;
    std::pair<int,int> zPairIndex; 
+
+   std::pair<TLorentzVector,TLorentzVector> wPairQuarks;
+   std::pair<int,int> wPairIndex;
+
    TLorentzVector wLepton;
    int wLepIndex;
    float wLeptonRelIso;
+
    Int_t numVert;
    TBranch * b_numVert;
 
@@ -1109,6 +1113,7 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("jetPF2PATSVDY", jetPF2PATSVDY, &b_jetPF2PATSVDY);
    fChain->SetBranchAddress("jetPF2PATSVDZ", jetPF2PATSVDZ, &b_jetPF2PATSVDZ);
    fChain->SetBranchAddress("jetPF2PATBDiscriminator", jetPF2PATBDiscriminator, &b_jetPF2PATBDiscriminator);
+   fChain->SetBranchAddress("jetPF2PATCDiscriminator", jetPF2PATCDiscriminator, &b_jetPF2PATCDiscriminator);
    fChain->SetBranchAddress("jetPF2PATNConstituents", jetPF2PATNConstituents, &b_jetPF2PATNConstituents);
    fChain->SetBranchAddress("jetPF2PATPID", jetPF2PATPID, &b_jetPF2PATPID);
    fChain->SetBranchAddress("jetPF2PATClosestBPartonDeltaR", jetPF2PATClosestBPartonDeltaR, &b_jetPF2PATClosestBPartonDeltaR);
@@ -1129,17 +1134,10 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("looseJetPF2PATPt", looseJetPF2PATPt, &b_looseJetPF2PATPt);
    fChain->SetBranchAddress("looseJetPF2PATEta", looseJetPF2PATEta, &b_looseJetPF2PATEta);
    fChain->SetBranchAddress("looseJetPF2PATBDisc", looseJetPF2PATBDisc, &b_looseJetPF2PATBDisc);
-   fChain->SetBranchAddress("jetPF2PATBtagDisc_trackCountingHighPurBJetTags", jetPF2PATBtagDisc_trackCountingHighPurBJetTags, &b_jetPF2PATBtagDisc_trackCountingHighPurBJetTags);
-   fChain->SetBranchAddress("jetPF2PATBtagDisc_trackCountingHighEffBJetTags", jetPF2PATBtagDisc_trackCountingHighEffBJetTags, &b_jetPF2PATBtagDisc_trackCountingHighEffBJetTags);
-   fChain->SetBranchAddress("jetPF2PATBtagDisc_jetProbabilityBJetTags", jetPF2PATBtagDisc_jetProbabilityBJetTags, &b_jetPF2PATBtagDisc_jetProbabilityBJetTags);
-   fChain->SetBranchAddress("jetPF2PATBtagDisc_jetBProbabilityBJetTags", jetPF2PATBtagDisc_jetBProbabilityBJetTags, &b_jetPF2PATBtagDisc_jetBProbabilityBJetTags);
-   fChain->SetBranchAddress("jetPF2PATBtagDisc_softElectronBJetTags", jetPF2PATBtagDisc_softElectronBJetTags, &b_jetPF2PATBtagDisc_softElectronBJetTags);
-   fChain->SetBranchAddress("jetPF2PATBtagDisc_softMuonBJetTags", jetPF2PATBtagDisc_softMuonBJetTags, &b_jetPF2PATBtagDisc_softMuonBJetTags);
-   fChain->SetBranchAddress("jetPF2PATBtagDisc_softMuonNoIPBJetTags", jetPF2PATBtagDisc_softMuonNoIPBJetTags, &b_jetPF2PATBtagDisc_softMuonNoIPBJetTags);
-   fChain->SetBranchAddress("jetPF2PATBtagDisc_simpleSecondaryVertexHighEffBJetTags", jetPF2PATBtagDisc_simpleSecondaryVertexHighEffBJetTags, &b_jetPF2PATBtagDisc_simpleSecondaryVertexHighEffBJetTags);
-   fChain->SetBranchAddress("jetPF2PATBtagDisc_simpleSecondaryVertexNegativeBJetTags", jetPF2PATBtagDisc_simpleSecondaryVertexNegativeBJetTags, &b_jetPF2PATBtagDisc_simpleSecondaryVertexNegativeBJetTags);
-   fChain->SetBranchAddress("jetPF2PATBtagDisc_combinedSecondaryVertexMVABJetTags", jetPF2PATBtagDisc_combinedSecondaryVertexMVABJetTags, &b_jetPF2PATBtagDisc_combinedSecondaryVertexMVABJetTags);
-   fChain->SetBranchAddress("jetPF2PATBtagDisc_simpleSecondaryVertexHighPurBJetTags", jetPF2PATBtagDisc_simpleSecondaryVertexHighPurBJetTags, &b_jetPF2PATBtagDisc_simpleSecondaryVertexHighPurBJetTags);
+   fChain->SetBranchAddress("looseJetPF2PATCDisc", looseJetPF2PATCDisc, &b_looseJetPF2PATCDisc);
+   fChain->SetBranchAddress("jetPF2PATBtagDisc_pfJetProbabilityBJetTags", jetPF2PATBtagDisc_pfJetProbabilityBJetTags, &b_jetPF2PATBtagDisc_pfJetProbabilityBJetTags);
+   fChain->SetBranchAddress("jetPF2PATBtagDisc_pfCombinedInclusiveSecondaryVertexV2BJetTags", jetPF2PATBtagDisc_pfCombinedInclusiveSecondaryVertexV2BJetTags, &b_jetPF2PATBtagDisc_pfCombinedInclusiveSecondaryVertexV2BJetTags);
+   fChain->SetBranchAddress("jetPF2PATBtagDisc_pfCombinedMVAV2BJetTags", jetPF2PATBtagDisc_pfCombinedMVAV2BJetTags, &b_jetPF2PATBtagDisc_pfCombinedMVAV2BJetTags);
    fChain->SetBranchAddress("jetPF2PATMuEnergy", jetPF2PATMuEnergy, &b_jetPF2PATMuEnergy);
    fChain->SetBranchAddress("jetPF2PATMuEnergyFraction", jetPF2PATMuEnergyFraction, &b_jetPF2PATMuEnergyFraction);
    fChain->SetBranchAddress("jetPF2PATNeutralHadEnergy", jetPF2PATNeutralHadEnergy, &b_jetPF2PATNeutralHadEnergy);
@@ -1217,6 +1215,11 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("PileUpWeightRunA", &PileUpWeightRunA, &b_pileUpWeight);
    fChain->SetBranchAddress("PileUpWeightRunB", &PileUpWeightRunB, &b_pileUpWeight);
    fChain->SetBranchAddress("PileUpWeightRunC", &PileUpWeightRunC, &b_pileUpWeight);
+   fChain->SetBranchAddress("weight_muF0p5", &weight_muF0p5, &b_weight_muF0p5);
+   fChain->SetBranchAddress("weight_muF2", &weight_muF2, &b_weight_muF2);
+   fChain->SetBranchAddress("weight_muR0p5", &weight_muR0p5, &b_weight_muR0p5);
+   fChain->SetBranchAddress("weight_muR2", &weight_muR2, &b_weight_muR2);
+   fChain->SetBranchAddress("origWeightForNorm", &origWeightForNorm, &b_origWeightForNorm);
    //Data trigger branches
    fChain->SetBranchAddress("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2", &HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2, &b_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2);
    fChain->SetBranchAddress("HLT_IsoMu20_v2", &HLT_IsoMu20_v2, &b_HLT_IsoMu20_v2);
