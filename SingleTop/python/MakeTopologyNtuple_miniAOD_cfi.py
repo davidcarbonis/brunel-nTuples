@@ -148,17 +148,14 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            isMCatNLO=cms.bool(False),
                                            #New B-tagging info
                                            bDiscCut=cms.double(0),
-                                           bDiscName=cms.string('combinedSecondaryVertexBJetTags'),
+                                           bDiscName=cms.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'),
 
                                            # Btagging algorithms to look at (default discriminant is used). The pat::Jet::bDiscriminator(string) function is used.
 
 
                                            
-                                           btagAlgorithmsToNtuple = cms.vstring("trackCountingHighPurBJetTags","trackCountingHighEffBJetTags",
-                                                                                "jetProbabilityBJetTags", "jetBProbabilityBJetTags", "softElectronBJetTags","softMuonBJetTags","softMuonNoIPBJetTags",
-                                                                                "simpleSecondaryVertexHighEffBJetTags","simpleSecondaryVertexNegativeBJetTags",
-                                                                                "combinedSecondaryVertexMVABJetTags", "simpleSecondaryVertexHighPurBJetTags"
-                                                                                
+                                           btagAlgorithmsToNtuple = cms.vstring("pfJetProbabilityBJetTags","pfCombinedInclusiveSecondaryVertexV2BJetTags", "pfCombinedMVAV2BJetTags"
+
                                                                                 ),
                                            # Btagging parameterizations to look at (the vectors btagParameterizationList and btagParameterizationMode are coupled!). Documentation on algo names (go in btagParamerizationList) and parameterizations (go in btagParameterizationMode) are available on this twiki:
                                                # https://twiki.cern.ch/twiki/bin/view/CMS/BtagOctober09ExerciseUsePayload
