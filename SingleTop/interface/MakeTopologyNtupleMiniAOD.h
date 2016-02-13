@@ -181,7 +181,7 @@ private:
   edm::InputTag ebRecHits_;
   edm::InputTag eeRecHits_;
   bool isMCatNLO_;
-
+  bool isLHEflag_;
 
   // and an ntuple (filling in the methods)
   void fillBeamSpot(const edm::Event&, const edm::EventSetup&);

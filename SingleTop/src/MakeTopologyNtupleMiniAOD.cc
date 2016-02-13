@@ -245,6 +245,7 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     ebRecHits_(iConfig.getParameter<edm::InputTag>("ebRecHits")),
     eeRecHits_(iConfig.getParameter<edm::InputTag>("eeRecHits")),
     isMCatNLO_(iConfig.getParameter<bool>("isMCatNLO")),
+    isLHEflag_(iConfig.getParameter<bool>("isLHEflag")),
     NELECTRONSMAX(30), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
     NTOPMCINFOSMAX(20), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
     NMUONSMAX(20), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
@@ -1330,16 +1331,26 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
   int W_leptonic=0;
 
   //Get the top gen events for top pt reweighting - so I guess this is irrelevant.
+  
+  if( isLHEflag_ ){
+    edm::Handle<LHEEventProduct> EventHandle;
+    iEvent.getByToken(externalLHEToken_,EventHandle);
 
-  edm::Handle<LHEEventProduct> EventHandle;
-  iEvent.getByToken(externalLHEToken_,EventHandle);
+    weight_muF0p5_ = EventHandle->weights()[2].wgt; // muF = 0.5 | muR = 1
+    weight_muF2_ = EventHandle->weights()[1].wgt; // muF = 2 | muR = 1
+    weight_muF2_ = EventHandle->weights()[1].wgt; // muF = 2 | muR = 1
+    weight_muR2_ = EventHandle->weights()[3].wgt; // muF = 1 | muR = 2
 
-  weight_muF0p5_ = EventHandle->weights()[2].wgt; // muF = 0.5 | muR = 1
-  weight_muF2_ = EventHandle->weights()[1].wgt; // muF = 2 | muR = 1
-  weight_muF2_ = EventHandle->weights()[1].wgt; // muF = 2 | muR = 1
-  weight_muR2_ = EventHandle->weights()[3].wgt; // muF = 1 | muR = 2
+    origWeightForNorm_ = EventHandle->originalXWGTUP();
+  }
 
-  origWeightForNorm_ = EventHandle->originalXWGTUP();
+  else {
+    weight_muF0p5_ = -999999.;
+    weight_muF2_ = -999999.;
+    weight_muF2_ = -999999.;
+    weight_muR2_ = -999999.;
+    origWeightForNorm_ = -999999.;
+  }
 
   edm::Handle<GenEventInfoProduct> genEventInfo;
 
