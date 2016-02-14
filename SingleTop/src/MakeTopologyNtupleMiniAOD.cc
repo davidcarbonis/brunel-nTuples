@@ -800,7 +800,7 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     //    std::cout << imuo << " " << jmu << std::endl;
     const pat::Muon& muo = muons[jmu];
 
-    if(!muonID(muo))
+    if(!muon::isTightMuon(muo))
       continue;
 
     numMuo[ ID ]++;
@@ -3958,73 +3958,6 @@ bool MakeTopologyNtupleMiniAOD::jetIDLoose(const pat::Jet& jet, float jetPt){
     return false;
   return true;
   
-}
-
-bool MakeTopologyNtupleMiniAOD::muonID(const pat::Muon &muo){
-  // hardcoded except for PT&eta, see V+jets ID definitions ( https://twiki.cern.ch/twiki/bin/view/CMS/VplusJets )
-  if (!doCuts_)
-    return true;
-  vanillaMuons++;
-  if (!muo.isPFMuon())
-    return false;
-  if(!(muo.isGlobalMuon() || muo.isTrackerMuon()))                                                    //Debugging variables used to see how many electrons are found at each cut.
-    return false;
-  globalPFMuons++;
-  //std::cout << "muonPt: " << muo.pt() << std::endl;
-  if(muo.pt()<=muoPtCut_)
-    return false;
-  ptMuons++;
-  if(fabs(muo.eta())>=muoEtaCut_ )
-    return false;
-  //Don't know what this is so I'm cutting it
-  //  if(!muo.combinedMuon())
-  //    return false;
-
-  //if(fabs(muo.combinedMuon()->dxy(beamSpotPoint_))> muoD0Cut_ && doCuts_)// d0< 2 mm
-  //  if(fabs(muo.innerTrack()->dxy(beamSpotPoint_))>= muoD0Cut_)
-  // return false;
-
-  //Inserting the extra cuts here. I am briefly commenting these out to see if it helps the muon numbers. I suspect these might be made in Brussel's pre-selection though.
-  //valid muon hits
-  /*  
-  if( muo.globalTrack()->hitPattern().numberOfValidMuonHits() < muoVldHits_)
-    return false;
-  validHitsMuons++;
-  //number of muon station hits
-  if (muo.numberOfMatchedStations() < muoMtchdStns_)
-    return false;
-  if(muo.globalTrack()->normalizedChi2() >= muoNormChi2_)
-    return false;
-  chi2Muons++;
-  //if(muo.track()->numberOfValidHits()<muoNTkHitsCut_ && doCuts_) // number of track hits >= 11
-  if(muo.innerTrack()->numberOfValidHits()<muoNTkHitsCut_)
-    return false;
-  tkHitsMuons++;
-  if (muo.dB() > muoDB_ )
-    return false;
-  dbMuons++;
-  if (fabs(muo.innerTrack()->dz(beamSpotPoint_) > muoDZCut_))
-    return false;
-  dzMuons++;
-  if (muo.innerTrack()->hitPattern().numberOfValidPixelHits() < muoPxlHits_)
-    return false;
-  pixelHitsMuons++;
-  if (muo.track()->hitPattern().trackerLayersWithMeasurement() < muoTkLyrsWthHts_)
-    return false;
-    trackerLayersMuons++;
-  */
-  // Changing the rel iso of the muon to that in Rebeca's code
-  //  if ((muo.neutralHadronIso() + muo.chargedHadronIso() + muo.photonIso())/muo.pt() > muoRelIsoTight_)
-  if ((muo.chargedHadronIso() + std::max( 0.0, muo.neutralHadronIso() + muo.photonIso() - 0.5*muo.puChargedHadronIso() ) ) / muo.pt() >= muoRelIsoTight_)
-    return false;
-  //if(muo.globalTrack()->normalizedChi2()/muo.combinedMuon()->ndof()>muoNormChi2_ && doCuts_)
-  //have my own chi2 cut now so I'm removing this one
-  //  if(muo.combinedMuon()->chi2()/muo.combinedMuon()->ndof()>muoNormChi2_ && doCuts_)
-  //  return false;
-  //if(muo.ecalIso()>muoECalIso_ && doCuts_){ return false; }
-  //if(muo.hcalIso()>muoHCalIso_ && doCuts_){ return false; }
-  //if((muo.trackIso()+muo.ecalIso()+muo.hcalIso())/muo.pt()>muoIsoCut_ && doCuts_){ return false; }
-  return true;
 }
 
 float MakeTopologyNtupleMiniAOD::getAEff03(float eta){
