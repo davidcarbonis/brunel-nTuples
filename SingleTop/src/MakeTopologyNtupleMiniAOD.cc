@@ -897,7 +897,7 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     //    std::cout << imuo << " " << jmu << std::endl;
     const pat::Muon& muo = muons[jmu];                 
 
-    if(!muonIDLoose(muo))                                   
+    if(!muon::isLooseMuon(muo))                                   
       continue;    
 
     numLooseMuo[ID]++;
@@ -4060,26 +4060,6 @@ bool MakeTopologyNtupleMiniAOD::muonID(const pat::Muon &muo){
   //if(muo.ecalIso()>muoECalIso_ && doCuts_){ return false; }
   //if(muo.hcalIso()>muoHCalIso_ && doCuts_){ return false; }
   //if((muo.trackIso()+muo.ecalIso()+muo.hcalIso())/muo.pt()>muoIsoCut_ && doCuts_){ return false; }
-  return true;
-}
-
-bool MakeTopologyNtupleMiniAOD::muonIDLoose(const pat::Muon &muo){
-  //Do some loose cuts here
-  if (!doCuts_)
-    return true;
-
-  if (!muo.isPFMuon())
-    return false;
-  if (muo.pt() <= muoPtLoose_)
-    return false;
-  if (!(muo.isGlobalMuon() || muo.isTrackerMuon())) 
-    return false;
-  if (fabs(muo.eta()) >= muoEtaLoose_)
-    return false;
-  if ((muo.chargedHadronIso() + std::max( 0.0, muo.neutralHadronIso() + muo.photonIso() - 0.5*muo.puChargedHadronIso() ) ) / muo.pt() >= muoRelIsoLoose_)
-
-  //if ((muo.neutralHadronIso() + muo.chargedHadronIso() + muo.photonIso())/muo.pt() > muoRelIsoLoose_)
-    return false;
   return true;
 }
 

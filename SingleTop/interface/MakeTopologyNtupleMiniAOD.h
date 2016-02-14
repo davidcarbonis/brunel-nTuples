@@ -211,7 +211,6 @@ private:
   bool jetID(const pat::Jet &,const size_t jetindex, std::string, float);
   bool jetIDLoose(const pat::Jet &, float);
   bool muonID(const pat::Muon &);
-  bool muonIDLoose(const pat::Muon &);
   bool photonConversionVeto(const pat::Electron &, float &, float &);
 
   void bookBranches(void);// does all the branching.
