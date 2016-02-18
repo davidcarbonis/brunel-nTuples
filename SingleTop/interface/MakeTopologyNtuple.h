@@ -64,6 +64,8 @@ private:
 
   //Sets whether the sample is ttbar or not. Default is false. This affects top pt reweighting of the sample.
   bool isttbar_;
+  bool isLHEflag_;
+
   edm::InputTag ttGenEvent_;
 
   std::map<std::string,int> hltpasses_;

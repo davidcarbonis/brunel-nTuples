@@ -150,6 +150,7 @@ MakeTopologyNtuple::MakeTopologyNtuple(const edm::ParameterSet& iConfig):
     pvLabel_(iConfig.getParameter<edm::InputTag>("primaryVertexTag")),
     rho_(iConfig.getParameter<edm::InputTag>("rho")),
     isttbar_(iConfig.getParameter<bool>("isttBar")),
+    isLHEflag_(iConfig.getParameter<bool>("isLHEflag_")),
     ttGenEvent_(iConfig.getParameter<edm::InputTag>("ttGenEvent")),
     hltnames_(0),
     btaggingparamnames_(iConfig.getParameter<std::vector<std::string> >("btagParameterizationList")),
@@ -1240,15 +1241,26 @@ void MakeTopologyNtuple::fillMCInfo(const edm::Event& iEvent, const edm::EventSe
   int W_leptonic=0;
   
   //Get the top gen events for top pt reweighting - so I guess this is irrelevant.
-  edm::Handle<LHEEventProduct> EventHandle;
-  iEvent.getByLabel("externalLHEProducer",EventHandle);
 
-  weight_muF0p5_ = EventHandle->weights()[2].wgt; // muF = 0.5 | muR = 1
-  weight_muF2_ = EventHandle->weights()[1].wgt; // muF = 2 | muR = 1
-  weight_muR0p5_ = EventHandle->weights()[6].wgt; // muF = 1 | muR = 0.5
-  weight_muR2_ = EventHandle->weights()[3].wgt; // muF = 1 | muR = 2
+  if( isLHEflag_ ){
+    edm::Handle<LHEEventProduct> EventHandle;
+    iEvent.getByLabel("externalLHEProducer",EventHandle);
 
-  origWeightForNorm_ = EventHandle->originalXWGTUP();
+    weight_muF0p5_ = EventHandle->weights()[2].wgt; // muF = 0.5 | muR = 1
+    weight_muF2_ = EventHandle->weights()[1].wgt; // muF = 2 | muR = 1
+    weight_muR0p5_ = EventHandle->weights()[6].wgt; // muF = 1 | muR = 0.5
+    weight_muR2_ = EventHandle->weights()[3].wgt; // muF = 1 | muR = 2
+
+    origWeightForNorm_ = EventHandle->originalXWGTUP();
+  }
+
+  else {
+    weight_muF0p5_ = -999999.;
+    weight_muF2_ = -999999.;
+    weight_muF2_ = -999999.;
+    weight_muR2_ = -999999.;
+    origWeightForNorm_ = -999999.;
+  }
 
   edm::Handle<GenEventInfoProduct> genEventInfo;
   if( isMCatNLO_ )

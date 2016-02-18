@@ -216,5 +216,6 @@ makeTopologyNtuple = cms.EDAnalyzer('MakeTopologyNtuple',
                                         ),
                                     runCutFlow = cms.double(0), #0 is no cut flow, 1 is ee, 2 is emu, 3 mumu.
                                     isttBar = cms.bool(False),# This affects reweighting things. If set to false, then has a weight of 1.
+                                    isLHEflag  = cms.bool(True),
                                     ttGenEvent = cms.InputTag("null")
                                     )# end of MakeTopologyNtuple
