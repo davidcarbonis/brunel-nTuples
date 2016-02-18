@@ -77,6 +77,8 @@ private:
   bool isttbar_;
   edm::InputTag ttGenEvent_;
 
+  edm::EDGetTokenT<LHEEventProduct> externalLHEToken_;
+
   // ID decisions objects
   //edm::EDGetTokenT<edm::ValueMap<bool> > eleLooseIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > eleMediumIdMapToken_;
@@ -174,7 +176,7 @@ private:
   edm::InputTag ebRecHits_;
   edm::InputTag eeRecHits_;
   bool isMCatNLO_;
-
+  bool isLHEflag_;
 
   // and an ntuple (filling in the methods)
   void fillBeamSpot(const edm::Event&, const edm::EventSetup&);
@@ -224,6 +226,12 @@ private:
   float getAEff03(float); //Used to get the effective area of the electron. Because ElectronEffectiveArea.h is outdated. FIXME in future releases.
   
   TTree *mytree_;
+
+  double weight_muF0p5_;
+  double weight_muF2_;
+  double weight_muR0p5_;
+  double weight_muR2_;
+  double origWeightForNorm_;
 
   int processId_; int genMyProcId;
   float processPtHat_;
