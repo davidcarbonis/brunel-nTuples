@@ -150,7 +150,7 @@ MakeTopologyNtuple::MakeTopologyNtuple(const edm::ParameterSet& iConfig):
     pvLabel_(iConfig.getParameter<edm::InputTag>("primaryVertexTag")),
     rho_(iConfig.getParameter<edm::InputTag>("rho")),
     isttbar_(iConfig.getParameter<bool>("isttBar")),
-    isLHEflag_(iConfig.getParameter<bool>("isLHEflag_")),
+    isLHEflag_(iConfig.getParameter<bool>("isLHEflag")),
     ttGenEvent_(iConfig.getParameter<edm::InputTag>("ttGenEvent")),
     hltnames_(0),
     btaggingparamnames_(iConfig.getParameter<std::vector<std::string> >("btagParameterizationList")),
