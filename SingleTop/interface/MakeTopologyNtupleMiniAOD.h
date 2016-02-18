@@ -232,11 +232,11 @@ private:
   
   TTree *mytree_;
 
-  float weight_muF0p5_;
-  float weight_muF2_;
-  float weight_muR0p5_;
-  float weight_muR2_;
-  float origWeightForNorm_;
+  double weight_muF0p5_;
+  double weight_muF2_;
+  double weight_muR0p5_;
+  double weight_muR2_;
+  double origWeightForNorm_;
 
   int processId_; int genMyProcId;
   float processPtHat_;
