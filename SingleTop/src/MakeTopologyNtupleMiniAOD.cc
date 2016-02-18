@@ -39,6 +39,7 @@
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "SimDataFormats/GeneratorProducts/interface/HepMCProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
+#include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/PdfInfo.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
@@ -161,7 +162,7 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     rho_(iConfig.getParameter<edm::InputTag>("rho")),
     isttbar_(iConfig.getParameter<bool>("isttBar")),
     ttGenEvent_(iConfig.getParameter<edm::InputTag>("ttGenEvent")),
-
+    externalLHEToken_(consumes<LHEEventProduct>(iConfig.getParameter<edm::InputTag>("externalLHEToken"))),
 
     eleLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"))),
     //    eleMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"))),
@@ -1322,6 +1323,26 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
   bool found_b=false;
   int W_hadronic=0;
   int W_leptonic=0;
+
+  if( isLHEflag_ ){
+    edm::Handle<LHEEventProduct> EventHandle;
+    iEvent.getByToken(externalLHEToken_,EventHandle);
+
+    weight_muF0p5_ = EventHandle->weights()[2].wgt; // muF = 0.5 | muR = 1
+    weight_muF2_ = EventHandle->weights()[1].wgt; // muF = 2 | muR = 1
+    weight_muF2_ = EventHandle->weights()[1].wgt; // muF = 2 | muR = 1
+    weight_muR2_ = EventHandle->weights()[3].wgt; // muF = 1 | muR = 2
+
+    origWeightForNorm_ = EventHandle->originalXWGTUP();
+  }
+
+  else {
+    weight_muF0p5_ = -999999.;
+    weight_muF2_ = -999999.;
+    weight_muF2_ = -999999.;
+    weight_muR2_ = -999999.;
+    origWeightForNorm_ = -999999.;
+  }
 
   //Get the top gen events for top pt reweighting - so I guess this is irrelevant.
 
@@ -2636,6 +2657,12 @@ void MakeTopologyNtupleMiniAOD::bookBranches(){
   mytree_->Branch("PileUpWeightRunA", &pileUpWeightA, "pileUpWeight/D");
   mytree_->Branch("PileUpWeightRunB", &pileUpWeightB, "pileUpWeight/D");
   mytree_->Branch("PileUpWeightRunC", &pileUpWeightC, "pileUpWeight/D");
+
+  mytree_->Branch("weight_muF0p5", &weight_muF0p5_, "weight_muF0p5/D");
+  mytree_->Branch("weight_muF2", &weight_muF2_, "weight_muF2/D");
+  mytree_->Branch("weight_muR0p5", &weight_muR0p5_, "weight_muR0p5/D");
+  mytree_->Branch("weight_muR2", &weight_muR2_, "weight_muR2/D");
+  mytree_->Branch("origWeightForNorm", &origWeightForNorm_, "origWeightForNorm/D");
 
   while(HLT_fakeTriggerValues.size()<fakeTrigLabelList_.size())
     HLT_fakeTriggerValues.push_back(-99);

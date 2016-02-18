@@ -26,7 +26,9 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            rho              = cms.InputTag("kt6PFJets", "rho"),
                                            triggerTag  = cms.InputTag("TriggerResults","","HLT"),
                                            fakeTriggerList = cms.vstring(), # empty. You can add fake triggers that are run on the fly to this list. No check on the process name is made so when duplicates are available only the latest one is added.
-                                           
+                             		   isLHEflag = cms.bool(False),
+					   externalLHEToken = cms.InputTag("externalLHEProducer"),
+
                                            triggerList = cms.vstring(                                                              #Updated Triggers
         #Menu 5E33 - Run2015(A)-B (50ns)
         'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2', #DoubleElectron
