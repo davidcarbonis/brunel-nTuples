@@ -324,7 +324,8 @@ process.source.fileNames = [
 #    "file:synchFiles/synch6.root"
 #        "file:/afs/cern.ch/work/j/jandrea/public/147DB408-446A-E311-8E63-00259073E32A.root"
 #	"root://xrootd.unl.edu//store/mc/Summer12_DR53X/WZJetsTo3LNu_matchingdown_8TeV_TuneZ2Star_madgraph_tauola/AODSIM/PU_S10_START53_V19-v1/00000/06A911BC-3CBB-E311-9AFD-00266CFACC38.root",
-	"root://xrootd.unl.edu//store/mc/Summer12DR53X/tZq_4f_3leptons_8TeV-amcatnlo-pythia8_TuneCUETP8M1/AODSIM/PU_S10_START53_V19-v1/30000/00555287-4A3B-E511-9CA8-001E67A3EC05.root",
+#	"root://xrootd.unl.edu//store/mc/Summer12DR53X/tZq_4f_3leptons_8TeV-amcatnlo-pythia8_TuneCUETP8M1/AODSIM/PU_S10_START53_V19-v1/30000/00555287-4A3B-E511-9CA8-001E67A3EC05.root",
+	"root://xrootd.unl.edu//store/mc/Summer12DR53X/tZq_4f_3leptons_8TeV-amcatnlo-pythia8_TuneCUETP8M1/AODSIM/PU_S10_START53_V19_ext1-v1/00000/000C5E68-62AC-E511-A736-2C600CAFEF90.root",
     ]
 
 process.maxEvents.input = cms.untracked.int32(100)
