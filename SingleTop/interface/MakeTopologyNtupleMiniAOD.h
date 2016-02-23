@@ -121,7 +121,6 @@ private:
   double jetPtCutLoose_;
 
   //bool runSwissCross_;
-  bool runReweightingTests_;
   bool runPDFUncertainties_;
   bool useResidualJEC_;
   std::string eleIDquality_; 
@@ -496,14 +495,7 @@ private:
   std::map< std::string, float > genMetPx; 
   std::map< std::string, float > genMetPy; 
 
-  edm::LumiReWeighting LumiWeightsA;
-  edm::LumiReWeighting LumiWeightsB;
-  edm::LumiReWeighting LumiWeightsC;
-
   int numVert;
-  double pileUpWeightA;
-  double pileUpWeightB;
-  double pileUpWeightC;
 
   float mhtPx;
   float mhtPy;

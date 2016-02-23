@@ -195,7 +195,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     bDiscName_(iConfig.getParameter<std::string>("bDiscName")),
     bDiscCut_(iConfig.getParameter<double>("bDiscCut")),
     jetPtCutLoose_(iConfig.getParameter<double>("jetPtCutLoose")),
-    runReweightingTests_(iConfig.getParameter<bool>("runReweightTest")),
     runPDFUncertainties_(iConfig.getParameter<bool>("runPDFUncertainties")),
     useResidualJEC_(iConfig.getParameter<bool>("useResidualJEC")),
     eleIDquality_(iConfig.getParameter<std::string>("electronID")),
@@ -294,13 +293,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     histocontainer2D_["tightVsLooseEle"]=fs->make<TH2D>("tightVsLooseEle","Tight versus loose electrons in event",11,-0.5,10.5,11,-0.5,10.5);
     histocontainer2D_["tightVsLooseMuo"]=fs->make<TH2D>("tightVsLooseMuo","Tight versus loose Muons in event",11,-0.5,10.5,11,-0.5,10.5);
 
-    //Make some histograms if I'm doing lumi reweighting (pileup) tests
-    if (runReweightingTests_){
-      histocontainer_["pileupHisto"] = fs->make<TH1D>("pileupHisto","pileupHisto",50,0,50);
-      histocontainer_["preScalingWeight"] = fs->make<TH1D>("preScalingWeight","preScalingWeight",100,0,10.);
-      histocontainer_["postScalingWeightUp"] = fs->make<TH1D>("postScalingWeightUp","postScalingWeightUp",100,0,10.);
-      histocontainer_["postScalingWeightDown"] = fs->make<TH1D>("postScalingWeightDown","postScalingWeightDown",100,0,10.);
-    }
 
     if(isttbar_){
       histocontainer_["topPtWeightSum"] = fs->make<TH1D>("topPtWeightSum","topPtWeightSum",1,-0.5,0.5);
@@ -2306,18 +2298,9 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
   //  std::cout << iEvent.id().run() << " " << iEvent.luminosityBlock() << " " << iEvent.id().event() << std::endl;
   //Run pile-up reweighting here
   double weight = 1.0;
-  double weightA = 1.0;
-  double weightB = 1.0;
-  double weightC = 1.0;
   numVert = 0;
   if (runPUReWeight_){
-    //LumiWeightsA = LumiReWeighting("pileup_MC_Summer12.root","run2012A_13Jul.root", "pileup", "pileup");
-    //LumiWeightsB = LumiReWeighting("pileup_MC_Summer12.root","run2012B_13Jul.root", "pileup", "pileup");
-    //LumiWeightsC = LumiReWeighting("pileup_MC_Summer12.root","run2012C_v2.root", "pileup", "pileup");
-    double lumiWeightA = 1.0;
-    double lumiWeightB = 1.0;
-    double lumiWeightC = 1.0;
-    
+
     edm::Handle < std::vector< PileupSummaryInfo > > pileupSummaryInfo_;
     iEvent.getByToken (pileupToken_, pileupSummaryInfo_); // miniAODv1 uses "addPileupInfo", miniAODv2 uses "slimmedAddPileupInfo"
     
@@ -2335,35 +2318,8 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
       }
     }
     numVert = Tnpv;
-    lumiWeightA = LumiWeightsA.weight( Tnpv);
-    lumiWeightB = LumiWeightsB.weight( Tnpv);
-    lumiWeightC = LumiWeightsC.weight( Tnpv);
-    weightA *= lumiWeightA;
-    weightB *= lumiWeightB;
-    weightC *= lumiWeightC;
-
-    //Here I fill a few histrograms to test out the reweighting package
-    // I have my own python script that should do this, but it looks a bit broken,
-    // so I want to test whether the official release works better than mine.
-    
-    if (runReweightingTests_){
-      
-      histocontainer_["pileupHisto"]->Fill(Tnpv);
-      histocontainer_["preScalingWeight"]->Fill(weightA);
-      
-      //Apply the shift
-      reweight::PoissonMeanShifter PShiftDown_ = reweight::PoissonMeanShifter(-0.6);
-      reweight::PoissonMeanShifter PShiftUp_ = reweight::PoissonMeanShifter(0.6);
-      histocontainer_["postScalingWeightUp"]->Fill(weightA*PShiftUp_.ShiftWeight(Tnpv));
-      histocontainer_["postScalingWeightDown"]->Fill(weightA*PShiftDown_.ShiftWeight(Tnpv));
-      return;
-
-    }
 
   }
-  pileUpWeightA = weightA;
-  pileUpWeightB = weightB;
-  pileUpWeightC = weightC;
   if (runCutFlow_)
     doCutFlow = true;
 
@@ -2663,9 +2619,6 @@ void MakeTopologyNtupleMiniAOD::bookBranches(){
   mytree_->Branch("TriggerBits", TriggerBits, "TriggerBits[nTriggerBits]/I");
 
   mytree_->Branch("numVert", &numVert, "numVert/I");
-  mytree_->Branch("PileUpWeightRunA", &pileUpWeightA, "pileUpWeight/D");
-  mytree_->Branch("PileUpWeightRunB", &pileUpWeightB, "pileUpWeight/D");
-  mytree_->Branch("PileUpWeightRunC", &pileUpWeightC, "pileUpWeight/D");
 
   mytree_->Branch("weight_muF0p5", &weight_muF0p5_, "weight_muF0p5/D");
   mytree_->Branch("weight_muF2", &weight_muF2_, "weight_muF2/D");
@@ -3688,11 +3641,6 @@ void
 MakeTopologyNtupleMiniAOD::beginJob()
 {
 
-    if (runPUReWeight_){
-      LumiWeightsA = edm::LumiReWeighting("pileup_MC_Summer12.root","run2012A_13Jul.root", "pileup", "pileup");
-      LumiWeightsB = edm::LumiReWeighting("pileup_MC_Summer12.root","run2012B_13Jul.root", "pileup", "pileup");
-      LumiWeightsC = edm::LumiReWeighting("pileup_MC_Summer12.root","run2012C_v2.root", "pileup", "pileup");
-    }
     if( runPDFUncertainties_ )
     {
 //Setup the PDFs
