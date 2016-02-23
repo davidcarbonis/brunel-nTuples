@@ -101,7 +101,6 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15Trig25nsV1Categories"),
 
                                            runSwissCross = cms.bool(True),
-                                           runReweightTest = cms.bool(False), #This is just a little test to see what happens when using the default reweight class, i.e. whether it breaks like my one does.
                                            runPDFUncertainties = cms.bool(False),
                                            useResidualJEC = cms.bool(False),
                                            electronID = cms.string('eidRobustTight'),
