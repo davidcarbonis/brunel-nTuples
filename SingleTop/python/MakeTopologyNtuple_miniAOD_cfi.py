@@ -57,7 +57,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 
         #MC Menu (25ns + 50ns)
         'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1', #DoubleElectron
-	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ', #DoubleMuon, commented out as used in previous menu, no need to repeat
+	#'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ', #DoubleMuon, commented out as used in previous menu, no need to repeat
         'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1', #Muon+Electron
         'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v1' #Muon+Electron
         
