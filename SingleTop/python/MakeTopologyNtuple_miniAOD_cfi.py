@@ -150,14 +150,12 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            #New B-tagging info
                                            bDiscCut=cms.double(0),
                                            bDiscName=cms.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'),
+					   cVsLDiscName=cms.string('pfCombinedCvsLJetTags'), 
+					   cVsBDiscName=cms.string('pfCombinedCvsBJetTags'),
 
-                                           # Btagging algorithms to look at (default discriminant is used). The pat::Jet::bDiscriminator(string) function is used.
+                                           # Btagging algorithms: "pfJetProbabilityBJetTags","pfCombinedInclusiveSecondaryVertexV2BJetTags", "pfCombinedMVAV2BJetTags"
+					   # Ctagging algorithms: "pfCombinedCvsLJetTags", "pfCombinedCvsBJetTags"
 
-
-                                           
-                                           btagAlgorithmsToNtuple = cms.vstring("pfJetProbabilityBJetTags","pfCombinedInclusiveSecondaryVertexV2BJetTags", "pfCombinedMVAV2BJetTags"
-                                                                                
-                                                                                ),
                                            # Btagging parameterizations to look at (the vectors btagParameterizationList and btagParameterizationMode are coupled!). Documentation on algo names (go in btagParamerizationList) and parameterizations (go in btagParameterizationMode) are available on this twiki:
                                                # https://twiki.cern.ch/twiki/bin/view/CMS/BtagOctober09ExerciseUsePayload
                                            btagParameterizationList = cms.vstring(

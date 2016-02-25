@@ -97,7 +97,6 @@ private:
   std::vector<std::string> hltnames_;
   std::vector<std::string> btaggingparamnames_;
   std::vector<std::string> btaggingparaminputtypes_;
-  std::vector<std::string> btaggingtontuplenames_;// these are the discriminant outputs (so the data) that are saved into the ntuple...
   std::map<std::string,PerformanceResult::ResultType> btaggingparamtype_;
   std::vector<std::string> eleIDsToNtuple_;
 
@@ -116,7 +115,9 @@ private:
   double jetCEF_;
   double jetCHF_;
   double jetNCH_;
-  std::string bDiscName_; //The name of the bdsicriminator to be used for the analysis.
+  std::string bDiscName_; //The name of the b-discriminator to be used for the analysis.
+  std::string cVsLDiscName_; //The name of the CvsL-discriminator to be used for the analysis.
+  std::string cVsBDiscName_; //The name of the CvsB-discriminator to be used for the analysis.
   double bDiscCut_; //The cut applied for the bDiscriminator;
   double jetPtCutLoose_;
 
@@ -186,7 +187,6 @@ private:
   void fillBeamSpot(const edm::Event&, const edm::EventSetup&);
   void fillJets(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::JetCollection>, std::string);
   void fillBTagInfo(const pat::Jet &jet, const size_t jetindex, std::string ID);
-  void fillBTagInfoNew(const pat::Jet &jet, const size_t jetindex, std::string ID);
   void fillBIDParameters(const edm::EventSetup&, std::string);
   void makeBIDInfoHistos(const edm::EventSetup&);
   void fillBIDInfoHistos( const edm::EventSetup&, TH2D *, PerformanceResult::ResultType &, BinningVariables::BinningVariablesType, BinningVariables::BinningVariablesType, const BtagPerformance &);
@@ -609,16 +609,6 @@ private:
     std::map< std::string, std::vector<float> > jetSortedCorrErrHi;
     std::map< std::string, std::vector<float> > jetSortedN90Hits;
     std::map< std::string, std::vector<float> > jetSortedTriggered;
-    std::map< std::string, std::vector<float> > jetSortedSVPT;
-    std::map< std::string, std::vector<float> > jetSortedSVL2D;
-    std::map< std::string, std::vector<float> > jetSortedSVL2Dxy;
-    std::map< std::string, std::vector<float> > jetSortedSVL2DxyErr;
-    std::map< std::string, std::vector<float> > jetSortedSVL2DxySig;
-    std::map< std::string, std::vector<float> > jetSortedSVL3D;
-    std::map< std::string, std::vector<float> > jetSortedSVL3DErr;
-    std::map< std::string, std::vector<float> > jetSortedSVL3DSig;
-    std::map< std::string, std::vector<float> > jetSortedSVMass;
-    std::map< std::string, std::vector<int> >   jetSortedSVNtracks;
     std::map< std::string, std::vector<float> >  jetSortedSVX;
     std::map< std::string, std::vector<float> >  jetSortedSVY;
     std::map< std::string, std::vector<float> >  jetSortedSVZ;
@@ -627,6 +617,8 @@ private:
     std::map< std::string, std::vector<float> > jetSortedSVDZ;
     std::map< std::string, std::vector<int> > jetSortedNConstituents;
     std::map< std::string, std::vector<float> > jetSortedBDiscriminator;
+    std::map< std::string, std::vector<float> > jetSortedCvsLDiscriminator;
+    std::map< std::string, std::vector<float> > jetSortedCvsBDiscriminator;
 
 //Calo Jet
     std::map< std::string, std::vector<float> > jetSortedEMEnergyInEB;
@@ -659,7 +651,6 @@ private:
     // more detailed BID info for a few algorithms.
     std::map< std::string, std::vector<float> > jetSortedBtagSoftMuonPtRel;
     std::map< std::string, std::vector<float> > jetSortedBtagSoftMuonQuality;
-    std::map< std::string,std::vector<float> > jetSortedBtagDiscriminants_; // stores the data output
     std::map< std::string,std::vector<float> > jetSortedBIDParams_; // stores the parameter (db) output
     std::map< std::string,float > bidParamsDiscCut_;
 
@@ -680,8 +671,10 @@ private:
   //Loose jet info
   std::map< std::string, std::vector<float> > jetLooseSortedPt;
   std::map< std::string, std::vector<float> > jetLooseSortedEt;
-  std::map< std::string, std::vector<float> > jetLooseSortedEta;                    
-  std::map< std::string, std::vector<float> > jetLooseSortedBDisc;                    
+  std::map< std::string, std::vector<float> > jetLooseSortedEta;
+  std::map< std::string, std::vector<float> > jetLooseSortedBDisc;
+  std::map< std::string, std::vector<float> > jetLooseSortedCvsLDisc;
+  std::map< std::string, std::vector<float> > jetLooseSortedCvsBDisc;
 
 
 

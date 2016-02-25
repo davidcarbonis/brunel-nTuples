@@ -178,7 +178,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     hltnames_(0),
     btaggingparamnames_(iConfig.getParameter<std::vector<std::string> >("btagParameterizationList")),
     btaggingparaminputtypes_(iConfig.getParameter<std::vector<std::string> >("btagParameterizationMode")),
-    btaggingtontuplenames_(iConfig.getParameter<std::vector<std::string> >("btagAlgorithmsToNtuple")),
     //    eleIDsToNtuple_(iConfig.getParameter<std::vector<std::string> >("eleIDsToNtuple")),
     runMCInfo_(iConfig.getParameter<bool>("runMCInfo")),
     runPUReWeight_(iConfig.getParameter<bool>("runPUReWeight")),
@@ -1104,7 +1103,7 @@ void MakeTopologyNtupleMiniAOD::fillLooseJetInfo(const pat::Jet &jet, const size
 
 }
 
-void MakeTopologyNtupleMiniAOD::fillBTagInfoNew(const pat::Jet &jet, const size_t jetindex, std::string ID){
+void MakeTopologyNtupleMiniAOD::fillBTagInfo(const pat::Jet &jet, const size_t jetindex, std::string ID){
   
   jetSortedBDiscriminator[ ID ][jetindex]=jet.bDiscriminator(bDiscName_);
   
@@ -1121,118 +1120,6 @@ void MakeTopologyNtupleMiniAOD::fillBTagInfoNew(const pat::Jet &jet, const size_
 
 }
 
-/////////////////////////////
-void MakeTopologyNtupleMiniAOD::fillBTagInfo(const pat::Jet &jet, const size_t jetindex, std::string ID){
-  
-  // basic tag info
-  // also fill various algorithms here now:
-  for(size_t ii=0; ii<btaggingtontuplenames_.size(); ++ii){
-    std::string algonamestr = btaggingtontuplenames_[ii];
-    jetSortedBtagDiscriminants_[ algonamestr+ID ][jetindex]=jet.bDiscriminator(algonamestr);
-  };
-  // done filling algorithms
-  
-
-  float vertexMass=-999.;
-  float vertexPT=-999.;
-  float vertexL2D=-999.;
-  float vertexL2Dxy=-999.;
-  float vertexL2DxyErr=-999.;
-  float vertexL2DxySig=-999.;
-  float vertexL3D=-999.;
-  float vertexL3DErr=-999.;
-  float vertexL3DSig=-999.;
-
-  int ntrackssecvtx=0;
-  // secondary vertex info.
-
-// if( !jet.tagInfoSecondaryVertex() ){
-//   std::cout << "if fails" << std::endl;
-//   const reco::SecondaryVertexTagInfo *svTagInfo = -1; 
-//  }
-// else(){
-  const reco::SecondaryVertexTagInfo *svTagInfo = jet.tagInfoSecondaryVertex(); 
-  if (svTagInfo && svTagInfo->nVertices() >= 1) {
-    bTags++;
-    const reco::Vertex &sv = svTagInfo->secondaryVertex(0); //pick the first secondary vertex (the "best" one), index number is zero
-    ntrackssecvtx=0;
-    math::XYZTLorentzVector trackFourVectorSum; //four vetctor of the vertex
-
-    GlobalVector vectPVTX; //three momentum of the vertex
-    GlobalVector vectVertex(sv.x(), sv.y(), sv.z());
-    
-    //loop over all tracks in the vertex;
-    
-    for(reco::Vertex::trackRef_iterator track = sv.tracks_begin(); track != sv.tracks_end(); ++track){
-      ROOT::Math::LorentzVector<ROOT::Math::PxPyPzM4D<float> > vec;
-      //std::cout << "Gets into the for loop" << std::endl;
-      double trackpx=(*track)->px();
-      double trackpy=(*track)->py();
-      double trackpz=(*track)->pz();
-      GlobalVector vect(trackpx, trackpy, trackpz);
-      
-      vec.SetPx(trackpx);
-      vec.SetPy(trackpy);
-      vec.SetPz(trackpz);
-      vec.SetM(0.13957);      // pion mass
-      
-      trackFourVectorSum += vec;
-      vectPVTX += vect;
-      ntrackssecvtx++;
-    }
-    GlobalVector flightDirecionVector = svTagInfo->flightDirection(0); //fight direction
-    GlobalVector vectJet(jet.px(), jet.py(), jet.pz());
- 
-    vertexPT = vectPVTX*flightDirecionVector;
-    vertexL2D = vectVertex*vectJet/vectJet.mag();
-    vertexL2Dxy = svTagInfo->flightDistance(0, true).value();
-    vertexL2DxyErr = svTagInfo->flightDistance(0, true).error();
-    vertexL2DxySig = svTagInfo->flightDistance(0, true).significance();
-    vertexL3D = svTagInfo->flightDistance(0, false).value();
-    vertexL3DErr = svTagInfo->flightDistance(0, false).error();
-    vertexL3DSig = svTagInfo->flightDistance(0, false).significance();
-    // get the invariant mass: sqrt(E² - px² - py² - pz²)
-    vertexMass = trackFourVectorSum.M();
-
-    jetSortedSVX[ ID ][jetindex] = svTagInfo->secondaryVertex( 0 ).x();
-    jetSortedSVY[ ID ][jetindex] = svTagInfo->secondaryVertex( 0 ).y();
-    jetSortedSVZ[ ID ][jetindex] = svTagInfo->secondaryVertex( 0 ).z();
-    jetSortedSVDX[ ID ][jetindex] = svTagInfo->secondaryVertex( 0 ).xError();
-    jetSortedSVDY[ ID ][jetindex] = svTagInfo->secondaryVertex( 0 ).yError();
-    jetSortedSVDZ[ ID ][jetindex] = svTagInfo->secondaryVertex( 0 ).zError();
-  }
-  // fill sec vtx details
-  jetSortedSVPT[ ID ][jetindex]=vertexPT;
-  jetSortedSVL2D[ ID ][jetindex]=vertexL2D;
-  jetSortedSVL2Dxy[ ID ][jetindex]=vertexL2Dxy;
-  jetSortedSVL2DxyErr[ ID ][jetindex]=vertexL2DxyErr;
-  jetSortedSVL2DxySig[ ID ][jetindex]=vertexL2DxySig;
-  jetSortedSVL3D[ ID ][jetindex]=vertexL3D;
-  jetSortedSVL3DErr[ ID ][jetindex]=vertexL3DErr;
-  jetSortedSVL3DSig[ ID ][jetindex]=vertexL3DSig;
-  jetSortedSVMass[ ID ][jetindex]=vertexMass;
-  jetSortedSVNtracks[ ID ][jetindex]=ntrackssecvtx;
-
-
-  // more soft lepton info:
-  const reco::SoftLeptonTagInfo *slTagInfo = jet.tagInfoSoftLepton();
-  if( !slTagInfo ){
-    softTags++;
-    jetSortedBtagSoftMuonPtRel[ ID ][jetindex]= -1; 
-    jetSortedBtagSoftMuonQuality[ ID ][jetindex]= -1; 
-  }
-  else{    
-    for( unsigned int lepN = 0; lepN < slTagInfo->leptons(); lepN++)    {
-      float tempPtRel = slTagInfo->properties( lepN ).ptRel;	
-      if( tempPtRel > jetSortedBtagSoftMuonPtRel[ ID ][jetindex] ){ 
-	jetSortedBtagSoftMuonPtRel[ ID ][jetindex] = tempPtRel; 
-	jetSortedBtagSoftMuonQuality[ ID ][jetindex] = slTagInfo->properties(lepN).quality();
-      }    
-    }
-  } 
-
-  // }
-}
 /////////////////////////////
 void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::InputTag eleIn_, std::string ID){
 
@@ -1728,8 +1615,8 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
     // no cuts that remove jets after this!
     
     numJet[ ID ]++;
-    // b-tagging is done separately in method fillBTagInfo():
-    fillBTagInfoNew(jet,numJet[ ID ]-1, ID);
+
+    fillBTagInfo(jet,numJet[ ID ]-1, ID);
 
   } 
   metEt[ID] = sqrt(pow(metPx[ID],2) + pow(metPy[ID],2));  
@@ -2121,16 +2008,6 @@ void MakeTopologyNtupleMiniAOD::clearjetarrays(std::string ID){
     jetSortedBtagSoftMuonPtRel[ ID ].clear();
     jetSortedBtagSoftMuonQuality[ ID ].clear();
     jetSortedTriggered[ ID ].clear();
-    jetSortedSVPT[ ID ].clear();
-    jetSortedSVL2D[ ID ].clear();
-    jetSortedSVL2Dxy[ ID ].clear();
-    jetSortedSVL2DxyErr[ ID ].clear();
-    jetSortedSVL2DxySig[ ID ].clear();
-    jetSortedSVL3D[ ID ].clear();
-    jetSortedSVL3DErr[ ID ].clear();
-    jetSortedSVL3DSig[ ID ].clear();
-    jetSortedSVMass[ ID ].clear();
-    jetSortedSVNtracks[ ID ].clear();
     jetSortedSVX[ ID ].clear();
     jetSortedSVY[ ID ].clear();
     jetSortedSVZ[ ID ].clear();
@@ -2182,11 +2059,6 @@ void MakeTopologyNtupleMiniAOD::clearjetarrays(std::string ID){
     genJetSortedClosestB[ ID ].clear();
     genJetSortedClosestC[ ID ].clear();
     genJetSortedBtag[ ID ].clear();
-
-    for(size_t ii=0; ii< btaggingtontuplenames_.size(); ++ii){
-      std::string algostr= btaggingtontuplenames_[ii];
-      jetSortedBtagDiscriminants_[algostr + ID].clear();
-    }
 
 }
 
@@ -3346,7 +3218,6 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
 
   numJet[ ID ] = -1;
 
-  jetSortedSVNtracks[ ID ] = tempVecI;
   jetSortedNtracksInJet[ ID ] = tempVecI;
   jetSortedPID[ ID ] = tempVecI;
   jetSortedNConstituents[ ID ] = tempVecI;
@@ -3376,15 +3247,6 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
   jetSortedBtagSoftMuonPtRel[ ID ] = tempVecF;
   jetSortedBtagSoftMuonQuality[ ID ] = tempVecF;
   jetSortedTriggered[ ID ] = tempVecF;
-  jetSortedSVPT[ ID ] = tempVecF;
-  jetSortedSVL2D[ ID ] = tempVecF;
-  jetSortedSVL2Dxy[ ID ] = tempVecF;
-  jetSortedSVL2DxyErr[ ID ] = tempVecF;
-  jetSortedSVL2DxySig[ ID ] = tempVecF;
-  jetSortedSVL3D[ ID ] = tempVecF;
-  jetSortedSVL3DErr[ ID ] = tempVecF;
-  jetSortedSVL3DSig[ ID ] = tempVecF;
-  jetSortedSVMass[ ID ] = tempVecF;
   jetSortedSVX[ ID ] = tempVecF;
   jetSortedSVY[ ID ] = tempVecF;
   jetSortedSVZ[ ID ] = tempVecF;
@@ -3438,16 +3300,6 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
   mytree_->Branch( (prefix + "CorrErrHi").c_str(), &jetSortedCorrErrHi[ ID ][0], (prefix + "CorrErrHi[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "N90Hits").c_str(), &jetSortedN90Hits[ ID ][0], (prefix + "N90Hits[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "Triggered").c_str(), &jetSortedTriggered[ ID ][0], (prefix + "Triggered[numJet" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "SVPT").c_str(), &jetSortedSVPT[ ID ][0], (prefix + "SVPT[numJet" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "SVL2D").c_str(), &jetSortedSVL2D[ ID ][0], (prefix + "SVL2D[numJet" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "SVL2Dxy").c_str(), &jetSortedSVL2Dxy[ ID ][0], (prefix + "SVL2Dxy[numJet" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "SVL2DxyErr").c_str(), &jetSortedSVL2DxyErr[ ID ][0], (prefix + "SVL2DxyErr[numJet" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "SVL2DxySig").c_str(), &jetSortedSVL2DxySig[ ID ][0], (prefix + "SVL2DxySig[numJet" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "SVL3D").c_str(), &jetSortedSVL3D[ ID ][0], (prefix + "SVL3D[numJet" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "SVL3DErr").c_str(), &jetSortedSVL3DErr[ ID ][0], (prefix + "SVL3DErr[numJet" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "SVL3DSig").c_str(), &jetSortedSVL3DSig[ ID ][0], (prefix + "SVL3DSig[numJet" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "SVMass").c_str(), &jetSortedSVMass[ ID ][0], (prefix + "SVMass[numJet" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "SVNtracks").c_str(), &jetSortedSVNtracks[ ID ][0], (prefix + "SVNtracks[numJet" + name + "]/I").c_str() );
   mytree_->Branch( (prefix + "SVX").c_str(), &jetSortedSVX[ ID ][0], (prefix + "SVX[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "SVY").c_str(), &jetSortedSVY[ ID ][0], (prefix + "SVY[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "SVZ").c_str(), &jetSortedSVZ[ ID ][0], (prefix + "SVZ[numJet" + name + "]/F").c_str() );
@@ -3608,19 +3460,6 @@ void MakeTopologyNtupleMiniAOD::bookBIDInfoBranches(std::string ID, std::string 
 //     std::cout << "booking branch: " << secondname << std::endl;
 // //    mytree_->Branch(name2.Data(),&jetSortedBIDParams_[lookupname + ID][0],secondname.Data());
 //   }
-  // and the same for the b-id discriminants:
-  for(size_t ii=0; ii<btaggingtontuplenames_.size(); ++ii){
-    std::string lookupname=btaggingtontuplenames_[ii];
-    std::vector<float> tempvector(NJETSMAX);
-    jetSortedBtagDiscriminants_[lookupname + ID]=tempvector;
-    TString name2 = ("jet" + name + "BtagDisc_").c_str();
-    name2+=lookupname;
-    name2.ReplaceAll(" ","");
-    TString secondname=name2;
-    secondname+=("[numJet" + name + "]/F").c_str();
-    std::cout << "booking branch: " << secondname << std::endl;
-    mytree_->Branch(name2.Data(),&jetSortedBtagDiscriminants_[lookupname+ID][0],secondname.Data());
-  }
 }
 
 void MakeTopologyNtupleMiniAOD::bookGeneralTracksBranches(void){
