@@ -2430,7 +2430,6 @@ void MakeTopologyNtupleMiniAOD::bookBranches(){
 ////std::cout << "bookBranches CHECK" << std::endl;
   mytree_=new TTree("tree","tree");
 
-  bookedBDBDisc_=false;
   /*
   bookElectronBranches("Calo", "Calo");
   bookMuonBranches("Calo", "Calo");
@@ -3416,50 +3415,7 @@ void MakeTopologyNtupleMiniAOD::bookBIDInfoBranches(std::string ID, std::string 
   btaggingparamtype_["MUEFF"]=PerformanceResult::MUEFF;
   btaggingparamtype_["MUERR"]=PerformanceResult::MUERR;
   btaggingparamtype_["MUFAKE"]=PerformanceResult::MUFAKE; 
-  btaggingparamtype_["MUEFAKE"]=PerformanceResult::MUEFAKE;
-
-  
-  // do the filling in two steps:
-  // 1) fill a map. This way the bidParamsDiscCut_ object only gets called one time if more branches are filled
-  // 2) book the other branches.
-  
-//   size_t ii;
-//   for(ii=0; ii <btaggingparamnames_.size(); ++ii){
-//     float tempfloat=-1;
-//     bidParamsDiscCut_[ btaggingparamnames_[ii] ]=tempfloat;
-//   }
-//   // and book the btagParamDiscCut_ branches:
-//   if( !bookedBDBDisc_ )
-//   {
-// //      ii=0;
-//       for(std::map<std::string,float>::iterator iter=bidParamsDiscCut_.begin(); iter!=bidParamsDiscCut_.end();++iter){
-// 	  TString name2="btagParamDiscCut_";
-// 	  name2+=iter->first;
-// 	  name2.ReplaceAll(" ","");
-// 	  TString secondname2=name2;
-// 	  secondname2+="/F";
-// 	  std::cout << "booking branch: " << secondname2 << std::endl;
-// //	  mytree_->Branch(name2.Data(),&(iter->second),secondname2.Data());
-// //	  ii++;
-//       }
-//   }
-//   bookedBDBDisc_ = true;
-//   // and now do all parameterization branches:
-//   // make a vector and book a branch
-//   for(size_t ii=0; ii<btaggingparamnames_.size() && ii<btaggingparaminputtypes_.size(); ++ii){
-//     std::string lookupname=btaggingparamnames_[ii]+"-"+btaggingparaminputtypes_[ii];
-//     std::vector<float> tempvector(NJETSMAX);
-//     jetSortedBIDParams_[lookupname + ID]=tempvector;
-//     TString name2=("jet" + name + "BtagParam_").c_str();
-//     name2+=btaggingparamnames_[ii];
-//     name2+="_";
-//     name2+=btaggingparaminputtypes_[ii];
-//     name2.ReplaceAll(" ","");
-//     TString secondname=name2;
-//     secondname+=("[numJet" + name + "]/F").c_str();
-//     std::cout << "booking branch: " << secondname << std::endl;
-// //    mytree_->Branch(name2.Data(),&jetSortedBIDParams_[lookupname + ID][0],secondname.Data());
-//   }
+  btaggingparamtype_["MUEFAKE"]=PerformanceResult::MUEFAKE;  
 }
 
 void MakeTopologyNtupleMiniAOD::bookGeneralTracksBranches(void){

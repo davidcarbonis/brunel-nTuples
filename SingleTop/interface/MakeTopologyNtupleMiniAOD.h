@@ -172,7 +172,6 @@ private:
   bool check_triggers_;
   std::string muoIDquality_;
   bool flavorHistoryTag_;
-  bool bookedBDBDisc_;
   double  dREleGeneralTrackMatch_;
   double  magneticField_;
   double  correctFactor_;
