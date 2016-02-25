@@ -1629,6 +1629,8 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
 
     fillBTagInfo(jet,numJet[ ID ]-1, ID);
 
+    fillCTagInfo(jet,numJet[ ID ]-1, ID);
+
   } 
   metEt[ID] = sqrt(pow(metPx[ID],2) + pow(metPy[ID],2));  
   if (numJet[ID] == 0)
