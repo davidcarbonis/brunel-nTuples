@@ -217,7 +217,6 @@ public :
    Float_t         jetPF2PATSVDY[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATSVDZ[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATBDiscriminator[40];   //[numJetPF2PAT]
-   Float_t	   jetPF2PATCDiscriminator[40];   //[numJetPF2PAT]
    Int_t           jetPF2PATNConstituents[40];   //[numJetPF2PAT]
    Int_t           jetPF2PATPID[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATClosestBPartonDeltaR[40];   //[numJetPF2PAT]
@@ -236,7 +235,6 @@ public :
    Float_t         looseJetPF2PATPt[40];   //[numLooseBJetsPF2PAT]
    Float_t         looseJetPF2PATEta[40];   //[numLooseBJetsPF2PAT]
    Float_t         looseJetPF2PATBDisc[40];   //[numLooseBJetsPF2PAT]
-   Float_t         looseJetPF2PATCDisc[40];   //[numLooseCJetsPF2PAT]
    Float_t         jetPF2PATBtagDisc_pfJetProbabilityBJetTags[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATBtagDisc_pfCombinedInclusiveSecondaryVertexV2BJetTags[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATBtagDisc_pfCombinedMVAV2BJetTags[40];   //[numJetPF2PAT]
@@ -543,7 +541,6 @@ public :
    TBranch        *b_jetPF2PATSVDY;   //!
    TBranch        *b_jetPF2PATSVDZ;   //!
    TBranch        *b_jetPF2PATBDiscriminator;   //!
-   TBranch        *b_jetPF2PATCDiscriminator;   //!
    TBranch        *b_jetPF2PATNConstituents;   //!
    TBranch        *b_jetPF2PATPID;   //!
    TBranch        *b_jetPF2PATClosestBPartonDeltaR;   //!
@@ -562,7 +559,6 @@ public :
    TBranch        *b_looseJetPF2PATPt;   //!
    TBranch        *b_looseJetPF2PATEta;   //!
    TBranch        *b_looseJetPF2PATBDisc;   //!
-   TBranch        *b_looseJetPF2PATCDisc;   //!
    TBranch        *b_jetPF2PATBtagDisc_pfJetProbabilityBJetTags;   //!
    TBranch        *b_jetPF2PATBtagDisc_pfCombinedInclusiveSecondaryVertexV2BJetTags;   //!
    TBranch        *b_jetPF2PATBtagDisc_pfCombinedMVAV2BJetTags;   //!
@@ -1107,7 +1103,6 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("jetPF2PATSVDY", jetPF2PATSVDY, &b_jetPF2PATSVDY);
    fChain->SetBranchAddress("jetPF2PATSVDZ", jetPF2PATSVDZ, &b_jetPF2PATSVDZ);
    fChain->SetBranchAddress("jetPF2PATBDiscriminator", jetPF2PATBDiscriminator, &b_jetPF2PATBDiscriminator);
-   fChain->SetBranchAddress("jetPF2PATCDiscriminator", jetPF2PATCDiscriminator, &b_jetPF2PATCDiscriminator);
    fChain->SetBranchAddress("jetPF2PATNConstituents", jetPF2PATNConstituents, &b_jetPF2PATNConstituents);
    fChain->SetBranchAddress("jetPF2PATPID", jetPF2PATPID, &b_jetPF2PATPID);
    fChain->SetBranchAddress("jetPF2PATClosestBPartonDeltaR", jetPF2PATClosestBPartonDeltaR, &b_jetPF2PATClosestBPartonDeltaR);
@@ -1128,7 +1123,6 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("looseJetPF2PATPt", looseJetPF2PATPt, &b_looseJetPF2PATPt);
    fChain->SetBranchAddress("looseJetPF2PATEta", looseJetPF2PATEta, &b_looseJetPF2PATEta);
    fChain->SetBranchAddress("looseJetPF2PATBDisc", looseJetPF2PATBDisc, &b_looseJetPF2PATBDisc);
-   fChain->SetBranchAddress("looseJetPF2PATCDisc", looseJetPF2PATCDisc, &b_looseJetPF2PATCDisc);
    fChain->SetBranchAddress("jetPF2PATBtagDisc_pfJetProbabilityBJetTags", jetPF2PATBtagDisc_pfJetProbabilityBJetTags, &b_jetPF2PATBtagDisc_pfJetProbabilityBJetTags);
    fChain->SetBranchAddress("jetPF2PATBtagDisc_pfCombinedInclusiveSecondaryVertexV2BJetTags", jetPF2PATBtagDisc_pfCombinedInclusiveSecondaryVertexV2BJetTags, &b_jetPF2PATBtagDisc_pfCombinedInclusiveSecondaryVertexV2BJetTags);
    fChain->SetBranchAddress("jetPF2PATBtagDisc_pfCombinedMVAV2BJetTags", jetPF2PATBtagDisc_pfCombinedMVAV2BJetTags, &b_jetPF2PATBtagDisc_pfCombinedMVAV2BJetTags);
