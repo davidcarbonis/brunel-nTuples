@@ -186,6 +186,7 @@ private:
   void fillBeamSpot(const edm::Event&, const edm::EventSetup&);
   void fillJets(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::JetCollection>, std::string);
   void fillBTagInfo(const pat::Jet &jet, const size_t jetindex, std::string ID);
+  void fillCTagInfo(const pat::Jet &jet, const size_t jetindex, std::string ID);
   void fillBIDParameters(const edm::EventSetup&, std::string);
   void makeBIDInfoHistos(const edm::EventSetup&);
   void fillBIDInfoHistos( const edm::EventSetup&, TH2D *, PerformanceResult::ResultType &, BinningVariables::BinningVariablesType, BinningVariables::BinningVariablesType, const BtagPerformance &);
@@ -665,7 +666,6 @@ private:
     std::map< std::string, std::vector<int> > genJetSortedPID;
     std::map< std::string,std::vector<float> > genJetSortedClosestB;
     std::map< std::string,std::vector<float> > genJetSortedClosestC;
-    std::map< std::string,std::vector<float> > genJetSortedBtag;
 
   //Loose jet info
   std::map< std::string, std::vector<float> > jetLooseSortedPt;

@@ -192,6 +192,8 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     jetCHF_(iConfig.getParameter<double>("jetCHF")),
     jetNCH_(iConfig.getParameter<double>("jetNCH")),
     bDiscName_(iConfig.getParameter<std::string>("bDiscName")),
+    cVsLDiscName_(iConfig.getParameter<std::string>("cVsLDiscName")),
+    cVsBDiscName_(iConfig.getParameter<std::string>("cVsBDiscName")),
     bDiscCut_(iConfig.getParameter<double>("bDiscCut")),
     jetPtCutLoose_(iConfig.getParameter<double>("jetPtCutLoose")),
     runPDFUncertainties_(iConfig.getParameter<bool>("runPDFUncertainties")),
@@ -1100,6 +1102,8 @@ void MakeTopologyNtupleMiniAOD::fillLooseJetInfo(const pat::Jet &jet, const size
   jetLooseSortedEt[ID][jetindex] = jetPt;
   jetLooseSortedEta[ ID ][jetindex] = jet.eta();
   jetLooseSortedBDisc[ ID ][jetindex] = jet.bDiscriminator(bDiscName_);
+  jetLooseSortedCvsLDisc[ ID ][jetindex] = jet.bDiscriminator(cVsLDiscName_);
+  jetLooseSortedCvsBDisc[ ID ][jetindex] = jet.bDiscriminator(cVsBDiscName_);
 
 }
 
@@ -1117,6 +1121,13 @@ void MakeTopologyNtupleMiniAOD::fillBTagInfo(const pat::Jet &jet, const size_t j
     jetSortedSVDY[ ID ][jetindex] = svTagInfo->secondaryVertex( 0 ).yError();
     jetSortedSVDZ[ ID ][jetindex] = svTagInfo->secondaryVertex( 0 ).zError();
   }
+
+}
+
+void MakeTopologyNtupleMiniAOD::fillCTagInfo(const pat::Jet &jet, const size_t jetindex, std::string ID){
+
+  jetSortedCvsLDiscriminator[ ID ][jetindex]=jet.bDiscriminator(cVsLDiscName_);
+  jetSortedCvsBDiscriminator[ ID ][jetindex]=jet.bDiscriminator(cVsBDiscName_);
 
 }
 
@@ -2018,6 +2029,8 @@ void MakeTopologyNtupleMiniAOD::clearjetarrays(std::string ID){
     jetSortedNConstituents[ ID ].clear();
     bidParamsDiscCut_[ ID ]=-1.0;
     jetSortedBDiscriminator[ ID ].clear();
+    jetSortedCvsLDiscriminator[ ID ].clear();
+    jetSortedCvsBDiscriminator[ ID ].clear();
 
 //Calo specific
     jetSortedEMEnergyInEB[ ID ].clear();
@@ -2057,9 +2070,7 @@ void MakeTopologyNtupleMiniAOD::clearjetarrays(std::string ID){
     jetSortedPID[ ID ].clear();
     genJetSortedPID[ ID ].clear();
     genJetSortedClosestB[ ID ].clear();
-    genJetSortedClosestC[ ID ].clear();
-    genJetSortedBtag[ ID ].clear();
-
+    genJetSortedClosestC[ ID ].clear();	
 }
 
 void MakeTopologyNtupleMiniAOD::clearLooseJetarrays(std::string ID){
@@ -2069,6 +2080,8 @@ void MakeTopologyNtupleMiniAOD::clearLooseJetarrays(std::string ID){
     jetLooseSortedEt[ ID ].clear();   
     jetLooseSortedEta[ ID ].clear();  
     jetLooseSortedBDisc[ ID ].clear();
+    jetLooseSortedCvsLDisc[ ID ].clear();
+    jetLooseSortedCvsBDisc[ ID ].clear();
 
 }
 
@@ -3253,6 +3266,8 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
   jetSortedSVDY[ ID ] = tempVecF;
   jetSortedSVDZ[ ID ] = tempVecF;
   jetSortedBDiscriminator[ ID ] = tempVecF;
+  jetSortedCvsLDiscriminator[ ID ] = tempVecF;
+  jetSortedCvsBDiscriminator[ ID ] = tempVecF;
   genJetSortedEt[ ID ] = tempVecF;
   genJetSortedPt[ ID ] = tempVecF;
   genJetSortedEta[ ID ] = tempVecF;
@@ -3263,12 +3278,13 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
   genJetSortedPz[ ID ] = tempVecF;
   genJetSortedClosestB[ ID ] = tempVecF;
   genJetSortedClosestC[ ID ] = tempVecF;
-  genJetSortedBtag[ ID ] = tempVecF;
 
   jetLooseSortedPt[ ID ] = tempVecF;   
   jetLooseSortedEt[ ID ] = tempVecF;   
   jetLooseSortedEta[ ID ] = tempVecF;  
   jetLooseSortedBDisc[ ID ] = tempVecF;
+  jetLooseSortedCvsLDisc[ ID ] = tempVecF;
+  jetLooseSortedCvsBDisc[ ID ] = tempVecF;
 
 
   std::string prefix = "jet" + name;
@@ -3306,6 +3322,8 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
   mytree_->Branch( (prefix + "SVDY").c_str(), &jetSortedSVDY[ ID ][0], (prefix + "SVDY[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "SVDZ").c_str(), &jetSortedSVDZ[ ID ][0], (prefix + "SVDZ[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "BDiscriminator").c_str(), &jetSortedBDiscriminator[ ID ][0], (prefix + "BDiscriminator[numJet" + name + "]/F").c_str() );
+  mytree_->Branch( (prefix + "CvsLDiscriminator").c_str(), &jetSortedCvsLDiscriminator[ ID ][0], (prefix + "CvsLDiscriminator[numJet" + name + "]/F").c_str() );
+  mytree_->Branch( (prefix + "CvsBDiscriminator").c_str(), &jetSortedCvsBDiscriminator[ ID ][0], (prefix + "CvsBDiscriminator[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "NConstituents").c_str(), &jetSortedNConstituents[ ID ][0], (prefix + "NConstituents[numJet" + name + "]/I").c_str() );
 
   // generator information
@@ -3333,6 +3351,8 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
   mytree_->Branch( (prefix + "Pt").c_str(), &jetLooseSortedPt[ ID ][0], (prefix + "Pt[numLooseBJets" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "Eta").c_str(), &jetLooseSortedEta[ ID ][0], (prefix + "Eta[numLooseBJets" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "BDisc").c_str(), &jetLooseSortedBDisc[ ID ][0], (prefix + "BDisc[numLooseBJets" + name + "]/F").c_str() );
+  mytree_->Branch( (prefix + "CvsLDisc").c_str(), &jetLooseSortedCvsLDisc[ ID ][0], (prefix + "CvsLDisc[numLooseBJets" + name + "]/F").c_str() );
+  mytree_->Branch( (prefix + "CvsBDisc").c_str(), &jetLooseSortedCvsBDisc[ ID ][0], (prefix + "CvsBDisc[numLooseBJets" + name + "]/F").c_str() );
 
   bookBIDInfoBranches( ID, name );
 
