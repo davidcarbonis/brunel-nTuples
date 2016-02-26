@@ -61,39 +61,11 @@ process.inclusiveSecondaryVertexFinderTagInfos.extSVCollection = cms.InputTag("u
 
 process.ak4PFJets.doRhoFastjet = True
 
-process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
-                                           vertexCollection = cms.InputTag('offlineSlimmedPrimaryVertices'),
-                                           minimumNDOF = cms.uint32(4) ,
-                                           maxAbsZ = cms.double(24),
-                                           maxd0 = cms.double(2)
-                                           )
-
-
-
 from PhysicsTools.SelectorUtils.pvSelector_cfi import pvSelector
 
-process.goodOfflinePrimaryVertices = cms.EDFilter(
-    "PrimaryVertexObjectFilter",
-    filterParams = cms.PSet( minNdof = cms.double( 4. ) ,
-                             maxZ = cms.double( 24. ) ,
-                             maxRho = cms.double( 2. ) ) ,
-    filter = cms.bool( True) ,
-    src = cms.InputTag( 'offlineSlimmedPrimaryVertices' ) )
-
-## The HBHE noise filters ___________________________________________||
-process.load('CommonTools.RecoAlgos.HBHENoiseFilter_cfi')
-
-## The CSC beam halo 2015 tight filter ____________________________________________||
-process.load('RecoMET.METFilters.CSCTightHalo2015Filter_cfi')
-
-## The ECAL dead cell trigger primitive filter _______________________________||
-process.load('RecoMET.METFilters.EcalDeadCellTriggerPrimitiveFilter_cfi')
-
-## The EE bad SuperCrystal filter ____________________________________________||
-process.load('RecoMET.METFilters.eeBadScFilter_cfi')
-
-## The tracking POG filters __________________________________________________||
-process.load('RecoMET.METFilters.trackingPOGFilters_cff')
+## MET Filters __________________________________________________||
+process.load('CommonTools.RecoAlgos.HBHENoiseFilterResultProducer_cfi')
+process.load('PhysicsTools.PatAlgos.slimming.metFilterPaths_cff')
 
 process.goodVertices = cms.EDFilter(
       "VertexSelector",
@@ -102,14 +74,29 @@ process.goodVertices = cms.EDFilter(
         cut = cms.string("!isFake && ndof > 4 && abs(z) <= 24 && position.rho < 2")
       )
 
+process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
+                                           vertexCollection = cms.InputTag('offlineSlimmedPrimaryVertices'),
+                                           minimumNDOF = cms.uint32(4) ,
+                                           maxAbsZ = cms.double(24),
+                                           maxd0 = cms.double(2)
+                                           )
+process.goodOfflinePrimaryVertices = cms.EDFilter(
+    "PrimaryVertexObjectFilter",
+    filterParams = cms.PSet( minNdof = cms.double( 4. ) ,
+                             maxZ = cms.double( 24. ) ,
+                             maxRho = cms.double( 2. ) ) ,
+    filter = cms.bool( True) ,
+    src = cms.InputTag( 'offlineSlimmedPrimaryVertices' ) )
+
+
 process.filtersSeq = cms.Sequence(
 #    process.goodOfflinePrimaryVertices*
     process.primaryVertexFilter
-    * process.HBHENoiseFilter
+    * process.HBHENoiseFilterResultProducer
     * process.HBHENoiseFilter
     * process.CSCTightHalo2015Filter
     * process.EcalDeadCellTriggerPrimitiveFilter
-    * process.eeBadScFilter
+#    * process.eeBadScFilter
     * process.goodVertices 
 #    * process.trkPOGFilters
     )
