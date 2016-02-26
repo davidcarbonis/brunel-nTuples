@@ -80,6 +80,17 @@ process.goodOfflinePrimaryVertices = cms.EDFilter(
     filter = cms.bool( True) ,
     src = cms.InputTag( 'offlineSlimmedPrimaryVertices' ) )
 
+## The HBHE noise filters ___________________________________________||
+process.load('CommonTools.RecoAlgos.HBHENoiseFilter_cfi')
+
+## The CSC beam halo 2015 tight filter ____________________________________________||
+process.load('RecoMET.METFilters.CSCTightHalo2015Filter_cfi')
+
+## The ECAL dead cell trigger primitive filter _______________________________||
+process.load('RecoMET.METFilters.EcalDeadCellTriggerPrimitiveFilter_cfi')
+
+## The EE bad SuperCrystal filter ____________________________________________||
+process.load('RecoMET.METFilters.eeBadScFilter_cfi')
 
 ## The tracking POG filters __________________________________________________||
 process.load('RecoMET.METFilters.trackingPOGFilters_cff')
@@ -92,8 +103,14 @@ process.goodVertices = cms.EDFilter(
       )
 
 process.filtersSeq = cms.Sequence(
-    process.primaryVertexFilter
-  * process.goodVertices 
+    process.goodOfflinePrimaryVertices*
+    * process.primaryVertexFilter
+    * process.HBHENoiseFilter
+    * process.HBHENoiseFilter
+    * process.CSCTightHalo2015Filter
+    * process.EcalDeadCellTriggerPrimitiveFilter
+    * process.eeBadScFilter
+    * process.goodVertices 
 #    * process.trkPOGFilters
     )
 
@@ -209,7 +226,7 @@ process.source = cms.Source("PoolSource",
 )
 
 ## Maximal Number of Events
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source.fileNames = [
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv1/ZZTo4L_13TeV_powheg_pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/0C0945C1-86B2-E511-B553-0CC47A78A440.root',
@@ -246,7 +263,6 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
-    process.goodOfflinePrimaryVertices*
     process.filtersSeq *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *
