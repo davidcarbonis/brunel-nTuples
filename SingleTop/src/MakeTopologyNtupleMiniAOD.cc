@@ -1333,7 +1333,7 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
 
     weight_muF0p5_ = EventHandle->weights()[2].wgt; // muF = 0.5 | muR = 1
     weight_muF2_ = EventHandle->weights()[1].wgt; // muF = 2 | muR = 1
-    weight_muF2_ = EventHandle->weights()[1].wgt; // muF = 2 | muR = 1
+    weight_muR0p5_ = EventHandle->weights()[6].wgt; // muF = 2 | muR = 1
     weight_muR2_ = EventHandle->weights()[3].wgt; // muF = 1 | muR = 2
 
     origWeightForNorm_ = EventHandle->originalXWGTUP();
@@ -1342,7 +1342,7 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
   else {
     weight_muF0p5_ = -999999.;
     weight_muF2_ = -999999.;
-    weight_muF2_ = -999999.;
+    weight_muR0p5_ = -999999.;
     weight_muR2_ = -999999.;
     origWeightForNorm_ = -999999.;
   }
