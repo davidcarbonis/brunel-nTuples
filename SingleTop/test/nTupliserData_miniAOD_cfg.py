@@ -88,6 +88,8 @@ process.goodOfflinePrimaryVertices = cms.EDFilter(
     filter = cms.bool( True) ,
     src = cms.InputTag( 'offlineSlimmedPrimaryVertices' ) )
 
+process.eeBadScFilter.EERecHitSource = cms.InputTag('reducedEgamma', 'reducedEERecHits')
+
 
 process.filtersSeq = cms.Sequence(
 #    process.goodOfflinePrimaryVertices*
@@ -96,7 +98,7 @@ process.filtersSeq = cms.Sequence(
     * process.HBHENoiseFilter
     * process.CSCTightHalo2015Filter
     * process.EcalDeadCellTriggerPrimitiveFilter
-#    * process.eeBadScFilter
+    * process.eeBadScFilter
     * process.goodVertices 
 #    * process.trkPOGFilters
     )

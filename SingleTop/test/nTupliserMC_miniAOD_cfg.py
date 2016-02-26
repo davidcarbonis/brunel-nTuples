@@ -66,6 +66,7 @@ from PhysicsTools.SelectorUtils.pvSelector_cfi import pvSelector
 ## MET Filters __________________________________________________||
 process.load('CommonTools.RecoAlgos.HBHENoiseFilterResultProducer_cfi')
 process.load('PhysicsTools.PatAlgos.slimming.metFilterPaths_cff')
+process.load('RecoMET.METFilters.eeBadScFilter_cfi')
 
 process.goodVertices = cms.EDFilter(
       "VertexSelector",
@@ -89,6 +90,8 @@ process.goodOfflinePrimaryVertices = cms.EDFilter(
     filter = cms.bool( True) ,
     src = cms.InputTag( 'offlineSlimmedPrimaryVertices' ) )
 
+process.eeBadScFilter.EERecHitSource = cms.InputTag('reducedEgamma', 'reducedEERecHits')
+
 
 process.filtersSeq = cms.Sequence(
 #    process.goodOfflinePrimaryVertices*
@@ -97,7 +100,7 @@ process.filtersSeq = cms.Sequence(
     * process.HBHENoiseFilter
     * process.CSCTightHalo2015Filter
     * process.EcalDeadCellTriggerPrimitiveFilter
-#    * process.eeBadScFilter
+    * process.eeBadScFilter
     * process.goodVertices 
 #    * process.trkPOGFilters
     )
