@@ -95,9 +95,6 @@ process.load('RecoMET.METFilters.eeBadScFilter_cfi')
 ## The tracking POG filters __________________________________________________||
 process.load('RecoMET.METFilters.trackingPOGFilters_cff')
 
-## The tracking POG filters __________________________________________________||
-process.load('RecoMET.METFilters.trackingPOGFilters_cff')
-
 process.goodVertices = cms.EDFilter(
       "VertexSelector",
         filter = cms.bool(False),
