@@ -3,7 +3,7 @@ import FWCore.ParameterSet.Config as cms
 makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            # "Calo"
                                            trackToken  = cms.InputTag("lostTracks"),
-                                           conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions", "PAT"),
+                                           conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions"),
                                            electronTag = cms.InputTag("slimmedElectrons"),
                                            tauTag      = cms.InputTag("slimmedTaus"),
                                            muonTag     = cms.InputTag("slimmedMuons"),
@@ -26,7 +26,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            rho              = cms.InputTag("kt6PFJets", "rho"),
                                            triggerTag  = cms.InputTag("TriggerResults","","HLT"),
                                            fakeTriggerList = cms.vstring(), # empty. You can add fake triggers that are run on the fly to this list. No check on the process name is made so when duplicates are available only the latest one is added.
-					   isLHEflag = cms.bool(False),
+					   isLHEflag = cms.bool(True),
 					   externalLHEToken = cms.InputTag("externalLHEProducer"),
                                            
                                            triggerList = cms.vstring(                                                              #Updated Triggers
