@@ -80,6 +80,18 @@ process.goodOfflinePrimaryVertices = cms.EDFilter(
     filter = cms.bool( True) ,
     src = cms.InputTag( 'offlineSlimmedPrimaryVertices' ) )
 
+## The HBHE noise filters ___________________________________________||
+process.load('CommonTools.RecoAlgos.HBHENoiseFilter_cfi')
+
+## The CSC beam halo tight filter ____________________________________________||
+process.load('RecoMET.METFilters.CSCTightHaloFilter_cfi')
+
+## The ECAL dead cell trigger primitive filter _______________________________||
+process.load('RecoMET.METFilters.EcalDeadCellTriggerPrimitiveFilter_cfi')
+
+## The EE bad SuperCrystal filter ____________________________________________||
+process.load('RecoMET.METFilters.eeBadScFilter_cfi')
+
 ## The tracking POG filters __________________________________________________||
 process.load('RecoMET.METFilters.trackingPOGFilters_cff')
 
@@ -91,8 +103,14 @@ process.goodVertices = cms.EDFilter(
       )
 
 process.filtersSeq = cms.Sequence(
+#    process.goodOfflinePrimaryVertices*
     process.primaryVertexFilter
-#  * process.goodVertices 
+    * process.HBHENoiseFilter
+    * process.HBHENoiseFilter
+    * process.CSCTightHaloFilter
+    * process.EcalDeadCellTriggerPrimitiveFilter
+    * process.eeBadScFilter
+    * process.goodVertices 
 #    * process.trkPOGFilters
     )
 
