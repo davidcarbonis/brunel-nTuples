@@ -103,8 +103,8 @@ process.goodVertices = cms.EDFilter(
       )
 
 process.filtersSeq = cms.Sequence(
-    process.goodOfflinePrimaryVertices*
-    * process.primaryVertexFilter
+#    process.goodOfflinePrimaryVertices*
+    process.primaryVertexFilter
     * process.HBHENoiseFilter
     * process.HBHENoiseFilter
     * process.CSCTightHalo2015Filter
