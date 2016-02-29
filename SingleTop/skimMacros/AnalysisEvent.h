@@ -201,7 +201,6 @@ public :
    Float_t         jetPF2PATN90Hits[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATTriggered[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATSVX[40];   //[numJetPF2PAT]
-
    Float_t         jetPF2PATSVY[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATSVZ[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATSVDX[40];   //[numJetPF2PAT]
