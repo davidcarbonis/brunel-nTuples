@@ -1235,11 +1235,11 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
   }
 
   else {
-    weight_muF0p5_ = -999999.;
-    weight_muF2_ = -999999.;
-    weight_muR0p5_ = -999999.;
-    weight_muR2_ = -999999.;
-    origWeightForNorm_ = -999999.;
+    weight_muF0p5_ = 0.0;
+    weight_muF2_ = 0.0;
+    weight_muR0p5_ = 0.0;
+    weight_muR2_ = 0.0;
+    origWeightForNorm_ = 0.0;
   }
 
   edm::Handle<GenEventInfoProduct> genEventInfo;
