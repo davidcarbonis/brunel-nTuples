@@ -577,168 +577,169 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     numLooseEle[ ID ]=0;
 
     for ( size_t iele=0; iele<etSortedIndex.size() && numEle[ ID ]<(int)NELECTRONSMAX; ++iele ) {
-	size_t jele = etSortedIndex[iele];
-	//const pat::Electron& ele = electrons[jele];
-	const pat::Electron& ele = (*electronHandle)[jele];
-	pat::ElectronRef refel(electronHandle, jele);
-        // look up id decisions
-        bool isPassMedium = (*medium_id_decisions)[refel]; // NEW
-        // bool isPassTight  = (*tight_id_decisions)[refel]; // NEW
+      size_t jele = etSortedIndex[iele];
+      //const pat::Electron& ele = electrons[jele];
+      const pat::Electron& ele = (*electronHandle)[jele];
+      pat::ElectronRef refel(electronHandle, jele);
+      // look up id decisions
+      bool isPassMedium = (*medium_id_decisions)[refel]; // NEW
+      // bool isPassTight  = (*tight_id_decisions)[refel]; // NEW
 
-	if(!isPassMedium) // If not tight
-	  continue;
+      if(!isPassMedium) // If not tight
+	continue;
 
-	int photonConversionTag=-1;
+      int photonConversionTag=-1;
     
-	numEle[ ID ]++;
+      numEle[ ID ]++;
 
-	//Impact param significance
-	if(pvHandle.isValid())
+      //Impact param significance
+      if(pvHandle.isValid())
 	{
-	    std::vector<reco::Vertex> pv = *pvHandle;
+	  std::vector<reco::Vertex> pv = *pvHandle;
 
-	    edm::ESHandle<TransientTrackBuilder> trackBuilder;
-	    iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
-	    reco::TransientTrack eleTransient = trackBuilder->build(ele.gsfTrack());
+	  edm::ESHandle<TransientTrackBuilder> trackBuilder;
+	  iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+	  reco::TransientTrack eleTransient = trackBuilder->build(ele.gsfTrack());
 
-	    std::pair<bool, Measurement1D> eleImpactTrans = IPTools::absoluteTransverseImpactParameter(eleTransient, pv[0]);
-	    std::pair<bool, Measurement1D> eleImpact3D = IPTools::absoluteImpactParameter3D(eleTransient, pv[0]);
+	  std::pair<bool, Measurement1D> eleImpactTrans = IPTools::absoluteTransverseImpactParameter(eleTransient, pv[0]);
+	  std::pair<bool, Measurement1D> eleImpact3D = IPTools::absoluteImpactParameter3D(eleTransient, pv[0]);
 
-	    if( eleImpactTrans.first )
+	  if( eleImpactTrans.first )
 	    {
-		electronSortedImpactTransDist[ ID ][numEle[ ID ]-1] = eleImpactTrans.second.value();
-		electronSortedImpactTransError[ ID ][numEle[ ID ]-1] = eleImpactTrans.second.error();
-		electronSortedImpactTransSignificance[ ID ][numEle[ ID ]-1] = eleImpactTrans.second.significance();
+	      electronSortedImpactTransDist[ ID ][numEle[ ID ]-1] = eleImpactTrans.second.value();
+	      electronSortedImpactTransError[ ID ][numEle[ ID ]-1] = eleImpactTrans.second.error();
+	      electronSortedImpactTransSignificance[ ID ][numEle[ ID ]-1] = eleImpactTrans.second.significance();
 	    }
-	    if( eleImpact3D.first )
+	  if( eleImpact3D.first )
 	    {
-		electronSortedImpact3DDist[ ID ][numEle[ ID ]-1] = eleImpact3D.second.value();
-		electronSortedImpact3DError[ ID ][numEle[ ID ]-1] = eleImpact3D.second.error();
-		electronSortedImpact3DSignificance[ ID ][numEle[ ID ]-1] = eleImpact3D.second.significance();
+	      electronSortedImpact3DDist[ ID ][numEle[ ID ]-1] = eleImpact3D.second.value();
+	      electronSortedImpact3DError[ ID ][numEle[ ID ]-1] = eleImpact3D.second.error();
+	      electronSortedImpact3DSignificance[ ID ][numEle[ ID ]-1] = eleImpact3D.second.significance();
 	    }
 	}
 
-    electronSortedE[ ID ][numEle[ ID ]-1]=ele.energy();
-    electronSortedEt[ ID ][numEle[ ID ]-1]=ele.et();
-    electronSortedEta[ ID ][numEle[ ID ]-1]=ele.eta();
-    electronSortedPt[ ID ][numEle[ ID ]-1]=ele.pt();
-    electronSortedTheta[ ID ][numEle[ ID ]-1]=ele.theta();
-    electronSortedPhi[ ID ][numEle[ ID ]-1]=ele.phi();
-    electronSortedPx[ ID ][numEle[ ID ]-1]=ele.px();
-    electronSortedPy[ ID ][numEle[ ID ]-1]=ele.py();
-    electronSortedPz[ ID ][numEle[ ID ]-1]=ele.pz();
-    electronSortedCharge[ ID ][numEle[ ID ]-1]=ele.charge();
-    //    std::cout << "Ele.eta: " << ele.eta() << "  " << electronSortedEta[ ID ][numEle[ ID ]-1] << std::endl;
-    //    electronSortedMVA[ ID ][numEle[ ID ]-1]=ele.electronID("mvaEleID-Spring15-25ns-Trig-V1-wp80"); // Triggering MVA not avaliable for 2015 yet - not pushing this back
-    electronSortedMVA[ ID ][numEle[ ID ]-1] = (*mvaValues)[refel]; // Non-triggering MVA
-    electronSortedMVAcategory[ ID ][numEle[ ID ]-1] = (*mvaCategories)[refel];
-    //    std::cout << "Debug ele.mva: " << ele.mva() << "   " << electronSortedMVA[ ID ][numEle[ ID ]-1] << std::endl;
-    //    std::cout << "mvaValues: " << (*mvaValues)[refel] << std::endl;
-    //    std::cout << "mvaCategories: " << (*mvaCategories)[refel] << std::endl;
+      electronSortedE[ ID ][numEle[ ID ]-1]=ele.energy();
+      electronSortedEt[ ID ][numEle[ ID ]-1]=ele.et();
+      electronSortedEta[ ID ][numEle[ ID ]-1]=ele.eta();
+      electronSortedPt[ ID ][numEle[ ID ]-1]=ele.pt();
+      electronSortedTheta[ ID ][numEle[ ID ]-1]=ele.theta();
+      electronSortedPhi[ ID ][numEle[ ID ]-1]=ele.phi();
+      electronSortedPx[ ID ][numEle[ ID ]-1]=ele.px();
+      electronSortedPy[ ID ][numEle[ ID ]-1]=ele.py();
+      electronSortedPz[ ID ][numEle[ ID ]-1]=ele.pz();
+      electronSortedCharge[ ID ][numEle[ ID ]-1]=ele.charge();
+      //    std::cout << "Ele.eta: " << ele.eta() << "  " << electronSortedEta[ ID ][numEle[ ID ]-1] << std::endl;
+      //    electronSortedMVA[ ID ][numEle[ ID ]-1]=ele.electronID("mvaEleID-Spring15-25ns-Trig-V1-wp80"); // Triggering MVA not avaliable for 2015 yet - not pushing this back
+      electronSortedMVA[ ID ][numEle[ ID ]-1] = (*mvaValues)[refel]; // Non-triggering MVA
+      electronSortedMVAcategory[ ID ][numEle[ ID ]-1] = (*mvaCategories)[refel];
+      //    std::cout << "Debug ele.mva: " << ele.mva() << "   " << electronSortedMVA[ ID ][numEle[ ID ]-1] << std::endl;
+      //    std::cout << "mvaValues: " << (*mvaValues)[refel] << std::endl;
+      //    std::cout << "mvaCategories: " << (*mvaCategories)[refel] << std::endl;
 
-    //sortedIDQuality expects a cic-like cut. This is now deprecated, so I'm commenting these out.
-    //    electronSortedIDQuality[ ID ][numEle[ ID ]-1]=(int)ele.electronID(eleIDqualty_);
-    //    electronSortedIDQualityLoose[ ID ][numEle[ ID ]-1]=(int)ele.electronID(eleIDqualityLoose_);
-    electronSortedChargedHadronIso[ ID ][numEle[ ID ]-1]=ele.chargedHadronIso();
-    electronSortedNeutralHadronIso[ ID ][numEle[ ID ]-1]=ele.neutralHadronIso();
-    electronSortedPhotonIso[ ID ][numEle[ ID ]-1]=ele.photonIso();
+      //sortedIDQuality expects a cic-like cut. This is now deprecated, so I'm commenting these out.
+      //    electronSortedIDQuality[ ID ][numEle[ ID ]-1]=(int)ele.electronID(eleIDqualty_);
+      //    electronSortedIDQualityLoose[ ID ][numEle[ ID ]-1]=(int)ele.electronID(eleIDqualityLoose_);
+      electronSortedChargedHadronIso[ ID ][numEle[ ID ]-1]=ele.chargedHadronIso();
+      electronSortedNeutralHadronIso[ ID ][numEle[ ID ]-1]=ele.neutralHadronIso();
+      electronSortedPhotonIso[ ID ][numEle[ ID ]-1]=ele.photonIso();
 
-//Dynamic electron IDs
-    //Again, removing
-    //    for( size_t i = 0; i < eleIDsToNtuple_.size(); i++ )
-    //{
-    // electronSortedIDResults_[ eleIDsToNtuple_[i] + ID ][ numEle[ ID ] - 1 ] = ele.electronID( eleIDsToNtuple_[i] );
-    //    }  
-    electronSortedTrackPt[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->pt();
-    electronSortedTrackEta[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->eta();
-    electronSortedTrackPhi[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->phi();
-    electronSortedTrackChi2[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->chi2();
-    electronSortedTrackNDOF[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->ndof();
-    electronSortedTrackD0[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->d0();
-    electronSortedDBBeamSpotCorrectedTrackD0[ ID ][numEle[ ID ]-1]=ele.dB();
-    //electronSortedDBInnerTrackD0[ ID ][numEle[ ID ]-1]=-1.*(ele.innerTrack()->dxy(beamSpotPoint_));
-    electronSortedBeamSpotCorrectedTrackD0[ ID ][numEle[ ID ]-1]=-1.*(ele.gsfTrack()->dxy(beamSpotPoint_));
-    electronSortedTrackDz[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->dz();
-    electronSortedTrackD0PV[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->dxy(vertexPoint_);
-    electronSortedTrackDZPV[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->dz(vertexPoint_);
-    electronSortedVtxZ[ ID ][numEle[ ID ]-1]=ele.vertex().z();
+      //Dynamic electron IDs
+      //Again, removing
+      //    for( size_t i = 0; i < eleIDsToNtuple_.size(); i++ )
+      //{
+      // electronSortedIDResults_[ eleIDsToNtuple_[i] + ID ][ numEle[ ID ] - 1 ] = ele.electronID( eleIDsToNtuple_[i] );
+      //    }  
+      electronSortedTrackPt[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->pt();
+      electronSortedTrackEta[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->eta();
+      electronSortedTrackPhi[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->phi();
+      electronSortedTrackChi2[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->chi2();
+      electronSortedTrackNDOF[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->ndof();
+      electronSortedTrackD0[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->d0();
+      electronSortedDBBeamSpotCorrectedTrackD0[ ID ][numEle[ ID ]-1]=ele.dB();
+      //electronSortedDBInnerTrackD0[ ID ][numEle[ ID ]-1]=-1.*(ele.innerTrack()->dxy(beamSpotPoint_));
+      electronSortedBeamSpotCorrectedTrackD0[ ID ][numEle[ ID ]-1]=-1.*(ele.gsfTrack()->dxy(beamSpotPoint_));
+      electronSortedTrackDz[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->dz();
+      electronSortedTrackD0PV[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->dxy(vertexPoint_);
+      electronSortedTrackDZPV[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->dz(vertexPoint_);
+      electronSortedVtxZ[ ID ][numEle[ ID ]-1]=ele.vertex().z();
 
-    electronSortedIsGsf[ ID ][numEle[ ID ]-1] = ele.gsfTrack().isNonnull();
-    electronSortedGsfPx[ ID ][numEle[ ID ]-1] = ele.ecalDrivenMomentum().px();
-    electronSortedGsfPy[ ID ][numEle[ ID ]-1] = ele.ecalDrivenMomentum().py();
-    electronSortedGsfPz[ ID ][numEle[ ID ]-1] = ele.ecalDrivenMomentum().pz();
-    electronSortedGsfE[ ID ][numEle[ ID ]-1] = ele.ecalDrivenMomentum().energy();
+      electronSortedIsGsf[ ID ][numEle[ ID ]-1] = ele.gsfTrack().isNonnull();
+      electronSortedGsfPx[ ID ][numEle[ ID ]-1] = ele.ecalDrivenMomentum().px();
+      electronSortedGsfPy[ ID ][numEle[ ID ]-1] = ele.ecalDrivenMomentum().py();
+      electronSortedGsfPz[ ID ][numEle[ ID ]-1] = ele.ecalDrivenMomentum().pz();
+      electronSortedGsfE[ ID ][numEle[ ID ]-1] = ele.ecalDrivenMomentum().energy();
 
-    electronSortedSuperClusterEta[ ID ][numEle[ ID ]-1]=ele.superCluster()->eta(); 
-    electronSortedSuperClusterE[ ID ][numEle[ ID ]-1]=ele.superCluster()->energy();
-    electronSortedSuperClusterPhi[ ID ][numEle[ ID ]-1]=ele.superCluster()->phi();
-    electronSortedSuperClusterSigmaEtaEta[ ID ][numEle[ ID ]-1]=ele.scSigmaEtaEta();
-    electronSortedSuperClusterE1x5[ ID ][numEle[ ID ]-1]=ele.scE1x5();
-    electronSortedSuperClusterE2x5max[ ID ][numEle[ ID ]-1]=ele.scE2x5Max();
-    electronSortedSuperClusterE5x5[ ID ][numEle[ ID ]-1]=ele.scE5x5();
-    electronSortedSuperClusterSigmaIEtaIEta[ ID ][numEle[ ID ]-1]=ele.scSigmaIEtaIEta();
+      electronSortedSuperClusterEta[ ID ][numEle[ ID ]-1]=ele.superCluster()->eta(); 
+      electronSortedSuperClusterE[ ID ][numEle[ ID ]-1]=ele.superCluster()->energy();
+      electronSortedSuperClusterPhi[ ID ][numEle[ ID ]-1]=ele.superCluster()->phi();
+      electronSortedSuperClusterSigmaEtaEta[ ID ][numEle[ ID ]-1]=ele.scSigmaEtaEta();
+      electronSortedSuperClusterE1x5[ ID ][numEle[ ID ]-1]=ele.scE1x5();
+      electronSortedSuperClusterE2x5max[ ID ][numEle[ ID ]-1]=ele.scE2x5Max();
+      electronSortedSuperClusterE5x5[ ID ][numEle[ ID ]-1]=ele.scE5x5();
+      electronSortedSuperClusterSigmaIEtaIEta[ ID ][numEle[ ID ]-1]=ele.scSigmaIEtaIEta();
 
-    electronSortedTrackIso04[ ID ][numEle[ ID ]-1]=ele.dr04TkSumPt();//trackIso();
-    electronSortedECalIso04[ ID ][numEle[ ID ]-1]=ele.dr04EcalRecHitSumEt();//ecalIso();
-    electronSortedTrackIso03[ ID ][numEle[ ID ]-1]=ele.dr03TkSumPt();//trackIso();
-    electronSortedECalIso03[ ID ][numEle[ ID ]-1]=ele.dr03EcalRecHitSumEt();//ecalIso();
-    electronSortedHCalIso03[ ID ][numEle[ ID ]-1]=ele.dr03HcalTowerSumEt();//ele.hcalIso();
-//    electronSortedECalIsoDeposit[ ID ][numEle[ ID ]-1]=ele.ecalIsoDeposit()->candEnergy();
-//    electronSortedHCalIsoDeposit[ ID ][numEle[ ID ]-1]=ele.hcalIsoDeposit()->candEnergy();
-    electronSortedCaloIso[ ID ][numEle[ ID ]-1]=ele.caloIso();
+      electronSortedTrackIso04[ ID ][numEle[ ID ]-1]=ele.dr04TkSumPt();//trackIso();
+      electronSortedECalIso04[ ID ][numEle[ ID ]-1]=ele.dr04EcalRecHitSumEt();//ecalIso();
+      electronSortedTrackIso03[ ID ][numEle[ ID ]-1]=ele.dr03TkSumPt();//trackIso();
+      electronSortedECalIso03[ ID ][numEle[ ID ]-1]=ele.dr03EcalRecHitSumEt();//ecalIso();
+      electronSortedHCalIso03[ ID ][numEle[ ID ]-1]=ele.dr03HcalTowerSumEt();//ele.hcalIso();
+      //    electronSortedECalIsoDeposit[ ID ][numEle[ ID ]-1]=ele.ecalIsoDeposit()->candEnergy();
+      //    electronSortedHCalIsoDeposit[ ID ][numEle[ ID ]-1]=ele.hcalIsoDeposit()->candEnergy();
+      electronSortedCaloIso[ ID ][numEle[ ID ]-1]=ele.caloIso();
 
       // calculate comRelIso:
-    electronSortedComRelIso[ ID ][numEle[ ID ]-1]=electronSortedTrackIso03[ ID ][numEle[ ID ]-1] ;
-    electronSortedComRelIso[ ID ][numEle[ ID ]-1]+=	electronSortedECalIso03[ ID ][numEle[ ID ]-1];
-    electronSortedComRelIso[ ID ][numEle[ ID ]-1]+=	electronSortedHCalIso03[ ID ][numEle[ ID ]-1];
-    electronSortedComRelIso[ ID ][numEle[ ID ]-1]/=electronSortedEt[ ID ][numEle[ ID ]-1];
-    electronSortedChHadIso[ ID ][numEle[ ID ]-1] = ele.chargedHadronIso(); 
-    electronSortedNtHadIso[ ID ][numEle[ ID ]-1] = ele.neutralHadronIso();
-    electronSortedGammaIso[ ID ][numEle[ ID ]-1] = ele.photonIso(); 
-    electronSortedComRelIsodBeta[ ID ][numEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt();
-    float AEff03 = getAEff03(ele.superCluster()->eta());
-    electronSortedAEff03[ ID ][numEle[ ID ]-1] = AEff03;
-    electronSortedRhoIso[ ID ][numEle[ ID ]-1] = rhoIso;
-    double combrelisorho = (ele.chargedHadronIso() + std::max(0.0, ele.neutralHadronIso() + ele.photonIso() - rhoIso*AEff03 ))/ele.pt(); 
-    electronSortedComRelIsoRho[ ID ][numEle[ ID ]-1]=combrelisorho;
-    //(ele.trackIso()+ele.ecalIso()+ele.hcalIso())/ele.et();
+      electronSortedComRelIso[ ID ][numEle[ ID ]-1]=electronSortedTrackIso03[ ID ][numEle[ ID ]-1] ;
+      electronSortedComRelIso[ ID ][numEle[ ID ]-1]+=	electronSortedECalIso03[ ID ][numEle[ ID ]-1];
+      electronSortedComRelIso[ ID ][numEle[ ID ]-1]+=	electronSortedHCalIso03[ ID ][numEle[ ID ]-1];
+      electronSortedComRelIso[ ID ][numEle[ ID ]-1]/=electronSortedEt[ ID ][numEle[ ID ]-1];
+      electronSortedChHadIso[ ID ][numEle[ ID ]-1] = ele.chargedHadronIso(); 
+      electronSortedNtHadIso[ ID ][numEle[ ID ]-1] = ele.neutralHadronIso();
+      electronSortedGammaIso[ ID ][numEle[ ID ]-1] = ele.photonIso(); 
+      electronSortedComRelIsodBeta[ ID ][numEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt();
+      float AEff03 = getAEff03(ele.superCluster()->eta());
+      electronSortedAEff03[ ID ][numEle[ ID ]-1] = AEff03;
+      electronSortedRhoIso[ ID ][numEle[ ID ]-1] = rhoIso;
+      double combrelisorho = (ele.chargedHadronIso() + std::max(0.0, ele.neutralHadronIso() + ele.photonIso() - rhoIso*AEff03 ))/ele.pt(); 
+      electronSortedComRelIsoRho[ ID ][numEle[ ID ]-1]=combrelisorho;
+      //(ele.trackIso()+ele.ecalIso()+ele.hcalIso())/ele.et();
 
-    // pass electron to photonConversionVeto and see if it comes from photon conversion
+      // pass electron to photonConversionVeto and see if it comes from photon conversion
 
-    electronSortedMissingInnerLayers[ ID ][ numEle[ ID ] -1] = ele.gsfTrack()->hitPattern().numberOfLostTrackerHits(reco::HitPattern::MISSING_INNER_HITS);
+      electronSortedMissingInnerLayers[ ID ][ numEle[ ID ] -1] = ele.gsfTrack()->hitPattern().numberOfLostTrackerHits(reco::HitPattern::MISSING_INNER_HITS);
 
-    electronSortedHoverE[ ID ][ numEle[ ID ] - 1 ] = ele.hadronicOverEm();
-    electronSortedDeltaPhiSC[ ID ][ numEle[ ID ] - 1 ] = ele.deltaPhiSuperClusterTrackAtVtx();
-    electronSortedDeltaEtaSC[ ID ][ numEle[ ID ] - 1 ] = ele.deltaEtaSuperClusterTrackAtVtx();
-    electronSortedIsBarrel[ ID ][ numEle[ ID ] - 1 ] = ele.isEB();
+      electronSortedHoverE[ ID ][ numEle[ ID ] - 1 ] = ele.hadronicOverEm();
+      electronSortedDeltaPhiSC[ ID ][ numEle[ ID ] - 1 ] = ele.deltaPhiSuperClusterTrackAtVtx();
+      electronSortedDeltaEtaSC[ ID ][ numEle[ ID ] - 1 ] = ele.deltaEtaSuperClusterTrackAtVtx();
+      electronSortedIsBarrel[ ID ][ numEle[ ID ] - 1 ] = ele.isEB();
     
-    // calculate dcot and dist using the egamma code...
-    // use fixed magnetic field for now:
+      // calculate dcot and dist using the egamma code...
+      // use fixed magnetic field for now:
     
-    // ELECTRON CONVERSIONS
+      // ELECTRON CONVERSIONS
 
-    electronSortedPhotonConversionTag[ ID ][numEle[ ID ]-1] = ConversionTools::hasMatchedConversion(ele, Conversions, beamSpotPoint_);
-    electronSortedPhotonConversionDist[ ID ][numEle[ ID ]-1] = ele.convDist(); 
-    electronSortedPhotonConversionDcot[ ID ][numEle[ ID ]-1] = ele.convDcot();
-    electronSortedPhotonConversionVeto[ID][numEle[ID]-1] = ele.passConversionVeto();
+      electronSortedPhotonConversionTag[ ID ][numEle[ ID ]-1] = ConversionTools::hasMatchedConversion(ele, Conversions, beamSpotPoint_);
+      electronSortedPhotonConversionDist[ ID ][numEle[ ID ]-1] = ele.convDist(); 
+      electronSortedPhotonConversionDcot[ ID ][numEle[ ID ]-1] = ele.convDcot();
+      electronSortedPhotonConversionVeto[ID][numEle[ID]-1] = ele.passConversionVeto();
 
       // and using our private code
-    if(photonConversionVeto(ele,electronSortedPhotonConversionDistCustom[ ID ][numEle[ ID ]-1],electronSortedPhotonConversionDcotCustom[ ID ][numEle[ ID ]-1])) photonConversionTag=1; 
-    electronSortedPhotonConversionTagCustom[ ID ][numEle[ ID ]-1]=photonConversionTag;
+      if(photonConversionVeto(ele,electronSortedPhotonConversionDistCustom[ ID ][numEle[ ID ]-1],electronSortedPhotonConversionDcotCustom[ ID ][numEle[ ID ]-1])) photonConversionTag=1; 
+      electronSortedPhotonConversionTagCustom[ ID ][numEle[ ID ]-1]=photonConversionTag;
    
-    if(check_triggers_){
-    }
-    //if(ele.genParticleRef().ref().isValid()){
-    if(! ele.genParticleRef().isNull()){ 
-      genElectronSortedEt[ ID ][numEle[ ID ]-1]=ele.genLepton()->et(); 
-      genElectronSortedEta[ ID ][numEle[ ID ]-1]=ele.genLepton()->eta(); 
-      genElectronSortedTheta[ ID ][numEle[ ID ]-1]=ele.genLepton()->theta(); 
-      genElectronSortedPhi[ ID ][numEle[ ID ]-1]=ele.genLepton()->phi();
-      genElectronSortedPx[ ID ][numEle[ ID ]-1]=ele.genLepton()->px();
-      genElectronSortedPy[ ID ][numEle[ ID ]-1]=ele.genLepton()->py();
-      genElectronSortedPz[ ID ][numEle[ ID ]-1]=ele.genLepton()->pz();
-      genElectronSortedCharge[ ID ][numEle[ ID ]-1]=ele.genLepton()->charge();
-    } 
+      if(check_triggers_){
+      }
+      //if(ele.genParticleRef().ref().isValid()){
+      if(! ele.genParticleRef().isNull()){ 
+	genElectronSortedPt[ ID ][numEle[ ID ]-1]=ele.genLepton()->pt(); 
+	genElectronSortedEt[ ID ][numEle[ ID ]-1]=ele.genLepton()->et(); 
+	genElectronSortedEta[ ID ][numEle[ ID ]-1]=ele.genLepton()->eta(); 
+	genElectronSortedTheta[ ID ][numEle[ ID ]-1]=ele.genLepton()->theta(); 
+	genElectronSortedPhi[ ID ][numEle[ ID ]-1]=ele.genLepton()->phi();
+	genElectronSortedPx[ ID ][numEle[ ID ]-1]=ele.genLepton()->px();
+	genElectronSortedPy[ ID ][numEle[ ID ]-1]=ele.genLepton()->py();
+	genElectronSortedPz[ ID ][numEle[ ID ]-1]=ele.genLepton()->pz();
+	genElectronSortedCharge[ ID ][numEle[ ID ]-1]=ele.genLepton()->charge();
+      } 
     }
 
     //Fill a list of loose electrons
@@ -748,10 +749,10 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       const pat::Electron& ele = (*electronHandle)[jele];
       pat::ElectronRef refel(electronHandle, jele);
  
-      bool isPassMedium = (*medium_id_decisions)[refel]; // NEW - whilst selection is for medium electrons, there is no loose Loose ID cut - using medium instead
+/*      bool isPassMedium = (*medium_id_decisions)[refel]; // NEW - whilst selection is for medium electrons, there is no loose Loose ID cut - using medium instead
        
       if(!isPassMedium)
-	continue;
+	continue;*/
 
       numLooseEle[ID]++;
       looseElectronSortedEt[ ID ][numLooseEle[ ID ]-1]=ele.et();
@@ -761,6 +762,18 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       looseElectronSortedMVA[ ID ][numLooseEle[ ID ]-1] = (*mvaValues)[refel]; // Non-triggering MVA value
       looseElectronSortedMVAcategory[ ID ][numLooseEle[ ID ]-1] = (*mvaCategories)[refel];
       looseElectronSortedRelIso[ ID ][numLooseEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt() ;
+
+      if(! ele.genParticleRef().isNull()){ 
+	genLooseElectronSortedPt[ ID ][numEle[ ID ]-1]=ele.genLepton()->pt(); 
+	genLooseElectronSortedEt[ ID ][numEle[ ID ]-1]=ele.genLepton()->et(); 
+	genLooseElectronSortedEta[ ID ][numEle[ ID ]-1]=ele.genLepton()->eta(); 
+	genLooseElectronSortedTheta[ ID ][numEle[ ID ]-1]=ele.genLepton()->theta(); 
+	genLooseElectronSortedPhi[ ID ][numEle[ ID ]-1]=ele.genLepton()->phi();
+	genLooseElectronSortedPx[ ID ][numEle[ ID ]-1]=ele.genLepton()->px();
+	genLooseElectronSortedPy[ ID ][numEle[ ID ]-1]=ele.genLepton()->py();
+	genLooseElectronSortedPz[ ID ][numEle[ ID ]-1]=ele.genLepton()->pz();
+      } 
+
     }
     
 }
@@ -871,6 +884,7 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
 
     //if(muo.genParticleRef().ref().isValid()){
     if(! muo.genParticleRef().isNull()){
+      genMuonSortedPt[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pt();
       genMuonSortedEt[ ID ][numMuo[ ID ]-1]=muo.genLepton()->et();
       genMuonSortedEta[ ID ][numMuo[ ID ]-1]=muo.genLepton()->eta();
       genMuonSortedTheta[ ID ][numMuo[ ID ]-1]=muo.genLepton()->theta();
@@ -890,10 +904,10 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     //    std::cout << imuo << " " << jmu << std::endl;
     const pat::Muon& muo = muons[jmu];                 
 
-    if(!muon::isLooseMuon(muo))                                   
+/*    if(!muon::isLooseMuon(muo))                                   
       continue;    
 
-    numLooseMuo[ID]++;
+    numLooseMuo[ID]++;*/
 
     looseMuonSortedEt[ ID ][numLooseMuo[ID]-1]=muo.et();
     looseMuonSortedPt[ ID ][numLooseMuo[ID]-1]=muo.pt();
@@ -901,6 +915,18 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     looseMuonSortedRelIso[ ID ][numLooseMuo[ID]-1]=(muo.chargedHadronIso() + std::max( 0.0, muo.neutralHadronIso() + muo.photonIso() - 0.5*muo.puChargedHadronIso() ) ) / muo.pt();
     looseMuonSortedisGlb[ ID ][numLooseMuo[ID]-1]=muo.isGlobalMuon();
     looseMuonSortedisTrk[ ID ][numLooseMuo[ID]-1]=muo.isTrackerMuon();
+
+    if(! muo.genParticleRef().isNull()){
+      genLooseMuonSortedPt[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pt();
+      genLooseMuonSortedEt[ ID ][numMuo[ ID ]-1]=muo.genLepton()->et();
+      genLooseMuonSortedEta[ ID ][numMuo[ ID ]-1]=muo.genLepton()->eta();
+      genLooseMuonSortedTheta[ ID ][numMuo[ ID ]-1]=muo.genLepton()->theta();
+      genLooseMuonSortedPhi[ ID ][numMuo[ ID ]-1]=muo.genLepton()->phi();
+      genLooseMuonSortedPx[ ID ][numMuo[ ID ]-1]=muo.genLepton()->px();
+      genLooseMuonSortedPy[ ID ][numMuo[ ID ]-1]=muo.genLepton()->py();
+      genLooseMuonSortedPz[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pz();
+      genLooseMuonSortedCharge[ ID ][numMuo[ ID ]-1]=muo.genLepton()->charge();
+    } 
 
   }
 }
@@ -1795,6 +1821,7 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
 
   //  electronSortedIDResults_[ ID ].clear();
 
+  genElectronSortedPt[ ID ].clear();
   genElectronSortedEt[ ID ].clear();
   genElectronSortedEta[ ID ].clear();
   genElectronSortedTheta[ ID ].clear();
@@ -1810,6 +1837,14 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   looseElectronSortedMVAcategory[ ID ].clear();
   looseElectronSortedRelIso[ ID ].clear();
 
+  genLooseElectronSortedPt[ ID ].clear();
+  genLooseElectronSortedEt[ ID ].clear();
+  genLooseElectronSortedEta[ ID ].clear();
+  genLooseElectronSortedTheta[ ID ].clear();
+  genLooseElectronSortedPhi[ ID ].clear();
+  genLooseElectronSortedPx[ ID ].clear();
+  genLooseElectronSortedPy[ ID ].clear();
+  genLooseElectronSortedPz[ ID ].clear();
 
 }
 
@@ -1868,6 +1903,7 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
   muonSortedNumChambers[ ID ].clear();
   muonSortedNumMatches[ ID ].clear();
 
+  genMuonSortedPt[ ID ].clear();
   genMuonSortedEt[ ID ].clear();
   genMuonSortedEta[ ID ].clear();
   genMuonSortedTheta[ ID ].clear();
@@ -1883,6 +1919,16 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
   looseMuonSortedRelIso[ ID ].clear();
   looseMuonSortedisGlb[ ID ].clear(); 
   looseMuonSortedisTrk[ ID ].clear(); 
+
+  genLooseMuonSortedPt[ ID ].clear();
+  genLooseMuonSortedEt[ ID ].clear();
+  genLooseMuonSortedEta[ ID ].clear();
+  genLooseMuonSortedTheta[ ID ].clear();
+  genLooseMuonSortedPhi[ ID ].clear();
+  genLooseMuonSortedPx[ ID ].clear();
+  genLooseMuonSortedPy[ ID ].clear();
+  genLooseMuonSortedPz[ ID ].clear();
+  genLooseMuonSortedCharge[ ID ].clear();
 
 }
 
@@ -2614,8 +2660,6 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   electronSortedPhotonConversionTagCustom[ ID ] = tempVecI;
   electronSortedMissingInnerLayers[ ID ] = tempVecI;
 
-  genElectronSortedCharge[ ID ] = tempVecI;
-
   electronSortedE[ ID ] = tempVecF;
   electronSortedEt[ ID ] = tempVecF;
   electronSortedEta[ ID ] = tempVecF;
@@ -2697,6 +2741,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   electronSortedImpact3DError[ ID ] = tempVecF;
   electronSortedImpact3DSignificance[ ID ] = tempVecF;
 
+  genElectronSortedPt[ ID ] = tempVecF;
   genElectronSortedEt[ ID ] = tempVecF;
   genElectronSortedEta[ ID ] = tempVecF;
   genElectronSortedTheta[ ID ] = tempVecF;
@@ -2704,7 +2749,9 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   genElectronSortedPx[ ID ] = tempVecF;
   genElectronSortedPy[ ID ] = tempVecF;
   genElectronSortedPz[ ID ] = tempVecF;
+  genElectronSortedCharge[ ID ] = tempVecI;
 
+  looseElectronSortedPt[ ID ] = tempVecF;    
   looseElectronSortedEt[ ID ] = tempVecF;    
   looseElectronSortedPt[ ID ] = tempVecF;    
   looseElectronSortedEta[ ID ] = tempVecF;   
@@ -2712,7 +2759,14 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   looseElectronSortedMVAcategory[ ID ] = tempVecI;
   looseElectronSortedRelIso[ ID ] = tempVecF;
 
-
+  genLooseElectronSortedPt[ ID ] = tempVecF;
+  genLooseElectronSortedEt[ ID ] = tempVecF;
+  genLooseElectronSortedEta[ ID ] = tempVecF;
+  genLooseElectronSortedTheta[ ID ] = tempVecF;
+  genLooseElectronSortedPhi[ ID ] = tempVecF;
+  genLooseElectronSortedPx[ ID ] = tempVecF;
+  genLooseElectronSortedPy[ ID ] = tempVecF;
+  genLooseElectronSortedPz[ ID ] = tempVecF;
 
   std::string prefix = "ele" + name;
   mytree_->Branch( ("numEle"+name).c_str(), &numEle[ ID ], ("numEle" + name + "/I").c_str());
@@ -2821,6 +2875,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
 
   if( runMCInfo_ )
   {
+      mytree_->Branch( ("genEle" + name + "PT").c_str(), &genElectronSortedEt[ ID ][0], ("genEle" + name + "ElePT[numEle" + name + "]/F").c_str());
       mytree_->Branch( ("genEle" + name + "ET").c_str(), &genElectronSortedEt[ ID ][0], ("genEle" + name + "EleET[numEle" + name + "]/F").c_str());
       mytree_->Branch( ("genEle" + name + "PX").c_str(), &genElectronSortedPx[ ID ][0], ("genEle" + name + "ElePx[numEle" + name + "]/F").c_str());
       mytree_->Branch( ("genEle" + name + "PY").c_str(), &genElectronSortedPy[ ID ][0], ("genEle" + name + "ElePy[numEle" + name + "]/F").c_str());
@@ -2831,12 +2886,25 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
       mytree_->Branch( ("genEle" + name + "Charge").c_str(), &genElectronSortedCharge[ ID ][0], ("genEle" + name + "EleCharge[numEle" + name + "]/I").c_str());
   }
 
+  mytree_->Branch( (prefix + "looseElectronSortedPt").c_str(), &looseElectronSortedPt[ ID ][0], (prefix + "looseElectronPt[numLooseEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedEt").c_str(), &looseElectronSortedEt[ ID ][0], (prefix + "looseElectronEt[numLooseEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedPt").c_str(), &looseElectronSortedPt[ ID ][0], (prefix + "looseElectronPt[numLooseEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedEta").c_str(), &looseElectronSortedEta[ ID ][0], (prefix + "looseElectronEta[numLooseEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedMVA").c_str(), &looseElectronSortedMVA[ ID ][0], (prefix + "looseElectronMVA[numLooseEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedMVAcategory").c_str(), &looseElectronSortedMVAcategory[ ID ][0], (prefix + "looseElectronMVAcategory[numLooseEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedRelIso").c_str(), &looseElectronSortedRelIso[ ID ][0], (prefix + "looseElectronRelIso[numLooseEle" + name + "]/F").c_str());
+
+  if( runMCInfo_ )
+  {
+      mytree_->Branch( ("genLooseEle" + name + "PT").c_str(), &genLooseElectronSortedEt[ ID ][0], ("genLooseEle" + name + "ElePT[numEle" + name + "]/F").c_str());
+      mytree_->Branch( ("genLooseEle" + name + "ET").c_str(), &genLooseElectronSortedEt[ ID ][0], ("genLooseEle" + name + "EleET[numEle" + name + "]/F").c_str());
+      mytree_->Branch( ("genLooseEle" + name + "PX").c_str(), &genLooseElectronSortedPx[ ID ][0], ("genLooseEle" + name + "ElePx[numEle" + name + "]/F").c_str());
+      mytree_->Branch( ("genLooseEle" + name + "PY").c_str(), &genLooseElectronSortedPy[ ID ][0], ("genLooseEle" + name + "ElePy[numEle" + name + "]/F").c_str());
+      mytree_->Branch( ("genLooseEle" + name + "PZ").c_str(), &genLooseElectronSortedPz[ ID ][0], ("genLooseEle" + name + "ElePz[numEle" + name + "]/F").c_str());
+      mytree_->Branch( ("genLooseEle" + name + "Phi").c_str(), &genLooseElectronSortedPhi[ ID ][0], ("genLooseEle" + name + "ElePhi[numEle" + name + "]/F").c_str());
+      mytree_->Branch( ("genLooseEle" + name + "Theta").c_str(), &genLooseElectronSortedTheta[ ID ][0], ("genLooseEle" + name + "EleTheta[numEle" + name + "]/F").c_str());
+      mytree_->Branch( ("genLooseEle" + name + "Eta").c_str(), &genLooseElectronSortedEta[ ID ][0], ("genLooseEle" + name + "EleEta[numEle" + name + "]/F").c_str());
+  }
 
 //Also handle z candidates
   nzcandidates[ ID ] = 0;
@@ -2978,6 +3046,7 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   prefix = "genMuon" + name;
   if( runMCInfo_ )
   {
+      mytree_->Branch((prefix + "PT").c_str(), &genMuonSortedPt[ ID ][0], (prefix + "PT[numMuon" + name + "]/F").c_str());
       mytree_->Branch((prefix + "ET").c_str(), &genMuonSortedEt[ ID ][0], (prefix + "ET[numMuon" + name + "]/F").c_str());
       mytree_->Branch((prefix + "PX").c_str(), &genMuonSortedPx[ ID ][0], (prefix + "Px[numMuon" + name + "]/F").c_str());
       mytree_->Branch((prefix + "PY").c_str(), &genMuonSortedPy[ ID ][0], (prefix + "Py[numMuon" + name + "]/F").c_str());
@@ -2986,6 +3055,17 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
       mytree_->Branch((prefix + "Theta").c_str(), &genMuonSortedTheta[ ID ][0], (prefix + "Theta[numMuon" + name + "]/F").c_str());
       mytree_->Branch((prefix + "Eta").c_str(), &genMuonSortedEta[ ID ][0], (prefix + "Eta[numMuon" + name + "]/F").c_str());
       mytree_->Branch((prefix + "Charge").c_str(), &genMuonSortedCharge[ ID ][0], (prefix + "Charge[numMuon" + name + "]/I").c_str());
+
+      mytree_->Branch((prefix + "PT").c_str(), &genLooseMuonSortedPt[ ID ][0], (prefix + "PT[numLooseMuon" + name + "]/F").c_str());
+      mytree_->Branch((prefix + "ET").c_str(), &genLooseMuonSortedEt[ ID ][0], (prefix + "ET[numLooseMuon" + name + "]/F").c_str());
+      mytree_->Branch((prefix + "PX").c_str(), &genLooseMuonSortedPx[ ID ][0], (prefix + "Px[numLooseMuon" + name + "]/F").c_str());
+      mytree_->Branch((prefix + "PY").c_str(), &genLooseMuonSortedPy[ ID ][0], (prefix + "Py[numLooseMuon" + name + "]/F").c_str());
+      mytree_->Branch((prefix + "PZ").c_str(), &genLooseMuonSortedPz[ ID ][0], (prefix + "Pz[numLooseMuon" + name + "]/F").c_str());
+      mytree_->Branch((prefix + "Phi").c_str(), &genLooseMuonSortedPhi[ ID ][0], (prefix + "Phi[numLooseMuon" + name + "]/F").c_str());
+      mytree_->Branch((prefix + "Theta").c_str(), &genLooseMuonSortedTheta[ ID ][0], (prefix + "Theta[numLooseMuon" + name + "]/F").c_str());
+      mytree_->Branch((prefix + "Eta").c_str(), &genLooseMuonSortedEta[ ID ][0], (prefix + "Eta[numLooseMuon" + name + "]/F").c_str());
+      mytree_->Branch((prefix + "Charge").c_str(), &genLooseMuonSortedCharge[ ID ][0], (prefix + "Charge[numLooseMuon" + name + "]/I").c_str());
+
   }
   
 

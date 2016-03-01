@@ -400,6 +400,7 @@ private:
 
   //  std::map< std::string, std::vector<float> > electronSortedIDResults_;
 
+  std::map< std::string, std::vector<float> > genElectronSortedPt;
   std::map< std::string, std::vector<float> > genElectronSortedEt;
   std::map< std::string, std::vector<float> > genElectronSortedEta;
   std::map< std::string, std::vector<float> > genElectronSortedTheta;
@@ -417,6 +418,14 @@ private:
   std::map< std::string, std::vector<int> > looseElectronSortedMVAcategory;
   std::map< std::string, std::vector<float> > looseElectronSortedRelIso;
   
+  std::map< std::string, std::vector<float> > genLooseElectronSortedPt;
+  std::map< std::string, std::vector<float> > genLooseElectronSortedEt;
+  std::map< std::string, std::vector<float> > genLooseElectronSortedEta;
+  std::map< std::string, std::vector<float> > genLooseElectronSortedTheta;
+  std::map< std::string, std::vector<float> > genLooseElectronSortedPhi;
+  std::map< std::string, std::vector<float> > genLooseElectronSortedPx;
+  std::map< std::string, std::vector<float> > genLooseElectronSortedPy;
+  std::map< std::string, std::vector<float> > genLooseElectronSortedPz;
 
 
 
@@ -556,6 +565,7 @@ private:
   std::map< std::string, std::vector<int> > muonSortedNumChambers;
   std::map< std::string, std::vector<int> > muonSortedNumMatches;
 
+  std::map< std::string, std::vector<float> > genMuonSortedPt;
   std::map< std::string, std::vector<float> > genMuonSortedEt;
   std::map< std::string, std::vector<float> > genMuonSortedEta;
   std::map< std::string, std::vector<float> > genMuonSortedTheta;
@@ -574,6 +584,17 @@ private:
   std::map< std::string, std::vector<float> > looseMuonSortedRelIso;
   std::map< std::string, std::vector<float> > looseMuonSortedisGlb;
   std::map< std::string, std::vector<float> > looseMuonSortedisTrk;
+
+  std::map< std::string, std::vector<float> > genLooseMuonSortedPt;
+  std::map< std::string, std::vector<float> > genLooseMuonSortedEt;
+  std::map< std::string, std::vector<float> > genLooseMuonSortedEta;
+  std::map< std::string, std::vector<float> > genLooseMuonSortedTheta;
+  std::map< std::string, std::vector<float> > genLooseMuonSortedPhi;
+  std::map< std::string, std::vector<float> > genLooseMuonSortedPx;
+  std::map< std::string, std::vector<float> > genLooseMuonSortedPy;
+  std::map< std::string, std::vector<float> > genLooseMuonSortedPz;
+  std::map< std::string, std::vector<int> > genLooseMuonSortedCharge;
+
 
   size_t NJETSMAX; // max number of jets, set in constructor;
 
