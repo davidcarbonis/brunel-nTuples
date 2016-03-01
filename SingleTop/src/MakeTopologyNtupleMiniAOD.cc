@@ -906,8 +906,8 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
 
 /*    if(!muon::isLooseMuon(muo))                                   
       continue;    
-
-    numLooseMuo[ID]++;*/
+*/
+    numLooseMuo[ID]++;
 
     looseMuonSortedEt[ ID ][numLooseMuo[ID]-1]=muo.et();
     looseMuonSortedPt[ ID ][numLooseMuo[ID]-1]=muo.pt();
