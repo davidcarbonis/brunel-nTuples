@@ -628,8 +628,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       electronSortedPy[ ID ][numEle[ ID ]-1]=ele.py();
       electronSortedPz[ ID ][numEle[ ID ]-1]=ele.pz();
       electronSortedCharge[ ID ][numEle[ ID ]-1]=ele.charge();
-      //    std::cout << "Ele.eta: " << ele.eta() << "  " << electronSortedEta[ ID ][numEle[ ID ]-1] << std::endl;
-      //    electronSortedMVA[ ID ][numEle[ ID ]-1]=ele.electronID("mvaEleID-Spring15-25ns-Trig-V1-wp80"); // Triggering MVA not avaliable for 2015 yet - not pushing this back
       electronSortedMVA[ ID ][numEle[ ID ]-1] = (*mvaValues)[refel]; // Non-triggering MVA
       electronSortedMVAcategory[ ID ][numEle[ ID ]-1] = (*mvaCategories)[refel];
       //    std::cout << "Debug ele.mva: " << ele.mva() << "   " << electronSortedMVA[ ID ][numEle[ ID ]-1] << std::endl;
@@ -745,12 +743,10 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     //Fill a list of loose electrons
     for ( size_t iele=0; iele<etSortedIndex.size() && numEle[ ID ]<(int)NELECTRONSMAX; ++iele ) {
       size_t jele = etSortedIndex[iele];         
-      //     const pat::Electron& ele = electrons[jele];
       const pat::Electron& ele = (*electronHandle)[jele];
       pat::ElectronRef refel(electronHandle, jele);
  
-/*      bool isPassMedium = (*medium_id_decisions)[refel]; // NEW - whilst selection is for medium electrons, there is no loose Loose ID cut - using medium instead
-       
+/*      bool isPassMedium = (*medium_id_decisions)[refel]; // NEW - whilst selection is for medium electrons, there is no loose Loose ID cut.
       if(!isPassMedium)
 	continue;*/
 
@@ -758,12 +754,11 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       looseElectronSortedEt[ ID ][numLooseEle[ ID ]-1]=ele.et();
       looseElectronSortedPt[ ID ][numLooseEle[ ID ]-1]=ele.pt();
       looseElectronSortedEta[ ID ][numLooseEle[ ID ]-1]=ele.eta();
-      //      looseElectronSortedMVA[ ID ][numLooseEle[ ID ]-1]=ele.electronID("mvaTrigV0"); // Triggering MVA not avaliable for 2015 yet - not pushing this back
       looseElectronSortedMVA[ ID ][numLooseEle[ ID ]-1] = (*mvaValues)[refel]; // Non-triggering MVA value
       looseElectronSortedMVAcategory[ ID ][numLooseEle[ ID ]-1] = (*mvaCategories)[refel];
       looseElectronSortedRelIso[ ID ][numLooseEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt() ;
 
-      if(! ele.genParticleRef().isNull()){ 
+      /*      if(! ele.genParticleRef().isNull()){ 
 	genLooseElectronSortedPt[ ID ][numEle[ ID ]-1]=ele.genLepton()->pt(); 
 	genLooseElectronSortedEt[ ID ][numEle[ ID ]-1]=ele.genLepton()->et(); 
 	genLooseElectronSortedEta[ ID ][numEle[ ID ]-1]=ele.genLepton()->eta(); 
@@ -772,7 +767,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	genLooseElectronSortedPx[ ID ][numEle[ ID ]-1]=ele.genLepton()->px();
 	genLooseElectronSortedPy[ ID ][numEle[ ID ]-1]=ele.genLepton()->py();
 	genLooseElectronSortedPz[ ID ][numEle[ ID ]-1]=ele.genLepton()->pz();
-      } 
+	}*/
 
     }
     
@@ -780,7 +775,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::EDGetTokenT<pat::MuonCollection> muIn_, std::string ID){
-    
+     
   // ran_muonloop_=true;
   edm::Handle<pat::MuonCollection> muonHandle;
   iEvent.getByToken(muIn_,muonHandle);
@@ -843,7 +838,7 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
       muonSortedNDOF[ ID ][numMuo[ ID ]-1]=muo.combinedMuon()->ndof(); //n_d.o.f
       muonSortedTrackNHits[ ID ][numMuo[ ID ]-1]=muo.track()->numberOfValidHits();//number of valid hits in Tracker
       muonSortedValidHitsGlobal[ ID ][numMuo[ ID ]-1]=muo.globalTrack()->hitPattern().numberOfValidMuonHits();
-      
+
       //Save vertex information.
       muonSortedVertX[ ID ][numMuo[ ID ]-1]=muo.vertex().X();
       muonSortedVertY[ ID ][numMuo[ ID ]-1]=muo.vertex().Y();
@@ -872,6 +867,7 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     muonSortedTrackIso[ ID ][numMuo[ ID ]-1]=muo.isolationR03().sumPt;//muo.trackIso();
     muonSortedECalIso[ ID ][numMuo[ ID ]-1]=muo.isolationR03().emEt;//muo.ecalIso();
     muonSortedHCalIso[ ID ][numMuo[ ID ]-1]=muo.isolationR03().hadEt;//muo.hcalIso();
+
     // manually calculating comreliso:
     muonSortedComRelIso[ ID ][numMuo[ ID ]-1]=muonSortedTrackIso[ ID ][numMuo[ ID ]-1];
     muonSortedComRelIso[ ID ][numMuo[ ID ]-1]+=muonSortedECalIso[ ID ][numMuo[ ID ]-1];
@@ -883,6 +879,7 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     muonSortedIsPFMuon[ ID ][numMuo[ ID ]-1]=muo.isPFMuon();
 
     //if(muo.genParticleRef().ref().isValid()){
+
     if(! muo.genParticleRef().isNull()){
       genMuonSortedPt[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pt();
       genMuonSortedEt[ ID ][numMuo[ ID ]-1]=muo.genLepton()->et();
@@ -893,7 +890,7 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
       genMuonSortedPy[ ID ][numMuo[ ID ]-1]=muo.genLepton()->py();
       genMuonSortedPz[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pz();
       genMuonSortedCharge[ ID ][numMuo[ ID ]-1]=muo.genLepton()->charge();
-    } 
+      } 
   }
   ///std::cout << numMuo[ ID ] << std::endl;
   //Now make loose muon collection
@@ -903,7 +900,6 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     size_t jmu = etMuonSorted[imuo];                   
     //    std::cout << imuo << " " << jmu << std::endl;
     const pat::Muon& muo = muons[jmu];                 
-
 /*    if(!muon::isLooseMuon(muo))                                   
       continue;    
 */
@@ -916,7 +912,8 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     looseMuonSortedisGlb[ ID ][numLooseMuo[ID]-1]=muo.isGlobalMuon();
     looseMuonSortedisTrk[ ID ][numLooseMuo[ID]-1]=muo.isTrackerMuon();
 
-    if(! muo.genParticleRef().isNull()){
+/*    if(! muo.genParticleRef().isNull()){
+    std::cout << __LINE__ << " : " << __FILE__ << std::endl;
       genLooseMuonSortedPt[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pt();
       genLooseMuonSortedEt[ ID ][numMuo[ ID ]-1]=muo.genLepton()->et();
       genLooseMuonSortedEta[ ID ][numMuo[ ID ]-1]=muo.genLepton()->eta();
@@ -927,7 +924,7 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
       genLooseMuonSortedPz[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pz();
       genLooseMuonSortedCharge[ ID ][numMuo[ ID ]-1]=muo.genLepton()->charge();
     } 
-
+*/
   }
 }
 /////////////////////////////
@@ -1836,7 +1833,7 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   looseElectronSortedMVA[ ID ].clear();   
   looseElectronSortedMVAcategory[ ID ].clear();
   looseElectronSortedRelIso[ ID ].clear();
-
+  /*
   genLooseElectronSortedPt[ ID ].clear();
   genLooseElectronSortedEt[ ID ].clear();
   genLooseElectronSortedEta[ ID ].clear();
@@ -1844,7 +1841,7 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   genLooseElectronSortedPhi[ ID ].clear();
   genLooseElectronSortedPx[ ID ].clear();
   genLooseElectronSortedPy[ ID ].clear();
-  genLooseElectronSortedPz[ ID ].clear();
+  genLooseElectronSortedPz[ ID ].clear();*/
 
 }
 
@@ -1919,7 +1916,7 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
   looseMuonSortedRelIso[ ID ].clear();
   looseMuonSortedisGlb[ ID ].clear(); 
   looseMuonSortedisTrk[ ID ].clear(); 
-
+  /*
   genLooseMuonSortedPt[ ID ].clear();
   genLooseMuonSortedEt[ ID ].clear();
   genLooseMuonSortedEta[ ID ].clear();
@@ -1928,7 +1925,7 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
   genLooseMuonSortedPx[ ID ].clear();
   genLooseMuonSortedPy[ ID ].clear();
   genLooseMuonSortedPz[ ID ].clear();
-  genLooseMuonSortedCharge[ ID ].clear();
+  genLooseMuonSortedCharge[ ID ].clear();*/
 
 }
 
@@ -2305,7 +2302,7 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
 
   fillSummaryVariables();
 
-  //std::cout << "done with topology, now filling tree..." << std::endl;
+ //std::cout << "done with topology, now filling tree..." << std::endl;
   //  std::cout << numEle["PF"] << std::endl;
   //Run the cut flow code. This involves event selections and seeing how many events containing things we get.
   //Eventually this will require me putting in different selections for the different channels, but for now
@@ -2482,7 +2479,7 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
   histocontainer_["tightMuons"]->Fill(numMuo["PF"]);
   histocontainer2D_["tightVsLooseEle"]->Fill(numEle["PF"],numLooseEle["PF"]);
   histocontainer2D_["tightVsLooseMuo"]->Fill(numMuo["PF"],numLooseMuo["PF"]);
-    
+
 
   
 }
@@ -2759,14 +2756,14 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   looseElectronSortedMVAcategory[ ID ] = tempVecI;
   looseElectronSortedRelIso[ ID ] = tempVecF;
 
-  genLooseElectronSortedPt[ ID ] = tempVecF;
+  /*  genLooseElectronSortedPt[ ID ] = tempVecF;
   genLooseElectronSortedEt[ ID ] = tempVecF;
   genLooseElectronSortedEta[ ID ] = tempVecF;
   genLooseElectronSortedTheta[ ID ] = tempVecF;
   genLooseElectronSortedPhi[ ID ] = tempVecF;
   genLooseElectronSortedPx[ ID ] = tempVecF;
   genLooseElectronSortedPy[ ID ] = tempVecF;
-  genLooseElectronSortedPz[ ID ] = tempVecF;
+  genLooseElectronSortedPz[ ID ] = tempVecF;*/
 
   std::string prefix = "ele" + name;
   mytree_->Branch( ("numEle"+name).c_str(), &numEle[ ID ], ("numEle" + name + "/I").c_str());
@@ -2894,9 +2891,9 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   mytree_->Branch( (prefix + "looseElectronSortedMVAcategory").c_str(), &looseElectronSortedMVAcategory[ ID ][0], (prefix + "looseElectronMVAcategory[numLooseEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedRelIso").c_str(), &looseElectronSortedRelIso[ ID ][0], (prefix + "looseElectronRelIso[numLooseEle" + name + "]/F").c_str());
 
-  if( runMCInfo_ )
+  /*  if( runMCInfo_ )
   {
-      mytree_->Branch( ("genLooseEle" + name + "PT").c_str(), &genLooseElectronSortedEt[ ID ][0], ("genLooseEle" + name + "ElePT[numEle" + name + "]/F").c_str());
+  mytree_->Branch( ("genLooseEle" + name + "PT").c_str(), &genLooseElectronSortedEt[ ID ][0], ("genLooseEle" + name + "ElePT[numEle" + name + "]/F").c_str());
       mytree_->Branch( ("genLooseEle" + name + "ET").c_str(), &genLooseElectronSortedEt[ ID ][0], ("genLooseEle" + name + "EleET[numEle" + name + "]/F").c_str());
       mytree_->Branch( ("genLooseEle" + name + "PX").c_str(), &genLooseElectronSortedPx[ ID ][0], ("genLooseEle" + name + "ElePx[numEle" + name + "]/F").c_str());
       mytree_->Branch( ("genLooseEle" + name + "PY").c_str(), &genLooseElectronSortedPy[ ID ][0], ("genLooseEle" + name + "ElePy[numEle" + name + "]/F").c_str());
@@ -2904,7 +2901,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
       mytree_->Branch( ("genLooseEle" + name + "Phi").c_str(), &genLooseElectronSortedPhi[ ID ][0], ("genLooseEle" + name + "ElePhi[numEle" + name + "]/F").c_str());
       mytree_->Branch( ("genLooseEle" + name + "Theta").c_str(), &genLooseElectronSortedTheta[ ID ][0], ("genLooseEle" + name + "EleTheta[numEle" + name + "]/F").c_str());
       mytree_->Branch( ("genLooseEle" + name + "Eta").c_str(), &genLooseElectronSortedEta[ ID ][0], ("genLooseEle" + name + "EleEta[numEle" + name + "]/F").c_str());
-  }
+      }*/
 
 //Also handle z candidates
   nzcandidates[ ID ] = 0;
@@ -2965,6 +2962,7 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   muonSortedNumChambers[ ID ] = tempVecI;
   muonSortedNumMatches[ ID ] = tempVecI;
 
+  genMuonSortedPt[ ID ] = tempVecF;
   genMuonSortedEt[ ID ] = tempVecF;
   genMuonSortedEta[ ID ] = tempVecF;
   genMuonSortedTheta[ ID ] = tempVecF;
@@ -3056,7 +3054,7 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
       mytree_->Branch((prefix + "Eta").c_str(), &genMuonSortedEta[ ID ][0], (prefix + "Eta[numMuon" + name + "]/F").c_str());
       mytree_->Branch((prefix + "Charge").c_str(), &genMuonSortedCharge[ ID ][0], (prefix + "Charge[numMuon" + name + "]/I").c_str());
 
-      mytree_->Branch((prefix + "PT").c_str(), &genLooseMuonSortedPt[ ID ][0], (prefix + "PT[numLooseMuon" + name + "]/F").c_str());
+      /*      mytree_->Branch((prefix + "PT").c_str(), &genLooseMuonSortedPt[ ID ][0], (prefix + "PT[numLooseMuon" + name + "]/F").c_str());
       mytree_->Branch((prefix + "ET").c_str(), &genLooseMuonSortedEt[ ID ][0], (prefix + "ET[numLooseMuon" + name + "]/F").c_str());
       mytree_->Branch((prefix + "PX").c_str(), &genLooseMuonSortedPx[ ID ][0], (prefix + "Px[numLooseMuon" + name + "]/F").c_str());
       mytree_->Branch((prefix + "PY").c_str(), &genLooseMuonSortedPy[ ID ][0], (prefix + "Py[numLooseMuon" + name + "]/F").c_str());
@@ -3064,7 +3062,7 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
       mytree_->Branch((prefix + "Phi").c_str(), &genLooseMuonSortedPhi[ ID ][0], (prefix + "Phi[numLooseMuon" + name + "]/F").c_str());
       mytree_->Branch((prefix + "Theta").c_str(), &genLooseMuonSortedTheta[ ID ][0], (prefix + "Theta[numLooseMuon" + name + "]/F").c_str());
       mytree_->Branch((prefix + "Eta").c_str(), &genLooseMuonSortedEta[ ID ][0], (prefix + "Eta[numLooseMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "Charge").c_str(), &genLooseMuonSortedCharge[ ID ][0], (prefix + "Charge[numLooseMuon" + name + "]/I").c_str());
+      mytree_->Branch((prefix + "Charge").c_str(), &genLooseMuonSortedCharge[ ID ][0], (prefix + "Charge[numLooseMuon" + name + "]/I").c_str());*/
 
   }
   
