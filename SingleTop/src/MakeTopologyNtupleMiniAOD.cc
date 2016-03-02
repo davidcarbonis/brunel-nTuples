@@ -2747,7 +2747,6 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   genElectronSortedPz[ ID ] = tempVecF;
   genElectronSortedCharge[ ID ] = tempVecI;
 
-  looseElectronSortedPt[ ID ] = tempVecF;    
   looseElectronSortedEt[ ID ] = tempVecF;    
   looseElectronSortedPt[ ID ] = tempVecF;    
   looseElectronSortedEta[ ID ] = tempVecF;   
@@ -2882,7 +2881,6 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
       mytree_->Branch( ("genEle" + name + "Charge").c_str(), &genElectronSortedCharge[ ID ][0], ("genEle" + name + "EleCharge[numEle" + name + "]/I").c_str());
   }
 
-  mytree_->Branch( (prefix + "looseElectronSortedPt").c_str(), &looseElectronSortedPt[ ID ][0], (prefix + "looseElectronPt[numLooseEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedEt").c_str(), &looseElectronSortedEt[ ID ][0], (prefix + "looseElectronEt[numLooseEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedPt").c_str(), &looseElectronSortedPt[ ID ][0], (prefix + "looseElectronPt[numLooseEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedEta").c_str(), &looseElectronSortedEta[ ID ][0], (prefix + "looseElectronEta[numLooseEle" + name + "]/F").c_str());
