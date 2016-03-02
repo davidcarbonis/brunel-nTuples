@@ -207,8 +207,6 @@ public :
    Float_t         jetPF2PATSVDY[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATSVDZ[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATBDiscriminator[40];   //[numJetPF2PAT]
-   Float_t	   jetPF2PATCvsLDiscriminator[40];   //[numJetPF2PAT]
-   Float_t	   jetPF2PATCvsBDiscriminator[40];   //[numJetPF2PAT]
    Int_t           jetPF2PATNConstituents[40];   //[numJetPF2PAT]
    Int_t           jetPF2PATPID[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATClosestBPartonDeltaR[40];   //[numJetPF2PAT]
@@ -227,8 +225,6 @@ public :
    Float_t         looseJetPF2PATPt[40];   //[numLooseBJetsPF2PAT]
    Float_t         looseJetPF2PATEta[40];   //[numLooseBJetsPF2PAT]
    Float_t         looseJetPF2PATBDisc[40];   //[numLooseBJetsPF2PAT]
-   Float_t         looseJetPF2PATCvsLDisc[40];   //[numLooseCvsLJetsPF2PAT]
-   Float_t         looseJetPF2PATCvsBDisc[40];   //[numLooseCvsBJetsPF2PAT]
    Float_t         jetPF2PATMuEnergy[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATMuEnergyFraction[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATNeutralHadEnergy[40];   //[numJetPF2PAT]
@@ -519,8 +515,6 @@ public :
    TBranch        *b_jetPF2PATSVDY;   //!
    TBranch        *b_jetPF2PATSVDZ;   //!
    TBranch        *b_jetPF2PATBDiscriminator;   //!
-   TBranch        *b_jetPF2PATCvsLDiscriminator;   //!
-   TBranch        *b_jetPF2PATCvsBDiscriminator;   //!
    TBranch        *b_jetPF2PATNConstituents;   //!
    TBranch        *b_jetPF2PATPID;   //!
    TBranch        *b_jetPF2PATClosestBPartonDeltaR;   //!
@@ -539,8 +533,6 @@ public :
    TBranch        *b_looseJetPF2PATPt;   //!
    TBranch        *b_looseJetPF2PATEta;   //!
    TBranch        *b_looseJetPF2PATBDisc;   //!
-   TBranch        *b_looseJetPF2PATCvsLDisc;   //!
-   TBranch        *b_looseJetPF2PATCvsBDisc;   //!
    TBranch        *b_jetPF2PATMuEnergy;   //!
    TBranch        *b_jetPF2PATMuEnergyFraction;   //!
    TBranch        *b_jetPF2PATNeutralHadEnergy;   //!
@@ -1071,8 +1063,6 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("jetPF2PATSVDY", jetPF2PATSVDY, &b_jetPF2PATSVDY);
    fChain->SetBranchAddress("jetPF2PATSVDZ", jetPF2PATSVDZ, &b_jetPF2PATSVDZ);
    fChain->SetBranchAddress("jetPF2PATBDiscriminator", jetPF2PATBDiscriminator, &b_jetPF2PATBDiscriminator);
-   fChain->SetBranchAddress("jetPF2PATCvsLDiscriminator", jetPF2PATCvsLDiscriminator, &b_jetPF2PATCvsLDiscriminator);
-   fChain->SetBranchAddress("jetPF2PATCvsBDiscriminator", jetPF2PATCvsBDiscriminator, &b_jetPF2PATCvsBDiscriminator);
    fChain->SetBranchAddress("jetPF2PATNConstituents", jetPF2PATNConstituents, &b_jetPF2PATNConstituents);
    fChain->SetBranchAddress("jetPF2PATPID", jetPF2PATPID, &b_jetPF2PATPID);
    fChain->SetBranchAddress("jetPF2PATClosestBPartonDeltaR", jetPF2PATClosestBPartonDeltaR, &b_jetPF2PATClosestBPartonDeltaR);
@@ -1093,8 +1083,6 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("looseJetPF2PATPt", looseJetPF2PATPt, &b_looseJetPF2PATPt);
    fChain->SetBranchAddress("looseJetPF2PATEta", looseJetPF2PATEta, &b_looseJetPF2PATEta);
    fChain->SetBranchAddress("looseJetPF2PATBDisc", looseJetPF2PATBDisc, &b_looseJetPF2PATBDisc);
-   fChain->SetBranchAddress("looseJetPF2PATCvsLDisc", looseJetPF2PATCvsLDisc, &b_looseJetPF2PATCvsLDisc);
-   fChain->SetBranchAddress("looseJetPF2PATCvsBDisc", looseJetPF2PATCvsBDisc, &b_looseJetPF2PATCvsBDisc);
    fChain->SetBranchAddress("jetPF2PATMuEnergy", jetPF2PATMuEnergy, &b_jetPF2PATMuEnergy);
    fChain->SetBranchAddress("jetPF2PATMuEnergyFraction", jetPF2PATMuEnergyFraction, &b_jetPF2PATMuEnergyFraction);
    fChain->SetBranchAddress("jetPF2PATNeutralHadEnergy", jetPF2PATNeutralHadEnergy, &b_jetPF2PATNeutralHadEnergy);
