@@ -767,6 +767,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	genLooseElectronSortedPx[ ID ][numEle[ ID ]-1]=ele.genLepton()->px();
 	genLooseElectronSortedPy[ ID ][numEle[ ID ]-1]=ele.genLepton()->py();
 	genLooseElectronSortedPz[ ID ][numEle[ ID ]-1]=ele.genLepton()->pz();
+	genLooseElectronSortedCharge[ ID ][numEle[ ID ]-1]=ele.genLepton()->charge();
 	}
 
     }
@@ -1824,7 +1825,7 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   genElectronSortedPhi[ ID ].clear();
   genElectronSortedPx[ ID ].clear();
   genElectronSortedPy[ ID ].clear();
-  genElectronSortedPz[ ID ].clear();
+  genElectronSortedCharge[ ID ].clear();
 
   looseElectronSortedEt[ ID ].clear();    
   looseElectronSortedPt[ ID ].clear();    
@@ -1841,6 +1842,7 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   genLooseElectronSortedPx[ ID ].clear();
   genLooseElectronSortedPy[ ID ].clear();
   genLooseElectronSortedPz[ ID ].clear();
+  genLooseElectronSortedCharge[ ID ].clear();
 
 }
 
@@ -2762,6 +2764,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   genLooseElectronSortedPx[ ID ] = tempVecF;
   genLooseElectronSortedPy[ ID ] = tempVecF;
   genLooseElectronSortedPz[ ID ] = tempVecF;
+  genLooseElectronSortedCharge[ ID ] = tempVecI;
 
   std::string prefix = "ele" + name;
   mytree_->Branch( ("numEle"+name).c_str(), &numEle[ ID ], ("numEle" + name + "/I").c_str());
@@ -2898,6 +2901,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
     mytree_->Branch( ("genLooseEle" + name + "Phi").c_str(), &genLooseElectronSortedPhi[ ID ][0], ("genLooseEle" + name + "ElePhi[numEle" + name + "]/F").c_str());
     mytree_->Branch( ("genLooseEle" + name + "Theta").c_str(), &genLooseElectronSortedTheta[ ID ][0], ("genLooseEle" + name + "EleTheta[numEle" + name + "]/F").c_str());
     mytree_->Branch( ("genLooseEle" + name + "Eta").c_str(), &genLooseElectronSortedEta[ ID ][0], ("genLooseEle" + name + "EleEta[numEle" + name + "]/F").c_str());
+    mytree_->Branch( ("genLooseEle" + name + "Charge").c_str(), &genLooseElectronSortedCharge[ ID ][0], ("genLooseEle" + name + "EleCharge[numEle" + name + "]/I").c_str());
       }
 
 //Also handle z candidates

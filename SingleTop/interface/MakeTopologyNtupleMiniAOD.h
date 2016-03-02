@@ -426,7 +426,7 @@ private:
   std::map< std::string, std::vector<float> > genLooseElectronSortedPx;
   std::map< std::string, std::vector<float> > genLooseElectronSortedPy;
   std::map< std::string, std::vector<float> > genLooseElectronSortedPz;
-
+  std::map< std::string, std::vector<int> > genLooseElectronSortedCharge;
 
 
   // MC Truth
