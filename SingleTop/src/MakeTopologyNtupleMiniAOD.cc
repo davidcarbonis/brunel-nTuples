@@ -42,6 +42,7 @@
 #include "SimDataFormats/GeneratorProducts/interface/PdfInfo.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
+#include "PhysicsTools/SelectorUtils/interface/PFJetIDSelectionFunctor.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
@@ -970,6 +971,7 @@ void MakeTopologyNtupleMiniAOD::fillOtherJetInfo(const pat::Jet &jet, const size
   jetSortedPx[ ID ][jetindex]=jet.px();
   jetSortedPy[ ID ][jetindex]=jet.py();
   jetSortedPz[ ID ][jetindex]=jet.pz();
+  //  jetSortedID[ ID ][jetindex]=jet.jetID();
   jetSortedNtracksInJet[ ID ][jetindex]=jet.associatedTracks().size(); // Need to fix - not a high priority as currently not used in the analysis
   jetSortedN90Hits[ ID ][jetindex]=jet.jetID().n90Hits;
   jetSortedfHPD[ ID ][jetindex]=jet.jetID().fHPD;
@@ -1020,7 +1022,7 @@ void MakeTopologyNtupleMiniAOD::fillOtherJetInfo(const pat::Jet &jet, const size
       jetSortedChargedEmEnergyFraction[ ID ][jetindex]=-1.0;
       jetSortedNeutralEmEnergyFraction[ ID ][jetindex]=-1.0;
 
-//Calo collection seems to be empty so get the EMF from jetID struct.
+//Calo collection seems to be empty so get the EMF from oldJetID struct.
       jetSortedEMEnergyFraction[ ID ][jetindex]=jet.jetID().restrictedEMF;
 
   }    
@@ -1088,6 +1090,7 @@ void MakeTopologyNtupleMiniAOD::fillMCJetInfo(const reco::GenJet &jet, const siz
     genJetSortedPx[ ID ][jetindex]=jet.px();
     genJetSortedPy[ ID ][jetindex]=jet.py();
     genJetSortedPz[ ID ][jetindex]=jet.pz();
+    //    genJetSortedID[ ID ][jetindex]=jet.jetID();
   }else{
     genJetSortedEt[ ID ][jetindex]=-999.;
     genJetSortedPt[ ID ][jetindex]=-999.;
@@ -1097,6 +1100,7 @@ void MakeTopologyNtupleMiniAOD::fillMCJetInfo(const reco::GenJet &jet, const siz
     genJetSortedPx[ ID ][jetindex]=-999.;
     genJetSortedPy[ ID ][jetindex]=-999.;
     genJetSortedPz[ ID ][jetindex]=-999.;
+    //    genJetSortedID[ ID ][jetindex]=0;
     genJetSortedPID[ ID ][jetindex]=0;
     genJetSortedClosestB[ ID ][jetindex]=-1;
     genJetSortedClosestC[ ID ][jetindex]=-1;
@@ -1114,6 +1118,7 @@ void MakeTopologyNtupleMiniAOD::fillMCJetInfo(int empty, const size_t jetindex, 
   genJetSortedPx[ ID ][jetindex]=-999.;
   genJetSortedPy[ ID ][jetindex]=-999.;
   genJetSortedPz[ ID ][jetindex]=-999.;
+  //  genJetSortedID[ ID ][jetindex]=0;
   genJetSortedPID[ ID ][jetindex]=0;
   genJetSortedClosestB[ ID ][jetindex]=-1;
   genJetSortedClosestC[ ID ][jetindex]=-1;
@@ -1641,7 +1646,7 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
       fillLooseJetInfo(jet,numLooseBJets[ID]-1,jetSortedPt[ID][numJet[ID]],ID);
     }
 
-    if(!jetID(jet, numJet[ID], eleCol, jetSortedPt[ID][numJet[ID]])){
+    if(!oldJetID(jet, numJet[ID], eleCol, jetSortedPt[ID][numJet[ID]])){
       continue;
     }
     //    if( jet.pt() < 10 ){ continue; }
@@ -1670,7 +1675,7 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
     else{ eleCol = "Calo"; } //For backup.                              
     if (!jetIDLoose(jet))
       continue;
-    if (jetID(jet,eleCol,(float)jet.pt()))
+    if (oldJetID(jet,eleCol,(float)jet.pt()))
       continue;
     numLooseBJets[ ID ]++;
     
@@ -2052,6 +2057,7 @@ void MakeTopologyNtupleMiniAOD::clearjetarrays(std::string ID){
     jetSortedPx[ ID ].clear();
     jetSortedPy[ ID ].clear();
     jetSortedPz[ ID ].clear();
+    //    jetSortedID[ ID ].clear();
     jetSortedClosestLepton[ ID ].clear();
     jetSortedNtracksInJet[ ID ].clear();
     jetSortedJetCharge[ ID ].clear();
@@ -2113,6 +2119,7 @@ void MakeTopologyNtupleMiniAOD::clearjetarrays(std::string ID){
     genJetSortedPx[ ID ].clear();
     genJetSortedPy[ ID ].clear();
     genJetSortedPz[ ID ].clear();
+    //    genJetSortedID[ ID ].clear();
     jetSortedPID[ ID ].clear();
     genJetSortedPID[ ID ].clear();
     genJetSortedClosestB[ ID ].clear();
@@ -3338,6 +3345,7 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
   jetSortedPx[ ID ] = tempVecD;
   jetSortedPy[ ID ] = tempVecD;
   jetSortedPz[ ID ] = tempVecD;
+  //  jetSortedID[ ID ] = tempVecI;
   jetSortedClosestLepton[ ID ] = tempVecD;
   jetSortedJetCharge[ ID ] = tempVecF;
   jetSortedfHPD[ ID ] = tempVecF;
@@ -3367,6 +3375,7 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
   genJetSortedPx[ ID ] = tempVecF;
   genJetSortedPy[ ID ] = tempVecF;
   genJetSortedPz[ ID ] = tempVecF;
+  //  genJetSortedID[ ID ] = tempVecI;
   genJetSortedClosestB[ ID ] = tempVecF;
   genJetSortedClosestC[ ID ] = tempVecF;
 
@@ -3393,6 +3402,7 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
   mytree_->Branch( (prefix + "Px").c_str(), &jetSortedPx[ ID ][0], (prefix + "Px[numJet" + name + "]/D").c_str() );
   mytree_->Branch( (prefix + "Py").c_str(), &jetSortedPy[ ID ][0], (prefix + "Py[numJet" + name + "]/D").c_str() );
   mytree_->Branch( (prefix + "Pz").c_str(), &jetSortedPz[ ID ][0], (prefix + "Pz[numJet" + name + "]/D").c_str() );
+  //  mytree_->Branch( (prefix + "ID").c_str(), &jetSortedID[ ID ][0], (prefix + "ID[numJet" + name + "]/I").c_str() );
   mytree_->Branch( (prefix + "dRClosestLepton").c_str(), &jetSortedClosestLepton[ ID ][0], (prefix + "ClosestLepton[numJet" + name + "]/D").c_str() );
   mytree_->Branch( (prefix + "NtracksInJet").c_str(), &jetSortedNtracksInJet[ ID ][0], (prefix + "NtracksInJet[numJet" + name + "]/I").c_str() );
   mytree_->Branch( (prefix + "JetCharge").c_str(), &jetSortedJetCharge[ ID ][0], (prefix + "JetCharge[numJet" + name + "]/F").c_str() );
@@ -3430,6 +3440,7 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
       mytree_->Branch( (prefix + "PX").c_str(), &genJetSortedPx[ ID ][0], (prefix + "Px[numJet" + name + "]/F").c_str());
       mytree_->Branch( (prefix + "PY").c_str(), &genJetSortedPy[ ID ][0], (prefix + "Py[numJet" + name + "]/F").c_str());
       mytree_->Branch( (prefix + "PZ").c_str(), &genJetSortedPz[ ID ][0], (prefix + "Pz[numJet" + name + "]/F").c_str());
+      //      mytree_->Branch( (prefix + "ID").c_str(), &genJetSortedID[ ID ][0], (prefix + "ID[numJet" + name + "]/I").c_str());
       mytree_->Branch( (prefix + "Phi").c_str(), &genJetSortedPhi[ ID ][0], (prefix + "Phi[numJet" + name + "]/F").c_str());
       mytree_->Branch( (prefix + "Theta").c_str(), &genJetSortedTheta[ ID ][0], (prefix + "Theta[numJet" + name + "]/F").c_str());
       mytree_->Branch( (prefix + "Eta").c_str(), &genJetSortedEta[ ID ][0], (prefix + "Eta[numJet" + name + "]/F").c_str());
@@ -3791,7 +3802,7 @@ void MakeTopologyNtupleMiniAOD::fillBIDParameters(const edm::EventSetup &iSetup,
   }
 }
 
-bool MakeTopologyNtupleMiniAOD::jetID(const pat::Jet& jet, const size_t jetindex, std::string ID,  float jetPt){
+bool MakeTopologyNtupleMiniAOD::oldJetID(const pat::Jet& jet, const size_t jetindex, std::string ID,  float jetPt){
   //  return true if object is good
 ////std::cout << "jetID CHECK" << std::endl;
 

@@ -207,7 +207,7 @@ private:
   void fillGeneralTracks(const edm::Event&, const edm::EventSetup&);
   void fillFlavorHistory(const edm::Event&, const edm::EventSetup&);
   // ID functions
-  bool jetID(const pat::Jet &,const size_t jetindex, std::string, float);
+  bool oldJetID(const pat::Jet &,const size_t jetindex, std::string, float);
   bool jetIDLoose(const pat::Jet &, float);
   bool muonID(const pat::Muon &);
   bool photonConversionVeto(const pat::Electron &, float &, float &);
@@ -619,6 +619,7 @@ private:
     std::map< std::string, std::vector<double> > jetSortedPx;
     std::map< std::string, std::vector<double> > jetSortedPy;
     std::map< std::string, std::vector<double> > jetSortedPz;
+    std::map< std::string, std::vector<int> > jetSortedID;
     std::map< std::string, std::vector<double> > jetSortedClosestLepton;
     std::map< std::string, std::vector<int> >   jetSortedNtracksInJet;
     std::map< std::string, std::vector<float> > jetSortedJetCharge;
@@ -683,6 +684,7 @@ private:
     std::map< std::string,std::vector<float> > genJetSortedPx;
     std::map< std::string,std::vector<float> > genJetSortedPy;
     std::map< std::string,std::vector<float> > genJetSortedPz;
+    std::map< std::string,std::vector<int> > genJetSortedID;
     std::map< std::string, std::vector<int> > jetSortedPID;
     std::map< std::string, std::vector<int> > genJetSortedPID;
     std::map< std::string,std::vector<float> > genJetSortedClosestB;
