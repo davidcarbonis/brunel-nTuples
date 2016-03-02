@@ -758,7 +758,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       looseElectronSortedMVAcategory[ ID ][numLooseEle[ ID ]-1] = (*mvaCategories)[refel];
       looseElectronSortedRelIso[ ID ][numLooseEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt() ;
 
-      /*      if(! ele.genParticleRef().isNull()){ 
+      if(! ele.genParticleRef().isNull()){ 
 	genLooseElectronSortedPt[ ID ][numEle[ ID ]-1]=ele.genLepton()->pt(); 
 	genLooseElectronSortedEt[ ID ][numEle[ ID ]-1]=ele.genLepton()->et(); 
 	genLooseElectronSortedEta[ ID ][numEle[ ID ]-1]=ele.genLepton()->eta(); 
@@ -767,7 +767,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	genLooseElectronSortedPx[ ID ][numEle[ ID ]-1]=ele.genLepton()->px();
 	genLooseElectronSortedPy[ ID ][numEle[ ID ]-1]=ele.genLepton()->py();
 	genLooseElectronSortedPz[ ID ][numEle[ ID ]-1]=ele.genLepton()->pz();
-	}*/
+	}
 
     }
     
@@ -912,8 +912,7 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     looseMuonSortedisGlb[ ID ][numLooseMuo[ID]-1]=muo.isGlobalMuon();
     looseMuonSortedisTrk[ ID ][numLooseMuo[ID]-1]=muo.isTrackerMuon();
 
-/*    if(! muo.genParticleRef().isNull()){
-    std::cout << __LINE__ << " : " << __FILE__ << std::endl;
+    if(! muo.genParticleRef().isNull()){
       genLooseMuonSortedPt[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pt();
       genLooseMuonSortedEt[ ID ][numMuo[ ID ]-1]=muo.genLepton()->et();
       genLooseMuonSortedEta[ ID ][numMuo[ ID ]-1]=muo.genLepton()->eta();
@@ -924,7 +923,7 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
       genLooseMuonSortedPz[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pz();
       genLooseMuonSortedCharge[ ID ][numMuo[ ID ]-1]=muo.genLepton()->charge();
     } 
-*/
+
   }
 }
 /////////////////////////////
@@ -1833,7 +1832,7 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   looseElectronSortedMVA[ ID ].clear();   
   looseElectronSortedMVAcategory[ ID ].clear();
   looseElectronSortedRelIso[ ID ].clear();
-  /*
+  
   genLooseElectronSortedPt[ ID ].clear();
   genLooseElectronSortedEt[ ID ].clear();
   genLooseElectronSortedEta[ ID ].clear();
@@ -1841,7 +1840,7 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   genLooseElectronSortedPhi[ ID ].clear();
   genLooseElectronSortedPx[ ID ].clear();
   genLooseElectronSortedPy[ ID ].clear();
-  genLooseElectronSortedPz[ ID ].clear();*/
+  genLooseElectronSortedPz[ ID ].clear();
 
 }
 
@@ -1916,7 +1915,7 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
   looseMuonSortedRelIso[ ID ].clear();
   looseMuonSortedisGlb[ ID ].clear(); 
   looseMuonSortedisTrk[ ID ].clear(); 
-  /*
+  
   genLooseMuonSortedPt[ ID ].clear();
   genLooseMuonSortedEt[ ID ].clear();
   genLooseMuonSortedEta[ ID ].clear();
@@ -1925,7 +1924,7 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
   genLooseMuonSortedPx[ ID ].clear();
   genLooseMuonSortedPy[ ID ].clear();
   genLooseMuonSortedPz[ ID ].clear();
-  genLooseMuonSortedCharge[ ID ].clear();*/
+  genLooseMuonSortedCharge[ ID ].clear();
 
 }
 
@@ -2756,14 +2755,14 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   looseElectronSortedMVAcategory[ ID ] = tempVecI;
   looseElectronSortedRelIso[ ID ] = tempVecF;
 
-  /*  genLooseElectronSortedPt[ ID ] = tempVecF;
+  genLooseElectronSortedPt[ ID ] = tempVecF;
   genLooseElectronSortedEt[ ID ] = tempVecF;
   genLooseElectronSortedEta[ ID ] = tempVecF;
   genLooseElectronSortedTheta[ ID ] = tempVecF;
   genLooseElectronSortedPhi[ ID ] = tempVecF;
   genLooseElectronSortedPx[ ID ] = tempVecF;
   genLooseElectronSortedPy[ ID ] = tempVecF;
-  genLooseElectronSortedPz[ ID ] = tempVecF;*/
+  genLooseElectronSortedPz[ ID ] = tempVecF;
 
   std::string prefix = "ele" + name;
   mytree_->Branch( ("numEle"+name).c_str(), &numEle[ ID ], ("numEle" + name + "/I").c_str());
@@ -2891,17 +2890,17 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   mytree_->Branch( (prefix + "looseElectronSortedMVAcategory").c_str(), &looseElectronSortedMVAcategory[ ID ][0], (prefix + "looseElectronMVAcategory[numLooseEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedRelIso").c_str(), &looseElectronSortedRelIso[ ID ][0], (prefix + "looseElectronRelIso[numLooseEle" + name + "]/F").c_str());
 
-  /*  if( runMCInfo_ )
+  if( runMCInfo_ )
   {
-  mytree_->Branch( ("genLooseEle" + name + "PT").c_str(), &genLooseElectronSortedEt[ ID ][0], ("genLooseEle" + name + "ElePT[numEle" + name + "]/F").c_str());
-      mytree_->Branch( ("genLooseEle" + name + "ET").c_str(), &genLooseElectronSortedEt[ ID ][0], ("genLooseEle" + name + "EleET[numEle" + name + "]/F").c_str());
-      mytree_->Branch( ("genLooseEle" + name + "PX").c_str(), &genLooseElectronSortedPx[ ID ][0], ("genLooseEle" + name + "ElePx[numEle" + name + "]/F").c_str());
-      mytree_->Branch( ("genLooseEle" + name + "PY").c_str(), &genLooseElectronSortedPy[ ID ][0], ("genLooseEle" + name + "ElePy[numEle" + name + "]/F").c_str());
-      mytree_->Branch( ("genLooseEle" + name + "PZ").c_str(), &genLooseElectronSortedPz[ ID ][0], ("genLooseEle" + name + "ElePz[numEle" + name + "]/F").c_str());
-      mytree_->Branch( ("genLooseEle" + name + "Phi").c_str(), &genLooseElectronSortedPhi[ ID ][0], ("genLooseEle" + name + "ElePhi[numEle" + name + "]/F").c_str());
-      mytree_->Branch( ("genLooseEle" + name + "Theta").c_str(), &genLooseElectronSortedTheta[ ID ][0], ("genLooseEle" + name + "EleTheta[numEle" + name + "]/F").c_str());
-      mytree_->Branch( ("genLooseEle" + name + "Eta").c_str(), &genLooseElectronSortedEta[ ID ][0], ("genLooseEle" + name + "EleEta[numEle" + name + "]/F").c_str());
-      }*/
+    mytree_->Branch( ("genLooseEle" + name + "PT").c_str(), &genLooseElectronSortedEt[ ID ][0], ("genLooseEle" + name + "ElePT[numEle" + name + "]/F").c_str());
+    mytree_->Branch( ("genLooseEle" + name + "ET").c_str(), &genLooseElectronSortedEt[ ID ][0], ("genLooseEle" + name + "EleET[numEle" + name + "]/F").c_str());
+    mytree_->Branch( ("genLooseEle" + name + "PX").c_str(), &genLooseElectronSortedPx[ ID ][0], ("genLooseEle" + name + "ElePx[numEle" + name + "]/F").c_str());
+    mytree_->Branch( ("genLooseEle" + name + "PY").c_str(), &genLooseElectronSortedPy[ ID ][0], ("genLooseEle" + name + "ElePy[numEle" + name + "]/F").c_str());
+    mytree_->Branch( ("genLooseEle" + name + "PZ").c_str(), &genLooseElectronSortedPz[ ID ][0], ("genLooseEle" + name + "ElePz[numEle" + name + "]/F").c_str());
+    mytree_->Branch( ("genLooseEle" + name + "Phi").c_str(), &genLooseElectronSortedPhi[ ID ][0], ("genLooseEle" + name + "ElePhi[numEle" + name + "]/F").c_str());
+    mytree_->Branch( ("genLooseEle" + name + "Theta").c_str(), &genLooseElectronSortedTheta[ ID ][0], ("genLooseEle" + name + "EleTheta[numEle" + name + "]/F").c_str());
+    mytree_->Branch( ("genLooseEle" + name + "Eta").c_str(), &genLooseElectronSortedEta[ ID ][0], ("genLooseEle" + name + "EleEta[numEle" + name + "]/F").c_str());
+      }
 
 //Also handle z candidates
   nzcandidates[ ID ] = 0;
@@ -2979,6 +2978,15 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   looseMuonSortedisGlb[ ID ] = tempVecF; 
   looseMuonSortedisTrk[ ID ] = tempVecF; 
 
+  genLooseMuonSortedPt[ ID ] = tempVecF;
+  genLooseMuonSortedEt[ ID ] = tempVecF;
+  genLooseMuonSortedEta[ ID ] = tempVecF;
+  genLooseMuonSortedTheta[ ID ] = tempVecF;
+  genLooseMuonSortedPhi[ ID ] = tempVecF;
+  genLooseMuonSortedPx[ ID ] = tempVecF;
+  genLooseMuonSortedPy[ ID ] = tempVecF;
+  genLooseMuonSortedPz[ ID ] = tempVecF;
+  genLooseMuonSortedCharge[ ID ] = tempVecI;
 
   mytree_->Branch( ("numMuon" + name).c_str(), &numMuo[ ID ], ("numMuon" + name + "/I").c_str());
   mytree_->Branch( ("numLooseMuon" + name).c_str(), &numLooseMuo[ ID ], ("numLooseMuon" + name + "/I").c_str());
@@ -3041,28 +3049,29 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   mytree_->Branch( (prefix + "looseMuonSortedisGlb").c_str(), &looseMuonSortedisGlb[ ID ][0], (prefix + "looseMuonisGlb[numLooseMuon"+name+"]/F").c_str());
   mytree_->Branch( (prefix + "looseMuonSortedisTrk").c_str(), &looseMuonSortedisTrk[ ID ][0], (prefix + "looseMuonisTrk[numLooseMuon"+name+"]/F").c_str());
 
-  prefix = "genMuon" + name;
   if( runMCInfo_ )
   {
-      mytree_->Branch((prefix + "PT").c_str(), &genMuonSortedPt[ ID ][0], (prefix + "PT[numMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "ET").c_str(), &genMuonSortedEt[ ID ][0], (prefix + "ET[numMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "PX").c_str(), &genMuonSortedPx[ ID ][0], (prefix + "Px[numMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "PY").c_str(), &genMuonSortedPy[ ID ][0], (prefix + "Py[numMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "PZ").c_str(), &genMuonSortedPz[ ID ][0], (prefix + "Pz[numMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "Phi").c_str(), &genMuonSortedPhi[ ID ][0], (prefix + "Phi[numMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "Theta").c_str(), &genMuonSortedTheta[ ID ][0], (prefix + "Theta[numMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "Eta").c_str(), &genMuonSortedEta[ ID ][0], (prefix + "Eta[numMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "Charge").c_str(), &genMuonSortedCharge[ ID ][0], (prefix + "Charge[numMuon" + name + "]/I").c_str());
+    prefix = "genMuon" + name;
+    mytree_->Branch((prefix + "PT").c_str(), &genMuonSortedPt[ ID ][0], (prefix + "PT[numMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "ET").c_str(), &genMuonSortedEt[ ID ][0], (prefix + "ET[numMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "PX").c_str(), &genMuonSortedPx[ ID ][0], (prefix + "Px[numMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "PY").c_str(), &genMuonSortedPy[ ID ][0], (prefix + "Py[numMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "PZ").c_str(), &genMuonSortedPz[ ID ][0], (prefix + "Pz[numMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "Phi").c_str(), &genMuonSortedPhi[ ID ][0], (prefix + "Phi[numMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "Theta").c_str(), &genMuonSortedTheta[ ID ][0], (prefix + "Theta[numMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "Eta").c_str(), &genMuonSortedEta[ ID ][0], (prefix + "Eta[numMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "Charge").c_str(), &genMuonSortedCharge[ ID ][0], (prefix + "Charge[numMuon" + name + "]/I").c_str());
 
-      /*      mytree_->Branch((prefix + "PT").c_str(), &genLooseMuonSortedPt[ ID ][0], (prefix + "PT[numLooseMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "ET").c_str(), &genLooseMuonSortedEt[ ID ][0], (prefix + "ET[numLooseMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "PX").c_str(), &genLooseMuonSortedPx[ ID ][0], (prefix + "Px[numLooseMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "PY").c_str(), &genLooseMuonSortedPy[ ID ][0], (prefix + "Py[numLooseMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "PZ").c_str(), &genLooseMuonSortedPz[ ID ][0], (prefix + "Pz[numLooseMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "Phi").c_str(), &genLooseMuonSortedPhi[ ID ][0], (prefix + "Phi[numLooseMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "Theta").c_str(), &genLooseMuonSortedTheta[ ID ][0], (prefix + "Theta[numLooseMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "Eta").c_str(), &genLooseMuonSortedEta[ ID ][0], (prefix + "Eta[numLooseMuon" + name + "]/F").c_str());
-      mytree_->Branch((prefix + "Charge").c_str(), &genLooseMuonSortedCharge[ ID ][0], (prefix + "Charge[numLooseMuon" + name + "]/I").c_str());*/
+    prefix = "genLooseMuon" + name;
+    mytree_->Branch((prefix + "PT").c_str(), &genLooseMuonSortedPt[ ID ][0], (prefix + "PT[numLooseMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "ET").c_str(), &genLooseMuonSortedEt[ ID ][0], (prefix + "ET[numLooseMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "PX").c_str(), &genLooseMuonSortedPx[ ID ][0], (prefix + "Px[numLooseMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "PY").c_str(), &genLooseMuonSortedPy[ ID ][0], (prefix + "Py[numLooseMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "PZ").c_str(), &genLooseMuonSortedPz[ ID ][0], (prefix + "Pz[numLooseMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "Phi").c_str(), &genLooseMuonSortedPhi[ ID ][0], (prefix + "Phi[numLooseMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "Theta").c_str(), &genLooseMuonSortedTheta[ ID ][0], (prefix + "Theta[numLooseMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "Eta").c_str(), &genLooseMuonSortedEta[ ID ][0], (prefix + "Eta[numLooseMuon" + name + "]/F").c_str());
+    mytree_->Branch((prefix + "Charge").c_str(), &genLooseMuonSortedCharge[ ID ][0], (prefix + "Charge[numLooseMuon" + name + "]/I").c_str());
 
   }
   
