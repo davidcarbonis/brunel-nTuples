@@ -749,7 +749,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       if(check_triggers_){
 	std::vector<pat::TriggerObjectStandAlone> matchedtriggers = ele.triggerObjectMatches();
 
-	std::cout << "matchedtriggers.size(): " << matchedtriggers.size() << std::endl;
 	if (0){ // Debug verboose info if set to 1.
 	  for(int itri=0; itri<(int)matchedtriggers.size(); itri++){
 	    for(std::vector<std::string>::const_iterator it= matchedtriggers[itri].filterLabels().begin(), it_end=matchedtriggers[itri].filterLabels().end(); it!=it_end; it++){
