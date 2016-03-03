@@ -1167,8 +1167,8 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("looseJetPF2PATPt", looseJetPF2PATPt, &b_looseJetPF2PATPt);
    fChain->SetBranchAddress("looseJetPF2PATEta", looseJetPF2PATEta, &b_looseJetPF2PATEta);
    fChain->SetBranchAddress("looseJetPF2PATBDisc", looseJetPF2PATBDisc, &b_looseJetPF2PATBDisc);
-   fChain->SetBranchAddress("looseJetPF2PATvsLCDisc", looseJetPF2PATCvsLDisc, &b_looseJetPF2PATCvsLDisc);
-   fChain->SetBranchAddress("looseJetPF2PATvsBCDisc", looseJetPF2PATCvsBDisc, &b_looseJetPF2PATCvsBDisc);
+   fChain->SetBranchAddress("looseJetPF2PATCvsLDisc", looseJetPF2PATCvsLDisc, &b_looseJetPF2PATCvsLDisc);
+   fChain->SetBranchAddress("looseJetPF2PATCvsBDisc", looseJetPF2PATCvsBDisc, &b_looseJetPF2PATCvsBDisc);
    fChain->SetBranchAddress("jetPF2PATMuEnergy", jetPF2PATMuEnergy, &b_jetPF2PATMuEnergy);
    fChain->SetBranchAddress("jetPF2PATMuEnergyFraction", jetPF2PATMuEnergyFraction, &b_jetPF2PATMuEnergyFraction);
    fChain->SetBranchAddress("jetPF2PATNeutralHadEnergy", jetPF2PATNeutralHadEnergy, &b_jetPF2PATNeutralHadEnergy);
