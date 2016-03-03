@@ -85,13 +85,18 @@ private:
   edm::EDGetTokenT<GenEventInfoProduct> generatorToken_;
 
   // ID decisions objects
-  //edm::EDGetTokenT<edm::ValueMap<bool> > eleLooseIdMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleMediumIdMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleTightIdMapToken_;
+  //edm::EDGetTokenT<edm::ValueMap<bool> > eleTrigLooseIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > eleTrigMediumIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > eleTrigTightIdMapToken_;
+  //edm::EDGetTokenT<edm::ValueMap<bool> > eleNonTrigLooseIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > eleNonTrigMediumIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > eleNonTrigTightIdMapToken_;
 
   // MVA values and categories (optional)
-  edm::EDGetTokenT<edm::ValueMap<float> > mvaValuesMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<int> > mvaCategoriesMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<float> > trigMvaValuesMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<int> > trigMvaCategoriesMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<float> > nonTrigMvaValuesMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<int> > nonTrigMvaCategoriesMapToken_;
 
   std::map<std::string,int> hltpasses_;
   std::vector<std::string> hltnames_;
@@ -322,6 +327,8 @@ private:
   std::map< std::string, std::vector<int> > electronSortedCharge;
   std::map< std::string, std::vector<float> > electronSortedMVA;
   std::map< std::string, std::vector<int> > electronSortedMVAcategory;
+  std::map< std::string, std::vector<float> > electronSortedNonTrigMVA;
+  std::map< std::string, std::vector<int> > electronSortedNonTrigMVAcategory;
   //  std::map< std::string, std::vector<int> > electronSortedIDQuality;
   //std::map< std::string, std::vector<int> > electronSortedIDQualityLoose;
   std::map< std::string, std::vector<float> > electronSortedChargedHadronIso;
@@ -416,6 +423,8 @@ private:
   std::map< std::string, std::vector<float> > looseElectronSortedEta;
   std::map< std::string, std::vector<float> > looseElectronSortedMVA;
   std::map< std::string, std::vector<int> > looseElectronSortedMVAcategory;
+  std::map< std::string, std::vector<float> > looseElectronSortedNonTrigMVA;
+  std::map< std::string, std::vector<int> > looseElectronSortedNonTrigMVAcategory;
   std::map< std::string, std::vector<float> > looseElectronSortedRelIso;
   
   std::map< std::string, std::vector<float> > genLooseElectronSortedPt;
