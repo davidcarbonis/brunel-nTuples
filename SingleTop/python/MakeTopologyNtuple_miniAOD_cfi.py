@@ -70,7 +70,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            genParticles = cms.InputTag("prunedGenParticles"),
 					   genSimParticles = cms.InputTag("prunedGenParticles"),
                                            runMCInfo = cms.bool(True), # if set to true will skip MCInfo section
-                                           doJERSmear = cms.bool(True), # as run MC is true, may as well be true too.
+                                           doJERSmear = cms.bool(False), # out of date and done in analysis.
                                            runPUReWeight = cms.bool(False), #Run pile-up reweighting. Don't do if this is data I guess.
                                            doCuts = cms.bool(True), # if set to true will skip ALL cuts. Z veto still applies electron cuts.
                                            # default preselection settings! see https://twiki.cern.ch/twiki/bin/view/CMS/VplusJets for inspiration
