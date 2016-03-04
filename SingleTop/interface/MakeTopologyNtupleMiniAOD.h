@@ -109,12 +109,15 @@ private:
   bool runMCInfo_;
   bool runPUReWeight_;
   bool doCuts_;
+  bool doSynch_;
 
   //jet cuts
   double jetPtCut_;
   double jetEtaCut_;
   double jetMinConstituents_;
   double jetNHEF_;
+  double jetHighEtaNHEF_;
+  double jetNeutralMultiplicity_;
   double jetNEEF_;
   double ecalEndRejectAngle_;
   double jetCEF_;

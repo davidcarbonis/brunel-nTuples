@@ -192,6 +192,8 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     jetEtaCut_(iConfig.getParameter<double>("maxJetEta")),
     jetMinConstituents_(iConfig.getParameter<double>("jetMinConstituents")),
     jetNHEF_(iConfig.getParameter<double>("jetNHEF")),
+    jetHighEtaNHEF_(iConfig.getParameter<double>("jetHighEtaNHEF")),
+    jetNeutralMultiplicity_(iConfig.getParameter<double>("jetNeutralMultiplicity")),
     jetNEEF_(iConfig.getParameter<double>("jetNEEF")), 
     ecalEndRejectAngle_(iConfig.getParameter<double>("ecalEndRejectAngle")), 
     jetCEF_(iConfig.getParameter<double>("jetCEF")), 
@@ -601,11 +603,11 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       pat::ElectronRef refel(electronHandle, jele);
 
       // look up id decisions
-      // bool isPassTrigMedium = (*medium_trig_id_decisions)[refel]; // NEW
-      // bool isPassTrigTight  = (*tight_trig_id_decisions)[refel]; // NEW
+      bool isPassTrigMedium = (*medium_trig_id_decisions)[refel]; // NEW
+      //      bool isPassTrigTight  = (*tight_trig_id_decisions)[refel]; // NEW - not used, commented out to avoid compilation errors
 
-      //      if(!isPassTrigMedium) // If not tight
-      //	continue;
+      if(!isPassTrigMedium && doCuts_) // If not medium and we aren't doing a synch and have to save EVERYTHING
+	continue;
 
       int photonConversionTag=-1;
     
@@ -649,9 +651,10 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       electronSortedCharge[ ID ][numEle[ ID ]-1]=ele.charge();
       electronSortedMVA[ ID ][numEle[ ID ]-1] = (*trigMvaValues)[refel]; // Triggering MVA
       electronSortedMVAcategory[ ID ][numEle[ ID ]-1] = (*trigMvaCategories)[refel];
-      electronSortedNonTrigMVA[ ID ][numEle[ ID ]-1] = (*nonTrigMvaValues)[refel]; // Non-triggering MVA
-      electronSortedNonTrigMVAcategory[ ID ][numEle[ ID ]-1] = (*nonTrigMvaCategories)[refel];
-
+      if ( doCuts_ ){
+	electronSortedNonTrigMVA[ ID ][numEle[ ID ]-1] = (*nonTrigMvaValues)[refel]; // Non-triggering MVA
+	electronSortedNonTrigMVAcategory[ ID ][numEle[ ID ]-1] = (*nonTrigMvaCategories)[refel];
+      }
       //    std::cout << "Debug ele.mva: " << ele.mva() << "   " << electronSortedMVA[ ID ][numEle[ ID ]-1] << std::endl;
       //    std::cout << "mvaValues: " << (*mvaValues)[refel] << std::endl;
       //    std::cout << "mvaCategories: " << (*mvaCategories)[refel] << std::endl;
@@ -790,8 +793,10 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       looseElectronSortedEta[ ID ][numLooseEle[ ID ]-1]=ele.eta();
       looseElectronSortedMVA[ ID ][numLooseEle[ ID ]-1] = (*trigMvaValues)[refel]; // Triggering MVA value
       looseElectronSortedMVAcategory[ ID ][numLooseEle[ ID ]-1] = (*trigMvaCategories)[refel];
-      looseElectronSortedNonTrigMVA[ ID ][numLooseEle[ ID ]-1] = (*nonTrigMvaValues)[refel]; // Non-triggering MVA value
-      looseElectronSortedNonTrigMVAcategory[ ID ][numLooseEle[ ID ]-1] = (*nonTrigMvaCategories)[refel];
+      if ( doCuts_ ){
+	looseElectronSortedNonTrigMVA[ ID ][numLooseEle[ ID ]-1] = (*nonTrigMvaValues)[refel]; // Non-triggering MVA value
+	looseElectronSortedNonTrigMVAcategory[ ID ][numLooseEle[ ID ]-1] = (*nonTrigMvaCategories)[refel];
+      }
       looseElectronSortedRelIso[ ID ][numLooseEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt() ;
 
       if(! ele.genParticleRef().isNull()){ 
@@ -2844,7 +2849,6 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   mytree_->Branch( (prefix + "MVAcategory").c_str(), &electronSortedMVAcategory[ ID ][0], (prefix + "MVAcategory[numEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "NonTrigMVA").c_str(), &electronSortedNonTrigMVA[ ID ][0], (prefix + "NonTrigMVA[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "NonTrigMVAcategory").c_str(), &electronSortedNonTrigMVAcategory[ ID ][0], (prefix + "NonTrigMVAcategory[numEle" + name + "]/I").c_str());
-
   mytree_->Branch( (prefix + "ImpactTransDist").c_str(), &electronSortedImpactTransDist[ ID ][0], (prefix + "ImpactTransDist[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "ImpactTransError").c_str(), &electronSortedImpactTransError[ ID ][0], (prefix + "ImpactTransError[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "ImpactTransSignificance").c_str(), &electronSortedImpactTransSignificance[ ID ][0], (prefix + "ImpactTransSignificance[numEle" + name + "]/F").c_str());
@@ -2941,8 +2945,8 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   mytree_->Branch( (prefix + "looseElectronSortedEta").c_str(), &looseElectronSortedEta[ ID ][0], (prefix + "looseElectronEta[numLooseEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedMVA").c_str(), &looseElectronSortedMVA[ ID ][0], (prefix + "looseElectronMVA[numLooseEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedMVAcategory").c_str(), &looseElectronSortedMVAcategory[ ID ][0], (prefix + "looseElectronMVAcategory[numLooseEle" + name + "]/I").c_str());
-  mytree_->Branch( (prefix + "looseElectronSortedNonTrigMVA").c_str(), &looseElectronSortedNonTrigMVA[ ID ][0], (prefix + "looseElectronNonTrigMVA[numLooseEle" + name + "]/F").c_str());
-  mytree_->Branch( (prefix + "looseElectronSortedNonTrigMVAcategory").c_str(), &looseElectronSortedNonTrigMVAcategory[ ID ][0], (prefix + "looseElectronNonTrigMVAcategory[numLooseEle" + name + "]/I").c_str());
+    mytree_->Branch( (prefix + "looseElectronSortedNonTrigMVA").c_str(), &looseElectronSortedNonTrigMVA[ ID ][0], (prefix + "looseElectronNonTrigMVA[numLooseEle" + name + "]/F").c_str());
+    mytree_->Branch( (prefix + "looseElectronSortedNonTrigMVAcategory").c_str(), &looseElectronSortedNonTrigMVAcategory[ ID ][0], (prefix + "looseElectronNonTrigMVAcategory[numLooseEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "looseElectronSortedRelIso").c_str(), &looseElectronSortedRelIso[ ID ][0], (prefix + "looseElectronRelIso[numLooseEle" + name + "]/F").c_str());
 
   if( runMCInfo_ )
@@ -3875,22 +3879,27 @@ bool MakeTopologyNtupleMiniAOD::oldJetID(const pat::Jet& jet, const size_t jetin
     return false;
     
   // now check for electron overlaps:
-
+  
   if(bestdeltaR<dREleJetCrossClean_ && dREleJetCrossClean_>=0.0 && doCuts_)
     return false;
   
   // Loose PFJetID - if it's passed all the other stuff it should automatically get past here, but putting it in anyway
-  if (jet.numberOfDaughters() < jetMinConstituents_)
-    return false;
+  // For abs(eta)<= 3.0
+  if (fabs(jet.eta()) <= 3.0){
+    if (jet.numberOfDaughters() < jetMinConstituents_)
+      return false;
 
-  if (jet.neutralHadronEnergyFraction() >= jetNHEF_ || jet.neutralEmEnergyFraction() >= jetNEEF_)
-    return false;
+    if (jet.neutralHadronEnergyFraction() >= jetNHEF_ || jet.neutralEmEnergyFraction() >= jetNEEF_)
+      return false;
 
   
-  if (fabs(jet.eta()) < ecalEndRejectAngle_ && ( jet.chargedEmEnergyFraction() >= jetCEF_ || jet.chargedHadronEnergyFraction() <= jetCHF_ || jet.chargedMultiplicity() <= jetNCH_))
-    return false;
-
-
+    if (fabs(jet.eta()) <= ecalEndRejectAngle_ && ( jet.chargedEmEnergyFraction() >= jetCEF_ || jet.chargedHadronEnergyFraction() <= jetCHF_ || jet.chargedMultiplicity() <= jetNCH_))
+      return false;
+  }
+  else{
+    if (jet.neutralMultiplicity() <= jetNeutralMultiplicity_ || jet.neutralHadronEnergyFraction() >= jetHighEtaNHEF_)
+      return false;
+  }
   return true;
 }
 

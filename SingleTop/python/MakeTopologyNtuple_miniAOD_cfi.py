@@ -75,13 +75,14 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            doCuts = cms.bool(True), # if set to true will skip ALL cuts. Z veto still applies electron cuts.
                                            # default preselection settings! see https://twiki.cern.ch/twiki/bin/view/CMS/VplusJets for inspiration
 
-
                                            #Some jet cuts.
-                                           minJetPt = cms.double(0), #min jet pT in GeV/c
-                                           maxJetEta = cms.double(5), # jet |eta|
+                                           minJetPt = cms.double(0.), #min jet pT in GeV/c
+                                           maxJetEta = cms.double(5.), # jet |eta|
                                            isPF = cms.bool(False), #Particle flow or not
                                            jetMinConstituents = cms.double(2),
-                                           jetNHEF = cms.double(0.99), 
+                                           jetNHEF = cms.double(0.99),	# for jet |eta| <= 3.0
+                                           jetHighEtaNHEF = cms.double(0.90),	# for jet |eta| > 3.0			    
+					   jetNeutralMultiplicity = cms.double(10), 
                                            jetNEEF = cms.double(0.99),
                                            ecalEndRejectAngle = cms.double(2.4), #Angle before which we care about the charged fraction
                                            jetCEF = cms.double(0.99),
@@ -124,7 +125,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            # cross-cleaning parameter (jet is rejected if inside electron cone0
                                            dREleJetCrossClean = cms.double(-1), # cone distance that an electron-jet match needs to have to reject the jet (the electron is always kept)
                                            # muon identification
-                                           maxMuonEta = cms.double(5),
+                                           maxMuonEta = cms.double(5.),
                                            minMuonPt = cms.double(0.),
                                            maxMuonD0 = cms.double(50), # D0 in cm, already corrected for Beam position. V+jets def: 0.02 (for prompt muons)
                                            muoCombRelIso = cms.double(1.), #combined track isolation,
@@ -139,7 +140,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            muonDBCut = cms.double(0.2),
                                            muonPixelHits = cms.double(1),#minimum of one
                                            muonTrackLayersWithHits = cms.double(6), # 5 or less is skipped.
-                                           muonRelIsoTight = cms.double(0.12),
+                                           muonRelIsoTight = cms.double(0.2),
                                            muonPtLoose = cms.double(10.),
                                            muonEtaLoose = cms.double(2.5),
                                            muoRelIsoLoose = cms.double(0.2),
@@ -155,7 +156,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            eeRecHits=cms.InputTag('reducedEcalRecHitsEE'),
                                            isMCatNLO=cms.bool(False),
                                            #New B-tagging info
-                                           bDiscCut=cms.double(0),
+                                           bDiscCut=cms.double(-1.0),
                                            bDiscName=cms.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'),
 					   cVsLDiscName=cms.string('pfCombinedCvsLJetTags'), 
 					   cVsBDiscName=cms.string('pfCombinedCvsBJetTags'),
