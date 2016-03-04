@@ -910,11 +910,14 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     muonSortedECalIso[ ID ][numMuo[ ID ]-1]=muo.isolationR03().emEt;//muo.ecalIso();
     muonSortedHCalIso[ ID ][numMuo[ ID ]-1]=muo.isolationR03().hadEt;//muo.hcalIso();
 
-    // manually calculating comreliso:
+    // manually calculating comreliso - ie. muonSortedComRelIsodBeta is with DeltaBeta correction:
     muonSortedComRelIso[ ID ][numMuo[ ID ]-1]=muonSortedTrackIso[ ID ][numMuo[ ID ]-1];
     muonSortedComRelIso[ ID ][numMuo[ ID ]-1]+=muonSortedECalIso[ ID ][numMuo[ ID ]-1];
     muonSortedComRelIso[ ID ][numMuo[ ID ]-1]+=muonSortedHCalIso[ ID ][numMuo[ ID ]-1];
-    muonSortedComRelIsodBeta[ ID ][numMuo[ ID ]-1]=(muo.chargedHadronIso() + std::max( 0.0, muo.neutralHadronIso() + muo.photonIso() - 0.5*muo.puChargedHadronIso() ) ) / muo.pt();
+    // Old method of rel iso with beta correction
+    //    muonSortedComRelIsodBeta[ ID ][numMuo[ ID ]-1]=(muo.chargedHadronIso() + std::max( 0.0, muo.neutralHadronIso() + muo.photonIso() - 0.5*muo.puChargedHadronIso() ) ) / muo.pt();
+    // New Method
+    muonSortedComRelIsodBeta[ ID ][numMuo[ ID ]-1]=(muo.pfIsolationR04().sumChargedHadronPt + std::max( 0.0, muo.pfIsolationR04().sumNeutralHadronEt + muo.pfIsolationR04().sumPhotonEt - 0.5*muo.pfIsolationR04().sumPUPt))/muo.pt();
     muonSortedComRelIso[ ID ][numMuo[ ID ]-1]/=muonSortedPt[ ID ][numMuo[ ID ]-1];
     muonSortedNumChambers[ ID ][numMuo[ ID ]-1]=muo.numberOfChambers();
     muonSortedNumMatches[ ID ][numMuo[ ID ]-1]=muo.numberOfMatches();
@@ -3972,7 +3975,10 @@ bool MakeTopologyNtupleMiniAOD::muonID(const pat::Muon &muo){
   */
   // Changing the rel iso of the muon to that in Rebeca's code
   //  if ((muo.neutralHadronIso() + muo.chargedHadronIso() + muo.photonIso())/muo.pt() > muoRelIsoTight_)
-  if ((muo.chargedHadronIso() + std::max( 0.0, muo.neutralHadronIso() + muo.photonIso() - 0.5*muo.puChargedHadronIso() ) ) / muo.pt() >= muoRelIsoTight_)
+  // Old way
+  //  if ((muo.chargedHadronIso() + std::max( 0.0, muo.neutralHadronIso() + muo.photonIso() - 0.5*muo.puChargedHadronIso() ) ) / muo.pt() >= muoRelIsoTight_)
+  // New way with iso cone 0.4
+  if ((muo.pfIsolationR04().sumChargedHadronPt + std::max( 0.0, muo.pfIsolationR04().sumNeutralHadronEt + muo.pfIsolationR04().sumPhotonEt - 0.5*muo.pfIsolationR04().sumPUPt))/muo.pt() >= muoRelIsoTight_)
     return false;
   //if(muo.globalTrack()->normalizedChi2()/muo.combinedMuon()->ndof()>muoNormChi2_ && doCuts_)
   //have my own chi2 cut now so I'm removing this one
