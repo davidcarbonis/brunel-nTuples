@@ -203,7 +203,7 @@ process.makeTopologyNtupleMiniAOD.muonPFTag = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("slimmedJets")
 process.makeTopologyNtupleMiniAOD.metPFTag = cms.InputTag("slimmedMETs")
 process.makeTopologyNtupleMiniAOD.rhoToken = cms.InputTag("fixedGridRhoAll")                                            
-process.makeTopologyNtupleMiniAOD.conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions", "PAT")
+process.makeTopologyNtupleMiniAOD.conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions")
 
 ##electronIdMva Stuff.
 ## triggering MVA
@@ -244,27 +244,27 @@ process.source.fileNames = [
 	#'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/WZTo3LNu_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/60000/20469B1E-9F18-E511-A402-0002C94CD12E.root',
 	#'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/WZTo3LNu_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/60000/260EDE5C-9618-E511-9769-001517E74088.root',
 	## ttZ synch files
-	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/0C0B0AFB-D5DF-E511-BB3D-008CFAF0743A.root',
-	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/1EB49C33-7DDF-E511-B80F-0090FAA57A50.root',
-	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/428D2F9A-A9DF-E511-88E1-D067E5F91F71.root',
-	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/66C4E906-9BDF-E511-8B9B-02163E00C780.root',
-	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/802B0F92-7DDF-E511-B870-002590D0B04A.root',
-	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/84D78733-8BDF-E511-BE44-02163E0138D7.root',
-	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/9E1D98CF-7EDF-E511-953F-AC853D9DACE1.root',
-	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/AA7BDF99-8ADF-E511-AFE3-02163E01315B.root',
-	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/B03CEEC3-8ADF-E511-B5ED-02163E013ADF.root',
-	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/B46C8814-7BDF-E511-AE26-00259073E496.root',
+	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/0C0B0AFB-D5DF-E511-BB3D-008CFAF0743A.root',
+	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/1EB49C33-7DDF-E511-B80F-0090FAA57A50.root',
+	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/428D2F9A-A9DF-E511-88E1-D067E5F91F71.root',
+	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/66C4E906-9BDF-E511-8B9B-02163E00C780.root',
+	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/802B0F92-7DDF-E511-B870-002590D0B04A.root',
+	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/84D78733-8BDF-E511-BE44-02163E0138D7.root',
+	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/9E1D98CF-7EDF-E511-953F-AC853D9DACE1.root',
+	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/AA7BDF99-8ADF-E511-AFE3-02163E01315B.root',
+	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/B03CEEC3-8ADF-E511-B5ED-02163E013ADF.root',
+	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/B46C8814-7BDF-E511-AE26-00259073E496.root',
 	## tt synch files
-	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/0024B479-17DC-E511-B25F-0025904CF758.root',
-	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/00347F86-1BDC-E511-933C-0025905C95F8.root',
-	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/0243D352-1CDC-E511-994B-0025905C3DD0.root',
-	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/024B2AA3-1CDC-E511-A02F-0025905C96A4.root',
-	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/027E1612-1BDC-E511-A1CC-0CC47A1E048C.root',
-	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/02B71BCB-1EDC-E511-997C-0CC47A1DF652.root',
-	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/02C19778-1DDC-E511-97FD-0025905C2CE4.root',
-	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/02D16635-18DC-E511-BFC1-0025905C43EC.root',
-	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/02EEBE0F-19DC-E511-8B79-00266CFEFC38.root',
-	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/043FE20F-1BDC-E511-B0D2-0CC47A1DF80A.root',
+	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/0024B479-17DC-E511-B25F-0025904CF758.root',
+	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/00347F86-1BDC-E511-933C-0025905C95F8.root',
+	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/0243D352-1CDC-E511-994B-0025905C3DD0.root',
+	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/024B2AA3-1CDC-E511-A02F-0025905C96A4.root',
+	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/027E1612-1BDC-E511-A1CC-0CC47A1E048C.root',
+	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/02B71BCB-1EDC-E511-997C-0CC47A1DF652.root',
+	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/02C19778-1DDC-E511-97FD-0025905C2CE4.root',
+	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/02D16635-18DC-E511-BFC1-0025905C43EC.root',
+	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/02EEBE0F-19DC-E511-8B79-00266CFEFC38.root',
+	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/043FE20F-1BDC-E511-B0D2-0CC47A1DF80A.root',
         ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
