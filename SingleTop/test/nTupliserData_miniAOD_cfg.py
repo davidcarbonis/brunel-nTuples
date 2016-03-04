@@ -190,7 +190,7 @@ process.makeTopologyNtupleMiniAOD.processingLoose=cms.bool(False)
 #process.makeTopologyNtupleMiniAOD.btagParameterizationMode = cms.vstring()
 process.makeTopologyNtupleMiniAOD.runSwissCross = cms.bool(False)
 #Don't actually do cuts
-process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(True) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
+process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
 process.makeTopologyNtupleMiniAOD.runCutFlow=cms.double(0)
 
 #Make the inputs for the n-tupliser right.
