@@ -72,7 +72,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            runMCInfo = cms.bool(True), # if set to true will skip MCInfo section
                                            doJERSmear = cms.bool(False), # out of date and done in analysis.
                                            runPUReWeight = cms.bool(False), #Run pile-up reweighting. Don't do if this is data I guess.
-                                           doCuts = cms.bool(True), # if set to true will skip ALL cuts. Z veto still applies electron cuts.
+                                           doCuts = cms.bool(False), # if set to true will skip ALL cuts. Z veto still applies electron cuts.
                                            # default preselection settings! see https://twiki.cern.ch/twiki/bin/view/CMS/VplusJets for inspiration
 
                                            #Some jet cuts.
