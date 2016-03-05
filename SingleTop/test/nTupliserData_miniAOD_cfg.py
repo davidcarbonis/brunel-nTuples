@@ -164,7 +164,6 @@ process.makeTopologyNtupleMiniAOD.maxJetEta=cms.double(2.5)
 process.makeTopologyNtupleMiniAOD.bDiscCut=cms.double(0.679)
 process.makeTopologyNtupleMiniAOD.minEleEt=cms.double(20)
 process.makeTopologyNtupleMiniAOD.maxEleEta=cms.double(2.5)
-process.makeTopologyNtupleMiniAOD.ignoreElectronID=cms.bool(True) # # if set to true will save all electrons, also those not passing electronID.
 process.makeTopologyNtupleMiniAOD.eleCombRelIso=cms.double(0.15)
 process.makeTopologyNtupleMiniAOD.maxEled0=cms.double(0.04)
 process.makeTopologyNtupleMiniAOD.eleInterECALEtaLow=cms.double(1.4442)
