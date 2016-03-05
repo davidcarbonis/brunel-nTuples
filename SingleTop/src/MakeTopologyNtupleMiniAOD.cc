@@ -606,7 +606,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       bool isPassTrigMedium = (*medium_trig_id_decisions)[refel]; // NEW
       //      bool isPassTrigTight  = (*tight_trig_id_decisions)[refel]; // NEW - not used, commented out to avoid compilation errors
 
-      if(!isPassTrigMedium && doCuts_) // If not medium and we aren't doing a synch and have to save EVERYTHING
+      if(!isPassTrigMedium && !ignore_emIDtight_) // If not medium and we aren't doing a synch and have to save EVERYTHING
 	continue;
 
       int photonConversionTag=-1;

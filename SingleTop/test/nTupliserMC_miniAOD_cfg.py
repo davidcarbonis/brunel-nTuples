@@ -161,19 +161,19 @@ process.makeTopologyNtupleMiniAOD.runPUReWeight=cms.bool(True) #Run the reweight
 process.makeTopologyNtupleMiniAOD.triggerTag = cms.InputTag("TriggerResults","",triggerStringName) # or HLT, depends on file   
 
 #settings to apply tight selection:
-process.makeTopologyNtupleMiniAOD.minJetPt=cms.double(30)
-process.makeTopologyNtupleMiniAOD.maxJetEta=cms.double(2.5)
-process.makeTopologyNtupleMiniAOD.bDiscCut=cms.double(0.679)
-process.makeTopologyNtupleMiniAOD.minEleEt=cms.double(20)
-process.makeTopologyNtupleMiniAOD.maxEleEta=cms.double(2.5)
-process.makeTopologyNtupleMiniAOD.ignoreElectronID=cms.bool(False)
+process.makeTopologyNtupleMiniAOD.minJetPt=cms.double(0.0)
+process.makeTopologyNtupleMiniAOD.maxJetEta=cms.double(5.0)
+process.makeTopologyNtupleMiniAOD.bDiscCut=cms.double(-1.0)
+process.makeTopologyNtupleMiniAOD.minEleEt=cms.double(0.0)
+process.makeTopologyNtupleMiniAOD.maxEleEta=cms.double(5.0)
+process.makeTopologyNtupleMiniAOD.ignoreElectronID=cms.bool(False) ## if set to true will save all electrons, also those not passing electronID.
 process.makeTopologyNtupleMiniAOD.eleCombRelIso=cms.double(0.15)
 process.makeTopologyNtupleMiniAOD.maxEled0=cms.double(0.04)
 process.makeTopologyNtupleMiniAOD.eleInterECALEtaLow=cms.double(1.4442)
 process.makeTopologyNtupleMiniAOD.eleInterECALEtaHigh=cms.double(1.5660)
-process.makeTopologyNtupleMiniAOD.minEleEtLooseZVeto=cms.double(15)
-process.makeTopologyNtupleMiniAOD.minEleEtaLooseZVeto=cms.double(2.5)
-process.makeTopologyNtupleMiniAOD.eleCombRelIsoLooseZVeto=cms.double(0.15)
+process.makeTopologyNtupleMiniAOD.minEleEtLooseZVeto=cms.double(0)
+process.makeTopologyNtupleMiniAOD.minEleEtaLooseZVeto=cms.double(5)
+process.makeTopologyNtupleMiniAOD.eleCombRelIsoLooseZVeto=cms.double(1.0)
 process.makeTopologyNtupleMiniAOD.dREleJetCrossClean=cms.double(0.3)
 process.makeTopologyNtupleMiniAOD.maxMuonEta=cms.double(2.4)
 process.makeTopologyNtupleMiniAOD.minMuonPt=cms.double(20)
@@ -192,7 +192,7 @@ process.makeTopologyNtupleMiniAOD.processingLoose=cms.bool(False)
 #process.makeTopologyNtupleMiniAOD.btagParameterizationMode = cms.vstring()
 process.makeTopologyNtupleMiniAOD.runSwissCross = cms.bool(False)
 #Don't actually do cuts
-process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(True) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
+process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
 process.makeTopologyNtupleMiniAOD.runCutFlow=cms.double(0)
 
 #Make the inputs for the n-tupliser right.
