@@ -63,7 +63,31 @@ process.ak4PFJets.doRhoFastjet = True
 
 from PhysicsTools.SelectorUtils.pvSelector_cfi import pvSelector
 
-## MET Filters __________________________________________________||
+###############################
+########Jet corrections########
+###############################
+
+process.load('PhysicsTools.PatAlgos.producersLayer1.jetUpdater_cff')
+#from PhysicsTools.PatAlgos.producersLayer1.jetUpdater_cff import patJetCorrFactorsUpdated ## For some reason this doesn't work. Just load the module instead.
+process.patJetCorrFactorsReapplyJEC = process.patJetCorrFactorsUpdated.clone(
+  src = cms.InputTag("slimmedJets"),
+  levels = ['L1FastJet', 
+        'L2Relative', 
+        'L3Absolute'],
+  payload = 'AK4PFchs' ) # Make sure to choose the appropriate levels and payload here!
+
+from PhysicsTools.PatAlgos.producersLayer1.jetUpdater_cff import patJetsUpdated
+process.patJetsReapplyJEC = process.patJetsUpdated.clone(
+  jetSource = cms.InputTag("slimmedJets"),
+  jetCorrFactorsSource = cms.VInputTag(cms.InputTag("patJetCorrFactorsReapplyJEC"))
+  )
+
+process.jetCorrection = cms.Sequence( process.patJetCorrFactorsReapplyJEC + process. patJetsReapplyJEC )
+
+###############################
+###########Filters#############
+###############################
+
 process.load('CommonTools.RecoAlgos.HBHENoiseFilterResultProducer_cfi')
 process.load('PhysicsTools.PatAlgos.slimming.metFilterPaths_cff')
 process.load('RecoMET.METFilters.eeBadScFilter_cfi')
@@ -229,19 +253,19 @@ process.source.fileNames = [
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/000420F1-1DB8-E511-B547-0025905C4270.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/00845120-42B8-E511-985A-002618943970.root',
 	## tZq synch files
-	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/000420F1-1DB8-E511-B547-0025905C4270.root',
+	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/000420F1-1DB8-E511-B547-0025905C4270.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/1077310F-20B8-E511-803E-0025905C4328.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/1CF21F55-1EB8-E511-B7AE-0025905C22AE.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/20D40820-20B8-E511-9714-0025905AC876.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/20FC89A4-1FB8-E511-86A7-0025905C4328.root',
 	## WZ synch files
-	'root://cmsxrootd.fnal.gov//store/mc/RunIIFall15MiniAODv2/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/00D30F00-1EB8-E511-A3A0-FA163E2815B2.root',
-	'root://cmsxrootd.fnal.gov//store/mc/RunIIFall15MiniAODv2/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/02B1673C-1DB8-E511-A6CE-FA163EABF82B.root',
-	'root://cmsxrootd.fnal.gov//store/mc/RunIIFall15MiniAODv2/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/0424A9EE-1DB8-E511-943A-FA163E76C38F.root',
-	'root://cmsxrootd.fnal.gov//store/mc/RunIIFall15MiniAODv2/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/04AFC9F1-1EB8-E511-9D11-FA163E97E8A0.root',
-	'root://cmsxrootd.fnal.gov//store/mc/RunIIFall15MiniAODv2/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/04C38B38-20B8-E511-94B5-FA163E592291.root',
-	'root://cmsxrootd.fnal.gov//store/mc/RunIIFall15MiniAODv2/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/06BC1810-20B8-E511-8038-FA163E85C1EE.root',
-	'root://cmsxrootd.fnal.gov//store/mc/RunIIFall15MiniAODv2/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/087D35F1-1DB8-E511-8A52-FA163E1B79C8.root',
+	#'root://cmsxrootd.fnal.gov//store/mc/RunIIFall15MiniAODv2/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/00D30F00-1EB8-E511-A3A0-FA163E2815B2.root',
+	#'root://cmsxrootd.fnal.gov//store/mc/RunIIFall15MiniAODv2/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/02B1673C-1DB8-E511-A6CE-FA163EABF82B.root',
+	#'root://cmsxrootd.fnal.gov//store/mc/RunIIFall15MiniAODv2/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/0424A9EE-1DB8-E511-943A-FA163E76C38F.root',
+	#'root://cmsxrootd.fnal.gov//store/mc/RunIIFall15MiniAODv2/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/04AFC9F1-1EB8-E511-9D11-FA163E97E8A0.root',
+	#'root://cmsxrootd.fnal.gov//store/mc/RunIIFall15MiniAODv2/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/04C38B38-20B8-E511-94B5-FA163E592291.root',
+	#'root://cmsxrootd.fnal.gov//store/mc/RunIIFall15MiniAODv2/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/06BC1810-20B8-E511-8038-FA163E85C1EE.root',
+	#'root://cmsxrootd.fnal.gov//store/mc/RunIIFall15MiniAODv2/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/087D35F1-1DB8-E511-8A52-FA163E1B79C8.root',
 	## ttZ synch files
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/0C0B0AFB-D5DF-E511-BB3D-008CFAF0743A.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/1EB49C33-7DDF-E511-B80F-0090FAA57A50.root',
@@ -295,6 +319,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
+    process.jetCorrection *
     process.filtersSeq *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *

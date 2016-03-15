@@ -63,7 +63,31 @@ process.ak4PFJets.doRhoFastjet = True
 
 from PhysicsTools.SelectorUtils.pvSelector_cfi import pvSelector
 
-## MET Filters __________________________________________________||
+###############################
+########Jet corrections########
+###############################
+
+process.load('PhysicsTools.PatAlgos.producersLayer1.jetUpdater_cff')
+#from PhysicsTools.PatAlgos.producersLayer1.jetUpdater_cff import patJetCorrFactorsUpdated ## For some reason this doesn't work. Just load the module instead.
+process.patJetCorrFactorsReapplyJEC = process.patJetCorrFactorsUpdated.clone(
+  src = cms.InputTag("slimmedJets"),
+  levels = ['L1FastJet', 
+        'L2Relative', 
+        'L3Absolute'],
+  payload = 'AK4PFchs' ) # Make sure to choose the appropriate levels and payload here!
+
+from PhysicsTools.PatAlgos.producersLayer1.jetUpdater_cff import patJetsUpdated
+process.patJetsReapplyJEC = process.patJetsUpdated.clone(
+  jetSource = cms.InputTag("slimmedJets"),
+  jetCorrFactorsSource = cms.VInputTag(cms.InputTag("patJetCorrFactorsReapplyJEC"))
+  )
+
+process.jetCorrection = cms.Sequence( process.patJetCorrFactorsReapplyJEC + process. patJetsReapplyJEC )
+
+###############################
+###########Filters#############
+###############################
+
 process.load('CommonTools.RecoAlgos.HBHENoiseFilterResultProducer_cfi')
 process.load('PhysicsTools.PatAlgos.slimming.metFilterPaths_cff')
 
@@ -260,6 +284,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
+    process.jetCorrection *
     process.filtersSeq *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *

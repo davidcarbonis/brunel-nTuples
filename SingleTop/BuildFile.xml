@@ -15,6 +15,7 @@
 <use   name="TrackingTools/Records"/>           
 <use   name="TrackingTools/TransientTrack"/>    
 <use   name="RecoEgamma/EgammaTools"/>          
+<use   name="PhysicsTools/PatAlgos"/>
 <use   name="PhysicsTools/Utilities"/>
 <use   name="root"/>                            
 <use   name="hepmc"/>                           
@@ -26,3 +27,4 @@
 <export>
    <lib name="1"/>
 </export>
+
