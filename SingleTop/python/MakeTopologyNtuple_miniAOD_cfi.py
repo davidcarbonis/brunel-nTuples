@@ -33,37 +33,21 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 					   pdfInfoFixingToken = cms.InputTag("pdfInfoFixing"),
 					   generatorToken = cms.InputTag("generator"),
                                            
-                                           triggerList = cms.vstring(                                                              #Updated Triggers
-        #Menu 5E33 - Run2015(A)-B (50ns)
-        'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2', #DoubleElectron
-        'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', #DoubleMuon
-        'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2', #DoubleMuon
-        'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron
-        'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron
-
-        #Menu 7E33 - Run2015C (25ns)
-        #'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2', #DoubleElectron, commented out as used in previous menu, no need to repeat
-        #'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', #DoubleMuon, commented out as used in previous menu, no need to repeat
-        #'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2', #DoubleMuon, commented out as used in previous menu, no need to repeat
-        #'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron, commented out as used in previous menu, no need to repeat
-        #'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron, commented out as used in previous menu, no need to repeat
-
-        #Menu 14E33 - Run2015D (25ns)
-        'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3', #DoubleElectron
-        #'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', #DoubleMuon, commented out as used in previous menu, no need to repeat
-        #'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2', #DoubleMuon, commented out as used in previous menu, no need to repeat
-        'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3', #Muon+Electron
-        'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v3', #Muon+Electron
-
-        #MC Menu (25ns + 50ns)
+                                           triggerList = cms.vstring(                                                              
+	#Updated Triggers
         'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1', #DoubleElectron
+        'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2', #DoubleElectron
+        'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3', #DoubleElectron
 	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v1', 
 	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v1', 
-	#'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', #DoubleMuon, commented out as used in previous menu, no need to repeat
-	#'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2', #DoubleMuon, commented out as used in previous menu, no need to repeat
+        'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', #DoubleMuon
+        'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2', #DoubleMuon
         'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1', #Muon+Electron
         'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v1' #Muon+Electron
-        
+        'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron
+        'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron
+        'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3', #Muon+Electron
+        'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v3', #Muon+Electron
         ),
                                            l1TriggerTag = cms.InputTag("gtDigis"),                                    
                                            checkTriggers = cms.bool(True),
