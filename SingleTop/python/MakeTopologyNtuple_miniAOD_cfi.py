@@ -43,7 +43,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
         'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', #DoubleMuon
         'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2', #DoubleMuon
         'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1', #Muon+Electron
-        'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v1' #Muon+Electron
+        'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v1', #Muon+Electron
         'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron
         'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron
         'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3', #Muon+Electron
