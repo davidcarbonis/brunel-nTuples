@@ -119,8 +119,7 @@ process.eeBadScFilter.EERecHitSource = cms.InputTag('reducedEgamma', 'reducedEER
 
 process.filtersSeq = cms.Sequence(
 #    process.goodOfflinePrimaryVertices*
-    process.primaryVertexFilter
-    * process.HBHENoiseFilterResultProducer
+    process.HBHENoiseFilterResultProducer
     * process.HBHENoiseFilter
     * process.CSCTightHalo2015Filter
     * process.EcalDeadCellTriggerPrimitiveFilter
@@ -253,7 +252,7 @@ process.source.fileNames = [
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/000420F1-1DB8-E511-B547-0025905C4270.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/00845120-42B8-E511-985A-002618943970.root',
 	## tZq synch files
-	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/000420F1-1DB8-E511-B547-0025905C4270.root',
+	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/000420F1-1DB8-E511-B547-0025905C4270.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/1077310F-20B8-E511-803E-0025905C4328.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/1CF21F55-1EB8-E511-B7AE-0025905C22AE.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/20D40820-20B8-E511-9714-0025905AC876.root',
@@ -287,7 +286,9 @@ process.source.fileNames = [
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/02C19778-1DDC-E511-97FD-0025905C2CE4.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/02D16635-18DC-E511-BFC1-0025905C43EC.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/02EEBE0F-19DC-E511-8B79-00266CFEFC38.root',
-	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/043FE20F-1BDC-E511-B0D2-0CC47A1DF80A.root',
+	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/043FE20F-1BDC-E511-B0D2-0CC47A1DF80A.root',
+	##
+	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext4-v1/40000/3AC6940E-07D2-E511-AE19-485B39897231.root',
         ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
@@ -311,7 +312,7 @@ process.out.outputCommands += cms.untracked.vstring('keep *_flavorHistoryFilter_
 process.out.fileName = cms.untracked.string('Data_out.root')
 
 #NTuple output
-process.TFileService = cms.Service("TFileService", fileName = cms.string('Data_test.root') )
+process.TFileService = cms.Service("TFileService", fileName = cms.string('Data_test_10.root') )
 process.options.wantSummary = False
 process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
@@ -320,6 +321,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
 process.p = cms.Path(
     process.jetCorrection *
+    process.primaryVertexFilter *
     process.filtersSeq *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *
@@ -329,3 +331,4 @@ process.p = cms.Path(
 process.schedule = cms.Schedule( process.p )
 
 process.outpath = cms.EndPath( process.out )
+
