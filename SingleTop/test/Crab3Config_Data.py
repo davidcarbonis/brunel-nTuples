@@ -11,8 +11,8 @@ config.Data.inputDataset = '/DoubleEG/Run2015C_25ns-16Dec2015-v1/MINIAOD'
 config.Data.inputDBS = 'global'
 config.Data.splitting = 'LumiBased'
 config.Data.unitsPerJob = 10
-config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions15/13TeV/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_v2.txt'
-config.Data.runRange = '253659-256464' #Run2015C 253659-256464; Run2015D 256630-260627; Run2015D without bad beamspot reco runs 256630-259625,259627-259635,259638-259680,259684,259686-260627
+config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions15/13TeV/Reprocessing/Cert_13TeV_16Dec2015ReReco_Collisions15_25ns_JSON_v2.txt'
+config.Data.runRange = '254227-254227' #Run2015C 254227-254227; Run2015D 256630-260627; Run2015D without bad beamspot reco runs 256630-259625,259627-259635,259638-259680,259684,259686-260627
 config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB())
 
 config.Data.publication = False
