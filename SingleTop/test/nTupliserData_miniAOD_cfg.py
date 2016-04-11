@@ -117,9 +117,9 @@ process.eeBadScFilter.EERecHitSource = cms.InputTag('reducedEgamma', 'reducedEER
 
 process.filtersSeq = cms.Sequence(
 #    process.goodOfflinePrimaryVertices*
-    process.primaryVertexFilter
-    * process.HBHENoiseFilterResultProducer
+    process.HBHENoiseFilterResultProducer
     * process.HBHENoiseFilter
+    * process.HBHENoiseIsoFilter
     * process.CSCTightHalo2015Filter
     * process.EcalDeadCellTriggerPrimitiveFilter
     * process.eeBadScFilter
@@ -285,6 +285,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
 process.p = cms.Path(
     process.jetCorrection *
+    process.primaryVertexFilter *
     process.filtersSeq *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *
