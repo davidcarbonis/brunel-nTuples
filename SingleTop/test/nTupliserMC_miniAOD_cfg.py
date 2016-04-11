@@ -121,6 +121,7 @@ process.filtersSeq = cms.Sequence(
 #    process.goodOfflinePrimaryVertices*
     process.HBHENoiseFilterResultProducer
     * process.HBHENoiseFilter
+    * process.HBHENoiseIsoFilter
     * process.CSCTightHalo2015Filter
     * process.EcalDeadCellTriggerPrimitiveFilter
     * process.eeBadScFilter
