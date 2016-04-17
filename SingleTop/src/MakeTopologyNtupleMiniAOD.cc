@@ -639,23 +639,22 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	    }
 	}
 
-      electronSortedE[ ID ][numEle[ ID ]-1]=ele.energy();
-      electronSortedEt[ ID ][numEle[ ID ]-1]=ele.et();
-      electronSortedEta[ ID ][numEle[ ID ]-1]=ele.eta();
-      electronSortedPt[ ID ][numEle[ ID ]-1]=ele.pt();
-      electronSortedTheta[ ID ][numEle[ ID ]-1]=ele.theta();
-      electronSortedPhi[ ID ][numEle[ ID ]-1]=ele.phi();
-      electronSortedPx[ ID ][numEle[ ID ]-1]=ele.px();
-      electronSortedPy[ ID ][numEle[ ID ]-1]=ele.py();
-      electronSortedPz[ ID ][numEle[ ID ]-1]=ele.pz();
-      electronSortedCharge[ ID ][numEle[ ID ]-1]=ele.charge();
-      electronSortedMVA[ ID ][numEle[ ID ]-1] = (*trigMvaValues)[refel]; // Triggering MVA
-      electronSortedMVAcategory[ ID ][numEle[ ID ]-1] = (*trigMvaCategories)[refel];
-      if ( doCuts_ ){
+      	electronSortedE[ ID ][numEle[ ID ]-1]=ele.energy();
+      	electronSortedEt[ ID ][numEle[ ID ]-1]=ele.et();
+      	electronSortedEta[ ID ][numEle[ ID ]-1]=ele.eta();
+      	electronSortedPt[ ID ][numEle[ ID ]-1]=ele.pt();
+      	electronSortedTheta[ ID ][numEle[ ID ]-1]=ele.theta();
+      	electronSortedPhi[ ID ][numEle[ ID ]-1]=ele.phi();
+      	electronSortedPx[ ID ][numEle[ ID ]-1]=ele.px();
+      	electronSortedPy[ ID ][numEle[ ID ]-1]=ele.py();
+      	electronSortedPz[ ID ][numEle[ ID ]-1]=ele.pz();
+      	electronSortedCharge[ ID ][numEle[ ID ]-1]=ele.charge();
+      	electronSortedMVA[ ID ][numEle[ ID ]-1] = (*trigMvaValues)[refel]; // Triggering MVA
+      	electronSortedMVAcategory[ ID ][numEle[ ID ]-1] = (*trigMvaCategories)[refel];
 	electronSortedNonTrigMVA[ ID ][numEle[ ID ]-1] = (*nonTrigMvaValues)[refel]; // Non-triggering MVA
 	electronSortedNonTrigMVAcategory[ ID ][numEle[ ID ]-1] = (*nonTrigMvaCategories)[refel];
-      }
-      //    std::cout << "Debug ele.mva: " << ele.mva() << "   " << electronSortedMVA[ ID ][numEle[ ID ]-1] << std::endl;
+ 
+     //    std::cout << "Debug ele.mva: " << ele.mva() << "   " << electronSortedMVA[ ID ][numEle[ ID ]-1] << std::endl;
       //    std::cout << "mvaValues: " << (*mvaValues)[refel] << std::endl;
       //    std::cout << "mvaCategories: " << (*mvaCategories)[refel] << std::endl;
 
@@ -2932,7 +2931,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
 
   if( runMCInfo_ )
   {
-      mytree_->Branch( ("genEle" + name + "PT").c_str(), &genElectronSortedEt[ ID ][0], ("genEle" + name + "ElePT[numEle" + name + "]/F").c_str());
+      mytree_->Branch( ("genEle" + name + "PT").c_str(), &genElectronSortedPt[ ID ][0], ("genEle" + name + "ElePT[numEle" + name + "]/F").c_str());
       mytree_->Branch( ("genEle" + name + "ET").c_str(), &genElectronSortedEt[ ID ][0], ("genEle" + name + "EleET[numEle" + name + "]/F").c_str());
       mytree_->Branch( ("genEle" + name + "PX").c_str(), &genElectronSortedPx[ ID ][0], ("genEle" + name + "ElePx[numEle" + name + "]/F").c_str());
       mytree_->Branch( ("genEle" + name + "PY").c_str(), &genElectronSortedPy[ ID ][0], ("genEle" + name + "ElePy[numEle" + name + "]/F").c_str());
