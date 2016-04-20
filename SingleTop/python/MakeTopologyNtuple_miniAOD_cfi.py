@@ -34,20 +34,8 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 					   generatorToken = cms.InputTag("generator"),
                                            
                                            triggerList = cms.vstring(                                                              
-	#Updated Triggers
-        'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1', #DoubleElectron
-        'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2', #DoubleElectron
-        'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3', #DoubleElectron
-	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v1', 
-	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v1', 
-        'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', #DoubleMuon
-        'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2', #DoubleMuon
-        'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1', #Muon+Electron
-        'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v1', #Muon+Electron
-        'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron
-        'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron
-        'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3', #Muon+Electron
-        'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v3', #Muon+Electron
+	#Updated Triggers for 2016
+	#'', 
         ),
                                            l1TriggerTag = cms.InputTag("gtDigis"),                                    
                                            checkTriggers = cms.bool(True),
