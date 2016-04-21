@@ -77,6 +77,7 @@
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
 #include "DataFormats/EgammaCandidates/interface/ConversionFwd.h"
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
+#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 
 //Including this for top pt reweighting
 #include "AnalysisDataFormats/TopObjects/interface/TtGenEvent.h"
@@ -161,6 +162,7 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     genSimParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genSimParticles"))),
     pvLabel_(consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("primaryVertexToken"))),
     rhoToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoToken"))),
+    effectiveAreaInfo_( (iConfig.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath() ),
     pileupToken_(mayConsume<std::vector< PileupSummaryInfo > >(iConfig.getParameter<edm::InputTag>("pileupToken"))),
 
     isttbar_(iConfig.getParameter<bool>("isttBar")),
@@ -431,12 +433,14 @@ void MakeTopologyNtupleMiniAOD::fillMissingET(const edm::Event& iEvent, const ed
     edm::Handle<pat::METCollection> metHandle;
     iEvent.getByToken(metIn_,metHandle);
 
+    metE[ ID ] = metHandle->front().energy();
     metEt[ ID ] = metHandle->front().et();
     metEtRaw[ ID ] = metHandle->front().et();
     metPhi[ ID ] = metHandle->front().phi();
     metPt[ ID ] = metHandle->front().pt();
     metPx[ ID ] = metHandle->front().px();
     metPy[ ID ] = metHandle->front().py();
+    metPz[ ID ] = metHandle->front().pz();
     metScalarEt[ ID ] = metHandle->front().sumEt();
     metEtUncorrected[ ID ] = metHandle->front().uncorPt();
     metPhiUncorrected[ ID ] = metHandle->front().uncorPhi();
@@ -458,18 +462,22 @@ void MakeTopologyNtupleMiniAOD::fillMissingET(const edm::Event& iEvent, const ed
 	//    std::cout << metSignificance << std::endl;
     }
     if(metHandle->front().genMET()){
+	genMetE[ ID ] = metHandle->front().genMET()->energy();
 	genMetEt[ ID ] = metHandle->front().genMET()->et();
 	genMetPhi[ ID ] = metHandle->front().genMET()->phi();
 	genMetPt[ ID ] = metHandle->front().genMET()->pt();
 	genMetPx[ ID ] = metHandle->front().genMET()->px();
 	genMetPy[ ID ] = metHandle->front().genMET()->py();
+	genMetPz[ ID ] = metHandle->front().genMET()->pz();
     }
     else {
+	genMetE[ ID ] = -999.;
 	genMetEt[ ID ] = -999.;
 	genMetPhi[ ID ] = -999.;
 	genMetPt[ ID ] = -999.;
 	genMetPx[ ID ] = -999.;
 	genMetPy[ ID ] = -999.;
+	genMetPz[ ID ] = -999.;
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -654,10 +662,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	electronSortedNonTrigMVA[ ID ][numEle[ ID ]-1] = (*nonTrigMvaValues)[refel]; // Non-triggering MVA
 	electronSortedNonTrigMVAcategory[ ID ][numEle[ ID ]-1] = (*nonTrigMvaCategories)[refel];
  
-     //    std::cout << "Debug ele.mva: " << ele.mva() << "   " << electronSortedMVA[ ID ][numEle[ ID ]-1] << std::endl;
-      //    std::cout << "mvaValues: " << (*mvaValues)[refel] << std::endl;
-      //    std::cout << "mvaCategories: " << (*mvaCategories)[refel] << std::endl;
-
       //sortedIDQuality expects a cic-like cut. This is now deprecated, so I'm commenting these out.
       //    electronSortedIDQuality[ ID ][numEle[ ID ]-1]=(int)ele.electronID(eleIDqualty_);
       //    electronSortedIDQualityLoose[ ID ][numEle[ ID ]-1]=(int)ele.electronID(eleIDqualityLoose_);
@@ -718,7 +722,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       electronSortedNtHadIso[ ID ][numEle[ ID ]-1] = ele.neutralHadronIso();
       electronSortedGammaIso[ ID ][numEle[ ID ]-1] = ele.photonIso(); 
       electronSortedComRelIsodBeta[ ID ][numEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt();
-      float AEff03 = getAEff03(ele.superCluster()->eta());
+      float AEff03 = effectiveAreaInfo_.getEffectiveArea( std::abs(ele.superCluster()->eta()) );
       electronSortedAEff03[ ID ][numEle[ ID ]-1] = AEff03;
       electronSortedRhoIso[ ID ][numEle[ ID ]-1] = rhoIso;
       double combrelisorho = (ele.chargedHadronIso() + std::max(0.0, ele.neutralHadronIso() + ele.photonIso() - rhoIso*AEff03 ))/ele.pt(); 
@@ -773,7 +777,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	genElectronSortedPy[ ID ][numEle[ ID ]-1]=ele.genLepton()->py();
 	genElectronSortedPz[ ID ][numEle[ ID ]-1]=ele.genLepton()->pz();
 	genElectronSortedCharge[ ID ][numEle[ ID ]-1]=ele.genLepton()->charge();
-      } 
+      }
     }
 
     //Fill a list of loose electrons
@@ -1665,6 +1669,7 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
 	  if (smearValue > 0.0){
 	    metPx[ID] += jet.px();
 	    metPy[ID] += jet.py();
+	    metPz[ID] += jet.pz();
 	    jetSortedE[ID][numJet[ID]] = jet.energy() * smearValue;
 	    jetSortedPx[ID][numJet[ID]] = jet.px() * smearValue;
 	    jetSortedPy[ID][numJet[ID]] = jet.py() * smearValue;
@@ -1673,6 +1678,7 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
 	    jetSortedEt[ID][numJet[ID]] = jet.et() * smearValue; 
 	    metPx[ID] -= jetSortedPx[ID][numJet[ID]];
 	    metPy[ID] -= jetSortedPy[ID][numJet[ID]];
+	    metPz[ID] -= jetSortedPz[ID][numJet[ID]];
 	  }
 	}
       }else { //if no associated gen jet fill with -999.
@@ -1702,6 +1708,7 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
     fillCTagInfo(jet,numJet[ ID ]-1, ID);
 
   } 
+  metE[ID] = sqrt(pow(metPx[ID],2) + pow(metPy[ID],2) + pow(metPz[ID],2));  
   metEt[ID] = sqrt(pow(metPx[ID],2) + pow(metPy[ID],2));  
   if (numJet[ID] == 0)
     clearjetarrays(ID);
@@ -1984,12 +1991,14 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
 void MakeTopologyNtupleMiniAOD::clearMetArrays(std::string ID)
 {
 ///std::cout << "clearMetArrays CHECK" << std::endl;
+  metE[ ID ] = -99999.0;
   metEt[ ID ] = -99999.0;
   metEtRaw[ ID ] = -99999.0;
   metPhi[ ID ] = -99999.0;
   metPt[ ID ] = -99999.0;
   metPx[ ID ] = -99999.0; 
   metPy[ ID ] = -99999.0;
+  metPz[ ID ] = -99999.0;
   metSignificance[ ID ] = -99999.0;
   metScalarEt[ ID ] = -99999.0;
   metEtUncorrected[ ID ] = -99999.0;
@@ -2005,11 +2014,13 @@ void MakeTopologyNtupleMiniAOD::clearMetArrays(std::string ID)
   metEmEtEB[ ID ] = -99999.0;
   metEmEtHF[ ID ] = -99999.0;
   metHadEtHF[ ID ] = -99999.0;
+  genMetE[ ID ] = -99999.0; 
   genMetEt[ ID ] = -99999.0; 
   genMetPhi[ ID ] = -99999.0;
   genMetPt[ ID ] = -99999.0; 
   genMetPx[ ID ] = -99999.0; 
   genMetPy[ ID ] = -99999.0; 
+  genMetPz[ ID ] = -99999.0; 
 }
 /////////////////////////////////////
 void MakeTopologyNtupleMiniAOD::clearMCarrays(void){
@@ -2928,7 +2939,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
 
   mytree_->Branch( (prefix + "TriggerMatch").c_str(), &electronSortedTriggerMatch[ ID ][0], (prefix + "TriggerMatch[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "JetOverlap").c_str(), &electronSortedJetOverlap[ ID ][0], (prefix + "JetOverlap[numEle" + name + "]/F").c_str());
-
+ 
   if( runMCInfo_ )
   {
       mytree_->Branch( ("genEle" + name + "PT").c_str(), &genElectronSortedPt[ ID ][0], ("genEle" + name + "ElePT[numEle" + name + "]/F").c_str());
@@ -3174,29 +3185,34 @@ void MakeTopologyNtupleMiniAOD::bookCaloMETBranches(std::string ID, std::string 
 void MakeTopologyNtupleMiniAOD::bookMETBranches(std::string ID, std::string name)
 {
 ////std::cout << "bookMETBranches CHECK" << std::endl;
+    metE[ ID ] = -1.0;
     metEt[ ID ] = -1.0;
     metEtRaw[ ID ] = -1.0;
     metPhi[ ID ] = -99999;
     metPt[ ID ] = -99999;
     metPx[ ID ] = -99999; 
     metPy[ ID ] = -99999;
+    metPz[ ID ] = -99999;
     metScalarEt[ ID ] = -1.0;
     metEtUncorrected[ ID ] = -1.0;
     metPhiUncorrected[ ID ] = -99999;
+    genMetE[ ID ] = -1.0; 
     genMetEt[ ID ] = -1.0; 
     genMetPhi[ ID ] = -99999;
     genMetPt[ ID ] = -99999; 
     genMetPx[ ID ] = -99999; 
     genMetPy[ ID ] = -99999;
-
+    genMetPz[ ID ] = -99999;
 
     std::string prefix = "met" + name;
+    mytree_->Branch( (prefix + "E").c_str(), &metE[ ID ], (prefix + "E/D").c_str());
     mytree_->Branch( (prefix + "Et").c_str(), &metEt[ ID ], (prefix + "Et/D").c_str());
     mytree_->Branch( (prefix + "EtRaw").c_str(), &metEtRaw[ ID ], (prefix + "EtRaw/D").c_str());
     mytree_->Branch( (prefix + "Phi").c_str(), &metPhi[ ID ], (prefix + "Phi/D").c_str()); 
     mytree_->Branch( (prefix + "Pt").c_str(), &metPt[ ID ], (prefix + "Pt/D").c_str());
     mytree_->Branch( (prefix + "Px").c_str(), &metPx[ ID ], (prefix + "Px/D").c_str());
     mytree_->Branch( (prefix + "Py").c_str(), &metPy[ ID ], (prefix + "Py/D").c_str());
+    mytree_->Branch( (prefix + "Pz").c_str(), &metPz[ ID ], (prefix + "Pz/D").c_str());
     mytree_->Branch( (prefix + "ScalarEt").c_str(), &metScalarEt[ ID ], (prefix + "ScalarEt/F").c_str());
     mytree_->Branch( (prefix + "EtUncorrected").c_str(), &metEtUncorrected[ ID ], (prefix + "EtUncorrected/F").c_str());
     mytree_->Branch( (prefix + "PhiUncorrected").c_str(), &metPhiUncorrected[ ID ], (prefix + "PhiUncorrected/F").c_str());
@@ -3204,11 +3220,13 @@ void MakeTopologyNtupleMiniAOD::bookMETBranches(std::string ID, std::string name
     prefix = "genMet" + name;
     if( runMCInfo_ )
     {
+	mytree_->Branch( (prefix + "E").c_str(), &genMetE, (prefix + "E/F").c_str());
 	mytree_->Branch( (prefix + "Et").c_str(), &genMetEt, (prefix + "Et/F").c_str());
 	mytree_->Branch( (prefix + "Phi").c_str(), &genMetPhi, (prefix + "Phi/F").c_str());
 	mytree_->Branch( (prefix + "Pt").c_str(), &genMetPt, (prefix + "Pt/F").c_str());
 	mytree_->Branch( (prefix + "Px").c_str(), &genMetPx, (prefix + "Px/F").c_str());
 	mytree_->Branch( (prefix + "Py").c_str(), &genMetPy,(prefix + "Py/F").c_str());
+	mytree_->Branch( (prefix + "Pz").c_str(), &genMetPz,(prefix + "Pz/F").c_str());
     }
 
 }
@@ -3987,17 +4005,6 @@ bool MakeTopologyNtupleMiniAOD::muonID(const pat::Muon &muo){
   //if(muo.hcalIso()>muoHCalIso_ && doCuts_){ return false; }
   //if((muo.trackIso()+muo.ecalIso()+muo.hcalIso())/muo.pt()>muoIsoCut_ && doCuts_){ return false; }
   return true;
-}
-
-float MakeTopologyNtupleMiniAOD::getAEff03(float eta){
-  float area = 0.138;
-  if (fabs(eta) < 2.4) area = 0.11;
-  if (fabs(eta) < 2.3) area = 0.107;
-  if (fabs(eta) < 2.2) area = 0.089;
-  if (fabs(eta) < 2.0) area = 0.067;
-  if (fabs(eta) < 1.479) area = 0.137;
-  if (fabs(eta) < 1.0) area = 0.130;
-  return area;
 }
 
 //define this as a plug-in

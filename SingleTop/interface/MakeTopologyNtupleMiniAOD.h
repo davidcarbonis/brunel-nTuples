@@ -22,7 +22,7 @@ Implementation:
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 
-//using namespace cu_ejetmet; // Compile errors in CMSSW_5_3_20
+class EffectiveAreas;
 
 class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer {
 public:
@@ -73,6 +73,7 @@ private:
   edm::EDGetTokenT<reco::GenParticleCollection> genSimParticlesToken_;
   edm::EDGetTokenT<reco::VertexCollection> pvLabel_;
   edm::EDGetTokenT<double> rhoToken_;
+  EffectiveAreas effectiveAreaInfo_;
   edm::EDGetTokenT<std::vector< PileupSummaryInfo > > pileupToken_;
 
   //Sets whether the sample is ttbar or not. Default is false. This affects top pt reweighting of the sample.
@@ -234,8 +235,6 @@ private:
   void bookCaloMETBranches(std::string ID, std::string name); //called by bookBranches , makes MET branches
   void bookMCBranches(void); // called by bookBranches, makes MC branches.
   void bookGeneralTracksBranches(void); // called by bookBranches, makes generalTracks branches.
-  
-  float getAEff03(float); //Used to get the effective area of the electron. Because ElectronEffectiveArea.h is outdated. FIXME in future releases.
   
   TTree *mytree_;
 
@@ -489,12 +488,14 @@ private:
   
   //  float remainingEnergy[20];
 
+  std::map< std::string, double > metE;
   std::map< std::string, double > metEt;
   std::map< std::string, double > metEtRaw;  
   std::map< std::string, double > metPhi;
   std::map< std::string, double > metPt;
   std::map< std::string, double > metPx; 
   std::map< std::string, double > metPy;
+  std::map< std::string, double > metPz;
   std::map< std::string, float > metSignificance;
   std::map< std::string, float > metScalarEt;
   std::map< std::string, float > metEtUncorrected;
@@ -510,11 +511,13 @@ private:
   std::map< std::string, float > metEmEtEB;
   std::map< std::string, float > metEmEtHF;
   std::map< std::string, float > metHadEtHF;
+  std::map< std::string, float > genMetE; 
   std::map< std::string, float > genMetEt; 
   std::map< std::string, float > genMetPhi;
   std::map< std::string, float > genMetPt; 
   std::map< std::string, float > genMetPx; 
   std::map< std::string, float > genMetPy; 
+  std::map< std::string, float > genMetPz; 
 
   int numVert;
 
