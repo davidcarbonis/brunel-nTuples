@@ -267,20 +267,24 @@ public :
    Float_t         jetPF2PATNeutralEmEnergyFractionCorr[40];   //[numJetPF2PAT]
    Int_t           jetPF2PATNeutralMultiplicity[40];   //[numJetPF2PAT]
    Int_t           jetPF2PATChargedMultiplicity[40];   //[numJetPF2PAT]
+   Double_t        metPF2PATE;
    Double_t        metPF2PATEt;
    Double_t        metPF2PATEtRaw;
    Double_t        metPF2PATPhi;
    Double_t        metPF2PATPt;
    Double_t        metPF2PATPx;
    Double_t        metPF2PATPy;
+   Double_t        metPF2PATPz;
    Float_t         metPF2PATScalarEt;
    Float_t         metPF2PATEtUncorrected;
    Float_t         metPF2PATPhiUncorrected;
+   Float_t         genMetPF2PATE;
    Float_t         genMetPF2PATEt;
    Float_t         genMetPF2PATPhi;
    Float_t         genMetPF2PATPt;
    Float_t         genMetPF2PATPx;
    Float_t         genMetPF2PATPy;
+   Float_t         genMetPF2PATPz;
    Int_t           numTauPF2PAT;
    Float_t         tauPF2PATE[1];   //[numTauPF2PAT]
    Float_t         tauPF2PATPt[1];   //[numTauPF2PAT]
@@ -603,20 +607,24 @@ public :
    TBranch        *b_jetPF2PATNeutralEmEnergyFractionCorr;   //!
    TBranch        *b_jetPF2PATNeutralMultiplicity;   //!
    TBranch        *b_jetPF2PATChargedMultiplicity;   //!
+   TBranch        *b_metPF2PATE;   //!
    TBranch        *b_metPF2PATEt;   //!
    TBranch        *b_metPF2PATEtRaw;   //!
    TBranch        *b_metPF2PATPhi;   //!
    TBranch        *b_metPF2PATPt;   //!
    TBranch        *b_metPF2PATPx;   //!
    TBranch        *b_metPF2PATPy;   //!
+   TBranch        *b_metPF2PATPz;   //!
    TBranch        *b_metPF2PATScalarEt;   //!
    TBranch        *b_metPF2PATEtUncorrected;   //!
    TBranch        *b_metPF2PATPhiUncorrected;   //!
+   TBranch        *b_genMetPF2PATE;   //!
    TBranch        *b_genMetPF2PATEt;   //!
    TBranch        *b_genMetPF2PATPhi;   //!
    TBranch        *b_genMetPF2PATPt;   //!
    TBranch        *b_genMetPF2PATPx;   //!
    TBranch        *b_genMetPF2PATPy;   //!
+   TBranch        *b_genMetPF2PATPz;   //!
    TBranch        *b_numTauPF2PAT;   //!
    TBranch        *b_tauPF2PATE;   //!
    TBranch        *b_tauPF2PATPt;   //!
@@ -1183,21 +1191,25 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("jetPF2PATNeutralEmEnergyFractionCorr", jetPF2PATNeutralEmEnergyFractionCorr, &b_jetPF2PATNeutralEmEnergyFractionCorr);
    fChain->SetBranchAddress("jetPF2PATNeutralMultiplicity", jetPF2PATNeutralMultiplicity, &b_jetPF2PATNeutralMultiplicity);
    fChain->SetBranchAddress("jetPF2PATChargedMultiplicity", jetPF2PATChargedMultiplicity, &b_jetPF2PATChargedMultiplicity);
+   fChain->SetBranchAddress("metPF2PATE", &metPF2PATE, &b_metPF2PATE);
    fChain->SetBranchAddress("metPF2PATEt", &metPF2PATEt, &b_metPF2PATEt);
    fChain->SetBranchAddress("metPF2PATEtRaw", &metPF2PATEtRaw, &b_metPF2PATEtRaw);
    fChain->SetBranchAddress("metPF2PATPhi", &metPF2PATPhi, &b_metPF2PATPhi);
    fChain->SetBranchAddress("metPF2PATPt", &metPF2PATPt, &b_metPF2PATPt);
    fChain->SetBranchAddress("metPF2PATPx", &metPF2PATPx, &b_metPF2PATPx);
    fChain->SetBranchAddress("metPF2PATPy", &metPF2PATPy, &b_metPF2PATPy);
+   fChain->SetBranchAddress("metPF2PATPz", &metPF2PATPz, &b_metPF2PATPz);
    fChain->SetBranchAddress("metPF2PATScalarEt", &metPF2PATScalarEt, &b_metPF2PATScalarEt);
    fChain->SetBranchAddress("metPF2PATEtUncorrected", &metPF2PATEtUncorrected, &b_metPF2PATEtUncorrected);
    fChain->SetBranchAddress("metPF2PATPhiUncorrected", &metPF2PATPhiUncorrected, &b_metPF2PATPhiUncorrected);
    if (isMC) {
+     fChain->SetBranchAddress("genMetPF2PATE", &genMetPF2PATE, &b_genMetPF2PATE);
      fChain->SetBranchAddress("genMetPF2PATEt", &genMetPF2PATEt, &b_genMetPF2PATEt);
      fChain->SetBranchAddress("genMetPF2PATPhi", &genMetPF2PATPhi, &b_genMetPF2PATPhi);
      fChain->SetBranchAddress("genMetPF2PATPt", &genMetPF2PATPt, &b_genMetPF2PATPt);
      fChain->SetBranchAddress("genMetPF2PATPx", &genMetPF2PATPx, &b_genMetPF2PATPx);
      fChain->SetBranchAddress("genMetPF2PATPy", &genMetPF2PATPy, &b_genMetPF2PATPy);
+     fChain->SetBranchAddress("genMetPF2PATPz", &genMetPF2PATPz, &b_genMetPF2PATPz);
    }
    fChain->SetBranchAddress("numTauPF2PAT", &numTauPF2PAT, &b_numTauPF2PAT);
    fChain->SetBranchAddress("tauPF2PATE", &tauPF2PATE, &b_tauPF2PATE);
