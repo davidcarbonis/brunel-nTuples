@@ -16,8 +16,8 @@ Enjoy, future students.
 //////////////////////////////////
 
 
-CMSSW_8_0_4 branch contains code from CMSSW_7_6_3 branch which is modified to work for Run 2 miniAOD 80X data and MC.
-As data/MC reprocessing taking is using CMSSW_8_0_X, the branch is named CMSSW_8_0_4 as the version which data and MC is currently avaliable for (and which electron VID and MET uncertainities are avlaiable for).
+CMSSW_8_0_5 branch contains code from CMSSW_7_6_3 branch which is modified to work for Run 2 miniAOD 80X data and MC.
+As data/MC reprocessing taking is using CMSSW_8_0_X, the branch is named CMSSW_8_0_5 as the version which data and MC is currently avaliable for (and which electron VID and MET uncertainities are avlaiable for).
 Development is being undertaken in.
 
 To be continued ...
