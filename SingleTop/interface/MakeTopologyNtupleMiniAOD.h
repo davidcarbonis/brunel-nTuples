@@ -22,7 +22,7 @@ Implementation:
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 
-//using namespace cu_ejetmet; // Compile errors in CMSSW_5_3_20
+class EffectiveAreas;
 
 class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer {
 public:
@@ -73,6 +73,7 @@ private:
   edm::EDGetTokenT<reco::GenParticleCollection> genSimParticlesToken_;
   edm::EDGetTokenT<reco::VertexCollection> pvLabel_;
   edm::EDGetTokenT<double> rhoToken_;
+  EffectiveAreas effectiveAreaInfo_;
   edm::EDGetTokenT<std::vector< PileupSummaryInfo > > pileupToken_;
 
   //Sets whether the sample is ttbar or not. Default is false. This affects top pt reweighting of the sample.
@@ -234,8 +235,6 @@ private:
   void bookCaloMETBranches(std::string ID, std::string name); //called by bookBranches , makes MET branches
   void bookMCBranches(void); // called by bookBranches, makes MC branches.
   void bookGeneralTracksBranches(void); // called by bookBranches, makes generalTracks branches.
-  
-  float getAEff03(float); //Used to get the effective area of the electron. Because ElectronEffectiveArea.h is outdated. FIXME in future releases.
   
   TTree *mytree_;
 

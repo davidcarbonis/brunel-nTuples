@@ -77,6 +77,7 @@
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
 #include "DataFormats/EgammaCandidates/interface/ConversionFwd.h"
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
+#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 
 //Including this for top pt reweighting
 #include "AnalysisDataFormats/TopObjects/interface/TtGenEvent.h"
@@ -161,6 +162,7 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     genSimParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genSimParticles"))),
     pvLabel_(consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("primaryVertexToken"))),
     rhoToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoToken"))),
+    effectiveAreaInfo_( (iConfig.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath() ),
     pileupToken_(mayConsume<std::vector< PileupSummaryInfo > >(iConfig.getParameter<edm::InputTag>("pileupToken"))),
 
     isttbar_(iConfig.getParameter<bool>("isttBar")),
@@ -654,10 +656,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	electronSortedNonTrigMVA[ ID ][numEle[ ID ]-1] = (*nonTrigMvaValues)[refel]; // Non-triggering MVA
 	electronSortedNonTrigMVAcategory[ ID ][numEle[ ID ]-1] = (*nonTrigMvaCategories)[refel];
  
-     //    std::cout << "Debug ele.mva: " << ele.mva() << "   " << electronSortedMVA[ ID ][numEle[ ID ]-1] << std::endl;
-      //    std::cout << "mvaValues: " << (*mvaValues)[refel] << std::endl;
-      //    std::cout << "mvaCategories: " << (*mvaCategories)[refel] << std::endl;
-
       //sortedIDQuality expects a cic-like cut. This is now deprecated, so I'm commenting these out.
       //    electronSortedIDQuality[ ID ][numEle[ ID ]-1]=(int)ele.electronID(eleIDqualty_);
       //    electronSortedIDQualityLoose[ ID ][numEle[ ID ]-1]=(int)ele.electronID(eleIDqualityLoose_);
@@ -718,7 +716,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       electronSortedNtHadIso[ ID ][numEle[ ID ]-1] = ele.neutralHadronIso();
       electronSortedGammaIso[ ID ][numEle[ ID ]-1] = ele.photonIso(); 
       electronSortedComRelIsodBeta[ ID ][numEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt();
-      float AEff03 = getAEff03(ele.superCluster()->eta());
+      float AEff03 = effectiveAreaInfo_.getEffectiveArea( std::abs(ele.superCluster()->eta()) );
       electronSortedAEff03[ ID ][numEle[ ID ]-1] = AEff03;
       electronSortedRhoIso[ ID ][numEle[ ID ]-1] = rhoIso;
       double combrelisorho = (ele.chargedHadronIso() + std::max(0.0, ele.neutralHadronIso() + ele.photonIso() - rhoIso*AEff03 ))/ele.pt(); 
@@ -773,7 +771,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	genElectronSortedPy[ ID ][numEle[ ID ]-1]=ele.genLepton()->py();
 	genElectronSortedPz[ ID ][numEle[ ID ]-1]=ele.genLepton()->pz();
 	genElectronSortedCharge[ ID ][numEle[ ID ]-1]=ele.genLepton()->charge();
-      } 
+      }
     }
 
     //Fill a list of loose electrons
@@ -2928,7 +2926,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
 
   mytree_->Branch( (prefix + "TriggerMatch").c_str(), &electronSortedTriggerMatch[ ID ][0], (prefix + "TriggerMatch[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "JetOverlap").c_str(), &electronSortedJetOverlap[ ID ][0], (prefix + "JetOverlap[numEle" + name + "]/F").c_str());
-
+ 
   if( runMCInfo_ )
   {
       mytree_->Branch( ("genEle" + name + "PT").c_str(), &genElectronSortedPt[ ID ][0], ("genEle" + name + "ElePT[numEle" + name + "]/F").c_str());
@@ -3987,17 +3985,6 @@ bool MakeTopologyNtupleMiniAOD::muonID(const pat::Muon &muo){
   //if(muo.hcalIso()>muoHCalIso_ && doCuts_){ return false; }
   //if((muo.trackIso()+muo.ecalIso()+muo.hcalIso())/muo.pt()>muoIsoCut_ && doCuts_){ return false; }
   return true;
-}
-
-float MakeTopologyNtupleMiniAOD::getAEff03(float eta){
-  float area = 0.138;
-  if (fabs(eta) < 2.4) area = 0.11;
-  if (fabs(eta) < 2.3) area = 0.107;
-  if (fabs(eta) < 2.2) area = 0.089;
-  if (fabs(eta) < 2.0) area = 0.067;
-  if (fabs(eta) < 1.479) area = 0.137;
-  if (fabs(eta) < 1.0) area = 0.130;
-  return area;
 }
 
 //define this as a plug-in
