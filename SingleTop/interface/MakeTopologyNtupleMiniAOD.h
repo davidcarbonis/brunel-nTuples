@@ -488,12 +488,14 @@ private:
   
   //  float remainingEnergy[20];
 
+  std::map< std::string, double > metE;
   std::map< std::string, double > metEt;
   std::map< std::string, double > metEtRaw;  
   std::map< std::string, double > metPhi;
   std::map< std::string, double > metPt;
   std::map< std::string, double > metPx; 
   std::map< std::string, double > metPy;
+  std::map< std::string, double > metPz;
   std::map< std::string, float > metSignificance;
   std::map< std::string, float > metScalarEt;
   std::map< std::string, float > metEtUncorrected;
@@ -509,11 +511,13 @@ private:
   std::map< std::string, float > metEmEtEB;
   std::map< std::string, float > metEmEtHF;
   std::map< std::string, float > metHadEtHF;
+  std::map< std::string, float > genMetE; 
   std::map< std::string, float > genMetEt; 
   std::map< std::string, float > genMetPhi;
   std::map< std::string, float > genMetPt; 
   std::map< std::string, float > genMetPx; 
   std::map< std::string, float > genMetPy; 
+  std::map< std::string, float > genMetPz; 
 
   int numVert;
 

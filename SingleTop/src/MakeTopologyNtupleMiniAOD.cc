@@ -433,12 +433,14 @@ void MakeTopologyNtupleMiniAOD::fillMissingET(const edm::Event& iEvent, const ed
     edm::Handle<pat::METCollection> metHandle;
     iEvent.getByToken(metIn_,metHandle);
 
+    metE[ ID ] = metHandle->front().energy();
     metEt[ ID ] = metHandle->front().et();
     metEtRaw[ ID ] = metHandle->front().et();
     metPhi[ ID ] = metHandle->front().phi();
     metPt[ ID ] = metHandle->front().pt();
     metPx[ ID ] = metHandle->front().px();
     metPy[ ID ] = metHandle->front().py();
+    metPz[ ID ] = metHandle->front().pz();
     metScalarEt[ ID ] = metHandle->front().sumEt();
     metEtUncorrected[ ID ] = metHandle->front().uncorPt();
     metPhiUncorrected[ ID ] = metHandle->front().uncorPhi();
@@ -460,18 +462,22 @@ void MakeTopologyNtupleMiniAOD::fillMissingET(const edm::Event& iEvent, const ed
 	//    std::cout << metSignificance << std::endl;
     }
     if(metHandle->front().genMET()){
+	genMetE[ ID ] = metHandle->front().genMET()->energy();
 	genMetEt[ ID ] = metHandle->front().genMET()->et();
 	genMetPhi[ ID ] = metHandle->front().genMET()->phi();
 	genMetPt[ ID ] = metHandle->front().genMET()->pt();
 	genMetPx[ ID ] = metHandle->front().genMET()->px();
 	genMetPy[ ID ] = metHandle->front().genMET()->py();
+	genMetPz[ ID ] = metHandle->front().genMET()->pz();
     }
     else {
+	genMetE[ ID ] = -999.;
 	genMetEt[ ID ] = -999.;
 	genMetPhi[ ID ] = -999.;
 	genMetPt[ ID ] = -999.;
 	genMetPx[ ID ] = -999.;
 	genMetPy[ ID ] = -999.;
+	genMetPz[ ID ] = -999.;
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -1663,6 +1669,7 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
 	  if (smearValue > 0.0){
 	    metPx[ID] += jet.px();
 	    metPy[ID] += jet.py();
+	    metPz[ID] += jet.pz();
 	    jetSortedE[ID][numJet[ID]] = jet.energy() * smearValue;
 	    jetSortedPx[ID][numJet[ID]] = jet.px() * smearValue;
 	    jetSortedPy[ID][numJet[ID]] = jet.py() * smearValue;
@@ -1671,6 +1678,7 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
 	    jetSortedEt[ID][numJet[ID]] = jet.et() * smearValue; 
 	    metPx[ID] -= jetSortedPx[ID][numJet[ID]];
 	    metPy[ID] -= jetSortedPy[ID][numJet[ID]];
+	    metPz[ID] -= jetSortedPz[ID][numJet[ID]];
 	  }
 	}
       }else { //if no associated gen jet fill with -999.
@@ -1700,6 +1708,7 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
     fillCTagInfo(jet,numJet[ ID ]-1, ID);
 
   } 
+  metE[ID] = sqrt(pow(metPx[ID],2) + pow(metPy[ID],2) + pow(metPz[ID],2));  
   metEt[ID] = sqrt(pow(metPx[ID],2) + pow(metPy[ID],2));  
   if (numJet[ID] == 0)
     clearjetarrays(ID);
@@ -1982,12 +1991,14 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
 void MakeTopologyNtupleMiniAOD::clearMetArrays(std::string ID)
 {
 ///std::cout << "clearMetArrays CHECK" << std::endl;
+  metE[ ID ] = -99999.0;
   metEt[ ID ] = -99999.0;
   metEtRaw[ ID ] = -99999.0;
   metPhi[ ID ] = -99999.0;
   metPt[ ID ] = -99999.0;
   metPx[ ID ] = -99999.0; 
   metPy[ ID ] = -99999.0;
+  metPz[ ID ] = -99999.0;
   metSignificance[ ID ] = -99999.0;
   metScalarEt[ ID ] = -99999.0;
   metEtUncorrected[ ID ] = -99999.0;
@@ -2003,11 +2014,13 @@ void MakeTopologyNtupleMiniAOD::clearMetArrays(std::string ID)
   metEmEtEB[ ID ] = -99999.0;
   metEmEtHF[ ID ] = -99999.0;
   metHadEtHF[ ID ] = -99999.0;
+  genMetE[ ID ] = -99999.0; 
   genMetEt[ ID ] = -99999.0; 
   genMetPhi[ ID ] = -99999.0;
   genMetPt[ ID ] = -99999.0; 
   genMetPx[ ID ] = -99999.0; 
   genMetPy[ ID ] = -99999.0; 
+  genMetPz[ ID ] = -99999.0; 
 }
 /////////////////////////////////////
 void MakeTopologyNtupleMiniAOD::clearMCarrays(void){
@@ -3172,29 +3185,34 @@ void MakeTopologyNtupleMiniAOD::bookCaloMETBranches(std::string ID, std::string 
 void MakeTopologyNtupleMiniAOD::bookMETBranches(std::string ID, std::string name)
 {
 ////std::cout << "bookMETBranches CHECK" << std::endl;
+    metE[ ID ] = -1.0;
     metEt[ ID ] = -1.0;
     metEtRaw[ ID ] = -1.0;
     metPhi[ ID ] = -99999;
     metPt[ ID ] = -99999;
     metPx[ ID ] = -99999; 
     metPy[ ID ] = -99999;
+    metPz[ ID ] = -99999;
     metScalarEt[ ID ] = -1.0;
     metEtUncorrected[ ID ] = -1.0;
     metPhiUncorrected[ ID ] = -99999;
+    genMetE[ ID ] = -1.0; 
     genMetEt[ ID ] = -1.0; 
     genMetPhi[ ID ] = -99999;
     genMetPt[ ID ] = -99999; 
     genMetPx[ ID ] = -99999; 
     genMetPy[ ID ] = -99999;
-
+    genMetPz[ ID ] = -99999;
 
     std::string prefix = "met" + name;
+    mytree_->Branch( (prefix + "E").c_str(), &metE[ ID ], (prefix + "E/D").c_str());
     mytree_->Branch( (prefix + "Et").c_str(), &metEt[ ID ], (prefix + "Et/D").c_str());
     mytree_->Branch( (prefix + "EtRaw").c_str(), &metEtRaw[ ID ], (prefix + "EtRaw/D").c_str());
     mytree_->Branch( (prefix + "Phi").c_str(), &metPhi[ ID ], (prefix + "Phi/D").c_str()); 
     mytree_->Branch( (prefix + "Pt").c_str(), &metPt[ ID ], (prefix + "Pt/D").c_str());
     mytree_->Branch( (prefix + "Px").c_str(), &metPx[ ID ], (prefix + "Px/D").c_str());
     mytree_->Branch( (prefix + "Py").c_str(), &metPy[ ID ], (prefix + "Py/D").c_str());
+    mytree_->Branch( (prefix + "Pz").c_str(), &metPz[ ID ], (prefix + "Pz/D").c_str());
     mytree_->Branch( (prefix + "ScalarEt").c_str(), &metScalarEt[ ID ], (prefix + "ScalarEt/F").c_str());
     mytree_->Branch( (prefix + "EtUncorrected").c_str(), &metEtUncorrected[ ID ], (prefix + "EtUncorrected/F").c_str());
     mytree_->Branch( (prefix + "PhiUncorrected").c_str(), &metPhiUncorrected[ ID ], (prefix + "PhiUncorrected/F").c_str());
@@ -3202,11 +3220,13 @@ void MakeTopologyNtupleMiniAOD::bookMETBranches(std::string ID, std::string name
     prefix = "genMet" + name;
     if( runMCInfo_ )
     {
+	mytree_->Branch( (prefix + "E").c_str(), &genMetE, (prefix + "E/F").c_str());
 	mytree_->Branch( (prefix + "Et").c_str(), &genMetEt, (prefix + "Et/F").c_str());
 	mytree_->Branch( (prefix + "Phi").c_str(), &genMetPhi, (prefix + "Phi/F").c_str());
 	mytree_->Branch( (prefix + "Pt").c_str(), &genMetPt, (prefix + "Pt/F").c_str());
 	mytree_->Branch( (prefix + "Px").c_str(), &genMetPx, (prefix + "Px/F").c_str());
 	mytree_->Branch( (prefix + "Py").c_str(), &genMetPy,(prefix + "Py/F").c_str());
+	mytree_->Branch( (prefix + "Pz").c_str(), &genMetPz,(prefix + "Pz/F").c_str());
     }
 
 }
