@@ -53,12 +53,12 @@ int main(int argc, char* argv[]){
       for (int j = 0; j < event->numElePF2PAT; j++){
 	if (event->elePF2PATPT[j] < 9) continue;
 	if (fabs(event->elePF2PATEta[j]) > 2.7) continue;
-//	if (event->elePF2PATComRelIsoRho[j]/event->elePF2PATPT[j] > 0.5) continue;
+	if (event->elePF2PATComRelIsoRho[j] > 0.5) continue;
 	numLeps++;
       }
       for (int j = 0; j < event->numMuonPF2PAT; j++){
 	if (event->muonPF2PATPt[j] < 9) continue;
-//	if (event->muonPF2PATComRelIsodBeta[j] > 0.5) continue;
+	if (event->muonPF2PATComRelIsodBeta[j] > 0.5) continue;
 	if (fabs(event->muonPF2PATEta[j]) > 2.8) continue;
 	numLeps++;
       }
