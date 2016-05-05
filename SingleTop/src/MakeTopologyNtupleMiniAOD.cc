@@ -1694,9 +1694,9 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
       fillLooseJetInfo(jet,numLooseBJets[ID]-1,jetSortedPt[ID][numJet[ID]],ID);
     }
 
-    if(!oldJetID(jet, numJet[ID], eleCol, jetSortedPt[ID][numJet[ID]])){
-      continue;
-    }
+    //if(!oldJetID(jet, numJet[ID], eleCol, jetSortedPt[ID][numJet[ID]])){
+    //  continue;
+    //}
     //    if( jet.pt() < 10 ){ continue; }
    /////////////////////////////
     // no cuts that remove jets after this!
