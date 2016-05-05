@@ -209,7 +209,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     runPDFUncertainties_(iConfig.getParameter<bool>("runPDFUncertainties")),
     useResidualJEC_(iConfig.getParameter<bool>("useResidualJEC")),
     eleIDquality_(iConfig.getParameter<std::string>("electronID")),
-    eleIDqualityLoose_(iConfig.getParameter<std::string>("electronIDLooseZVeto")),
     ignore_emIDtight_(iConfig.getParameter<bool>("ignoreElectronID")),
 
     eleEtCut_(iConfig.getParameter<double>("minEleEt")),
@@ -218,10 +217,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     eled0Cut_(iConfig.getParameter<double>("maxEled0")),
     eleECALbadLo_(iConfig.getParameter<double>("eleInterECALEtaLow")),
     eleECALbadHi_(iConfig.getParameter<double>("eleInterECALEtaHigh")),
-    eleEtCutLoose_(iConfig.getParameter<double>("minEleEtLooseZVeto")),
-    eleEtaCutLoose_(iConfig.getParameter<double>("maxEleEtaLooseZVeto")),
-    eleIsoCutLoose_(iConfig.getParameter<double>("eleCombRelIsoLooseZVeto")),
-    eled0CutLoose_(iConfig.getParameter<double>("maxEled0LooseZVeto")),
     eleMvaCut_(iConfig.getParameter<double>("eleMvaCut")),
     dREleJetCrossClean_(iConfig.getParameter<double>("dREleJetCrossClean")),
 
@@ -239,9 +234,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     muoPxlHits_(iConfig.getParameter<double>("muonPixelHits")),
     muoTkLyrsWthHts_(iConfig.getParameter<double>("muonTrackLayersWithHits")),
     muoRelIsoTight_(iConfig.getParameter<double>("muonRelIsoTight")),
-    muoPtLoose_(iConfig.getParameter<double>("muonPtLoose")),
-    muoEtaLoose_(iConfig.getParameter<double>("muonEtaLoose")),
-    muoRelIsoLoose_(iConfig.getParameter<double>("muoRelIsoLoose")),
     //muoHCalIso_(iConfig.getParameter<double>("muonHCalIso")),
     //muoECalIso_(iConfig.getParameter<double>("muonECalIso")),
     metCut_(iConfig.getParameter<double>("metCut")), //met cut
@@ -264,12 +256,8 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     NGENPARMAX(50),//  hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
     NTAUSMAX(20), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
     NPHOTONSMAX(20), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
-    runCutFlow_((int)iConfig.getParameter<double>("runCutFlow")),
     doJERSmear_(iConfig.getParameter<bool>("doJERSmear")),
-    fillAll_(iConfig.getParameter<bool>("fillAll")),
-    processingLoose_(iConfig.getParameter<bool>("processingLoose"))
-
-				      //For the cutflow
+    fillAll_(iConfig.getParameter<bool>("fillAll"))
     
 {
     //now do what ever initialization is needed
@@ -292,17 +280,10 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
 
     filledBIDInfo_ =false;
     histocontainer_["eventcount"]=fs->make<TH1D>("eventcount","events processed",1,-0.5,+0.5);
-    histocontainer_["cutFlow"]=fs->make<TH1D>("cutFlow","Events after cuts",31,-0.5,30.5);
-    histocontainer_["cutFlowWeighted"]=fs->make<TH1D>("cutFlowWeighted","Weighted events after cuts",31,-0.5,30.5);
-    histocontainer_["cutFlowWeightedMichael"]=fs->make<TH1D>("cutFlowWeightedMichael","Weighted events after cuts Micheal-style",31,-0.5,30.5);
     
     //Putting in a few histograms to debug the loose lepton selection hopefully.
-    histocontainer_["looseElectrons"]=fs->make<TH1D>("looseElectrons","Number of loose electrons in event", 11,-0.5,10.5);
     histocontainer_["tightElectrons"]=fs->make<TH1D>("tightElectrons","Number of tight electrons in event", 11,-0.5,10.5);
-    histocontainer_["looseMuons"]=fs->make<TH1D>("looseMuons","Number of loose muons in event", 11,-0.5,10.5);
     histocontainer_["tightMuons"]=fs->make<TH1D>("tightMuons","Number of tight muons in event", 11,-0.5,10.5);
-    histocontainer2D_["tightVsLooseEle"]=fs->make<TH2D>("tightVsLooseEle","Tight versus loose electrons in event",11,-0.5,10.5,11,-0.5,10.5);
-    histocontainer2D_["tightVsLooseMuo"]=fs->make<TH2D>("tightVsLooseMuo","Tight versus loose Muons in event",11,-0.5,10.5,11,-0.5,10.5);
 
 
     if(isttbar_){
@@ -602,7 +583,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     //  std::cout << "now starting loop" << std::std::endl;
     // now loop again, in the correct order
     numEle[ ID ]=0;
-    numLooseEle[ ID ]=0;
 
     for ( size_t iele=0; iele<etSortedIndex.size() && numEle[ ID ]<(int)NELECTRONSMAX; ++iele ) {
       size_t jele = etSortedIndex[iele];
@@ -664,7 +644,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
  
       //sortedIDQuality expects a cic-like cut. This is now deprecated, so I'm commenting these out.
       //    electronSortedIDQuality[ ID ][numEle[ ID ]-1]=(int)ele.electronID(eleIDqualty_);
-      //    electronSortedIDQualityLoose[ ID ][numEle[ ID ]-1]=(int)ele.electronID(eleIDqualityLoose_);
       electronSortedChargedHadronIso[ ID ][numEle[ ID ]-1]=ele.chargedHadronIso();
       electronSortedNeutralHadronIso[ ID ][numEle[ ID ]-1]=ele.neutralHadronIso();
       electronSortedPhotonIso[ ID ][numEle[ ID ]-1]=ele.photonIso();
@@ -778,44 +757,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	genElectronSortedPz[ ID ][numEle[ ID ]-1]=ele.genLepton()->pz();
 	genElectronSortedCharge[ ID ][numEle[ ID ]-1]=ele.genLepton()->charge();
       }
-    }
-
-    //Fill a list of loose electrons
-    for ( size_t iele=0; iele<etSortedIndex.size() && numEle[ ID ]<(int)NELECTRONSMAX; ++iele ) {
-      size_t jele = etSortedIndex[iele];         
-      const pat::Electron& ele = (*electronHandle)[jele];
-      pat::ElectronRef refel(electronHandle, jele);
- 
-/*      bool isPassMedium = (*medium_id_decisions)[refel]; // NEW - whilst selection is for medium electrons, there is no loose Loose ID cut.
-      if(!isPassMedium)
-	continue;*/
-
-      numLooseEle[ID]++;
-      looseElectronSortedEt[ ID ][numLooseEle[ ID ]-1]=ele.et();
-      looseElectronSortedPt[ ID ][numLooseEle[ ID ]-1]=ele.pt();
-      looseElectronSortedEta[ ID ][numLooseEle[ ID ]-1]=ele.eta();
-      looseElectronSortedMVA[ ID ][numLooseEle[ ID ]-1] = (*trigMvaValues)[refel]; // Triggering MVA value
-      looseElectronSortedMVAcategory[ ID ][numLooseEle[ ID ]-1] = (*trigMvaCategories)[refel];
-      if ( doCuts_ ){
-	looseElectronSortedNonTrigMVA[ ID ][numLooseEle[ ID ]-1] = (*nonTrigMvaValues)[refel]; // Non-triggering MVA value
-	looseElectronSortedNonTrigMVAcategory[ ID ][numLooseEle[ ID ]-1] = (*nonTrigMvaCategories)[refel];
-      }
-      looseElectronSortedRelIso[ ID ][numLooseEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt() ;
-
-      if(! ele.genParticleRef().isNull()){ 
-	genLooseElectronSortedPt[ ID ][numEle[ ID ]-1]=ele.genLepton()->pt(); 
-	genLooseElectronSortedEt[ ID ][numEle[ ID ]-1]=ele.genLepton()->et(); 
-	genLooseElectronSortedEta[ ID ][numEle[ ID ]-1]=ele.genLepton()->eta(); 
-	genLooseElectronSortedTheta[ ID ][numEle[ ID ]-1]=ele.genLepton()->theta(); 
-	genLooseElectronSortedPhi[ ID ][numEle[ ID ]-1]=ele.genLepton()->phi();
-	genLooseElectronSortedPx[ ID ][numEle[ ID ]-1]=ele.genLepton()->px();
-	genLooseElectronSortedPy[ ID ][numEle[ ID ]-1]=ele.genLepton()->py();
-	genLooseElectronSortedPz[ ID ][numEle[ ID ]-1]=ele.genLepton()->pz();
-	genLooseElectronSortedCharge[ ID ][numEle[ ID ]-1]=ele.genLepton()->charge();
-	}
-
-    }
-    
+    }    
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -846,7 +788,6 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
   std::vector<int> etMuonSorted = IndexSorter< std::vector<float> >(muonEts,true)();
 
   numMuo[ ID ]=0;
-  numLooseMuo[ ID ] =0;
   // muons:
   for ( size_t imuo=0; imuo<etMuonSorted.size() && numMuo[ ID ]<(int)NMUONSMAX; ++imuo ) {
     size_t jmu = etMuonSorted[imuo];
@@ -939,39 +880,6 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
       genMuonSortedPz[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pz();
       genMuonSortedCharge[ ID ][numMuo[ ID ]-1]=muo.genLepton()->charge();
       } 
-  }
-  ///std::cout << numMuo[ ID ] << std::endl;
-  //Now make loose muon collection
-  for ( size_t imuo=0; imuo<etMuonSorted.size() && numMuo[ ID ]<(int)NMUONSMAX; ++imuo ) {
-
-    
-    size_t jmu = etMuonSorted[imuo];                   
-    //    std::cout << imuo << " " << jmu << std::endl;
-    const pat::Muon& muo = muons[jmu];                 
-/*    if(!muon::isLooseMuon(muo))                                   
-      continue;    
-*/
-    numLooseMuo[ID]++;
-
-    looseMuonSortedEt[ ID ][numLooseMuo[ID]-1]=muo.et();
-    looseMuonSortedPt[ ID ][numLooseMuo[ID]-1]=muo.pt();
-    looseMuonSortedEta[ ID ][numLooseMuo[ID]-1]=muo.eta();
-    looseMuonSortedRelIso[ ID ][numLooseMuo[ID]-1]=(muo.chargedHadronIso() + std::max( 0.0, muo.neutralHadronIso() + muo.photonIso() - 0.5*muo.puChargedHadronIso() ) ) / muo.pt();
-    looseMuonSortedisGlb[ ID ][numLooseMuo[ID]-1]=muo.isGlobalMuon();
-    looseMuonSortedisTrk[ ID ][numLooseMuo[ID]-1]=muo.isTrackerMuon();
-
-    if(! muo.genParticleRef().isNull()){
-      genLooseMuonSortedPt[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pt();
-      genLooseMuonSortedEt[ ID ][numMuo[ ID ]-1]=muo.genLepton()->et();
-      genLooseMuonSortedEta[ ID ][numMuo[ ID ]-1]=muo.genLepton()->eta();
-      genLooseMuonSortedTheta[ ID ][numMuo[ ID ]-1]=muo.genLepton()->theta();
-      genLooseMuonSortedPhi[ ID ][numMuo[ ID ]-1]=muo.genLepton()->phi();
-      genLooseMuonSortedPx[ ID ][numMuo[ ID ]-1]=muo.genLepton()->px();
-      genLooseMuonSortedPy[ ID ][numMuo[ ID ]-1]=muo.genLepton()->py();
-      genLooseMuonSortedPz[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pz();
-      genLooseMuonSortedCharge[ ID ][numMuo[ ID ]-1]=muo.genLepton()->charge();
-    } 
-
   }
 }
 /////////////////////////////
@@ -1170,17 +1078,6 @@ void MakeTopologyNtupleMiniAOD::fillMCJetInfo(int empty, const size_t jetindex, 
   genJetSortedClosestC[ ID ][jetindex]=-1;
 }
 
-void MakeTopologyNtupleMiniAOD::fillLooseJetInfo(const pat::Jet &jet, const size_t jetindex, float jetPt, std::string ID){
-
-  jetLooseSortedPt[ID][jetindex] = jetPt;
-  jetLooseSortedEt[ID][jetindex] = jetPt;
-  jetLooseSortedEta[ ID ][jetindex] = jet.eta();
-  jetLooseSortedBDisc[ ID ][jetindex] = jet.bDiscriminator(bDiscName_);
-  jetLooseSortedCvsLDisc[ ID ][jetindex] = jet.bDiscriminator(cVsLDiscName_);
-  jetLooseSortedCvsBDisc[ ID ][jetindex] = jet.bDiscriminator(cVsBDiscName_);
-
-}
-
 void MakeTopologyNtupleMiniAOD::fillBTagInfo(const pat::Jet &jet, const size_t jetindex, std::string ID){
   
   jetSortedBDiscriminator[ ID ][jetindex]=jet.bDiscriminator(bDiscName_);
@@ -1210,7 +1107,6 @@ void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent, const edm::E
 
   // requires electrons
   //fillElectrons(iEvent, iSetup);
-  // and then takes a loose electron (type eleIDqualityLoose_) collection and compare:
   
   edm::Handle<edm::View<pat::Electron> > electronHandle;
   iEvent.getByLabel(eleIn_,electronHandle);
@@ -1617,7 +1513,6 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
 
   // jets:
   numJet[ ID ]=0;
-  numLooseBJets[ ID ] =0; 
 
   std::vector<bool> genJetUsed(100,false); //index of jets in the gen jet collection - if it's true it means it's already matched and so shouldn't be used again
   for ( int ijet=0; ijet<(int)etJetSorted.size() && numJet[ ID ]<(int)NJETSMAX; ++ijet ) {
@@ -1689,11 +1584,6 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
       fillMCJetInfo(0,numJet[ID],ID,false);
     }
     
-    if(jetIDLoose(jet,jetSortedPt[ID][numJet[ID]])){
-      numLooseBJets[ID]++;
-      fillLooseJetInfo(jet,numLooseBJets[ID]-1,jetSortedPt[ID][numJet[ID]],ID);
-    }
-
     if(!oldJetID(jet, numJet[ID], eleCol, jetSortedPt[ID][numJet[ID]])){
       continue;
     }
@@ -1726,7 +1616,6 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
       continue;
     if (oldJetID(jet,eleCol,(float)jet.pt()))
       continue;
-    numLooseBJets[ ID ]++;
     
   }
   */
@@ -1774,7 +1663,6 @@ void MakeTopologyNtupleMiniAOD::clearPhotonArrays(std::string ID)
 }
 void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   numEle[ ID ]=0;
-  numLooseEle[ ID ] = 0;
 
   nzcandidates[ ID ]=0;
   zcandidatesvector[ ID ].clear();
@@ -1797,7 +1685,6 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   electronSortedNonTrigMVA[ ID ].clear();
   electronSortedNonTrigMVAcategory[ ID ].clear();
   //  electronSortedIDQuality[ ID ].clear();
-  //  electronSortedIDQualityLoose[ ID ].clear();
   electronSortedChargedHadronIso[ ID ].clear();
   electronSortedNeutralHadronIso[ ID ].clear();
   electronSortedPhotonIso[ ID ].clear();
@@ -1883,31 +1770,11 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   genElectronSortedPy[ ID ].clear();
   genElectronSortedCharge[ ID ].clear();
 
-  looseElectronSortedEt[ ID ].clear();    
-  looseElectronSortedPt[ ID ].clear();    
-  looseElectronSortedEta[ ID ].clear();   
-  looseElectronSortedMVA[ ID ].clear();   
-  looseElectronSortedMVAcategory[ ID ].clear();
-  looseElectronSortedNonTrigMVA[ ID ].clear();   
-  looseElectronSortedNonTrigMVAcategory[ ID ].clear();
-  looseElectronSortedRelIso[ ID ].clear();
-  
-  genLooseElectronSortedPt[ ID ].clear();
-  genLooseElectronSortedEt[ ID ].clear();
-  genLooseElectronSortedEta[ ID ].clear();
-  genLooseElectronSortedTheta[ ID ].clear();
-  genLooseElectronSortedPhi[ ID ].clear();
-  genLooseElectronSortedPx[ ID ].clear();
-  genLooseElectronSortedPy[ ID ].clear();
-  genLooseElectronSortedPz[ ID ].clear();
-  genLooseElectronSortedCharge[ ID ].clear();
-
 }
 
 void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
 ///std::cout << "clearmuonarrays CHECK" << std::endl;
   numMuo[ ID ]=0;
-  numLooseMuo[ ID ]=0;
   muonEts.clear(); //just used for sorting
 
   muonSortedE[ ID ].clear();
@@ -1968,24 +1835,6 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
   genMuonSortedPy[ ID ].clear();
   genMuonSortedPz[ ID ].clear();
   genMuonSortedCharge[ ID ].clear();
-
-  looseMuonSortedEt[ ID ].clear();    
-  looseMuonSortedPt[ ID ].clear();    
-  looseMuonSortedEta[ ID ].clear();   
-  looseMuonSortedRelIso[ ID ].clear();
-  looseMuonSortedisGlb[ ID ].clear(); 
-  looseMuonSortedisTrk[ ID ].clear(); 
-  
-  genLooseMuonSortedPt[ ID ].clear();
-  genLooseMuonSortedEt[ ID ].clear();
-  genLooseMuonSortedEta[ ID ].clear();
-  genLooseMuonSortedTheta[ ID ].clear();
-  genLooseMuonSortedPhi[ ID ].clear();
-  genLooseMuonSortedPx[ ID ].clear();
-  genLooseMuonSortedPy[ ID ].clear();
-  genLooseMuonSortedPz[ ID ].clear();
-  genLooseMuonSortedCharge[ ID ].clear();
-
 }
 
 void MakeTopologyNtupleMiniAOD::clearMetArrays(std::string ID)
@@ -2183,18 +2032,6 @@ void MakeTopologyNtupleMiniAOD::clearjetarrays(std::string ID){
     genJetSortedClosestC[ ID ].clear();	
 }
 
-void MakeTopologyNtupleMiniAOD::clearLooseJetarrays(std::string ID){
-
-    numLooseBJets[ ID ] = 0;
-    jetLooseSortedPt[ ID ].clear();   
-    jetLooseSortedEt[ ID ].clear();   
-    jetLooseSortedEta[ ID ].clear();  
-    jetLooseSortedBDisc[ ID ].clear();
-    jetLooseSortedCvsLDisc[ ID ].clear();
-    jetLooseSortedCvsBDisc[ ID ].clear();
-
-}
-
 /////////////////////////////////////
 void MakeTopologyNtupleMiniAOD::clearGeneralTracksarrays(void){
 ///std::cout << "clearGeneralTracksarrays CHECK" << std::endl;
@@ -2237,7 +2074,6 @@ void MakeTopologyNtupleMiniAOD::cleararrays(void){
   clearPhotonArrays("Calo");
 
   clearjetarrays("PF");
-  clearLooseJetarrays("PF");
   clearelectronarrays("PF");
   clearmuonarrays("PF");
   clearMetArrays("PF");
@@ -2292,7 +2128,6 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
   using namespace edm;
   //  std::cout << iEvent.id().run() << " " << iEvent.luminosityBlock() << " " << iEvent.id().event() << std::endl;
   //Run pile-up reweighting here
-  double weight = 1.0;
   numVert = 0;
   if (runPUReWeight_){
 
@@ -2315,14 +2150,9 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
     numVert = Tnpv;
 
   }
-  if (runCutFlow_)
-    doCutFlow = true;
 
   histocontainer_["eventcount"]->Fill(0.0);
-  if (doCutFlow){
-    histocontainer_["cutFlow"]->Fill(0);
-    histocontainer_["cutFlowWeighted"]->Fill(0.,weight);
-  }
+
 //  std::cout << "now in loop" << std::endl;
 //  std::cout << "cleared arrays." << std::endl;
 
@@ -2367,186 +2197,19 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
 
   fillSummaryVariables();
 
- //std::cout << "done with topology, now filling tree..." << std::endl;
+  //std::cout << "done with topology, now filling tree..." << std::endl;
   //  std::cout << numEle["PF"] << std::endl;
   //Run the cut flow code. This involves event selections and seeing how many events containing things we get.
   //Eventually this will require me putting in different selections for the different channels, but for now
   //just double electron.
-  if (doCutFlow){//begin filling specific cut flows
-    if (runCutFlow_ == 1){ //begin ee cut flow
-      //exactly 2 PF electrons
-      if (numEle["PF"] == 2 && numMuo["PF"] == 0 && (electronSortedCharge["PF"][0] * electronSortedCharge["PF"][1]) < 0.0 ) {
-	histocontainer_["cutFlow"]->Fill(2);
-	histocontainer_["cutFlowWeighted"]->Fill(2,weight);
-	//Fills the tree
-	mytree_->Fill();
-	//veto on loose electrons - perhaps just the z veto? Doing z-veto now anyway
-	//Actually vetos are only mentioned for ttbar, so I'll ignore them for now.
-	//veto lose leptons.
-	if (numLooseEle["PF"] == 2 && numLooseMuo["PF"] == 0) {
-	  histocontainer_["cutFlow"]->Fill(3);
-	  histocontainer_["cutFlowWeighted"]->Fill(3,weight);
-	  //Need some mass vetoes here.
-	  //Make lorentz vectors containing the appropriate information
-	  math::XYZTLorentzVector ele1(electronSortedPx["PF"][0],electronSortedPy["PF"][0],electronSortedPz["PF"][0],electronSortedE["PF"][0]);
-	  math::XYZTLorentzVector ele2(electronSortedPx["PF"][1],electronSortedPy["PF"][1],electronSortedPz["PF"][1],electronSortedE["PF"][1]);
-	  //Now do mass checks
-	  //Greater than 20GeV
-	  std::cout << "And makes the vectors" << std::endl;
-	  if ((ele1+ele2).M() > 20){
-	    histocontainer_["cutFlow"]->Fill(4);
-	    histocontainer_["cutFlowWeighted"]->Fill(4,weight);
-	    //z veto
-	    if (((ele1+ele2).M() < 81 || (ele1+ele2).M() > 101)){
-	      histocontainer_["cutFlow"]->Fill(5);
-	      histocontainer_["cutFlowWeighted"]->Fill(5,weight);
-	      //MET cut - using, hopefully, PFMET in PAT form.
-	      if (metEt["PF"] > metCut_){
-		histocontainer_["cutFlow"]->Fill(6);
-		histocontainer_["cutFlowWeighted"]->Fill(6,weight);
-		
-		//Exactly one particle flow jet
-		if (numJet["PF"] == 1){
-		  histocontainer_["cutFlow"]->Fill(7);
-		  histocontainer_["cutFlowWeighted"]->Fill(7,weight);
-		  if (jetSortedBDiscriminator["PF"][0] > bDiscCut_){
-		    histocontainer_["cutFlow"]->Fill(8);
-		    histocontainer_["cutFlowWeighted"]->Fill(8,weight);
-		    //veto on more loose b-tagged jets (apparently we don't care about non-b-tagged one?)
-		    if (numLooseBJets["PF"]==1){
-		      histocontainer_["cutFlow"]->Fill(9);
-		      histocontainer_["cutFlowWeighted"]->Fill(9,weight);
-		    }
-		  }
-		}
-	      }
-	    }
-	  }
-	}
-      }	
-    } // end ee cut-flow
 
-    if (runCutFlow_ == 2) {//begin emu cut flow - So far, so basic. Will add in other stuff under rebeca's advice
-      if (numEle["PF"]==1){
-	histocontainer_["cutFlow"]->Fill(2);
-	histocontainer_["cutFlowWeighted"]->Fill(2,weight);
-	//exactly 1 muon
-	if (numMuo["PF"]==1 && (electronSortedCharge["PF"][0]*muonSortedCharge["PF"][0] < 0.0)){
-	  histocontainer_["cutFlow"]->Fill(3);
-	  histocontainer_["cutFlowWeighted"]->Fill(3,weight);
-	  mytree_->Fill();
-	  //loose lepton veto
-	  if (numLooseEle["PF"] == 1 && numLooseMuo["PF"] == 1) {
-	    histocontainer_["cutFlow"]->Fill(4);
-	    histocontainer_["cutFlowWeighted"]->Fill(4,weight);
-	    math::XYZTLorentzVector muo1(muonSortedPx["PF"][0],muonSortedPy["PF"][0],muonSortedPz["PF"][0],muonSortedE["PF"][0]);
-	    math::XYZTLorentzVector ele1(electronSortedPx["PF"][0],electronSortedPy["PF"][0],electronSortedPz["PF"][0],electronSortedE["PF"][0]);
-	    //Mass vetoes
-	    if ((muo1+ele1).M() > 20){
-	      histocontainer_["cutFlow"]->Fill(5);
-	      histocontainer_["cutFlowWeighted"]->Fill(5,weight);
-	      //number of jets
-	      if (numJet["PF"] == 1){
-		histocontainer_["cutFlow"]->Fill(6);
-		histocontainer_["cutFlowWeighted"]->Fill(6,weight);
-		//btagging
-		if (jetSortedBDiscriminator["PF"][0] > bDiscCut_){
-		  histocontainer_["cutFlow"]->Fill(7);
-		  histocontainer_["cutFlowWeighted"]->Fill(7,weight);
-		  //loose b-tagged jets
-		  if (numLooseBJets["PF"]==1){
-		    histocontainer_["cutFlow"]->Fill(8);
-		    histocontainer_["cutFlowWeighted"]->Fill(8,weight);
-		    //Ht cut for emu only
-		    if (electronSortedPt["PF"][0] + muonSortedPt["PF"][0] + metEt["PF"] + jetSortedPt["PF"][0] > 160.){
-		      histocontainer_["cutFlow"]->Fill(9);
-		      histocontainer_["cutFlowWeighted"]->Fill(9,weight);
-		    }
-		  }
-		    //because I'm not sure if I'm supposed to apply the b jet veto I'm also going to do the ht cut pre that, so I can see the ht cut with and without loose b-tag veto.
-		  if (electronSortedPt["PF"][0] + muonSortedPt["PF"][0] + metEt["PF"] + jetSortedPt["PF"][0] > 160.){
-		    histocontainer_["cutFlow"]->Fill(10);
-		    histocontainer_["cutFlowWeighted"]->Fill(10,weight);
-		  }
-		}
-	      }
-	    }
-	  }
-	}
-      }
-    }//end emu cut-flow
-
-    if (runCutFlow_ == 3) { //begin mumu cut-flow
-      //two pf muons
-      if (numMuo["PF"]==2 && numEle["PF"]==0 && (muonSortedCharge["PF"][0] * muonSortedCharge["PF"][1] < 0.0)){
-	histocontainer_["cutFlow"]->Fill(2);
-	histocontainer_["cutFlowWeighted"]->Fill(2,weight);
-	//loose lepton veto
-	mytree_->Fill();
-	if (numLooseEle["PF"] == 0 && numLooseMuo["PF"] == 2) {
-	  histocontainer_["cutFlow"]->Fill(3);
-	  histocontainer_["cutFlowWeighted"]->Fill(3,weight);
-	  //Mass cuts
-	  math::XYZTLorentzVector muo1(muonSortedPx["PF"][0],muonSortedPy["PF"][0],muonSortedPz["PF"][0],muonSortedE["PF"][0]);
-	  math::XYZTLorentzVector muo2(muonSortedPx["PF"][1],muonSortedPy["PF"][1],muonSortedPz["PF"][1],muonSortedE["PF"][1]);
-	  //20 GeV cut
-	  if ((muo1+muo2).M() > 20){
-	    histocontainer_["cutFlow"]->Fill(4);
-	    histocontainer_["cutFlowWeighted"]->Fill(4,weight);
-	    //z veto
-	    if ((muo1+muo2).M() < 81 || (muo1+muo2).M() > 101){
-	      histocontainer_["cutFlow"]->Fill(5);
-	      histocontainer_["cutFlowWeighted"]->Fill(5,weight);
-	      //met cut
-	      if (metEt["PF"] > metCut_){
-		histocontainer_["cutFlow"]->Fill(6);
-		histocontainer_["cutFlowWeighted"]->Fill(6,weight);
-		//exactly one pf jet
-		if (numJet["PF"] == 1){                              
-		  histocontainer_["cutFlow"]->Fill(7);               
-		  histocontainer_["cutFlowWeighted"]->Fill(7,weight);               
-		  //b-tagged
-		  if (jetSortedBDiscriminator["PF"][0] > bDiscCut_){ 
-		    histocontainer_["cutFlow"]->Fill(8);             
-		    histocontainer_["cutFlowWeighted"]->Fill(8,weight);             
-		    //loose b-tagged jets
-		    if (numLooseBJets["PF"]==1){                
-		      histocontainer_["cutFlow"]->Fill(9);
-		      histocontainer_["cutFlowWeighted"]->Fill(9,weight);
-		      //		      mytree_->Fill();
-		    }
-		  }                   
-		}           
-	      }                    
-	    }              
-	  }
-	}
-      }
-    } // end mumu cut-flow.
-    
-      //In combination with doCuts_ = false this will just return the contents of an event, which will be useful for synching.
-    
-    
-      
-  }
   if (fillAll_){
     mytree_->Fill();
   }
-  if (processingLoose_ && (numEle["PF"] + numMuo["PF"] )> 1){
-    mytree_->Fill();
-  }
-
 
   //fill debugging histograms.
-  histocontainer_["looseElectrons"]->Fill(numLooseEle["PF"]);
   histocontainer_["tightElectrons"]->Fill(numEle["PF"]);
-  histocontainer_["looseMuons"]->Fill(numLooseMuo["PF"]);
-  histocontainer_["tightMuons"]->Fill(numMuo["PF"]);
-  histocontainer2D_["tightVsLooseEle"]->Fill(numEle["PF"],numLooseEle["PF"]);
-  histocontainer2D_["tightVsLooseMuo"]->Fill(numMuo["PF"],numLooseMuo["PF"]);
-
-
-  
+  histocontainer_["tightMuons"]->Fill(numMuo["PF"]);  
 }
 
 void MakeTopologyNtupleMiniAOD::bookBranches(){
@@ -2711,12 +2374,10 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   std::vector<bool> tempVecB(NELECTRONSMAX);
 
   numEle[ ID ] = -1;
-  numLooseEle[ ID ] =-1;
 
   electronSortedCharge[ ID ] = tempVecI;
   
   //  electronSortedIDQuality[ ID ] = tempVecI;
-  //electronSortedIDQualityLoose[ ID ] = tempVecI;
   electronSortedIsBarrel[ ID ] = tempVecI;
   electronSortedPhotonConversionTag[ ID ] = tempVecI;
   electronSortedPhotonConversionTagCustom[ ID ] = tempVecI;
@@ -2815,28 +2476,8 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   genElectronSortedPz[ ID ] = tempVecF;
   genElectronSortedCharge[ ID ] = tempVecI;
 
-  looseElectronSortedEt[ ID ] = tempVecF;    
-  looseElectronSortedPt[ ID ] = tempVecF;    
-  looseElectronSortedEta[ ID ] = tempVecF;   
-  looseElectronSortedMVA[ ID ] = tempVecF; 
-  looseElectronSortedMVAcategory[ ID ] = tempVecI;
-  looseElectronSortedNonTrigMVA[ ID ] = tempVecF; 
-  looseElectronSortedNonTrigMVAcategory[ ID ] = tempVecI;
-  looseElectronSortedRelIso[ ID ] = tempVecF;
-
-  genLooseElectronSortedPt[ ID ] = tempVecF;
-  genLooseElectronSortedEt[ ID ] = tempVecF;
-  genLooseElectronSortedEta[ ID ] = tempVecF;
-  genLooseElectronSortedTheta[ ID ] = tempVecF;
-  genLooseElectronSortedPhi[ ID ] = tempVecF;
-  genLooseElectronSortedPx[ ID ] = tempVecF;
-  genLooseElectronSortedPy[ ID ] = tempVecF;
-  genLooseElectronSortedPz[ ID ] = tempVecF;
-  genLooseElectronSortedCharge[ ID ] = tempVecI;
-
   std::string prefix = "ele" + name;
   mytree_->Branch( ("numEle"+name).c_str(), &numEle[ ID ], ("numEle" + name + "/I").c_str());
-  mytree_->Branch( ("numLooseEle"+name).c_str(), &numLooseEle[ ID ], ("numLooseEle" + name + "/I").c_str());
 
 //Dynamic ID's
 
@@ -2953,27 +2594,6 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
       mytree_->Branch( ("genEle" + name + "Charge").c_str(), &genElectronSortedCharge[ ID ][0], ("genEle" + name + "EleCharge[numEle" + name + "]/I").c_str());
   }
 
-  mytree_->Branch( (prefix + "looseElectronSortedEt").c_str(), &looseElectronSortedEt[ ID ][0], (prefix + "looseElectronEt[numLooseEle" + name + "]/F").c_str());
-  mytree_->Branch( (prefix + "looseElectronSortedPt").c_str(), &looseElectronSortedPt[ ID ][0], (prefix + "looseElectronPt[numLooseEle" + name + "]/F").c_str());
-  mytree_->Branch( (prefix + "looseElectronSortedEta").c_str(), &looseElectronSortedEta[ ID ][0], (prefix + "looseElectronEta[numLooseEle" + name + "]/F").c_str());
-  mytree_->Branch( (prefix + "looseElectronSortedMVA").c_str(), &looseElectronSortedMVA[ ID ][0], (prefix + "looseElectronMVA[numLooseEle" + name + "]/F").c_str());
-  mytree_->Branch( (prefix + "looseElectronSortedMVAcategory").c_str(), &looseElectronSortedMVAcategory[ ID ][0], (prefix + "looseElectronMVAcategory[numLooseEle" + name + "]/I").c_str());
-    mytree_->Branch( (prefix + "looseElectronSortedNonTrigMVA").c_str(), &looseElectronSortedNonTrigMVA[ ID ][0], (prefix + "looseElectronNonTrigMVA[numLooseEle" + name + "]/F").c_str());
-    mytree_->Branch( (prefix + "looseElectronSortedNonTrigMVAcategory").c_str(), &looseElectronSortedNonTrigMVAcategory[ ID ][0], (prefix + "looseElectronNonTrigMVAcategory[numLooseEle" + name + "]/I").c_str());
-  mytree_->Branch( (prefix + "looseElectronSortedRelIso").c_str(), &looseElectronSortedRelIso[ ID ][0], (prefix + "looseElectronRelIso[numLooseEle" + name + "]/F").c_str());
-
-  if( runMCInfo_ )
-  {
-    mytree_->Branch( ("genLooseEle" + name + "PT").c_str(), &genLooseElectronSortedEt[ ID ][0], ("genLooseEle" + name + "ElePT[numEle" + name + "]/F").c_str());
-    mytree_->Branch( ("genLooseEle" + name + "ET").c_str(), &genLooseElectronSortedEt[ ID ][0], ("genLooseEle" + name + "EleET[numEle" + name + "]/F").c_str());
-    mytree_->Branch( ("genLooseEle" + name + "PX").c_str(), &genLooseElectronSortedPx[ ID ][0], ("genLooseEle" + name + "ElePx[numEle" + name + "]/F").c_str());
-    mytree_->Branch( ("genLooseEle" + name + "PY").c_str(), &genLooseElectronSortedPy[ ID ][0], ("genLooseEle" + name + "ElePy[numEle" + name + "]/F").c_str());
-    mytree_->Branch( ("genLooseEle" + name + "PZ").c_str(), &genLooseElectronSortedPz[ ID ][0], ("genLooseEle" + name + "ElePz[numEle" + name + "]/F").c_str());
-    mytree_->Branch( ("genLooseEle" + name + "Phi").c_str(), &genLooseElectronSortedPhi[ ID ][0], ("genLooseEle" + name + "ElePhi[numEle" + name + "]/F").c_str());
-    mytree_->Branch( ("genLooseEle" + name + "Theta").c_str(), &genLooseElectronSortedTheta[ ID ][0], ("genLooseEle" + name + "EleTheta[numEle" + name + "]/F").c_str());
-    mytree_->Branch( ("genLooseEle" + name + "Eta").c_str(), &genLooseElectronSortedEta[ ID ][0], ("genLooseEle" + name + "EleEta[numEle" + name + "]/F").c_str());
-    mytree_->Branch( ("genLooseEle" + name + "Charge").c_str(), &genLooseElectronSortedCharge[ ID ][0], ("genLooseEle" + name + "EleCharge[numEle" + name + "]/I").c_str());
-      }
 
 //Also handle z candidates
   nzcandidates[ ID ] = 0;
@@ -3044,25 +2664,7 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   genMuonSortedPz[ ID ] = tempVecF;
   genMuonSortedCharge[ ID ] = tempVecI;
 
-  looseMuonSortedEt[ ID ] = tempVecF;    
-  looseMuonSortedPt[ ID ] = tempVecF;    
-  looseMuonSortedEta[ ID ] = tempVecF;   
-  looseMuonSortedRelIso[ ID ] = tempVecF;
-  looseMuonSortedisGlb[ ID ] = tempVecF; 
-  looseMuonSortedisTrk[ ID ] = tempVecF; 
-
-  genLooseMuonSortedPt[ ID ] = tempVecF;
-  genLooseMuonSortedEt[ ID ] = tempVecF;
-  genLooseMuonSortedEta[ ID ] = tempVecF;
-  genLooseMuonSortedTheta[ ID ] = tempVecF;
-  genLooseMuonSortedPhi[ ID ] = tempVecF;
-  genLooseMuonSortedPx[ ID ] = tempVecF;
-  genLooseMuonSortedPy[ ID ] = tempVecF;
-  genLooseMuonSortedPz[ ID ] = tempVecF;
-  genLooseMuonSortedCharge[ ID ] = tempVecI;
-
   mytree_->Branch( ("numMuon" + name).c_str(), &numMuo[ ID ], ("numMuon" + name + "/I").c_str());
-  mytree_->Branch( ("numLooseMuon" + name).c_str(), &numLooseMuo[ ID ], ("numLooseMuon" + name + "/I").c_str());
   std::string prefix = "muon" + name;
   mytree_->Branch( (prefix + "E").c_str(), &muonSortedE[ ID ][0], (prefix + "E[numMuon" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "ET").c_str(), &muonSortedEt[ ID ][0], (prefix + "ET[numMuon" + name + "]/F").c_str());
@@ -3115,13 +2717,6 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   mytree_->Branch( (prefix + "NChambers").c_str(), &muonSortedNumChambers[ ID ][0], (prefix + "NChambers[numMuon" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "NMatches").c_str(), &muonSortedNumMatches[ ID ][0], (prefix + "NMatches[numMuon" + name + "]/I").c_str());
 
-  mytree_->Branch( (prefix + "looseMuonSortedEt").c_str(), &looseMuonSortedEt[ ID ][0], (prefix + "looseMuonEt[numLooseMuon"+name+"]/F").c_str());
-  mytree_->Branch( (prefix + "looseMuonSortedPt").c_str(), &looseMuonSortedPt[ ID ][0], (prefix + "looseMuonPt[numLooseMuon"+name+"]/F").c_str());
-  mytree_->Branch( (prefix + "looseMuonSortedEta").c_str(), &looseMuonSortedEta[ ID ][0], (prefix + "looseMuonEta[numLooseMuon"+name+"]/F").c_str());
-  mytree_->Branch( (prefix + "looseMuonSortedRelIso").c_str(), &looseMuonSortedRelIso[ ID ][0], (prefix + "looseMuonRelIso[numLooseMuon"+name+"]/F").c_str());
-  mytree_->Branch( (prefix + "looseMuonSortedisGlb").c_str(), &looseMuonSortedisGlb[ ID ][0], (prefix + "looseMuonisGlb[numLooseMuon"+name+"]/F").c_str());
-  mytree_->Branch( (prefix + "looseMuonSortedisTrk").c_str(), &looseMuonSortedisTrk[ ID ][0], (prefix + "looseMuonisTrk[numLooseMuon"+name+"]/F").c_str());
-
   if( runMCInfo_ )
   {
     prefix = "genMuon" + name;
@@ -3134,17 +2729,6 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
     mytree_->Branch((prefix + "Theta").c_str(), &genMuonSortedTheta[ ID ][0], (prefix + "Theta[numMuon" + name + "]/F").c_str());
     mytree_->Branch((prefix + "Eta").c_str(), &genMuonSortedEta[ ID ][0], (prefix + "Eta[numMuon" + name + "]/F").c_str());
     mytree_->Branch((prefix + "Charge").c_str(), &genMuonSortedCharge[ ID ][0], (prefix + "Charge[numMuon" + name + "]/I").c_str());
-
-    prefix = "genLooseMuon" + name;
-    mytree_->Branch((prefix + "PT").c_str(), &genLooseMuonSortedPt[ ID ][0], (prefix + "PT[numLooseMuon" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "ET").c_str(), &genLooseMuonSortedEt[ ID ][0], (prefix + "ET[numLooseMuon" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "PX").c_str(), &genLooseMuonSortedPx[ ID ][0], (prefix + "Px[numLooseMuon" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "PY").c_str(), &genLooseMuonSortedPy[ ID ][0], (prefix + "Py[numLooseMuon" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "PZ").c_str(), &genLooseMuonSortedPz[ ID ][0], (prefix + "Pz[numLooseMuon" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "Phi").c_str(), &genLooseMuonSortedPhi[ ID ][0], (prefix + "Phi[numLooseMuon" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "Theta").c_str(), &genLooseMuonSortedTheta[ ID ][0], (prefix + "Theta[numLooseMuon" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "Eta").c_str(), &genLooseMuonSortedEta[ ID ][0], (prefix + "Eta[numLooseMuon" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "Charge").c_str(), &genLooseMuonSortedCharge[ ID ][0], (prefix + "Charge[numLooseMuon" + name + "]/I").c_str());
 
   }
   
@@ -3450,14 +3034,6 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
   genJetSortedClosestB[ ID ] = tempVecF;
   genJetSortedClosestC[ ID ] = tempVecF;
 
-  jetLooseSortedPt[ ID ] = tempVecF;   
-  jetLooseSortedEt[ ID ] = tempVecF;   
-  jetLooseSortedEta[ ID ] = tempVecF;  
-  jetLooseSortedBDisc[ ID ] = tempVecF;
-  jetLooseSortedCvsLDisc[ ID ] = tempVecF;
-  jetLooseSortedCvsBDisc[ ID ] = tempVecF;
-
-
   std::string prefix = "jet" + name;
   mytree_->Branch( ("numJet" + name).c_str(), &numJet[ ID ], ("numJet" + name + "/I").c_str() );
 
@@ -3517,15 +3093,6 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
       mytree_->Branch( (prefix + "Eta").c_str(), &genJetSortedEta[ ID ][0], (prefix + "Eta[numJet" + name + "]/F").c_str());
       mytree_->Branch( (prefix + "PID").c_str(), &genJetSortedPID[ ID ][0], (prefix + "PID[numJet" + name + "]/I").c_str());
   }
-
-  prefix = "looseJet" + name;
-  mytree_->Branch( ("numLooseJet" + name).c_str(), &numLooseBJets[ ID ], ("numLooseBJets" + name + "/I").c_str() );  
-  mytree_->Branch( (prefix + "Et").c_str(), &jetLooseSortedEt[ ID ][0], (prefix + "Et[numLooseBJets" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "Pt").c_str(), &jetLooseSortedPt[ ID ][0], (prefix + "Pt[numLooseBJets" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "Eta").c_str(), &jetLooseSortedEta[ ID ][0], (prefix + "Eta[numLooseBJets" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "BDisc").c_str(), &jetLooseSortedBDisc[ ID ][0], (prefix + "BDisc[numLooseBJets" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "CvsLDisc").c_str(), &jetLooseSortedCvsLDisc[ ID ][0], (prefix + "CvsLDisc[numLooseBJets" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "CvsBDisc").c_str(), &jetLooseSortedCvsBDisc[ ID ][0], (prefix + "CvsBDisc[numLooseBJets" + name + "]/F").c_str() );
 
   bookBIDInfoBranches( ID, name );
 
@@ -3699,7 +3266,6 @@ void MakeTopologyNtupleMiniAOD::fillTriggerData(const edm::Event& iEvent)
     nTriggerBits=0;
   
     hltnames_=triggerNames.triggerNames();
-    bool filledCutFlow = false;
 
     for(int itrig=0; itrig< (int)hltnames_.size();++itrig)
     { 
@@ -3724,19 +3290,9 @@ void MakeTopologyNtupleMiniAOD::fillTriggerData(const edm::Event& iEvent)
 	    //  std::cout << "found 'standard' trigger bit " << triggerList_[ iTrigList ] << std::endl;
 	    //}
 	    triggerRes[ iTrigList ] = trigbit;
-	    //Do cut flow analysis here.
-	    if (doCutFlow & !filledCutFlow){
-	      if (accept){
-		histocontainer_["cutFlow"]->Fill(1);
-		filledCutFlow = true;
-	      }
-	    }
 	  }
       }
     }
-    //    if (!filledCutFlow){
-    // doCutFlow= false;
-    //}
   }// hltResults.wasRun()
  
 

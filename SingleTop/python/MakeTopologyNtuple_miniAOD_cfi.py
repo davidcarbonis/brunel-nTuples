@@ -61,7 +61,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            jetCHF = cms.double(0.),
                                            jetNCH = cms.double(0.),
                                            jetPtCutLoose = cms.double(20.),
-                                           
+
                                            #electron triggering MVA ID (tight, for analysis)
 
                                            eleTrigMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp90"),
@@ -88,12 +88,6 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            maxEled0 = cms.double(500), # D0 (beam spot corrected) in cm, V+jets adviced cut: 0.02 for prompt electrons
                                            eleInterECALEtaLow = cms.double(1.4442),
                                            eleInterECALEtaHigh = cms.double(1.5660),
-                                           # electron ID (loose, for Z Veto)
-                                           electronIDLooseZVeto = cms.string('eidRobustLoose'),
-                                           minEleEtLooseZVeto = cms.double(0),
-                                           maxEleEtaLooseZVeto = cms.double(5),
-                                           eleCombRelIsoLooseZVeto = cms.double(1.0), # always accept the electron
-                                           maxEled0LooseZVeto = cms.double(100.), # always accept the electron
                                            # cross-cleaning parameter (jet is rejected if inside electron cone0
                                            dREleJetCrossClean = cms.double(-1), # cone distance that an electron-jet match needs to have to reject the jet (the electron is always kept)
                                            # muon identification
@@ -113,9 +107,6 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            muonPixelHits = cms.double(1),#minimum of one
                                            muonTrackLayersWithHits = cms.double(6), # 5 or less is skipped.
                                            muonRelIsoTight = cms.double(0.2),
-                                           muonPtLoose = cms.double(10.),
-                                           muonEtaLoose = cms.double(2.5),
-                                           muoRelIsoLoose = cms.double(0.2),
                                            metCut = cms.double(30.0),
                                            fillAll = cms.bool(False),
                                            # photon rejection:
@@ -178,7 +169,6 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
         "BTAGLEFF", "BTAGLERR", "BTAGLEFFCORR", "BTAGLERRCORR",
         "BTAGLEFF", "BTAGLERR", "BTAGLEFFCORR", "BTAGLERRCORR"
         ),
-                                           runCutFlow = cms.double(0), #0 is no cut flow, 1 is ee, 2 is emu, 3 mumu.
                                            isttBar = cms.bool(False),# This affects reweighting things. If set to false, then has a weight of 1.
                                            ttGenEvent = cms.InputTag("null")
                                            )# end of MakeTopologyNtupleMiniAOD

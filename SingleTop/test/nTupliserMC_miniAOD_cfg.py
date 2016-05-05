@@ -194,9 +194,6 @@ process.makeTopologyNtupleMiniAOD.eleCombRelIso=cms.double(0.15)
 process.makeTopologyNtupleMiniAOD.maxEled0=cms.double(0.04)
 process.makeTopologyNtupleMiniAOD.eleInterECALEtaLow=cms.double(1.4442)
 process.makeTopologyNtupleMiniAOD.eleInterECALEtaHigh=cms.double(1.5660)
-process.makeTopologyNtupleMiniAOD.minEleEtLooseZVeto=cms.double(15)
-process.makeTopologyNtupleMiniAOD.minEleEtaLooseZVeto=cms.double(2.5)
-process.makeTopologyNtupleMiniAOD.eleCombRelIsoLooseZVeto=cms.double(1.0)
 process.makeTopologyNtupleMiniAOD.dREleJetCrossClean=cms.double(0.4)
 process.makeTopologyNtupleMiniAOD.maxMuonEta=cms.double(2.4)
 process.makeTopologyNtupleMiniAOD.minMuonPt=cms.double(20)
@@ -210,13 +207,11 @@ process.makeTopologyNtupleMiniAOD.dREleGeneralTrackMatchForPhotonRej=cms.double(
 process.makeTopologyNtupleMiniAOD.maxDistForPhotonRej=cms.double(0.04)
 process.makeTopologyNtupleMiniAOD.maxDcotForPhotonRej=cms.double(0.03)
 process.makeTopologyNtupleMiniAOD.fillAll=cms.bool(True)
-process.makeTopologyNtupleMiniAOD.processingLoose=cms.bool(False)
 #process.makeTopologyNtupleMiniAOD.btagParameterizationList = cms.vstring()
 #process.makeTopologyNtupleMiniAOD.btagParameterizationMode = cms.vstring()
 process.makeTopologyNtupleMiniAOD.runSwissCross = cms.bool(False)
 #Don't actually do cuts
 process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
-process.makeTopologyNtupleMiniAOD.runCutFlow=cms.double(0)
 
 #Make the inputs for the n-tupliser right.
 process.makeTopologyNtupleMiniAOD.electronPFTag = cms.InputTag("slimmedElectrons")
