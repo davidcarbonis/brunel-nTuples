@@ -713,19 +713,23 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       //    electronSortedHCalIsoDeposit[ ID ][numEle[ ID ]-1]=ele.hcalIsoDeposit()->candEnergy();
       electronSortedCaloIso[ ID ][numEle[ ID ]-1]=ele.caloIso();
 
+      const reco::GsfElectron::PflowIsolationVariables& pfIso = ele.pfIsolationVariables();
+
       // calculate comRelIso:
       electronSortedComRelIso[ ID ][numEle[ ID ]-1]=electronSortedTrackIso03[ ID ][numEle[ ID ]-1] ;
       electronSortedComRelIso[ ID ][numEle[ ID ]-1]+=	electronSortedECalIso03[ ID ][numEle[ ID ]-1];
       electronSortedComRelIso[ ID ][numEle[ ID ]-1]+=	electronSortedHCalIso03[ ID ][numEle[ ID ]-1];
       electronSortedComRelIso[ ID ][numEle[ ID ]-1]/=electronSortedEt[ ID ][numEle[ ID ]-1];
-      electronSortedChHadIso[ ID ][numEle[ ID ]-1] = ele.chargedHadronIso(); 
-      electronSortedNtHadIso[ ID ][numEle[ ID ]-1] = ele.neutralHadronIso();
-      electronSortedGammaIso[ ID ][numEle[ ID ]-1] = ele.photonIso(); 
-      electronSortedComRelIsodBeta[ ID ][numEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt();
-      float AEff03 = effectiveAreaInfo_.getEffectiveArea( std::abs(ele.superCluster()->eta()) );
+      electronSortedChHadIso[ ID ][numEle[ ID ]-1] = pfIso.sumChargedHadronPt; 
+      electronSortedNtHadIso[ ID ][numEle[ ID ]-1] = pfIso.sumNeutralHadronEt;
+      electronSortedGammaIso[ ID ][numEle[ ID ]-1] = pfIso.sumPhotonEt; 
+      electronSortedComRelIsodBeta[ ID ][numEle[ ID ]-1]=( pfIso.sumChargedHadronPt + std::max( 0.0, pfIso.sumPhotonEt - 0.5*pfIso.sumPUPt ))/ele.pt();
+
+      const float AEff03 = effectiveAreaInfo_.getEffectiveArea( std::abs(ele.superCluster()->eta()) );
       electronSortedAEff03[ ID ][numEle[ ID ]-1] = AEff03;
       electronSortedRhoIso[ ID ][numEle[ ID ]-1] = rhoIso;
-      double combrelisorho = (ele.chargedHadronIso() + std::max(0.0, ele.neutralHadronIso() + ele.photonIso() - rhoIso*AEff03 ))/ele.pt(); 
+
+      double combrelisorho = ( pfIso.sumChargedHadronPt + std::max(0.0, pfIso.sumNeutralHadronEt + pfIso.sumPhotonEt - rhoIso*AEff03 ))/ele.pt(); 
       electronSortedComRelIsoRho[ ID ][numEle[ ID ]-1]=combrelisorho;
       //(ele.trackIso()+ele.ecalIso()+ele.hcalIso())/ele.et();
 
