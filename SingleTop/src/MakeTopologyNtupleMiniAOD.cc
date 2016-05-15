@@ -178,9 +178,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     eleNonTrigMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleNonTrigMediumIdMap"))),
     eleNonTrigTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleNonTrigTightIdMap"))),
 
-    eleCutVetoIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleVetoIdMap"))),
-    eleCutTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTightIdMap"))),
-
     trigMvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("trigMvaValuesMap"))),
     trigMvaCategoriesMapToken_(consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("trigMvaCategoriesMap"))),
     nonTrigMvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("nonTrigMvaValuesMap"))),
@@ -554,11 +551,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     iEvent.getByToken(nonTrigMvaValuesMapToken_,nonTrigMvaValues);
     iEvent.getByToken(nonTrigMvaCategoriesMapToken_,nonTrigMvaCategories);
 
-    edm::Handle<edm::ValueMap<bool> > veto_cutId_decisions;
-    edm::Handle<edm::ValueMap<bool> > tight_cutId_decisions; 
-    iEvent.getByToken(eleCutVetoIdMapToken_ ,veto_cutId_decisions);
-    iEvent.getByToken(eleCutTightIdMapToken_,tight_cutId_decisions);
-
     //   !!!
     // IMPORTAnT: DO NOT CUT ON THE OBJECTS BEFORE THEY ARE SORTED, cuts should be applied in the second loop!!!
     //   !!!
@@ -645,9 +637,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	electronSortedNonTrigMVA[ ID ][numEle[ ID ]-1] = (*nonTrigMvaValues)[refel]; // Non-triggering MVA
 	electronSortedNonTrigMVAcategory[ ID ][numEle[ ID ]-1] = (*nonTrigMvaCategories)[refel];
  
-	electronSortedCutBasedVetoID[ ID ][numEle[ ID ]-1] = (*veto_cutId_decisions)[refel];
-	electronSortedCutBasedTightID[ ID ][numEle[ ID ]-1] = (*tight_cutId_decisions)[refel];
-
       electronSortedChargedHadronIso[ ID ][numEle[ ID ]-1]=ele.chargedHadronIso();
       electronSortedNeutralHadronIso[ ID ][numEle[ ID ]-1]=ele.neutralHadronIso();
       electronSortedPhotonIso[ ID ][numEle[ ID ]-1]=ele.photonIso();
@@ -1669,9 +1658,6 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   electronSortedNonTrigMVA[ ID ].clear();
   electronSortedNonTrigMVAcategory[ ID ].clear();
 
-  electronSortedCutBasedVetoID[ ID ].clear();
-  electronSortedCutBasedTightID[ ID ].clear();
-
   electronSortedChargedHadronIso[ ID ].clear();
   electronSortedNeutralHadronIso[ ID ].clear();
   electronSortedPhotonIso[ ID ].clear();
@@ -2386,9 +2372,6 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   electronSortedNonTrigMVA[ ID ] = tempVecF;  
   electronSortedNonTrigMVAcategory[ ID ] = tempVecI;
 
-  electronSortedCutBasedVetoID[ ID ] = tempVecI;
-  electronSortedCutBasedTightID[ ID ] = tempVecI;
-
   electronSortedChargedHadronIso[ ID ] = tempVecF;
   electronSortedNeutralHadronIso[ ID ] = tempVecF;
   electronSortedPhotonIso[ ID ] = tempVecF;
@@ -2499,8 +2482,6 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   mytree_->Branch( (prefix + "MVAcategory").c_str(), &electronSortedMVAcategory[ ID ][0], (prefix + "MVAcategory[numEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "NonTrigMVA").c_str(), &electronSortedNonTrigMVA[ ID ][0], (prefix + "NonTrigMVA[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "NonTrigMVAcategory").c_str(), &electronSortedNonTrigMVAcategory[ ID ][0], (prefix + "NonTrigMVAcategory[numEle" + name + "]/I").c_str());
-  mytree_->Branch( (prefix + "CutBasedVetoID").c_str(), &electronSortedCutBasedVetoID[ ID ][0], (prefix + "CutBasedVetoID[numEle"+ name + "]/I").c_str());
-  mytree_->Branch( (prefix + "CutBasedTightID").c_str(), &electronSortedCutBasedTightID[ ID ][0], (prefix + "CutBasedTightID[numEle"+ name + "]/I").c_str());
 
   mytree_->Branch( (prefix + "ImpactTransDist").c_str(), &electronSortedImpactTransDist[ ID ][0], (prefix + "ImpactTransDist[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "ImpactTransError").c_str(), &electronSortedImpactTransError[ ID ][0], (prefix + "ImpactTransError[numEle" + name + "]/F").c_str());

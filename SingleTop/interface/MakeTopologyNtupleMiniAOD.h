@@ -93,9 +93,6 @@ private:
   edm::EDGetTokenT<edm::ValueMap<bool> > eleNonTrigMediumIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > eleNonTrigTightIdMapToken_;
 
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleCutVetoIdMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleCutTightIdMapToken_;
-
   // MVA values and categories (optional)
   edm::EDGetTokenT<edm::ValueMap<float> > trigMvaValuesMapToken_;
   edm::EDGetTokenT<edm::ValueMap<int> > trigMvaCategoriesMapToken_;
@@ -324,9 +321,6 @@ private:
   std::map< std::string, std::vector<float> > electronSortedNonTrigMVA;
   std::map< std::string, std::vector<int> > electronSortedNonTrigMVAcategory;
   
-  std::map< std::string, std::vector<int> > electronSortedCutBasedVetoID;
-  std::map< std::string, std::vector<int> > electronSortedCutBasedTightID;
-
   std::map< std::string, std::vector<float> > electronSortedChargedHadronIso;
   std::map< std::string, std::vector<float> > electronSortedNeutralHadronIso;
   std::map< std::string, std::vector<float> > electronSortedPhotonIso;

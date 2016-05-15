@@ -39,10 +39,6 @@ public :
    Float_t         elePF2PATMVAcategory[20];   //[numElePF2PAT]
    Float_t         elePF2PATNonTrigMVA[20];   //[numElePF2PAT]
    Float_t         elePF2PATNonTrigMVAcategory[20];   //[numElePF2PAT]
-
-   Int_t	   elePF2PATCutBasedVetoID[20];   //[numElePF2PAT]
-   Int_t	   elePF2PATCutBasedTightID[20];   //[numElePF2PAT]
-
    Float_t         elePF2PATImpactTransDist[20];   //[numElePF2PAT]
    Float_t         elePF2PATImpactTransError[20];   //[numElePF2PAT]
    Float_t         elePF2PATImpactTransSignificance[20];   //[numElePF2PAT]
@@ -346,10 +342,6 @@ public :
    TBranch        *b_elePF2PATMVAcategory;   //!
    TBranch        *b_elePF2PATNonTrigMVA;   //!
    TBranch        *b_elePF2PATNonTrigMVAcategory;   //!
-
-   TBranch	  *b_elePF2PATCutBasedVetoID;
-   TBranch	  *b_elePF2PATCutBasedTightID;
-
    TBranch        *b_elePF2PATImpactTransDist;   //!
    TBranch        *b_elePF2PATImpactTransError;   //!
    TBranch        *b_elePF2PATImpactTransSignificance;   //!
@@ -751,10 +743,6 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("elePF2PATMVAcategory", elePF2PATMVAcategory, &b_elePF2PATMVAcategory);
    fChain->SetBranchAddress("elePF2PATNonTrigMVA", elePF2PATNonTrigMVA, &b_elePF2PATNonTrigMVA);
    fChain->SetBranchAddress("elePF2PATNonTrigMVAcategory", elePF2PATNonTrigMVAcategory, &b_elePF2PATNonTrigMVAcategory);
-
-   fChain->SetBranchAddress("elePF2PATCutBasedVetoID", elePF2PATCutBasedVetoID, &b_elePF2PATCutBasedVetoID);
-   fChain->SetBranchAddress("elePF2PATCutBasedTightID", elePF2PATCutBasedTightID, &b_elePF2PATCutBasedTightID);
-
    fChain->SetBranchAddress("elePF2PATImpactTransDist", elePF2PATImpactTransDist, &b_elePF2PATImpactTransDist);
    fChain->SetBranchAddress("elePF2PATImpactTransError", elePF2PATImpactTransError, &b_elePF2PATImpactTransError);
    fChain->SetBranchAddress("elePF2PATImpactTransSignificance", elePF2PATImpactTransSignificance, &b_elePF2PATImpactTransSignificance);
