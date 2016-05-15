@@ -208,7 +208,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     jetPtCutLoose_(iConfig.getParameter<double>("jetPtCutLoose")),
     runPDFUncertainties_(iConfig.getParameter<bool>("runPDFUncertainties")),
     useResidualJEC_(iConfig.getParameter<bool>("useResidualJEC")),
-    eleIDquality_(iConfig.getParameter<std::string>("electronID")),
     ignore_emIDtight_(iConfig.getParameter<bool>("ignoreElectronID")),
 
     eleEtCut_(iConfig.getParameter<double>("minEleEt")),
@@ -255,10 +254,7 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     NTRACKSMAX(1000), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
     NGENPARMAX(50),//  hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
     NTAUSMAX(20), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
-    NPHOTONSMAX(20), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
-    doJERSmear_(iConfig.getParameter<bool>("doJERSmear")),
-    fillAll_(iConfig.getParameter<bool>("fillAll"))
-    
+    NPHOTONSMAX(20) // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
 {
     //now do what ever initialization is needed
 
@@ -555,7 +551,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     iEvent.getByToken(nonTrigMvaValuesMapToken_,nonTrigMvaValues);
     iEvent.getByToken(nonTrigMvaCategoriesMapToken_,nonTrigMvaCategories);
 
-
     //   !!!
     // IMPORTAnT: DO NOT CUT ON THE OBJECTS BEFORE THEY ARE SORTED, cuts should be applied in the second loop!!!
     //   !!!
@@ -642,18 +637,10 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	electronSortedNonTrigMVA[ ID ][numEle[ ID ]-1] = (*nonTrigMvaValues)[refel]; // Non-triggering MVA
 	electronSortedNonTrigMVAcategory[ ID ][numEle[ ID ]-1] = (*nonTrigMvaCategories)[refel];
  
-      //sortedIDQuality expects a cic-like cut. This is now deprecated, so I'm commenting these out.
-      //    electronSortedIDQuality[ ID ][numEle[ ID ]-1]=(int)ele.electronID(eleIDqualty_);
       electronSortedChargedHadronIso[ ID ][numEle[ ID ]-1]=ele.chargedHadronIso();
       electronSortedNeutralHadronIso[ ID ][numEle[ ID ]-1]=ele.neutralHadronIso();
       electronSortedPhotonIso[ ID ][numEle[ ID ]-1]=ele.photonIso();
 
-      //Dynamic electron IDs
-      //Again, removing
-      //    for( size_t i = 0; i < eleIDsToNtuple_.size(); i++ )
-      //{
-      // electronSortedIDResults_[ eleIDsToNtuple_[i] + ID ][ numEle[ ID ] - 1 ] = ele.electronID( eleIDsToNtuple_[i] );
-      //    }  
       electronSortedTrackPt[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->pt();
       electronSortedTrackEta[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->eta();
       electronSortedTrackPhi[ ID ][numEle[ ID ]-1]=ele.gsfTrack()->phi();
@@ -673,15 +660,18 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       electronSortedGsfPy[ ID ][numEle[ ID ]-1] = ele.ecalDrivenMomentum().py();
       electronSortedGsfPz[ ID ][numEle[ ID ]-1] = ele.ecalDrivenMomentum().pz();
       electronSortedGsfE[ ID ][numEle[ ID ]-1] = ele.ecalDrivenMomentum().energy();
+      electronSortedEcalEnergy[ ID ][numEle[ ID ]-1] = ele.ecalEnergy();
 
       electronSortedSuperClusterEta[ ID ][numEle[ ID ]-1]=ele.superCluster()->eta(); 
       electronSortedSuperClusterE[ ID ][numEle[ ID ]-1]=ele.superCluster()->energy();
       electronSortedSuperClusterPhi[ ID ][numEle[ ID ]-1]=ele.superCluster()->phi();
+      electronSortedSuperClusterEoverP[ ID ][numEle[ ID ]-1] = ele.eSuperClusterOverP();
       electronSortedSuperClusterSigmaEtaEta[ ID ][numEle[ ID ]-1]=ele.scSigmaEtaEta();
       electronSortedSuperClusterE1x5[ ID ][numEle[ ID ]-1]=ele.scE1x5();
       electronSortedSuperClusterE2x5max[ ID ][numEle[ ID ]-1]=ele.scE2x5Max();
       electronSortedSuperClusterE5x5[ ID ][numEle[ ID ]-1]=ele.scE5x5();
-      electronSortedSuperClusterSigmaIEtaIEta[ ID ][numEle[ ID ]-1]=ele.scSigmaIEtaIEta();
+      electronSortedSuperClusterSigmaIEtaIEta[ ID ][numEle[ ID ]-1]= ele.scSigmaIEtaIEta();
+      electronSortedSuperClusterSigmaIEtaIEta5x5[ ID ][numEle[ ID ]-1]= ele.full5x5_sigmaIetaIeta();
 
       electronSortedTrackIso04[ ID ][numEle[ ID ]-1]=ele.dr04TkSumPt();//trackIso();
       electronSortedECalIso04[ ID ][numEle[ ID ]-1]=ele.dr04EcalRecHitSumEt();//ecalIso();
@@ -692,19 +682,23 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       //    electronSortedHCalIsoDeposit[ ID ][numEle[ ID ]-1]=ele.hcalIsoDeposit()->candEnergy();
       electronSortedCaloIso[ ID ][numEle[ ID ]-1]=ele.caloIso();
 
+      const reco::GsfElectron::PflowIsolationVariables& pfIso = ele.pfIsolationVariables();
+
       // calculate comRelIso:
       electronSortedComRelIso[ ID ][numEle[ ID ]-1]=electronSortedTrackIso03[ ID ][numEle[ ID ]-1] ;
       electronSortedComRelIso[ ID ][numEle[ ID ]-1]+=	electronSortedECalIso03[ ID ][numEle[ ID ]-1];
       electronSortedComRelIso[ ID ][numEle[ ID ]-1]+=	electronSortedHCalIso03[ ID ][numEle[ ID ]-1];
       electronSortedComRelIso[ ID ][numEle[ ID ]-1]/=electronSortedEt[ ID ][numEle[ ID ]-1];
-      electronSortedChHadIso[ ID ][numEle[ ID ]-1] = ele.chargedHadronIso(); 
-      electronSortedNtHadIso[ ID ][numEle[ ID ]-1] = ele.neutralHadronIso();
-      electronSortedGammaIso[ ID ][numEle[ ID ]-1] = ele.photonIso(); 
-      electronSortedComRelIsodBeta[ ID ][numEle[ ID ]-1]=(ele.chargedHadronIso() + std::max( 0.0, ele.neutralHadronIso() + ele.photonIso() - 0.5*ele.puChargedHadronIso() ))/ele.pt();
-      float AEff03 = effectiveAreaInfo_.getEffectiveArea( std::abs(ele.superCluster()->eta()) );
+      electronSortedChHadIso[ ID ][numEle[ ID ]-1] = pfIso.sumChargedHadronPt; 
+      electronSortedNtHadIso[ ID ][numEle[ ID ]-1] = pfIso.sumNeutralHadronEt;
+      electronSortedGammaIso[ ID ][numEle[ ID ]-1] = pfIso.sumPhotonEt; 
+      electronSortedComRelIsodBeta[ ID ][numEle[ ID ]-1]=( pfIso.sumChargedHadronPt + std::max( 0.0, pfIso.sumPhotonEt - 0.5*pfIso.sumPUPt ))/ele.pt();
+
+      const float AEff03 = effectiveAreaInfo_.getEffectiveArea( std::abs(ele.superCluster()->eta()) );
       electronSortedAEff03[ ID ][numEle[ ID ]-1] = AEff03;
       electronSortedRhoIso[ ID ][numEle[ ID ]-1] = rhoIso;
-      double combrelisorho = (ele.chargedHadronIso() + std::max(0.0, ele.neutralHadronIso() + ele.photonIso() - rhoIso*AEff03 ))/ele.pt(); 
+
+      const double combrelisorho = ( pfIso.sumChargedHadronPt + std::max(0.0, pfIso.sumNeutralHadronEt + pfIso.sumPhotonEt - rhoIso*AEff03 ))/ele.pt(); 
       electronSortedComRelIsoRho[ ID ][numEle[ ID ]-1]=combrelisorho;
       //(ele.trackIso()+ele.ecalIso()+ele.hcalIso())/ele.et();
 
@@ -757,7 +751,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	genElectronSortedPz[ ID ][numEle[ ID ]-1]=ele.genLepton()->pz();
 	genElectronSortedCharge[ ID ][numEle[ ID ]-1]=ele.genLepton()->charge();
       }
-    }    
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -1151,7 +1145,7 @@ void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent, const edm::E
     bool isPassNonTrigMedium = (*medium_nonTrig_id_decisions)[ele.gsfTrack()]; // NEW - current electron selection requires medium ID
    //   bool isPassTight  = (*tight_id_decisions)[ele.gsfTrack()]; // NEW
   
-    if(!isPassNonTrigMedium)
+    if(!isPassNonTrigMedium && doCuts_)
       continue;
 
     math::XYZTLorentzVector elecand(ele.px(),ele.py(),ele.pz(),ele.energy());
@@ -1554,28 +1548,6 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
 	genJetUsed[tempIndex] = true;
 	//Make a fill MC info section here that will fill with the associated jet.
 	fillMCJetInfo(assocJet,numJet[ID],ID,true);
-	if (doJERSmear_ && assocJet.pt() > 15.0 ){
-	  double corrFactorJEC = 0.0;
-	  if (fabs(jet.eta()) <= 1.1) corrFactorJEC = 0.066;
-	  else if (fabs(jet.eta()) <= 1.7) corrFactorJEC =  0.191;
-	  else if (fabs(jet.eta()) <= 2.3) corrFactorJEC =  0.096;
-	  else corrFactorJEC = 0.166;
-	  double smearValue = std::max(0.0, jet.pt() + (jet.pt() - assocJet.pt()) * corrFactorJEC)/jet.pt();
-	  if (smearValue > 0.0){
-	    metPx[ID] += jet.px();
-	    metPy[ID] += jet.py();
-	    metPz[ID] += jet.pz();
-	    jetSortedE[ID][numJet[ID]] = jet.energy() * smearValue;
-	    jetSortedPx[ID][numJet[ID]] = jet.px() * smearValue;
-	    jetSortedPy[ID][numJet[ID]] = jet.py() * smearValue;
-	    jetSortedPz[ID][numJet[ID]] = jet.pz() * smearValue; 
-	    jetSortedPt[ID][numJet[ID]] = jet.pt() * smearValue; 
-	    jetSortedEt[ID][numJet[ID]] = jet.et() * smearValue; 
-	    metPx[ID] -= jetSortedPx[ID][numJet[ID]];
-	    metPy[ID] -= jetSortedPy[ID][numJet[ID]];
-	    metPz[ID] -= jetSortedPz[ID][numJet[ID]];
-	  }
-	}
       }else { //if no associated gen jet fill with -999.
 	fillMCJetInfo(assocJet,numJet[ID],ID,false);
       }
@@ -1583,10 +1555,11 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
     }else{
       fillMCJetInfo(0,numJet[ID],ID,false);
     }
-    
-    if(!oldJetID(jet, numJet[ID], eleCol, jetSortedPt[ID][numJet[ID]])){
-      continue;
-    }
+
+    //if(jetIDLoose(jet,jetSortedPt[ID][numJet[ID]])){
+    //	continue;
+    //}
+
     //    if( jet.pt() < 10 ){ continue; }
    /////////////////////////////
     // no cuts that remove jets after this!
@@ -1684,7 +1657,7 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   electronSortedMVAcategory[ ID ].clear();
   electronSortedNonTrigMVA[ ID ].clear();
   electronSortedNonTrigMVAcategory[ ID ].clear();
-  //  electronSortedIDQuality[ ID ].clear();
+
   electronSortedChargedHadronIso[ ID ].clear();
   electronSortedNeutralHadronIso[ ID ].clear();
   electronSortedPhotonIso[ ID ].clear();
@@ -1709,14 +1682,18 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   electronSortedGsfPy[ ID ].clear();
   electronSortedGsfPz[ ID ].clear();
   electronSortedGsfE[ ID ].clear();
+  electronSortedEcalEnergy[ ID ].clear();
+
   electronSortedSuperClusterEta[ ID ].clear();
   electronSortedSuperClusterE[ ID ].clear();
   electronSortedSuperClusterPhi[ ID ].clear();
+  electronSortedSuperClusterEoverP[ ID ].clear();
   electronSortedSuperClusterSigmaEtaEta[ ID ].clear();
   electronSortedSuperClusterE1x5[ ID ].clear();
   electronSortedSuperClusterE2x5max[ ID ].clear();
   electronSortedSuperClusterE5x5[ ID ].clear();
   electronSortedSuperClusterSigmaIEtaIEta[ ID ].clear();
+  electronSortedSuperClusterSigmaIEtaIEta5x5[ ID ].clear();
   electronSortedTrackIso04[ ID ].clear();
   electronSortedECalIso04[ ID ].clear();
   electronSortedHCalIso04[ ID ].clear();
@@ -2126,7 +2103,7 @@ void
 MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   using namespace edm;
-  //  std::cout << iEvent.id().run() << " " << iEvent.luminosityBlock() << " " << iEvent.id().event() << std::endl;
+  // std::cout << iEvent.id().run() << " " << iEvent.luminosityBlock() << " " << iEvent.id().event() << std::endl;
   //Run pile-up reweighting here
   numVert = 0;
   if (runPUReWeight_){
@@ -2197,19 +2174,18 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
 
   fillSummaryVariables();
 
-  //std::cout << "done with topology, now filling tree..." << std::endl;
+ //std::cout << "done with topology, now filling tree..." << std::endl;
   //  std::cout << numEle["PF"] << std::endl;
   //Run the cut flow code. This involves event selections and seeing how many events containing things we get.
   //Eventually this will require me putting in different selections for the different channels, but for now
   //just double electron.
 
-  if (fillAll_){
-    mytree_->Fill();
-  }
+  mytree_->Fill();
 
   //fill debugging histograms.
   histocontainer_["tightElectrons"]->Fill(numEle["PF"]);
-  histocontainer_["tightMuons"]->Fill(numMuo["PF"]);  
+  histocontainer_["tightMuons"]->Fill(numMuo["PF"]);
+  
 }
 
 void MakeTopologyNtupleMiniAOD::bookBranches(){
@@ -2377,7 +2353,6 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
 
   electronSortedCharge[ ID ] = tempVecI;
   
-  //  electronSortedIDQuality[ ID ] = tempVecI;
   electronSortedIsBarrel[ ID ] = tempVecI;
   electronSortedPhotonConversionTag[ ID ] = tempVecI;
   electronSortedPhotonConversionTagCustom[ ID ] = tempVecI;
@@ -2422,14 +2397,18 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   electronSortedGsfPy[ ID ] = tempVecF;
   electronSortedGsfPz[ ID ] = tempVecF;
   electronSortedGsfE[ ID ] = tempVecF;
+  electronSortedEcalEnergy[ ID ] = tempVecF;
+
   electronSortedSuperClusterEta[ ID ] = tempVecF;
   electronSortedSuperClusterE[ ID ] = tempVecF;
   electronSortedSuperClusterPhi[ ID ] = tempVecF;
+  electronSortedSuperClusterEoverP[ ID ] = tempVecF;
   electronSortedSuperClusterSigmaEtaEta[ ID ] = tempVecF;
   electronSortedSuperClusterE1x5[ ID ] = tempVecF;
   electronSortedSuperClusterE2x5max[ ID ] = tempVecF;
   electronSortedSuperClusterE5x5[ ID ] = tempVecF;
   electronSortedSuperClusterSigmaIEtaIEta[ ID ] = tempVecF;
+  electronSortedSuperClusterSigmaIEtaIEta5x5[ ID ] = tempVecF;
   electronSortedTrackIso04[ ID ] = tempVecF;
   electronSortedECalIso04[ ID ] = tempVecF;
   electronSortedHCalIso04[ ID ] = tempVecF;
@@ -2503,6 +2482,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   mytree_->Branch( (prefix + "MVAcategory").c_str(), &electronSortedMVAcategory[ ID ][0], (prefix + "MVAcategory[numEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "NonTrigMVA").c_str(), &electronSortedNonTrigMVA[ ID ][0], (prefix + "NonTrigMVA[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "NonTrigMVAcategory").c_str(), &electronSortedNonTrigMVAcategory[ ID ][0], (prefix + "NonTrigMVAcategory[numEle" + name + "]/I").c_str());
+
   mytree_->Branch( (prefix + "ImpactTransDist").c_str(), &electronSortedImpactTransDist[ ID ][0], (prefix + "ImpactTransDist[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "ImpactTransError").c_str(), &electronSortedImpactTransError[ ID ][0], (prefix + "ImpactTransError[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "ImpactTransSignificance").c_str(), &electronSortedImpactTransSignificance[ ID ][0], (prefix + "ImpactTransSignificance[numEle" + name + "]/F").c_str());
@@ -2536,12 +2516,15 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   mytree_->Branch( (prefix + "GsfPy").c_str(), &electronSortedGsfPy[ ID ][0], (prefix + "GsfPy[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "GsfPz").c_str(), &electronSortedGsfPz[ ID ][0], (prefix + "GsfPz[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "GsfE").c_str(), &electronSortedGsfE[ ID ][0], (prefix + "GsfE[numEle" + name + "]/F").c_str());
+  mytree_->Branch( (prefix + "EcalEnergy").c_str(), &electronSortedEcalEnergy[ ID ][0], (prefix + "EcalEnergy[numEle" + name + "]/F").c_str());
 
   mytree_->Branch( (prefix + "SCEta").c_str(), &electronSortedSuperClusterEta[ ID ][0], (prefix + "SCEta[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "SCE").c_str(), &electronSortedSuperClusterE[ ID ][0], (prefix + "SCE[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "SCPhi").c_str(), &electronSortedSuperClusterPhi[ ID ][0], (prefix + "SCPhi[numEle" + name + "]/F").c_str());
+  mytree_->Branch( (prefix + "SCEoverP").c_str(), &electronSortedSuperClusterEoverP[ ID ][0], (prefix + "SCEoverP[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "SCSigmaEtaEta").c_str(), &electronSortedSuperClusterSigmaEtaEta[ ID ][0], (prefix + "SCSigmaEtaEta[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "SCSigmaIEtaIEta").c_str(), &electronSortedSuperClusterSigmaIEtaIEta[ ID ][0], (prefix + "SCSigmaIEtaIEta[numEle" + name + "]/F").c_str());
+  mytree_->Branch( (prefix + "SCSigmaIEtaIEta5x5").c_str(), &electronSortedSuperClusterSigmaIEtaIEta5x5[ ID ][0], (prefix + "SCSigmaIEtaIEta5x5[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "SCE1x5").c_str(), &electronSortedSuperClusterE1x5[ ID ][0], (prefix + "SCE1x5[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "SCE5x5").c_str(), &electronSortedSuperClusterE5x5[ ID ][0], (prefix + "SCE5x5[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "SCE2x5max").c_str(), &electronSortedSuperClusterE2x5max[ ID ][0], (prefix + "SCE2x5max[numEle" + name + "]/F").c_str());  
@@ -2593,7 +2576,6 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
       mytree_->Branch( ("genEle" + name + "Eta").c_str(), &genElectronSortedEta[ ID ][0], ("genEle" + name + "EleEta[numEle" + name + "]/F").c_str());
       mytree_->Branch( ("genEle" + name + "Charge").c_str(), &genElectronSortedCharge[ ID ][0], ("genEle" + name + "EleCharge[numEle" + name + "]/I").c_str());
   }
-
 
 //Also handle z candidates
   nzcandidates[ ID ] = 0;
@@ -2664,7 +2646,7 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   genMuonSortedPz[ ID ] = tempVecF;
   genMuonSortedCharge[ ID ] = tempVecI;
 
-  mytree_->Branch( ("numMuon" + name).c_str(), &numMuo[ ID ], ("numMuon" + name + "/I").c_str());
+  mytree_->Branch( ("numMuon" + name).c_str(), &numMuo[ ID ], ("numMuon" + name + "/I").c_str());	
   std::string prefix = "muon" + name;
   mytree_->Branch( (prefix + "E").c_str(), &muonSortedE[ ID ][0], (prefix + "E[numMuon" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "ET").c_str(), &muonSortedEt[ ID ][0], (prefix + "ET[numMuon" + name + "]/F").c_str());
@@ -2729,7 +2711,6 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
     mytree_->Branch((prefix + "Theta").c_str(), &genMuonSortedTheta[ ID ][0], (prefix + "Theta[numMuon" + name + "]/F").c_str());
     mytree_->Branch((prefix + "Eta").c_str(), &genMuonSortedEta[ ID ][0], (prefix + "Eta[numMuon" + name + "]/F").c_str());
     mytree_->Branch((prefix + "Charge").c_str(), &genMuonSortedCharge[ ID ][0], (prefix + "Charge[numMuon" + name + "]/I").c_str());
-
   }
   
 
@@ -3485,7 +3466,7 @@ bool MakeTopologyNtupleMiniAOD::jetIDLoose(const pat::Jet& jet, float jetPt){
     return true;
   if (jetPt < jetPtCutLoose_)
     return false;
-  if(fabs(jet.eta())>jetEtaCut_)
+  if(std::abs(jet.eta())>jetEtaCut_)
     return false;
   if (jet.bDiscriminator(bDiscName_) < bDiscCut_)
     return false;

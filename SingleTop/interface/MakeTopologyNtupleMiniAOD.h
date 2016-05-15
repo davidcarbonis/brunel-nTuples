@@ -134,6 +134,7 @@ private:
   bool runPDFUncertainties_;
   bool useResidualJEC_;
   std::string eleIDquality_; 
+  std::string eleIDqualityLoose_;// only used for Z rejection
   bool ignore_emIDtight_; // possibility to completely ignore EM id
 
   double eleEtCut_;
@@ -314,11 +315,12 @@ private:
   std::map< std::string, std::vector<float> > electronSortedPy;
   std::map< std::string, std::vector<float> > electronSortedPz;
   std::map< std::string, std::vector<int> > electronSortedCharge;
+
   std::map< std::string, std::vector<float> > electronSortedMVA;
   std::map< std::string, std::vector<int> > electronSortedMVAcategory;
   std::map< std::string, std::vector<float> > electronSortedNonTrigMVA;
   std::map< std::string, std::vector<int> > electronSortedNonTrigMVAcategory;
-  //  std::map< std::string, std::vector<int> > electronSortedIDQuality;
+  
   std::map< std::string, std::vector<float> > electronSortedChargedHadronIso;
   std::map< std::string, std::vector<float> > electronSortedNeutralHadronIso;
   std::map< std::string, std::vector<float> > electronSortedPhotonIso;
@@ -343,14 +345,18 @@ private:
   std::map< std::string, std::vector<float> > electronSortedGsfPy;
   std::map< std::string, std::vector<float> > electronSortedGsfPz;
   std::map< std::string, std::vector<float> > electronSortedGsfE;
+  std::map< std::string, std::vector<float> > electronSortedEcalEnergy;
+
   std::map< std::string, std::vector<float> > electronSortedSuperClusterEta;
   std::map< std::string, std::vector<float> > electronSortedSuperClusterE;
   std::map< std::string, std::vector<float> > electronSortedSuperClusterPhi;
+  std::map< std::string, std::vector<float> > electronSortedSuperClusterEoverP;
   std::map< std::string, std::vector<float> > electronSortedSuperClusterSigmaEtaEta;
   std::map< std::string, std::vector<float> > electronSortedSuperClusterE1x5;
   std::map< std::string, std::vector<float> > electronSortedSuperClusterE2x5max;
   std::map< std::string, std::vector<float> > electronSortedSuperClusterE5x5;
   std::map< std::string, std::vector<float> > electronSortedSuperClusterSigmaIEtaIEta;
+  std::map< std::string, std::vector<float> > electronSortedSuperClusterSigmaIEtaIEta5x5;
   std::map< std::string, std::vector<float> > electronSortedTrackIso04;
   std::map< std::string, std::vector<float> > electronSortedECalIso04;
   std::map< std::string, std::vector<float> > electronSortedHCalIso04;
@@ -649,6 +655,7 @@ private:
     std::map< std::string,std::vector<float> > genJetSortedClosestB;
     std::map< std::string,std::vector<float> > genJetSortedClosestC;
 
+
   //generalTracks are used to subtract photon conversion background
   size_t NTRACKSMAX;
   float generalTracksPt[1000];
@@ -747,10 +754,6 @@ private:
   int mvaTrig;
   int mvaAsFunc;
 
-  //cut flow related variables.
-  bool doJERSmear_;
-  bool fillAll_;
-  
 };
 
 namespace LHAPDF {
