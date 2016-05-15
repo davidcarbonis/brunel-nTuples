@@ -48,7 +48,7 @@ int main(int argc, char* argv[]){
     for (int i = 0; i < numberOfEvents; i++){
       if (i % 500 < 0.01) std::cerr << i << "/" << numberOfEvents << " (" << 100*float(i)/numberOfEvents << "%)\r";
     
-      event->GetEntry(i);
+      event->GetEntry(i);/*
       int numLeps = 0;
       for (int j = 0; j < event->numElePF2PAT; j++){
 	if (event->elePF2PATPT[j] < 9) continue;
@@ -62,7 +62,7 @@ int main(int argc, char* argv[]){
 	if (fabs(event->muonPF2PATEta[j]) > 2.8) continue;
 	numLeps++;
       }
-      if (numLeps >= 2) outTree->Fill();
+      if (numLeps >= 2)*/ outTree->Fill();
     }
   
     outFile.cd();

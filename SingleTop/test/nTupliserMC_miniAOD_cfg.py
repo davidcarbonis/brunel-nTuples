@@ -139,11 +139,14 @@ from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
 
 # define which IDs we want to produce
-my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_Trig_V1_cff']
+my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_Trig_V1_cff',
+		 'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff']
 
 #add them to the VID producer
 for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+
+
 
 ###############################
 ##### MET Uncertainities ######
@@ -194,9 +197,6 @@ process.makeTopologyNtupleMiniAOD.eleCombRelIso=cms.double(0.15)
 process.makeTopologyNtupleMiniAOD.maxEled0=cms.double(0.04)
 process.makeTopologyNtupleMiniAOD.eleInterECALEtaLow=cms.double(1.4442)
 process.makeTopologyNtupleMiniAOD.eleInterECALEtaHigh=cms.double(1.5660)
-process.makeTopologyNtupleMiniAOD.minEleEtLooseZVeto=cms.double(15)
-process.makeTopologyNtupleMiniAOD.minEleEtaLooseZVeto=cms.double(2.5)
-process.makeTopologyNtupleMiniAOD.eleCombRelIsoLooseZVeto=cms.double(1.0)
 process.makeTopologyNtupleMiniAOD.dREleJetCrossClean=cms.double(0.4)
 process.makeTopologyNtupleMiniAOD.maxMuonEta=cms.double(2.4)
 process.makeTopologyNtupleMiniAOD.minMuonPt=cms.double(20)
@@ -209,8 +209,6 @@ process.makeTopologyNtupleMiniAOD.muonHCalIso=cms.double(6)
 process.makeTopologyNtupleMiniAOD.dREleGeneralTrackMatchForPhotonRej=cms.double(0.3)
 process.makeTopologyNtupleMiniAOD.maxDistForPhotonRej=cms.double(0.04)
 process.makeTopologyNtupleMiniAOD.maxDcotForPhotonRej=cms.double(0.03)
-process.makeTopologyNtupleMiniAOD.fillAll=cms.bool(True)
-process.makeTopologyNtupleMiniAOD.processingLoose=cms.bool(False)
 #process.makeTopologyNtupleMiniAOD.btagParameterizationList = cms.vstring()
 #process.makeTopologyNtupleMiniAOD.btagParameterizationMode = cms.vstring()
 process.makeTopologyNtupleMiniAOD.runSwissCross = cms.bool(False)
@@ -250,7 +248,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source.fileNames = [
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv1/ZZTo4L_13TeV_powheg_pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/0C0945C1-86B2-E511-B553-0CC47A78A440.root',
-	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/000420F1-1DB8-E511-B547-0025905C4270.root',
+	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/000420F1-1DB8-E511-B547-0025905C4270.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/00845120-42B8-E511-985A-002618943970.root',
 	## tZq synch files
 	#'file:/scratch/eepgadm/data/synch/tZq/1.root',
@@ -314,7 +312,7 @@ process.out.outputCommands += cms.untracked.vstring('keep *_flavorHistoryFilter_
 process.out.fileName = cms.untracked.string('Data_out.root')
 
 #NTuple output
-process.TFileService = cms.Service("TFileService", fileName = cms.string('Data_5_test.root') )
+process.TFileService = cms.Service("TFileService", fileName = cms.string('Data_test.root') )
 process.options.wantSummary = False
 process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 

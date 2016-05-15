@@ -39,6 +39,10 @@ public :
    Float_t         elePF2PATMVAcategory[20];   //[numElePF2PAT]
    Float_t         elePF2PATNonTrigMVA[20];   //[numElePF2PAT]
    Float_t         elePF2PATNonTrigMVAcategory[20];   //[numElePF2PAT]
+
+   Int_t	   elePF2PATCutBasedVetoID[20];   //[numElePF2PAT]
+   Int_t	   elePF2PATCutBasedTightID[20];   //[numElePF2PAT]
+
    Float_t         elePF2PATImpactTransDist[20];   //[numElePF2PAT]
    Float_t         elePF2PATImpactTransError[20];   //[numElePF2PAT]
    Float_t         elePF2PATImpactTransSignificance[20];   //[numElePF2PAT]
@@ -65,11 +69,14 @@ public :
    Float_t         elePF2PATGsfPy[20];   //[numElePF2PAT]
    Float_t         elePF2PATGsfPz[20];   //[numElePF2PAT]
    Float_t         elePF2PATGsfE[20];   //[numElePF2PAT]
+   Float_t	   elePF2PATEcalEnergy[20];   //[numElePF2PAT]
    Float_t         elePF2PATSCEta[20];   //[numElePF2PAT]
    Float_t         elePF2PATSCE[20];   //[numElePF2PAT]
    Float_t         elePF2PATSCPhi[20];   //[numElePF2PAT]
+   Float_t	   elePF2PATSCEoverP[20];   //[numElePF2PAT]
    Float_t         elePF2PATSCSigmaEtaEta[20];   //[numElePF2PAT]
    Float_t         elePF2PATSCSigmaIEtaIEta[20];   //[numElePF2PAT]
+   Float_t         elePF2PATSCSigmaIEtaIEta5x5[20];   //[numElePF2PAT]
    Float_t         elePF2PATSCE1x5[20];   //[numElePF2PAT]
    Float_t         elePF2PATSCE5x5[20];   //[numElePF2PAT]
    Float_t         elePF2PATSCE2x5max[20];   //[numElePF2PAT]
@@ -339,6 +346,10 @@ public :
    TBranch        *b_elePF2PATMVAcategory;   //!
    TBranch        *b_elePF2PATNonTrigMVA;   //!
    TBranch        *b_elePF2PATNonTrigMVAcategory;   //!
+
+   TBranch	  *b_elePF2PATCutBasedVetoID;
+   TBranch	  *b_elePF2PATCutBasedTightID;
+
    TBranch        *b_elePF2PATImpactTransDist;   //!
    TBranch        *b_elePF2PATImpactTransError;   //!
    TBranch        *b_elePF2PATImpactTransSignificance;   //!
@@ -365,11 +376,14 @@ public :
    TBranch        *b_elePF2PATGsfPy;   //!
    TBranch        *b_elePF2PATGsfPz;   //!
    TBranch        *b_elePF2PATGsfE;   //!
+   TBranch	  *b_elePF2PATEcalEnergy;
    TBranch        *b_elePF2PATSCEta;   //!
    TBranch        *b_elePF2PATSCE;   //!
    TBranch        *b_elePF2PATSCPhi;   //!
+   TBranch	  *b_elePF2PATSCEoverP;
    TBranch        *b_elePF2PATSCSigmaEtaEta;   //!
    TBranch        *b_elePF2PATSCSigmaIEtaIEta;   //!
+   TBranch        *b_elePF2PATSCSigmaIEtaIEta5x5;   //!
    TBranch        *b_elePF2PATSCE1x5;   //!
    TBranch        *b_elePF2PATSCE5x5;   //!
    TBranch        *b_elePF2PATSCE2x5max;   //!
@@ -737,6 +751,10 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("elePF2PATMVAcategory", elePF2PATMVAcategory, &b_elePF2PATMVAcategory);
    fChain->SetBranchAddress("elePF2PATNonTrigMVA", elePF2PATNonTrigMVA, &b_elePF2PATNonTrigMVA);
    fChain->SetBranchAddress("elePF2PATNonTrigMVAcategory", elePF2PATNonTrigMVAcategory, &b_elePF2PATNonTrigMVAcategory);
+
+   fChain->SetBranchAddress("elePF2PATCutBasedVetoID", elePF2PATCutBasedVetoID, &b_elePF2PATCutBasedVetoID);
+   fChain->SetBranchAddress("elePF2PATCutBasedTightID", elePF2PATCutBasedTightID, &b_elePF2PATCutBasedTightID);
+
    fChain->SetBranchAddress("elePF2PATImpactTransDist", elePF2PATImpactTransDist, &b_elePF2PATImpactTransDist);
    fChain->SetBranchAddress("elePF2PATImpactTransError", elePF2PATImpactTransError, &b_elePF2PATImpactTransError);
    fChain->SetBranchAddress("elePF2PATImpactTransSignificance", elePF2PATImpactTransSignificance, &b_elePF2PATImpactTransSignificance);
@@ -763,11 +781,14 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("elePF2PATGsfPy", elePF2PATGsfPy, &b_elePF2PATGsfPy);
    fChain->SetBranchAddress("elePF2PATGsfPz", elePF2PATGsfPz, &b_elePF2PATGsfPz);
    fChain->SetBranchAddress("elePF2PATGsfE", elePF2PATGsfE, &b_elePF2PATGsfE);
+   fChain->SetBranchAddress("elePF2PATEcalEnergy", elePF2PATEcalEnergy, &b_elePF2PATEcalEnergy);
    fChain->SetBranchAddress("elePF2PATSCEta", elePF2PATSCEta, &b_elePF2PATSCEta);
    fChain->SetBranchAddress("elePF2PATSCE", elePF2PATSCE, &b_elePF2PATSCE);
    fChain->SetBranchAddress("elePF2PATSCPhi", elePF2PATSCPhi, &b_elePF2PATSCPhi);
+   fChain->SetBranchAddress("elePF2PATSCEoverP", elePF2PATSCEoverP, &b_elePF2PATSCEoverP);
    fChain->SetBranchAddress("elePF2PATSCSigmaEtaEta", elePF2PATSCSigmaEtaEta, &b_elePF2PATSCSigmaEtaEta);
    fChain->SetBranchAddress("elePF2PATSCSigmaIEtaIEta", elePF2PATSCSigmaIEtaIEta, &b_elePF2PATSCSigmaIEtaIEta);
+   fChain->SetBranchAddress("elePF2PATSCSigmaIEtaIEta5x5", elePF2PATSCSigmaIEtaIEta5x5, &b_elePF2PATSCSigmaIEtaIEta5x5);
    fChain->SetBranchAddress("elePF2PATSCE1x5", elePF2PATSCE1x5, &b_elePF2PATSCE1x5);
    fChain->SetBranchAddress("elePF2PATSCE5x5", elePF2PATSCE5x5, &b_elePF2PATSCE5x5);
    fChain->SetBranchAddress("elePF2PATSCE2x5max", elePF2PATSCE2x5max, &b_elePF2PATSCE2x5max);

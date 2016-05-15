@@ -93,6 +93,9 @@ private:
   edm::EDGetTokenT<edm::ValueMap<bool> > eleNonTrigMediumIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > eleNonTrigTightIdMapToken_;
 
+  edm::EDGetTokenT<edm::ValueMap<bool> > eleCutVetoIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > eleCutTightIdMapToken_;
+
   // MVA values and categories (optional)
   edm::EDGetTokenT<edm::ValueMap<float> > trigMvaValuesMapToken_;
   edm::EDGetTokenT<edm::ValueMap<int> > trigMvaCategoriesMapToken_;
@@ -143,10 +146,6 @@ private:
   double eled0Cut_;
   double eleECALbadLo_;
   double eleECALbadHi_;
-  double eleEtCutLoose_;
-  double eleEtaCutLoose_;
-  double eleIsoCutLoose_;
-  double eled0CutLoose_;
   double eleMvaCut_;
   double dREleJetCrossClean_;
   double muoEtaCut_;
@@ -164,9 +163,6 @@ private:
   double muoPxlHits_;
   double muoTkLyrsWthHts_;
   double muoRelIsoTight_;
-  double muoPtLoose_;
-  double muoEtaLoose_;
-  double muoRelIsoLoose_;
   double metCut_;
   double rhoIso;
   
@@ -202,7 +198,6 @@ private:
   void fillOtherJetInfo(const pat::Jet &jet, const size_t jetindex, std::string ID, const edm::Event& iEvent);
   void fillMCJetInfo(const reco::GenJet &jet, const size_t jetindex, std::string ID, bool fillMC);
   void fillMCJetInfo(int empty, const size_t jetindex, std::string ID, bool fillMC);
-  void fillLooseJetInfo(const pat::Jet &jet, const size_t jetindex, float jetPt, std::string ID);
   void fillZVeto(const edm::Event &, const edm::EventSetup&, edm::InputTag, std::string);
   void fillMuons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::MuonCollection>, std::string);
   void fillPhotons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::PhotonCollection>, std::string);
@@ -252,11 +247,8 @@ private:
 
   int numGeneralTracks;
     std::map< std::string, int > numJet;
-  std::map< std::string, int > numLooseBJets;
     std::map< std::string, int > numEle;
-    std::map< std::string, int > numLooseEle;
     std::map< std::string, int > numMuo;
-  std::map< std::string, int > numLooseMuo;
  
   math::XYZPoint beamSpotPoint_; 
   math::XYZPoint vertexPoint_; 
@@ -286,7 +278,6 @@ private:
 
   void cleararrays(void);// used to set everything in the following arrays to zero or unphysical numbers
   void clearjetarrays(std::string);// clearing jet info, used by cleararrays]
-  void clearLooseJetarrays(std::string);
   void clearTauArrays(std::string);
   void clearPhotonArrays(std::string);
   void clearelectronarrays(std::string);//clearing electron info, used by cleararrays
@@ -327,12 +318,15 @@ private:
   std::map< std::string, std::vector<float> > electronSortedPy;
   std::map< std::string, std::vector<float> > electronSortedPz;
   std::map< std::string, std::vector<int> > electronSortedCharge;
+
   std::map< std::string, std::vector<float> > electronSortedMVA;
   std::map< std::string, std::vector<int> > electronSortedMVAcategory;
   std::map< std::string, std::vector<float> > electronSortedNonTrigMVA;
   std::map< std::string, std::vector<int> > electronSortedNonTrigMVAcategory;
-  //  std::map< std::string, std::vector<int> > electronSortedIDQuality;
-  //std::map< std::string, std::vector<int> > electronSortedIDQualityLoose;
+  
+  std::map< std::string, std::vector<int> > electronSortedCutBasedVetoID;
+  std::map< std::string, std::vector<int> > electronSortedCutBasedTightID;
+
   std::map< std::string, std::vector<float> > electronSortedChargedHadronIso;
   std::map< std::string, std::vector<float> > electronSortedNeutralHadronIso;
   std::map< std::string, std::vector<float> > electronSortedPhotonIso;
@@ -357,14 +351,18 @@ private:
   std::map< std::string, std::vector<float> > electronSortedGsfPy;
   std::map< std::string, std::vector<float> > electronSortedGsfPz;
   std::map< std::string, std::vector<float> > electronSortedGsfE;
+  std::map< std::string, std::vector<float> > electronSortedEcalEnergy;
+
   std::map< std::string, std::vector<float> > electronSortedSuperClusterEta;
   std::map< std::string, std::vector<float> > electronSortedSuperClusterE;
   std::map< std::string, std::vector<float> > electronSortedSuperClusterPhi;
+  std::map< std::string, std::vector<float> > electronSortedSuperClusterEoverP;
   std::map< std::string, std::vector<float> > electronSortedSuperClusterSigmaEtaEta;
   std::map< std::string, std::vector<float> > electronSortedSuperClusterE1x5;
   std::map< std::string, std::vector<float> > electronSortedSuperClusterE2x5max;
   std::map< std::string, std::vector<float> > electronSortedSuperClusterE5x5;
   std::map< std::string, std::vector<float> > electronSortedSuperClusterSigmaIEtaIEta;
+  std::map< std::string, std::vector<float> > electronSortedSuperClusterSigmaIEtaIEta5x5;
   std::map< std::string, std::vector<float> > electronSortedTrackIso04;
   std::map< std::string, std::vector<float> > electronSortedECalIso04;
   std::map< std::string, std::vector<float> > electronSortedHCalIso04;
@@ -419,27 +417,6 @@ private:
   std::map< std::string, std::vector<float> > genElectronSortedPz;
   std::map< std::string, std::vector<int> > genElectronSortedCharge;
   
-  //Information for loose electrons
-  std::map< std::string, std::vector<float> > looseElectronSortedEt;
-  std::map< std::string, std::vector<float> > looseElectronSortedPt;
-  std::map< std::string, std::vector<float> > looseElectronSortedEta;
-  std::map< std::string, std::vector<float> > looseElectronSortedMVA;
-  std::map< std::string, std::vector<int> > looseElectronSortedMVAcategory;
-  std::map< std::string, std::vector<float> > looseElectronSortedNonTrigMVA;
-  std::map< std::string, std::vector<int> > looseElectronSortedNonTrigMVAcategory;
-  std::map< std::string, std::vector<float> > looseElectronSortedRelIso;
-  
-  std::map< std::string, std::vector<float> > genLooseElectronSortedPt;
-  std::map< std::string, std::vector<float> > genLooseElectronSortedEt;
-  std::map< std::string, std::vector<float> > genLooseElectronSortedEta;
-  std::map< std::string, std::vector<float> > genLooseElectronSortedTheta;
-  std::map< std::string, std::vector<float> > genLooseElectronSortedPhi;
-  std::map< std::string, std::vector<float> > genLooseElectronSortedPx;
-  std::map< std::string, std::vector<float> > genLooseElectronSortedPy;
-  std::map< std::string, std::vector<float> > genLooseElectronSortedPz;
-  std::map< std::string, std::vector<int> > genLooseElectronSortedCharge;
-
-
   // MC Truth
   int nT;
   int nThadronic, nb, nWhadronic;
@@ -590,27 +567,6 @@ private:
   std::map< std::string, std::vector<float> > genMuonSortedPz;
   std::map< std::string, std::vector<int> > genMuonSortedCharge;
 
-
-  //Loose muon information
-
-  std::map< std::string, std::vector<float> > looseMuonSortedEt;
-  std::map< std::string, std::vector<float> > looseMuonSortedPt;
-  std::map< std::string, std::vector<float> > looseMuonSortedEta;
-  std::map< std::string, std::vector<float> > looseMuonSortedRelIso;
-  std::map< std::string, std::vector<float> > looseMuonSortedisGlb;
-  std::map< std::string, std::vector<float> > looseMuonSortedisTrk;
-
-  std::map< std::string, std::vector<float> > genLooseMuonSortedPt;
-  std::map< std::string, std::vector<float> > genLooseMuonSortedEt;
-  std::map< std::string, std::vector<float> > genLooseMuonSortedEta;
-  std::map< std::string, std::vector<float> > genLooseMuonSortedTheta;
-  std::map< std::string, std::vector<float> > genLooseMuonSortedPhi;
-  std::map< std::string, std::vector<float> > genLooseMuonSortedPx;
-  std::map< std::string, std::vector<float> > genLooseMuonSortedPy;
-  std::map< std::string, std::vector<float> > genLooseMuonSortedPz;
-  std::map< std::string, std::vector<int> > genLooseMuonSortedCharge;
-
-
   size_t NJETSMAX; // max number of jets, set in constructor;
 
 //JEC to be initialised once per collection.
@@ -704,16 +660,6 @@ private:
     std::map< std::string, std::vector<int> > genJetSortedPID;
     std::map< std::string,std::vector<float> > genJetSortedClosestB;
     std::map< std::string,std::vector<float> > genJetSortedClosestC;
-
-  //Loose jet info
-  std::map< std::string, std::vector<float> > jetLooseSortedPt;
-  std::map< std::string, std::vector<float> > jetLooseSortedEt;
-  std::map< std::string, std::vector<float> > jetLooseSortedEta;
-  std::map< std::string, std::vector<float> > jetLooseSortedBDisc;
-  std::map< std::string, std::vector<float> > jetLooseSortedCvsLDisc;
-  std::map< std::string, std::vector<float> > jetLooseSortedCvsBDisc;
-
-
 
 
   //generalTracks are used to subtract photon conversion background
@@ -814,13 +760,6 @@ private:
   int mvaTrig;
   int mvaAsFunc;
 
-  //cut flow related variables.
-  int runCutFlow_;
-  bool doCutFlow;
-  bool doJERSmear_;
-  bool fillAll_;
-  bool processingLoose_;
-  
 };
 
 namespace LHAPDF {

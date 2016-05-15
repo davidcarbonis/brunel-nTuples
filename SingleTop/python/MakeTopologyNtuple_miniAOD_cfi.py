@@ -55,7 +55,6 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            genParticles = cms.InputTag("prunedGenParticles"),
 					   genSimParticles = cms.InputTag("prunedGenParticles"),
                                            runMCInfo = cms.bool(True), # if set to true will skip MCInfo section
-                                           doJERSmear = cms.bool(False), # out of date and done in analysis.
                                            runPUReWeight = cms.bool(False), #Run pile-up reweighting. Don't do if this is data I guess.
                                            doCuts = cms.bool(False), # if set to false will skip ALL cuts. Z veto still applies electron cuts.
                                            # default preselection settings! see https://twiki.cern.ch/twiki/bin/view/CMS/VplusJets for inspiration
@@ -89,10 +88,12 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            nonTrigMvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"),
                                            nonTrigMvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories"),
 
+					   eleVetoIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto"),
+					   eleTightIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight"),
+
                                            runSwissCross = cms.bool(True),
                                            runPDFUncertainties = cms.bool(False),
                                            useResidualJEC = cms.bool(False),
-                                           electronID = cms.string('eidRobustTight'),
                                            ignoreElectronID = cms.bool(True), # if set to true will save all electrons, also those not passing electronID.
                                            minEleEt = cms.double(0), #  electron ET in GeV
                                            eleMvaCut=cms.double(0.0), #mva minimum. Maximum mva value is hard-coded as 1, as I think that's the highest it can be.
@@ -101,12 +102,6 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            maxEled0 = cms.double(500), # D0 (beam spot corrected) in cm, V+jets adviced cut: 0.02 for prompt electrons
                                            eleInterECALEtaLow = cms.double(1.4442),
                                            eleInterECALEtaHigh = cms.double(1.5660),
-                                           # electron ID (loose, for Z Veto)
-                                           electronIDLooseZVeto = cms.string('eidRobustLoose'),
-                                           minEleEtLooseZVeto = cms.double(0),
-                                           maxEleEtaLooseZVeto = cms.double(5),
-                                           eleCombRelIsoLooseZVeto = cms.double(1.0), # always accept the electron
-                                           maxEled0LooseZVeto = cms.double(100.), # always accept the electron
                                            # cross-cleaning parameter (jet is rejected if inside electron cone0
                                            dREleJetCrossClean = cms.double(-1), # cone distance that an electron-jet match needs to have to reject the jet (the electron is always kept)
                                            # muon identification
@@ -126,11 +121,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            muonPixelHits = cms.double(1),#minimum of one
                                            muonTrackLayersWithHits = cms.double(6), # 5 or less is skipped.
                                            muonRelIsoTight = cms.double(0.2),
-                                           muonPtLoose = cms.double(10.),
-                                           muonEtaLoose = cms.double(2.5),
-                                           muoRelIsoLoose = cms.double(0.2),
                                            metCut = cms.double(30.0),
-                                           fillAll = cms.bool(False),
                                            # photon rejection:
                                                dREleGeneralTrackMatchForPhotonRej=cms.double(0.3),
                                            magneticFieldForPhotonRej=cms.double(3.8),
