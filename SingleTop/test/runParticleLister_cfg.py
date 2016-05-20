@@ -12,7 +12,8 @@ process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-	'file:/nfs/data/eepgadm/ROOTfiles/Summer12_tZq_signal_MC/001C0B68-536A-E311-B25F-002590D0B066.root',	
+#	'file:/nfs/data/eepgadm/ROOTfiles/Summer12_tZq_signal_MC/001C0B68-536A-E311-B25F-002590D0B066.root',	
+	'root://xrootd.unl.edu//store/mc/RunIIFall15DR76/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/AODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/0449ADFC-0EA9-E511-9C06-003048F0E016.root',
         )
 )
 
