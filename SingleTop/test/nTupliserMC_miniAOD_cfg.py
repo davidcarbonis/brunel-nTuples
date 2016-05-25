@@ -323,8 +323,8 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
 process.p = cms.Path(
     process.jetCorrection *
-#    process.primaryVertexFilter *
-#    process.filtersSeq *
+    process.primaryVertexFilter *
+    process.filtersSeq *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *
     process.makeTopologyNtupleMiniAOD
