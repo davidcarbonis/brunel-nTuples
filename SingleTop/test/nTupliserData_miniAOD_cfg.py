@@ -163,7 +163,7 @@ for idmod in my_id_modules:
 #from PhysicsTools.PatUtils.tools.runType1PFMEtUncertainties import runType1PFMEtUncertainties
 #runType1PFMEtUncertainties(process,addToPatDefaultSequence=False,
 #                           photonCollection="slimmedPhotons",
-#                           jetCollection="slimmedJets",
+#                           jetCollection="patJetsReapplyJEC",
 #                           electronCollection="slimmedElectrons",
 #                           muonCollection="slimmedMuons",
 #                           tauCollection="slimmedTaus")
@@ -215,7 +215,7 @@ process.makeTopologyNtupleMiniAOD.runCutFlow=cms.double(0)
 process.makeTopologyNtupleMiniAOD.electronPFTag = cms.InputTag("slimmedElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFTag = cms.InputTag("slimmedMuons")
-process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("slimmedJets")
+process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("patJetsReapplyJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
 process.makeTopologyNtupleMiniAOD.metPFTag = cms.InputTag("slimmedMETs")
 process.makeTopologyNtupleMiniAOD.rhoToken = cms.InputTag("fixedGridRhoFastjetAll")
 process.makeTopologyNtupleMiniAOD.conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions")

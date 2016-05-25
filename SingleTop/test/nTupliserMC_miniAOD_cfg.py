@@ -168,7 +168,7 @@ for idmod in my_id_modules:
 #from PhysicsTools.PatUtils.tools.runType1PFMEtUncertainties import runType1PFMEtUncertainties
 #runType1PFMEtUncertainties(process,addToPatDefaultSequence=False,
 #                           photonCollection="slimmedPhotons",
-#                           jetCollection="slimmedJets",
+#                           jetCollection="patJetsReapplyJEC",
 #                           electronCollection="slimmedElectrons",
 #                           muonCollection="slimmedMuons",
 #                           tauCollection="slimmedTaus")
@@ -220,7 +220,7 @@ process.makeTopologyNtupleMiniAOD.runCutFlow=cms.double(0)
 process.makeTopologyNtupleMiniAOD.electronPFTag = cms.InputTag("slimmedElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFTag = cms.InputTag("slimmedMuons")
-process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("slimmedJets")
+process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("patJetsReapplyJEC") #Used to be slimmedJets - this collection has the reapplied JECs
 process.makeTopologyNtupleMiniAOD.metPFTag = cms.InputTag("slimmedMETs")
 process.makeTopologyNtupleMiniAOD.rhoToken = cms.InputTag("fixedGridRhoFastjetAll")                                            
 process.makeTopologyNtupleMiniAOD.conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions")
@@ -248,10 +248,10 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source.fileNames = [
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv1/ZZTo4L_13TeV_powheg_pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/0C0945C1-86B2-E511-B553-0CC47A78A440.root',
-	'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/000420F1-1DB8-E511-B547-0025905C4270.root',
+	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/000420F1-1DB8-E511-B547-0025905C4270.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/00845120-42B8-E511-985A-002618943970.root',
 	## tZq synch files
-	#'file:/scratch/eepgadm/data/synch/tZq/1.root',
+	'file:/scratch/eepgadm/data/synch/tZq/1.root',
 	#'file:/scratch/eepgadm/data/synch/tZq/2.root',
 	#'file:/scratch/eepgadm/data/synch/tZq/3.root',
 	#'file:/scratch/eepgadm/data/synch/tZq/4.root',
@@ -289,6 +289,8 @@ process.source.fileNames = [
 	##
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTTo2L2Nu_13TeV-powheg/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/00000/0024B479-17DC-E511-B25F-0025904CF758.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/80000/16D7652D-ECD8-E511-846F-0025905A6110.root',
+	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext4-v1/10000/E87BABB0-EAD1-E511-8234-44A8423C4026.root',
+	#'root://xrootd.unl.edu//store/user/kskovpen/FCNCProd/MINIAOD/v20160501/ST_TH_1L3B/kskovpen_ST_TH_1L3B_f0dc44844e1feaf4276c92c681b1bfa9_USER/160503_091941/0000/miniaod_1.root',
         ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
@@ -321,7 +323,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
 process.p = cms.Path(
     process.jetCorrection *
-    process.primaryVertexFilter *
+#    process.primaryVertexFilter *
 #    process.filtersSeq *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *
