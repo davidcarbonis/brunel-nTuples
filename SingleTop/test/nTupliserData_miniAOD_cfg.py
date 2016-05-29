@@ -243,8 +243,9 @@ process.source = cms.Source("PoolSource",
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source.fileNames = [
-	'root://xrootd.unl.edu//store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v1/000/272/023/00000/0A8A6F8E-D50F-E611-B527-02163E014591.root',
-        ]
+	'root://xrootd.unl.edu//store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v2/000/273/158/00000/0227DB1C-E719-E611-872C-02163E0141F9.root',
+	#'root://xrootd.unl.edu//store/data/Run2016B/DoubleMuon/MINIAOD/PromptReco-v2/000/273/158/00000/2C8772DF-F319-E611-AEC1-02163E014122.root',
+	]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
 from PhysicsTools.PatAlgos.patEventContent_cff import patEventContentNoCleaning
