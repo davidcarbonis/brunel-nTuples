@@ -39,11 +39,13 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 	'HLT_Ele23_WPLoose_Gsf_v3', 				#SingleElectron
 	'HLT_IsoMu18_v2',					#SingleMuon
 	'HLT_IsoTkMu18_v2',					#SinglueMuon
-	'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3', 	#DoubleElectron
+	'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3', 	#DoubleElectron, disabled at at 1E34
+	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3',         #DoubleElectron
 	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2', 		#DoubleMuon
-	'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3', 	#Muon+Electron
-	'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v3', 	#Muon+Electron
+	'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3', 	#Muon+Electron, disabled at at 1E34
+	'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v3', 	#Muon+Electron, disabled at at 1E34
+	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3', 	#Muon+Electron
         ),
                                            l1TriggerTag = cms.InputTag("gtDigis"),                                    
                                            checkTriggers = cms.bool(True),
