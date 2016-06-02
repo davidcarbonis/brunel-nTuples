@@ -245,7 +245,8 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source.fileNames = [
 #	'root://xrootd.unl.edu//store/mc/RunIISpring16MiniAODv1/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/00000/0422A8C4-0E03-E611-8C29-00266CFF0B84.root',
-	'root://xrootd.unl.edu//store/mc/RunIISpring16MiniAODv2/TprimeBToBW_M-800_TuneCUETP8M1_13TeV-madgraph-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2-v1/00000/66164700-7B10-E611-94EB-02163E00E9F1.root',
+#	'root://xrootd.unl.edu//store/mc/RunIISpring16MiniAODv2/TprimeBToBW_M-800_TuneCUETP8M1_13TeV-madgraph-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2-v1/00000/66164700-7B10-E611-94EB-02163E00E9F1.root',
+	'root://xrootd.unl.edu//store/mc/RunIISpring16MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/60000/02FAC354-971B-E611-845A-008CFA111358.root',
         ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
