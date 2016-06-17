@@ -66,8 +66,10 @@ private:
   edm::InputTag metJPTTag_;     
  
   edm::EDGetTokenT<edm::TriggerResults> trigToken_;
+  edm::EDGetTokenT<edm::TriggerResults> metFilterToken_;
   std::vector<std::string> fakeTrigLabelList_;
   std::vector<std::string> triggerList_;
+  std::vector<std::string> metFilterList_;
   edm::InputTag l1TrigLabel_;
   edm::EDGetTokenT<reco::GenParticleCollection> genParticlesToken_;
   edm::EDGetTokenT<reco::GenParticleCollection> genSimParticlesToken_;
@@ -101,6 +103,7 @@ private:
 
   std::map<std::string,int> hltpasses_;
   std::vector<std::string> hltnames_;
+  std::vector<std::string> metFilterNames_;
   std::vector<std::string> btaggingparamnames_;
   std::vector<std::string> btaggingparaminputtypes_;
   std::map<std::string,PerformanceResult::ResultType> btaggingparamtype_;
@@ -234,6 +237,9 @@ private:
   double weight_muF2_;
   double weight_muR0p5_;
   double weight_muR2_;
+  double weight_muF0p5muR0p5_;
+  double weight_muF2muR2_;
+
   double origWeightForNorm_;
 
   int processId_; int genMyProcId;
@@ -706,10 +712,11 @@ private:
   std::map< std::string, std::vector<float> > tau_pt;
   
   std::vector<int> triggerRes;
+  std::vector<int> metFilterRes;
   std::vector<int> HLT_fakeTriggerValues;
   int nTriggerBits;
   int TriggerBits[700];
-  
+
   float topo_sphericity;
   float topo_aplanarity;
   float topo_sphericitye;

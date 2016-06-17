@@ -67,68 +67,16 @@ from PhysicsTools.SelectorUtils.pvSelector_cfi import pvSelector
 ########Jet corrections########
 ###############################
 
-#process.load('PhysicsTools.PatAlgos.producersLayer1.jetUpdater_cff')
-#from PhysicsTools.PatAlgos.producersLayer1.jetUpdater_cff import patJetCorrFactorsUpdated ## For some reason this doesn't work. Just load the module instead.
-#process.patJetCorrFactorsReapplyJEC = process.patJetCorrFactorsUpdated.clone(
-#  src = cms.InputTag("slimmedJets"),
-#  levels = ['L1FastJet', 
-#        'L2Relative', 
-#        'L3Absolute'],
-#  payload = 'AK4PFchs' ) # Make sure to choose the appropriate levels and payload here!
+from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
 
-#from PhysicsTools.PatAlgos.producersLayer1.jetUpdater_cff import patJetsUpdated
-#process.patJetsReapplyJEC = process.patJetsUpdated.clone(
-#  jetSource = cms.InputTag("slimmedJets"),
-#  jetCorrFactorsSource = cms.VInputTag(cms.InputTag("patJetCorrFactorsReapplyJEC"))
-#  )
+updateJetCollection(
+   process,
+   jetSource = cms.InputTag('slimmedJets'),
+   labelName = 'UpdatedJEC',
+   jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute']), 'None'),
+)
 
-#process.jetCorrection = cms.Sequence( process.patJetCorrFactorsReapplyJEC + process. patJetsReapplyJEC )
-
-###############################
-###########Filters#############
-###############################
-
-process.load('CommonTools.RecoAlgos.HBHENoiseFilterResultProducer_cfi')
-process.load('PhysicsTools.PatAlgos.slimming.metFilterPaths_cff')
-process.load('RecoMET.METFilters.eeBadScFilter_cfi')
-
-process.goodVertices = cms.EDFilter(
-      "VertexSelector",
-        filter = cms.bool(False),
-        src = cms.InputTag("offlineSlimmedPrimaryVertices"),
-        cut = cms.string("!isFake && ndof > 4 && abs(z) <= 24 && position.rho < 2")
-      )
-
-process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
-                                           vertexCollection = cms.InputTag('offlineSlimmedPrimaryVertices'),
-                                           minimumNDOF = cms.uint32(4) ,
-                                           maxAbsZ = cms.double(24),
-                                           maxd0 = cms.double(2)
-                                           )
-
-process.goodOfflinePrimaryVertices = cms.EDFilter(
-    "PrimaryVertexObjectFilter",
-    filterParams = cms.PSet( minNdof = cms.double( 4. ) ,
-                             maxZ = cms.double( 24. ) ,
-                             maxRho = cms.double( 2. ) ) ,
-    filter = cms.bool( True) ,
-    src = cms.InputTag( 'offlineSlimmedPrimaryVertices' ) )
-
-process.eeBadScFilter.EERecHitSource = cms.InputTag('reducedEgamma', 'reducedEERecHits')
-
-
-process.filtersSeq = cms.Sequence(
-#    process.goodOfflinePrimaryVertices*
-    process.HBHENoiseFilterResultProducer
-    * process.HBHENoiseFilter
-    * process.HBHENoiseIsoFilter
-    * process.CSCTightHalo2015Filter
-    * process.EcalDeadCellTriggerPrimitiveFilter
-    * process.eeBadScFilter
-    * process.goodVertices 
-#    * process.trkPOGFilters
-    )
-
+process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC )
 
 ###############################
 ###### Electron ID ############
@@ -217,7 +165,7 @@ process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will 
 process.makeTopologyNtupleMiniAOD.electronPFTag = cms.InputTag("slimmedElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFTag = cms.InputTag("slimmedMuons")
-process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("slimmedJets")
+process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
 process.makeTopologyNtupleMiniAOD.metPFTag = cms.InputTag("slimmedMETs")
 process.makeTopologyNtupleMiniAOD.rhoToken = cms.InputTag("fixedGridRhoFastjetAll")                                            
 process.makeTopologyNtupleMiniAOD.conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions")
@@ -278,9 +226,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
-#    process.jetCorrection *
-    process.primaryVertexFilter *
-    process.filtersSeq *
+    process.jetCorrection *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *
     process.makeTopologyNtupleMiniAOD

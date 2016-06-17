@@ -155,8 +155,10 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     //    jetJPTTag_(iConfig.getParameter<edm::InputTag>("jetJPTTag")),
     //    metJPTTag_(iConfig.getParameter<edm::InputTag>("metJPTTag")),
     trigToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("triggerToken"))),
+    metFilterToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("metFilterToken"))),
     fakeTrigLabelList_(iConfig.getParameter<std::vector<std::string> >("fakeTriggerList")),
     triggerList_(iConfig.getParameter<std::vector<std::string> >("triggerList")),
+    metFilterList_(iConfig.getParameter<std::vector<std::string> >("metFilterList")),
     l1TrigLabel_(iConfig.getParameter<edm::InputTag>("l1TriggerTag")),
     genParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticles"))),
     genSimParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genSimParticles"))),
@@ -184,6 +186,7 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     nonTrigMvaCategoriesMapToken_(consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("nonTrigMvaCategoriesMap"))),
 
     hltnames_(0),
+    metFilterNames_(0),	
     btaggingparamnames_(iConfig.getParameter<std::vector<std::string> >("btagParameterizationList")),
     btaggingparaminputtypes_(iConfig.getParameter<std::vector<std::string> >("btagParameterizationMode")),
     //    eleIDsToNtuple_(iConfig.getParameter<std::vector<std::string> >("eleIDsToNtuple")),
@@ -1194,15 +1197,19 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
     weight_muF2_ = EventHandle->weights()[1].wgt; // muF = 2 | muR = 1
     weight_muR0p5_ = EventHandle->weights()[6].wgt; // muF = 1 | muR = 0.5
     weight_muR2_ = EventHandle->weights()[3].wgt; // muF = 1 | muR = 2
+    weight_muF0p5muR0p5_ = EventHandle->weights()[9].wgt; // muF = 0.5 | muR = 0.5
+    weight_muF2muR2_ = EventHandle->weights()[5].wgt; // muF = 2 | muR = 2
 
     origWeightForNorm_ = EventHandle->originalXWGTUP();
   }
 
   else {
-    weight_muF0p5_ = 0.0;
-    weight_muF2_ = 0.0;
-    weight_muR0p5_ = 0.0;
-    weight_muR2_ = 0.0;
+    weight_muF0p5_ = -999.0;
+    weight_muF2_ = -999.0;
+    weight_muR0p5_ = -999.0;
+    weight_muR2_ = -999.0;
+    weight_muF0p5muR0p5_ = -999.0;
+    weight_muF2muR2_ = -999.0; 
     origWeightForNorm_ = 0.0;
   }
 
@@ -2038,6 +2045,11 @@ void MakeTopologyNtupleMiniAOD::cleararrays(void){
   {
       triggerRes[ iTrig ] = -99;
   }
+  for( size_t iMetFilter = 0; iMetFilter < metFilterList_.size(); iMetFilter++ )		
+  {		
+      metFilterRes[ iMetFilter ] = -99;		
+  }
+
   for(size_t ii=0; ii<HLT_fakeTriggerValues.size(); ii++)
     HLT_fakeTriggerValues[ii]=-99;
   for(size_t ii=0; ii<200; ii++)
@@ -2257,6 +2269,8 @@ void MakeTopologyNtupleMiniAOD::bookBranches(){
   mytree_->Branch("weight_muF2", &weight_muF2_, "weight_muF2/D");
   mytree_->Branch("weight_muR0p5", &weight_muR0p5_, "weight_muR0p5/D");
   mytree_->Branch("weight_muR2", &weight_muR2_, "weight_muR2/D");
+  mytree_->Branch("weight_muF0p5muR0p5", &weight_muF0p5muR0p5_, "weight_muF0p5muR0p5/D");		
+  mytree_->Branch("weight_muF2muR2", &weight_muF2muR2_, "weight_muF2muR2/D");
   mytree_->Branch("origWeightForNorm", &origWeightForNorm_, "origWeightForNorm/D");
 
   while(HLT_fakeTriggerValues.size()<fakeTrigLabelList_.size())
@@ -2277,10 +2291,19 @@ void MakeTopologyNtupleMiniAOD::bookBranches(){
   {
       triggerRes.push_back(-99);
   }
+  while( metFilterRes.size() < metFilterList_.size() )		
+  {		
+      metFilterRes.push_back(-99);		
+  }
   for( size_t iTrig = 0; iTrig < triggerList_.size(); iTrig++ )
   {
       std::cout << "Booking trigger branch: " << triggerList_[iTrig] << std::endl;
       mytree_->Branch( triggerList_[iTrig].c_str(), &triggerRes[iTrig], (triggerList_[iTrig] + "/I").c_str() );
+  }
+  for( size_t iMetFilter = 0; iMetFilter < metFilterList_.size(); iMetFilter++ )		
+  {		
+      std::cout << "Booking MET filter branch: " << metFilterList_[iMetFilter]  << std::endl;		
+      mytree_->Branch( metFilterList_[iMetFilter].c_str(), &metFilterRes[iMetFilter], (metFilterList_[iMetFilter] + "/I").c_str() );		
   }
 
 // generator level information
@@ -3276,6 +3299,36 @@ void MakeTopologyNtupleMiniAOD::fillTriggerData(const edm::Event& iEvent)
     }
   }// hltResults.wasRun()
  
+  edm::Handle<edm::TriggerResults> metFilterResults;		
+  iEvent.getByToken(metFilterToken_, metFilterResults);
+
+  if(metFilterResults.product()->wasrun()){		
+    const edm::TriggerNames & metFilterNames = iEvent.triggerNames(*metFilterResults);		
+    // HLTBits_Size=metFilterResults.product()->size();		
+  		
+    metFilterNames_=metFilterNames.triggerNames();		
+    for(int iFilter=0; iFilter< (int)metFilterNames_.size();++iFilter)		
+    { 		
+      const bool accept(metFilterResults->accept(iFilter));		
+      //      if(histocontainer_["eventcount"]->GetBinContent(0.0)<2)		
+      //	std::cout << "TRIGGER BIT:"<< iFilter <<", NAME:" << metFilterNames_[iFilter] << " FIRED:" << accept << std::endl;		
+      int filterbit=0;		
+      if(accept){		
+	filterbit=1;		
+      }		
+      if(!metFilterResults->wasrun(iFilter))		
+	filterbit=-1;		
+      if(metFilterResults->error(iFilter))		
+	filterbit=-2;		
+      for( size_t iMetFilterList = 0; iMetFilterList < metFilterList_.size(); iMetFilterList++ )		
+      {		
+	  if( metFilterList_[ iMetFilterList ] == metFilterNames_[iFilter] )		
+	  {		
+	    metFilterRes[ iMetFilterList ] = filterbit;		
+	  }		
+      }		
+    }		
+  }// metFilterResults.wasRun()	
 
   // collect the fake trigger information:
   if(fakeTrigLabelList_.size()>0){

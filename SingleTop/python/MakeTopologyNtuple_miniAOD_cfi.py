@@ -28,6 +28,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 					   effAreasConfigFile =cms.FileInPath("RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt"),
 					   pileupToken	      = cms.InputTag("slimmedAddPileupInfo"),
                                            triggerToken  = cms.InputTag("TriggerResults","","HLT"),
+                                           metFilterToken  = cms.InputTag("TriggerResults", "", ""),
                                            fakeTriggerList = cms.vstring(), # empty. You can add fake triggers that are run on the fly to this list. No check on the process name is made so when duplicates are available only the latest one is added.
 					   isLHEflag = cms.bool(True),
 					   externalLHEToken = cms.InputTag("externalLHEProducer"),
@@ -47,12 +48,20 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 	'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v3', 	#Muon+Electron, disabled at at 1E34
 	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3', 	#Muon+Electron
         ),
+                                           metFilterList = cms.vstring(		
+	#MET Filters		
+	'Flag_HBHENoiseFilter',		
+	'Flag_HBHENoiseIsoFilter',		
+	'Flag_CSCTightHalo2015Filter',		
+	'Flag_EcalDeadCellTriggerPrimitiveFilter',		
+	'Flag_goodVertices',		
+	'Flag_eeBadScFilter',		
+	),	
                                            l1TriggerTag = cms.InputTag("gtDigis"),                                    
                                            checkTriggers = cms.bool(True),
                                            genParticles = cms.InputTag("prunedGenParticles"),
 					   genSimParticles = cms.InputTag("prunedGenParticles"),
                                            runMCInfo = cms.bool(True), # if set to true will skip MCInfo section
-                                           doJERSmear = cms.bool(False), # out of date and done in analysis.
                                            runPUReWeight = cms.bool(False), #Run pile-up reweighting. Don't do if this is data I guess.
                                            doCuts = cms.bool(False), # if set to false will skip ALL cuts. Z veto still applies electron cuts.
                                            # default preselection settings! see https://twiki.cern.ch/twiki/bin/view/CMS/VplusJets for inspiration
@@ -89,7 +98,6 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            runSwissCross = cms.bool(True),
                                            runPDFUncertainties = cms.bool(False),
                                            useResidualJEC = cms.bool(False),
-                                           electronID = cms.string('eidRobustTight'),
                                            ignoreElectronID = cms.bool(True), # if set to true will save all electrons, also those not passing electronID.
                                            minEleEt = cms.double(0), #  electron ET in GeV
                                            eleMvaCut=cms.double(0.0), #mva minimum. Maximum mva value is hard-coded as 1, as I think that's the highest it can be.
@@ -118,7 +126,6 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            muonTrackLayersWithHits = cms.double(6), # 5 or less is skipped.
                                            muonRelIsoTight = cms.double(0.2),
                                            metCut = cms.double(30.0),
-                                           fillAll = cms.bool(False),
                                            # photon rejection:
                                                dREleGeneralTrackMatchForPhotonRej=cms.double(0.3),
                                            magneticFieldForPhotonRej=cms.double(3.8),
