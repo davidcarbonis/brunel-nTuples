@@ -27,7 +27,8 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            rhoToken           = cms.InputTag("fixedGridRhoFastjetAll"),
 					   effAreasConfigFile =cms.FileInPath("RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt"),
 					   pileupToken	      = cms.InputTag("slimmedAddPileupInfo"),
-                                           triggerToken  = cms.InputTag("TriggerResults","","HLT"),
+                                           triggerToken  = cms.InputTag("TriggerResults", "", "HLT"),
+                                           metFilterToken  = cms.InputTag("TriggerResults", "", ""),
                                            fakeTriggerList = cms.vstring(), # empty. You can add fake triggers that are run on the fly to this list. No check on the process name is made so when duplicates are available only the latest one is added.
 					   isLHEflag = cms.bool(True),
 					   externalLHEToken = cms.InputTag("externalLHEProducer"),
@@ -49,7 +50,24 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
         'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v2', #Muon+Electron
         'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3', #Muon+Electron
         'HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v3', #Muon+Electron
+	#MET Triggers
+	'HLT_PFMET120_PFMHT120_IDTight_v2',
+	'HLT_PFMET170_JetIdCleaned_v2',
+	'HLT_PFMET170_HBHECleaned_v2',
+	'HLT_PFHT350_PFMET100_v1',
+	'HLT_PFHT800_v2',
+	'HLT_MET250_v1',
+	'HLT_PFHT750_4JetPt50_v3',
         ),
+                                           metFilterList = cms.vstring(
+	#MET Filters
+	'Flag_HBHENoiseFilter',
+	'Flag_HBHENoiseIsoFilter',
+	'Flag_CSCTightHalo2015Filter',
+	'Flag_EcalDeadCellTriggerPrimitiveFilter',
+	'Flag_goodVertices',
+	'Flag_eeBadScFilter',
+	),
                                            l1TriggerTag = cms.InputTag("gtDigis"),                                    
                                            checkTriggers = cms.bool(True),
                                            genParticles = cms.InputTag("prunedGenParticles"),

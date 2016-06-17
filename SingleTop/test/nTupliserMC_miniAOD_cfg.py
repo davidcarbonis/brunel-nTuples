@@ -88,47 +88,7 @@ process.jetCorrection = cms.Sequence( process.patJetCorrFactorsReapplyJEC + proc
 ###########Filters#############
 ###############################
 
-process.load('CommonTools.RecoAlgos.HBHENoiseFilterResultProducer_cfi')
 process.load('PhysicsTools.PatAlgos.slimming.metFilterPaths_cff')
-process.load('RecoMET.METFilters.eeBadScFilter_cfi')
-
-process.goodVertices = cms.EDFilter(
-      "VertexSelector",
-        filter = cms.bool(False),
-        src = cms.InputTag("offlineSlimmedPrimaryVertices"),
-        cut = cms.string("!isFake && ndof > 4 && abs(z) <= 24 && position.rho < 2")
-      )
-
-process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
-                                           vertexCollection = cms.InputTag('offlineSlimmedPrimaryVertices'),
-                                           minimumNDOF = cms.uint32(4) ,
-                                           maxAbsZ = cms.double(24),
-                                           maxd0 = cms.double(2)
-                                           )
-
-process.goodOfflinePrimaryVertices = cms.EDFilter(
-    "PrimaryVertexObjectFilter",
-    filterParams = cms.PSet( minNdof = cms.double( 4. ) ,
-                             maxZ = cms.double( 24. ) ,
-                             maxRho = cms.double( 2. ) ) ,
-    filter = cms.bool( True) ,
-    src = cms.InputTag( 'offlineSlimmedPrimaryVertices' ) )
-
-process.eeBadScFilter.EERecHitSource = cms.InputTag('reducedEgamma', 'reducedEERecHits')
-
-
-process.filtersSeq = cms.Sequence(
-#    process.goodOfflinePrimaryVertices*
-    process.HBHENoiseFilterResultProducer
-    * process.HBHENoiseFilter
-    * process.HBHENoiseIsoFilter
-    * process.CSCTightHalo2015Filter
-    * process.EcalDeadCellTriggerPrimitiveFilter
-    * process.eeBadScFilter
-    * process.goodVertices 
-#    * process.trkPOGFilters
-    )
-
 
 ###############################
 ###### Electron ID ############
@@ -179,13 +139,12 @@ for idmod in my_id_modules:
 # The N-tupliser/cutFlow
 ####
 
-triggerStringName = 'HLT'
-
 process.load("NTupliser.SingleTop.MakeTopologyNtuple_miniAOD_cfi")
 process.makeTopologyNtupleMiniAOD.flavorHistoryTag=cms.bool(False) # change to false at your convenience
 process.makeTopologyNtupleMiniAOD.runMCInfo=cms.bool(True) # prevent checking gen info
 process.makeTopologyNtupleMiniAOD.runPUReWeight=cms.bool(True) #Run the reweighting for MC. I think I'm doing this right, but I might check anyway.
-process.makeTopologyNtupleMiniAOD.triggerTag = cms.InputTag("TriggerResults","",triggerStringName) # or HLT, depends on file   
+process.makeTopologyNtupleMiniAOD.triggerToken=cms.InputTag("TriggerResults", "", "HLT")
+process.makeTopologyNtupleMiniAOD.metFilterToken=cms.InputTag("TriggerResults", "", "PAT")
 
 #settings to apply tight selection:
 process.makeTopologyNtupleMiniAOD.minJetPt=cms.double(30.0)
@@ -291,6 +250,7 @@ process.source.fileNames = [
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/80000/16D7652D-ECD8-E511-846F-0025905A6110.root',
 	#'root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext4-v1/10000/E87BABB0-EAD1-E511-8234-44A8423C4026.root',
 	#'root://xrootd.unl.edu//store/user/kskovpen/FCNCProd/MINIAOD/v20160501/ST_TH_1L3B/kskovpen_ST_TH_1L3B_f0dc44844e1feaf4276c92c681b1bfa9_USER/160503_091941/0000/miniaod_1.root',
+	#'file:./999.root',
         ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
@@ -323,8 +283,6 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
 process.p = cms.Path(
     process.jetCorrection *
-    process.primaryVertexFilter *
-    process.filtersSeq *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *
     process.makeTopologyNtupleMiniAOD

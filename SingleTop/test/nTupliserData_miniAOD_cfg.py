@@ -89,45 +89,7 @@ process.jetCorrection = cms.Sequence( process.patJetCorrFactorsReapplyJEC + proc
 ###########Filters#############
 ###############################
 
-process.load('CommonTools.RecoAlgos.HBHENoiseFilterResultProducer_cfi')
 process.load('PhysicsTools.PatAlgos.slimming.metFilterPaths_cff')
-
-process.goodVertices = cms.EDFilter(
-      "VertexSelector",
-        filter = cms.bool(False),
-        src = cms.InputTag("offlineSlimmedPrimaryVertices"),
-        cut = cms.string("!isFake && ndof > 4 && abs(z) <= 24 && position.rho < 2")
-      )
-
-process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
-                                           vertexCollection = cms.InputTag('offlineSlimmedPrimaryVertices'),
-                                           minimumNDOF = cms.uint32(4) ,
-                                           maxAbsZ = cms.double(24),
-                                           maxd0 = cms.double(2)
-                                           )
-process.goodOfflinePrimaryVertices = cms.EDFilter(
-    "PrimaryVertexObjectFilter",
-    filterParams = cms.PSet( minNdof = cms.double( 4. ) ,
-                             maxZ = cms.double( 24. ) ,
-                             maxRho = cms.double( 2. ) ) ,
-    filter = cms.bool( True) ,
-    src = cms.InputTag( 'offlineSlimmedPrimaryVertices' ) )
-
-process.eeBadScFilter.EERecHitSource = cms.InputTag('reducedEgamma', 'reducedEERecHits')
-
-
-process.filtersSeq = cms.Sequence(
-#    process.goodOfflinePrimaryVertices*
-    process.HBHENoiseFilterResultProducer
-    * process.HBHENoiseFilter
-    * process.HBHENoiseIsoFilter
-    * process.CSCTightHalo2015Filter
-    * process.EcalDeadCellTriggerPrimitiveFilter
-    * process.eeBadScFilter
-    * process.goodVertices 
-#    * process.trkPOGFilters
-    )
-
 
 ###############################
 ###### Electron ID ############
@@ -175,13 +137,12 @@ for idmod in my_id_modules:
 # The N-tupliser/cutFlow
 ####
 
-triggerStringName = 'HLT'
-
 process.load("NTupliser.SingleTop.MakeTopologyNtuple_miniAOD_cfi")
 process.makeTopologyNtupleMiniAOD.flavorHistoryTag=cms.bool(False) # change to false at your convenience
 process.makeTopologyNtupleMiniAOD.runMCInfo=cms.bool(False) # prevent checking gen info
 process.makeTopologyNtupleMiniAOD.runPUReWeight=cms.bool(False) #Run the reweighting for MC. I think I'm doing this right, but I might check anyway.
-process.makeTopologyNtupleMiniAOD.triggerTag = cms.InputTag("TriggerResults","",triggerStringName) # or HLT, depends on file   
+process.makeTopologyNtupleMiniAOD.triggerToken=cms.InputTag("TriggerResults", "", "HLT")
+process.makeTopologyNtupleMiniAOD.metFilterToken=cms.InputTag("TriggerResults", "", "RECO")
 
 #settings to apply tight selection:
 process.makeTopologyNtupleMiniAOD.minJetPt=cms.double(30)
@@ -281,8 +242,6 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
 process.p = cms.Path(
     process.jetCorrection *
-    process.primaryVertexFilter *
-    process.filtersSeq *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *
     process.makeTopologyNtupleMiniAOD
