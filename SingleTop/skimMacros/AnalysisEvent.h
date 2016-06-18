@@ -615,7 +615,7 @@ public :
    TBranch	  *b_weight_muF2;   //!
    TBranch	  *b_weight_muR0p5;   //!
    TBranch	  *b_weight_muR2;   //!
-   TBranch	  *b_weight_muF0p5R0p5;   //!
+   TBranch	  *b_weight_muF0p5muR0p5;   //!
    TBranch	  *b_weight_muF2R2;   //!
    TBranch	  *b_origWeightForNorm;   //!
    //   TBranch        *b_numVert;    //!
