@@ -616,7 +616,7 @@ public :
    TBranch	  *b_weight_muR0p5;   //!
    TBranch	  *b_weight_muR2;   //!
    TBranch	  *b_weight_muF0p5muR0p5;   //!
-   TBranch	  *b_weight_muF2R2;   //!
+   TBranch	  *b_weight_muF2muR2;   //!
    TBranch	  *b_origWeightForNorm;   //!
    //   TBranch        *b_numVert;    //!
    TBranch        *b_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2;
@@ -1046,7 +1046,7 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    	fChain->SetBranchAddress("weight_muR0p5", &weight_muR0p5, &b_weight_muR0p5);
    	fChain->SetBranchAddress("weight_muR2", &weight_muR2, &b_weight_muR2);
    	fChain->SetBranchAddress("weight_muF0p5muR0p5", &weight_muF0p5muR0p5, &b_weight_muF0p5muR0p5);
-   	fChain->SetBranchAddress("weight_muF2mu2", &weight_muF2muR2, &b_weight_muF2R2);
+   	fChain->SetBranchAddress("weight_muF2muR2", &weight_muF2muR2, &b_weight_muF2muR2);
    	fChain->SetBranchAddress("origWeightForNorm", &origWeightForNorm, &b_origWeightForNorm);
    }
    //Data trigger branches
