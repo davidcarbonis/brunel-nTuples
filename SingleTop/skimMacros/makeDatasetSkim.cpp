@@ -16,9 +16,6 @@ int main(int argc, char* argv[]){
   std::ifstream fileList(fileName.c_str());
   std::string line;             
 
-  unsigned int summedWeights [14] {};
-  TH1I* weightHisto = new TH1I ("sumNumPosMinusNegWeights","sumNumPosMinusNegWeights", 7, -3.5, 3.5);
-
   int fileNum = 0;
   while(getline(fileList,line)){
 
@@ -34,6 +31,9 @@ int main(int argc, char* argv[]){
       fileNum++;
       continue;
     }
+
+    unsigned int summedWeights [14] {};
+    TH1I* weightHisto = new TH1I ("sumNumPosMinusNegWeights","sumNumPosMinusNegWeights", 7, -3.5, 3.5);
 
     TChain * datasetChain = new TChain("makeTopologyNtupleMiniAOD/tree");
     datasetChain->Add(line.c_str());
@@ -107,6 +107,7 @@ int main(int argc, char* argv[]){
     delete datasetChain;
     delete event;
     delete outTree;
+    delete weightHisto;
     fileNum++;
     std::cerr << "" << std::endl;
   }
