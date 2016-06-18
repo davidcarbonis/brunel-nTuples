@@ -11,7 +11,7 @@ int main(int argc, char* argv[]){
   std::string fileName = argv[1];
   std::string datasetName = argv[2];
   bool isMC (false);
-  if ( argc == 4 ) isMC = argv[3];
+  if ( argc == 4 ) isMC = std::stoi(argv[3]);
 
   std::ifstream fileList(fileName.c_str());
   std::string line;             
