@@ -293,7 +293,7 @@ public :
    Double_t	   weight_muF2;
    Double_t	   weight_muR0p5;
    Double_t	   weight_muR2;
-   Double_t	   weight_muF0p5R0p5;
+   Double_t	   weight_muF0p5muR0p5;
    Double_t	   weight_muF2muR2;
    Double_t	   origWeightForNorm;
    //   Int_t           numVert;
@@ -1045,7 +1045,7 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
   	fChain->SetBranchAddress("weight_muF2", &weight_muF2, &b_weight_muF2);
    	fChain->SetBranchAddress("weight_muR0p5", &weight_muR0p5, &b_weight_muR0p5);
    	fChain->SetBranchAddress("weight_muR2", &weight_muR2, &b_weight_muR2);
-   	fChain->SetBranchAddress("weight_muF0p5R0p5", &weight_muF0p5R0p5, &b_weight_muF0p5R0p5);
+   	fChain->SetBranchAddress("weight_muF0p5muR0p5", &weight_muF0p5muR0p5, &b_weight_muF0p5muR0p5);
    	fChain->SetBranchAddress("weight_muF2mu2", &weight_muF2muR2, &b_weight_muF2R2);
    	fChain->SetBranchAddress("origWeightForNorm", &origWeightForNorm, &b_origWeightForNorm);
    }
