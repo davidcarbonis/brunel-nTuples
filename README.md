@@ -7,10 +7,6 @@ The famous nTupliser passed down from one generation of Brunel phD student to th
 All our marks left indelibly on it, if no other reason than that the next guy has no idea what we did.
 Needs documentation, cleaning and... I dunno, re-writing?
 
-Stuff that I know needs to be fixed before run2:
-
--getByLabels need to be changed to consumes
-
 Enjoy, future students.
 
 //////////////////////////////////
@@ -18,7 +14,11 @@ Enjoy, future students.
 
 CMSSW_7_6_3 branch contains code from CMSSW_7_4_14 branch which is modified to work for Run 2 miniAOD 76X data and MC.
 As data/MC reprocessing taking is using CMSSW_7_6_X, the branch is named CMSSW_7_6_3 as the version which data and MC is currently avaliable for (and which electron VID and MET uncertainities are avlaiable for).
-Development is being undertaken in.
+Use CMSSW_7_6_3 branch for Run 2015 and CMSSW_8_0_5 branch for Run 2016.
+
+For EGMSmearing to work, the user will have to execute the following command and compile CMSSW:
+git cms-merge-topic -u matteosan1:smearer_76X
+
 
 To be continued ...
 
