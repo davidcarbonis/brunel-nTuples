@@ -1,7 +1,7 @@
 # Adding in a few variables to change up flags etc
 CC = g++
-CFLAGS = -g -Wall -std=c++0x $(shell root-config --cflags) -I/home/eepgadm/lib/local/include
-LIBS = $(shell root-config --libs) -L/home/eepgadm/lib/local/lib -lconfig++ 
+CFLAGS = -g -Wall -std=c++0x $(shell root-config --cflags) -isystem$(shell root-config --incdir)
+LIBS = $(shell root-config --libs)
 ROOTSYS = /cms/cmssw/slc5_amd64_gcc462/lcg/root/5.32.00/
 
 #EXECUTABLE_OBJECT_FILES = $(patsubst %.cpp,%.o,${EXECUTABLE_SOURCES})
