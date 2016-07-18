@@ -57,6 +57,26 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4', 	#Muon+Electron
 	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5', 	#Muon+Electron
 	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v6', 	#Muon+Electron
+
+	#Updated MET Triggers for 2016
+	'HLT_MET250_v1',
+	'HLT_MET250_v2',
+	'HLT_MET250_v3',
+	'HLT_PFMET120_PFMHT120_IDTight_v2',
+	'HLT_PFMET120_PFMHT120_IDTight_v3',
+	'HLT_PFMET120_PFMHT120_IDTight_v4',
+	'HLT_PFMET170_HBHECleaned_v2',
+	'HLT_PFMET170_HBHECleaned_v3',
+	'HLT_PFMET170_HBHECleaned_v4',
+	'HLT_PFHT800_v2',
+	'HLT_PFHT800_v3',
+	'HLT_PFHT800_v4',
+	'HLT_PFHT750_4JetPt50_v3',
+	'HLT_PFHT750_4JetPt50_v4',
+	'HLT_PFHT750_4JetPt50_v5',
+	'HLT_PFHT300_PFMET100_v1',
+	'HLT_PFHT300_PFMET100_v2',
+	'HLT_PFHT300_PFMET100_v3',
         ),
                                            metFilterList = cms.vstring(		
 	#MET Filters		
