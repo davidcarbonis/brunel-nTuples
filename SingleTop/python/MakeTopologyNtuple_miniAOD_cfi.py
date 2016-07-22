@@ -82,8 +82,8 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            metFilterList = cms.vstring(		
 	#MET Filters		
 	'Flag_HBHENoiseFilter',		
-	'Flag_HBHENoiseIsoFilter',		
-	'Flag_CSCTightHalo2015Filter',		
+	'Flag_HBHENoiseIsoFilter',
+	'Flag_globalTightHalo2016Filter',
 	'Flag_EcalDeadCellTriggerPrimitiveFilter',		
 	'Flag_goodVertices',		
 	'Flag_eeBadScFilter',		
