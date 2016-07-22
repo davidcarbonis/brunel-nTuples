@@ -300,20 +300,20 @@ public :
 
    //2016 Triggers
 
-   Int_t	   HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3;
    Int_t	   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3;
    Int_t	   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4;
    Int_t	   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5;
    Int_t	   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6;
+   Int_t	   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7;
    Int_t	   HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2;
    Int_t	   HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3;
    Int_t	   HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4;
    Int_t	   HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2;
    Int_t	   HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3;
-   Int_t	   HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3;
-   Int_t	   HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4;
-   Int_t	   HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5;
-   Int_t	   HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6;
+   Int_t	   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3;
+   Int_t	   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4;
+   Int_t	   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5;
+   Int_t	   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6;
    Int_t	   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3;
    Int_t	   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4;
    Int_t	   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5;
@@ -329,6 +329,7 @@ public :
    Int_t	   HLT_PFMET170_HBHECleaned_v2;
    Int_t	   HLT_PFMET170_HBHECleaned_v3;
    Int_t	   HLT_PFMET170_HBHECleaned_v4;
+   Int_t	   HLT_PFMET170_HBHECleaned_v5;
    Int_t	   HLT_PFHT800_v2;
    Int_t	   HLT_PFHT800_v3;
    Int_t	   HLT_PFHT800_v4;
@@ -342,7 +343,7 @@ public :
    //MET Filters
    Int_t	   Flag_HBHENoiseFilter;
    Int_t	   Flag_HBHENoiseIsoFilter;
-   Int_t	   Flag_CSCTightHalo2015Filter;
+   Int_t	   Flag_globalTightHalo2016Filter;
    Int_t	   Flag_EcalDeadCellTriggerPrimitiveFilter;
    Int_t	   Flag_goodVertices;
    Int_t	   Flag_eeBadScFilter;
@@ -634,20 +635,20 @@ public :
    TBranch	  *b_weight_muF2muR2;   //!
    TBranch	  *b_origWeightForNorm;   //!
    //   TBranch        *b_numVert;    //!
-   TBranch        *b_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3;
    TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3;
    TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4;
    TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5;
    TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6;
+   TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7;
    TBranch        *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2;
    TBranch        *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3;
    TBranch        *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4;
    TBranch        *b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2;
    TBranch        *b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6;
+   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3;
+   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4;
+   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5;
+   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6;
    TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3;
    TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4;
    TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5;
@@ -662,6 +663,7 @@ public :
    TBranch	  *b_HLT_PFMET170_HBHECleaned_v2;
    TBranch	  *b_HLT_PFMET170_HBHECleaned_v3;
    TBranch	  *b_HLT_PFMET170_HBHECleaned_v4;
+   TBranch	  *b_HLT_PFMET170_HBHECleaned_v5;
    TBranch	  *b_HLT_PFHT800_v2;
    TBranch	  *b_HLT_PFHT800_v3;
    TBranch	  *b_HLT_PFHT800_v4;
@@ -674,7 +676,7 @@ public :
 
    TBranch	  *b_Flag_HBHENoiseFilter;
    TBranch	  *b_Flag_HBHENoiseIsoFilter;
-   TBranch	  *b_Flag_CSCTightHalo2015Filter;
+   TBranch	  *b_Flag_globalTightHalo2016Filter;
    TBranch	  *b_Flag_EcalDeadCellTriggerPrimitiveFilter;
    TBranch	  *b_Flag_goodVertices;
    TBranch	  *b_Flag_eeBadScFilter;
@@ -1081,20 +1083,20 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    	fChain->SetBranchAddress("origWeightForNorm", &origWeightForNorm, &b_origWeightForNorm);
    }
    //Trigger branches
-   fChain->SetBranchAddress("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3", &HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3, &b_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3);
    fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3);
    fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4);
    fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5);
    fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6);
+   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7);
    fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2);
    fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3);
    fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4);
    fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2", &HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2, &b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2);
    fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3", &HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3, &b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3", &HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3, &b_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4", &HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4, &b_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5", &HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5, &b_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6", &HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6, &b_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6);
+   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3", &HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3, &b_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3);
+   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4", &HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4, &b_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4);
+   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5", &HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5, &b_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5);
+   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6", &HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6, &b_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6);
    fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3);
    fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4);
    fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5);
@@ -1109,6 +1111,7 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v2", &HLT_PFMET170_HBHECleaned_v2, &b_HLT_PFMET170_HBHECleaned_v2);
    fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v3", &HLT_PFMET170_HBHECleaned_v3, &b_HLT_PFMET170_HBHECleaned_v3);
    fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v4", &HLT_PFMET170_HBHECleaned_v4, &b_HLT_PFMET170_HBHECleaned_v4);
+   fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v5", &HLT_PFMET170_HBHECleaned_v5, &b_HLT_PFMET170_HBHECleaned_v5);
    fChain->SetBranchAddress("HLT_PFHT800_v2", &HLT_PFHT800_v2, &b_HLT_PFHT800_v2);
    fChain->SetBranchAddress("HLT_PFHT800_v3", &HLT_PFHT800_v3, &b_HLT_PFHT800_v3);
    fChain->SetBranchAddress("HLT_PFHT800_v4", &HLT_PFHT800_v4, &b_HLT_PFHT800_v4);
@@ -1121,7 +1124,7 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    //MET filter branches
    fChain->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter, &b_Flag_HBHENoiseFilter);
    fChain->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter, &b_Flag_HBHENoiseIsoFilter);
-   fChain->SetBranchAddress("Flag_CSCTightHalo2015Filter", &Flag_CSCTightHalo2015Filter, &b_Flag_CSCTightHalo2015Filter);
+   fChain->SetBranchAddress("Flag_globalTightHalo2016Filter", &Flag_globalTightHalo2016Filter, &b_Flag_globalTightHalo2016Filter);
    fChain->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter, &b_Flag_EcalDeadCellTriggerPrimitiveFilter);
    fChain->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices, &b_Flag_goodVertices);
    fChain->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter, &b_Flag_eeBadScFilter);
