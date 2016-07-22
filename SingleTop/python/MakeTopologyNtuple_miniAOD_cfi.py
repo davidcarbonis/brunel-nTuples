@@ -37,11 +37,11 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            
                                            triggerList = cms.vstring(                                                              
 	#Updated Triggers for 2016
-	'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3', 	#DoubleElectron, disabled at at 1E34
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3',         #DoubleElectron
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4',         #DoubleElectron
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5',         #DoubleElectron
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6',         #DoubleElectron
+	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7',         #DoubleElectron
 
 	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3', 		#DoubleMuon
@@ -49,10 +49,10 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3', 		#DoubleMuon
 
-	'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3', 	#Muon+Electron, disabled at at 1E34
-	'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4', 	#Muon+Electron, disabled at at 1E34
-	'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5', 	#Muon+Electron, disabled at at 1E34
-	'HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6', 	#Muon+Electron, disabled at at 1E34
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3', 	#Muon+Electron
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4', 	#Muon+Electron
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5', 	#Muon+Electron
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6', 	#Muon+Electron
 	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3', 	#Muon+Electron
 	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4', 	#Muon+Electron
 	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5', 	#Muon+Electron
@@ -68,6 +68,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 	'HLT_PFMET170_HBHECleaned_v2',
 	'HLT_PFMET170_HBHECleaned_v3',
 	'HLT_PFMET170_HBHECleaned_v4',
+	'HLT_PFMET170_HBHECleaned_v5',
 	'HLT_PFHT800_v2',
 	'HLT_PFHT800_v3',
 	'HLT_PFHT800_v4',
