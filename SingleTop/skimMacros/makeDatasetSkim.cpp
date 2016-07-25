@@ -88,13 +88,25 @@ int main(int argc, char* argv[]){
       if (numLeps >= 2) outTree->Fill();
     } 
 
-    weightHisto->Fill(0., summedWeights[0]-summedWeights[1]);
-    weightHisto->Fill(-1., summedWeights[2]-summedWeights[3]);
-    weightHisto->Fill(-2., summedWeights[4]-summedWeights[5]);
-    weightHisto->Fill(-3., summedWeights[6]-summedWeights[7]);
-    weightHisto->Fill(1., summedWeights[8]-summedWeights[9]);
-    weightHisto->Fill(2., summedWeights[10]-summedWeights[11]);
-    weightHisto->Fill(3., summedWeights[12]-summedWeights[13]);
+    if ( isMC ) {
+
+      weightHisto->Fill(0., summedWeights[0]-summedWeights[1]);
+      weightHisto->Fill(-1., summedWeights[2]-summedWeights[3]);
+      weightHisto->Fill(-2., summedWeights[4]-summedWeights[5]);
+      weightHisto->Fill(-3., summedWeights[6]-summedWeights[7]);
+      weightHisto->Fill(1., summedWeights[8]-summedWeights[9]);
+      weightHisto->Fill(2., summedWeights[10]-summedWeights[11]);
+      weightHisto->Fill(3., summedWeights[12]-summedWeights[13]);
+/*
+      weightHisto->Fill(0., -666.);
+      weightHisto->Fill(-1., -666);
+      weightHisto->Fill(-2., -666);
+      weightHisto->Fill(-3., -666);
+      weightHisto->Fill(1., -666);
+      weightHisto->Fill(2., -666);
+      weightHisto->Fill(3., -666);
+*/
+    }
 
     outFile.cd();
     outTree->Write();
