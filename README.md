@@ -20,6 +20,9 @@ CMSSW_8_0_5 branch contains code from CMSSW_7_6_3 branch which is modified to wo
 As data/MC reprocessing taking is using CMSSW_8_0_X, the branch is named CMSSW_8_0_5 as the version which data and MC is currently avaliable for (and which electron VID and MET uncertainities are avlaiable for).
 Development is being undertaken in.
 
+For MET Filters not included in HLT collection to work, the following command must be executed:
+git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
+
 To be continued ...
 
 Alexander.

@@ -70,6 +70,9 @@ private:
   std::vector<std::string> fakeTrigLabelList_;
   std::vector<std::string> triggerList_;
   std::vector<std::string> metFilterList_;
+  edm::EDGetTokenT<bool> BadChCandFilterToken_; // Extra MET filter tokens due to being made on the fly
+  edm::EDGetTokenT<bool> BadPFMuonFilterToken_; // Extra MET filter tokens due to being made on the fly
+
   edm::InputTag l1TrigLabel_;
   edm::EDGetTokenT<reco::GenParticleCollection> genParticlesToken_;
   edm::EDGetTokenT<reco::GenParticleCollection> genSimParticlesToken_;
@@ -713,6 +716,8 @@ private:
   
   std::vector<int> triggerRes;
   std::vector<int> metFilterRes;
+  int badChargedCandidateFilterRes_;
+  int badPFMuonFilterRes_;
   std::vector<int> HLT_fakeTriggerValues;
   int nTriggerBits;
   int TriggerBits[700];

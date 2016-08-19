@@ -79,6 +79,37 @@ updateJetCollection(
 process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC )
 
 ###############################
+#########EGM Smearing##########
+###############################
+
+process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+                                                       calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
+                                                                                                                 engineName = cms.untracked.string('TRandom3'),
+                                                                                           ),
+                                                       calibratedPatPhotons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
+                                                                                                                 engineName = cms.untracked.string('TRandom3'),
+                                                                                           ),
+                                                       )
+process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
+
+calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
+                                        
+                                        # input collections
+                                        electrons = cms.InputTag('slimmedElectrons'),
+                                        gbrForestName = cms.string("gedelectron_p4combination_25ns"),
+                                        
+                                        # data or MC corrections
+                                        # if isMC is false, data corrections are applied
+                                        isMC = cms.bool(False),
+                                        
+                                        # set to True to get special "fake" smearing for synchronization. Use JUST in case of synchronization
+                                        isSynchronization = cms.bool(False),
+
+                                        correctionFile = cms.string("80Xapproval")
+                                        )
+
+
+###############################
 ###### Electron ID ############
 ###############################
 
@@ -92,6 +123,18 @@ my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID
 #add them to the VID producer
 for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+
+###############################
+######## MET Filters ##########
+###############################
+
+process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
+process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
+process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
+
+process.load('RecoMET.METFilters.BadChargedCandidateFilter_cfi')
+process.BadChargedCandidateFilter.muons = cms.InputTag("slimmedMuons")
+process.BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidates")
 
 ###############################
 ##### MET Uncertainities ######
@@ -114,7 +157,7 @@ for idmod in my_id_modules:
 #runType1PFMEtUncertainties(process,addToPatDefaultSequence=False,
 #                           photonCollection="slimmedPhotons",
 #                           jetCollection="slimmedJets",
-#                           electronCollection="slimmedElectrons",
+#                           electronCollection="selectedPatElectrons",
 #                           muonCollection="slimmedMuons",
 #                           tauCollection="slimmedTaus")
 
@@ -216,7 +259,7 @@ process.out.outputCommands += cms.untracked.vstring('keep *_flavorHistoryFilter_
 process.out.fileName = cms.untracked.string('Data_out.root')
 
 #NTuple output
-process.TFileService = cms.Service("TFileService", fileName = cms.string('Data_test.root') )
+process.TFileService = cms.Service("TFileService", fileName = cms.string('Data_test_old.root') )
 process.options.wantSummary = False
 process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
@@ -224,6 +267,9 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
+    process.BadPFMuonFilter *
+    process.BadPFMuonFilter *
+#    process.calibratedPatElectrons *
     process.jetCorrection *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *
