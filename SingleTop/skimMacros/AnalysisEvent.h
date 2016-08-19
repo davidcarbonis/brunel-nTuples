@@ -347,6 +347,8 @@ public :
    Int_t	   Flag_EcalDeadCellTriggerPrimitiveFilter;
    Int_t	   Flag_goodVertices;
    Int_t	   Flag_eeBadScFilter;
+   Int_t	   Flag_BadChargedCandidateFilter;
+   Int_t	   Flag_BadPFMuonFilter;
 
    //Gen info
    Int_t           nGenPar;
@@ -680,6 +682,8 @@ public :
    TBranch	  *b_Flag_EcalDeadCellTriggerPrimitiveFilter;
    TBranch	  *b_Flag_goodVertices;
    TBranch	  *b_Flag_eeBadScFilter;
+   TBranch	  *b_Flag_BadChargedCandidateFilter;
+   TBranch	  *b_Flag_BadPFMuonFilter;
 
    TBranch        *b_nGenPar;   //!
    TBranch        *b_genParEta;   //!
@@ -1128,6 +1132,8 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter, &b_Flag_EcalDeadCellTriggerPrimitiveFilter);
    fChain->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices, &b_Flag_goodVertices);
    fChain->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter, &b_Flag_eeBadScFilter);
+   fChain->SetBranchAddress("Flag_BadChargedCandidateFilter", &Flag_BadChargedCandidateFilter, &b_Flag_BadChargedCandidateFilter);
+   fChain->SetBranchAddress("Flag_BadPFMuonFilter", &Flag_BadPFMuonFilter, &b_Flag_BadPFMuonFilter);
    if (isMC) {
      fChain->SetBranchAddress("nGenPar", &nGenPar, &b_nGenPar);
      fChain->SetBranchAddress("genParEta", genParEta, &b_genParEta);
