@@ -138,7 +138,7 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     trackToken_(consumes<std::vector<pat::PackedCandidate> >(iConfig.getParameter<edm::InputTag>("trackToken"))),
     conversionsToken_(consumes<std::vector<reco::Conversion> >(iConfig.getParameter<edm::InputTag>("conversionsToken"))),
 
-    eleLabel_(iConfig.getParameter<edm::InputTag>("electronTag")),
+    eleLabel_(mayConsume<pat::ElectronCollection>(iConfig.getParameter<edm::InputTag>("electronTag"))),
     muoLabel_(iConfig.getParameter<edm::InputTag>("muonTag")),
     jetLabel_(iConfig.getParameter<edm::InputTag>("jetLabel")),
     genJetsToken_(consumes<reco::GenJetCollection>(iConfig.getParameter<edm::InputTag>("genJetToken"))),
@@ -493,7 +493,7 @@ void MakeTopologyNtupleMiniAOD::fillBeamSpot(const edm::Event& iEvent, const edm
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::EDGetTokenT<pat::ElectronCollection> eleIn_, std::string ID){
+void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::EDGetTokenT<pat::ElectronCollection> eleIn_, std::string ID, edm::EDGetTokenT<pat::ElectronCollection> eleInOrg_){
     
     // if(ran_eleloop_)
     // 	return;
@@ -517,6 +517,11 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     edm::Handle<pat::ElectronCollection> electronHandle; //changed handle from pat::Electron to reco::GsfElectron
     iEvent.getByToken(eleIn_,electronHandle);
     const pat::ElectronCollection & electrons = *electronHandle;
+
+    // Original collection used for id-decisions
+    edm::Handle<pat::ElectronCollection> electronOrgHandle;
+    iEvent.getByToken(eleInOrg_,electronOrgHandle);
+    //const pat::ElectronCollection & electronsOrg = *electronOrgHandle;
 
     // Electron conversions
     edm::Handle<reco::ConversionCollection> Conversions;
@@ -589,7 +594,8 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       size_t jele = etSortedIndex[iele];
       //const pat::Electron& ele = electrons[jele];
       const pat::Electron& ele = (*electronHandle)[jele];
-      pat::ElectronRef refel(electronHandle, jele);
+
+      pat::ElectronRef refel(electronOrgHandle, jele);
 
       // look up id decisions
       bool isPassTrigMedium = (*medium_trig_id_decisions)[refel]; // NEW
@@ -2166,7 +2172,7 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
 
   //  fillMuons(iEvent,iSetup, muoLabel_, "Calo");
   fillMuons(iEvent,iSetup, patMuonsToken_, "PF");
-  fillElectrons(iEvent,iSetup, patElectronsToken_, "PF"); 
+  fillElectrons(iEvent,iSetup, patElectronsToken_, "PF", eleLabel_); 
 
   //  fillJets(iEvent,iSetup, jetLabel_, "Calo");
   //Putting MET info before jets so it can be used for jet smearing.

@@ -79,6 +79,38 @@ updateJetCollection(
 process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC )
 
 ###############################
+#########EGM Smearing##########
+###############################
+
+process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
+process.load('EgammaAnalysis.ElectronTools.calibratedPhotonsRun2_cfi')
+
+process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+                                                       calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
+                                                                                                                 engineName = cms.untracked.string('TRandom3'),
+                                                                                           ),
+                                                       calibratedPatPhotons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
+                                                                                                                 engineName = cms.untracked.string('TRandom3'),
+                                                                                           ),
+                                                       )
+
+calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
+                                        
+                                        # input collections
+                                        electrons = cms.InputTag('slimmedElectrons'),
+                                        gbrForestName = cms.string("gedelectron_p4combination_25ns"),
+                                        
+                                        # data or MC corrections
+                                        # if isMC is false, data corrections are applied
+                                        isMC = cms.bool(True),
+                                        
+                                        # set to True to get special "fake" smearing for synchronization. Use JUST in case of synchronization
+                                        isSynchronization = cms.bool(False),
+
+                                        correctionFile = cms.string("80Xapproval")
+                                        )
+
+###############################
 ###### Electron ID ############
 ###############################
 
@@ -172,11 +204,11 @@ process.makeTopologyNtupleMiniAOD.runSwissCross = cms.bool(False)
 process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
 
 #Make the inputs for the n-tupliser right.
-process.makeTopologyNtupleMiniAOD.electronPFTag = cms.InputTag("slimmedElectrons")
+process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("calibratedPatElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
-process.makeTopologyNtupleMiniAOD.muonPFTag = cms.InputTag("slimmedMuons")
+process.makeTopologyNtupleMiniAOD.muonPFToken = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
-process.makeTopologyNtupleMiniAOD.metPFTag = cms.InputTag("slimmedMETs")
+process.makeTopologyNtupleMiniAOD.metPFToken = cms.InputTag("slimmedMETs")
 process.makeTopologyNtupleMiniAOD.rhoToken = cms.InputTag("fixedGridRhoFastjetAll")                                            
 process.makeTopologyNtupleMiniAOD.conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions")
 
@@ -236,6 +268,8 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
+    process.calibratedPatElectrons *
+#    process.calibratedPatPhotons *
     process.BadChargedCandidateFilter *
     process.BadPFMuonFilter *
     process.jetCorrection *
@@ -247,4 +281,5 @@ process.p = cms.Path(
 process.schedule = cms.Schedule( process.p )
 
 process.outpath = cms.EndPath( process.out )
+
 

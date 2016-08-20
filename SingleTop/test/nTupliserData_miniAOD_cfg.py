@@ -82,32 +82,24 @@ process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * proc
 #########EGM Smearing##########
 ###############################
 
-process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-                                                       calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
-                                                                                                                 engineName = cms.untracked.string('TRandom3'),
-                                                                                           ),
-                                                       calibratedPatPhotons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
-                                                                                                                 engineName = cms.untracked.string('TRandom3'),
-                                                                                           ),
-                                                       )
 process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
+process.load('EgammaAnalysis.ElectronTools.calibratedPhotonsRun2_cfi')
 
 calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
-                                        
+
                                         # input collections
                                         electrons = cms.InputTag('slimmedElectrons'),
                                         gbrForestName = cms.string("gedelectron_p4combination_25ns"),
-                                        
+
                                         # data or MC corrections
                                         # if isMC is false, data corrections are applied
                                         isMC = cms.bool(False),
-                                        
-                                        # set to True to get special "fake" smearing for synchronization. Use JUST in case of synchronization
+
+                                        # set to True to get special "fake" smearing for synchronization. Use JUST in case of synchron$
                                         isSynchronization = cms.bool(False),
 
                                         correctionFile = cms.string("80Xapproval")
                                         )
-
 
 ###############################
 ###### Electron ID ############
@@ -157,7 +149,7 @@ process.BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidate
 #runType1PFMEtUncertainties(process,addToPatDefaultSequence=False,
 #                           photonCollection="slimmedPhotons",
 #                           jetCollection="slimmedJets",
-#                           electronCollection="selectedPatElectrons",
+#                           electronCollection="calibratedPatElectrons",
 #                           muonCollection="slimmedMuons",
 #                           tauCollection="slimmedTaus")
 
@@ -203,11 +195,11 @@ process.makeTopologyNtupleMiniAOD.runSwissCross = cms.bool(False)
 process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
 
 #Make the inputs for the n-tupliser right.
-process.makeTopologyNtupleMiniAOD.electronPFTag = cms.InputTag("slimmedElectrons")
+process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("calibratedPatElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
-process.makeTopologyNtupleMiniAOD.muonPFTag = cms.InputTag("slimmedMuons")
+process.makeTopologyNtupleMiniAOD.muonPFToken = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
-process.makeTopologyNtupleMiniAOD.metPFTag = cms.InputTag("slimmedMETs")
+process.makeTopologyNtupleMiniAOD.metPFToken = cms.InputTag("slimmedMETs")
 process.makeTopologyNtupleMiniAOD.rhoToken = cms.InputTag("fixedGridRhoFastjetAll")
 process.makeTopologyNtupleMiniAOD.conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions")
 
@@ -259,7 +251,7 @@ process.out.outputCommands += cms.untracked.vstring('keep *_flavorHistoryFilter_
 process.out.fileName = cms.untracked.string('Data_out.root')
 
 #NTuple output
-process.TFileService = cms.Service("TFileService", fileName = cms.string('Data_test_old.root') )
+process.TFileService = cms.Service("TFileService", fileName = cms.string('Data_test_new.root') )
 process.options.wantSummary = False
 process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
@@ -267,9 +259,10 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
+    process.calibratedPatElectrons *
+#    process.calibratedPatPhotons *
+    process.BadChargedCandidateFilter *
     process.BadPFMuonFilter *
-    process.BadPFMuonFilter *
-#    process.calibratedPatElectrons *
     process.jetCorrection *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *
@@ -279,3 +272,4 @@ process.p = cms.Path(
 process.schedule = cms.Schedule( process.p )
 
 process.outpath = cms.EndPath( process.out )
+

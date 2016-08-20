@@ -46,7 +46,7 @@ private:
   edm::EDGetTokenT<std::vector<pat::PackedCandidate> > trackToken_;
   edm::EDGetTokenT<reco::ConversionCollection> conversionsToken_;
 
-  edm::InputTag eleLabel_;
+  edm::EDGetTokenT<pat::ElectronCollection> eleLabel_;
   edm::InputTag muoLabel_;
   edm::InputTag jetLabel_;
   //  edm::InputTag genJetTag_; // Need to replace
@@ -205,7 +205,7 @@ private:
   void fillMuons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::MuonCollection>, std::string);
   void fillPhotons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::PhotonCollection>, std::string);
   void fillTaus(const edm::Event&, const edm::EventSetup&, edm::InputTag, std::string);
-  void fillElectrons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::ElectronCollection>, std::string);
+  void fillElectrons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::ElectronCollection>, std::string, edm::EDGetTokenT<pat::ElectronCollection>);
   void fillMissingET(const edm::Event&, const edm::EventSetup&,edm::EDGetTokenT<pat::METCollection>, std::string);
   void fillEventInfo(const edm::Event&, const edm::EventSetup&);
   void fillMCInfo(const edm::Event&, const edm::EventSetup&);
