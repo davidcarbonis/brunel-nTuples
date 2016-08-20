@@ -83,7 +83,15 @@ process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * proc
 ###############################
 
 process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
-process.load('EgammaAnalysis.ElectronTools.calibratedPhotonsRun2_cfi')
+
+process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+                                                       calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
+                                                                                                                 engineName = cms.untracked.string('TRandom3'),
+                                                                                           ),
+                                                       calibratedPatPhotons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
+                                                                                                                 engineName = cms.untracked.string('TRandom3'),
+                                                                                           ),
+                                                       )
 
 calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
 
@@ -251,7 +259,7 @@ process.out.outputCommands += cms.untracked.vstring('keep *_flavorHistoryFilter_
 process.out.fileName = cms.untracked.string('Data_out.root')
 
 #NTuple output
-process.TFileService = cms.Service("TFileService", fileName = cms.string('Data_test_new.root') )
+process.TFileService = cms.Service("TFileService", fileName = cms.string('Data_test.root') )
 process.options.wantSummary = False
 process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
@@ -260,7 +268,6 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
 process.p = cms.Path(
     process.calibratedPatElectrons *
-#    process.calibratedPatPhotons *
     process.BadChargedCandidateFilter *
     process.BadPFMuonFilter *
     process.jetCorrection *

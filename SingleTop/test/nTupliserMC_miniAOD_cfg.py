@@ -83,13 +83,9 @@ process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * proc
 ###############################
 
 process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
-process.load('EgammaAnalysis.ElectronTools.calibratedPhotonsRun2_cfi')
 
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
                                                        calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
-                                                                                                                 engineName = cms.untracked.string('TRandom3'),
-                                                                                           ),
-                                                       calibratedPatPhotons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
                                                                                                                  engineName = cms.untracked.string('TRandom3'),
                                                                                            ),
                                                        )
@@ -269,7 +265,6 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
 process.p = cms.Path(
     process.calibratedPatElectrons *
-#    process.calibratedPatPhotons *
     process.BadChargedCandidateFilter *
     process.BadPFMuonFilter *
     process.jetCorrection *

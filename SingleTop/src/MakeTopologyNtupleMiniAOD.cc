@@ -2191,7 +2191,6 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
   fillMCInfo(iEvent,iSetup);
   //  fillMissingET(iEvent,iSetup, metLabel_, "Calo");
 
-
   //  fillMissingET(iEvent,iSetup, metJPTTag_, "JPT");
   //  fillPhotons(iEvent,iSetup, phoLabel_, "Calo");
   //  fillGeneralTracks(iEvent, iSetup);
