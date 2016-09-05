@@ -23,9 +23,9 @@ git remote add -f -t ecal_smear_fix_80X emanueledimarco https://github.com/emanu
 git cms-addpkg EgammaAnalysis/ElectronTools
 git checkout -b from-52f192a 52f192a
 
-# download the txt files with the corrections
+// download the txt files with the corrections
 cd EgammaAnalysis/ElectronTools/data
-# corrections calculated with 12.9 fb-1 of 2016 data (ICHEP 16 dataset).
+// corrections calculated with 12.9 fb-1 of 2016 data (ICHEP 16 dataset).
 git clone -b ICHEP2016_v2 https://github.com/ECALELFS/ScalesSmearings.git
 
 ///
@@ -53,8 +53,12 @@ cmsDriver.py SingleNuE10_cfi --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v
 Current output dataset DAS URL: N/A - not used as minbias input currently
 
 FCNC script for LHE to AOD:
-cmsDriver.py FCNCProd/FastSim/Hadronizer_Generic_cfi.py --mc --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v1 --filein file:/scratch/data/TopPhysics/FCNC/lhe/TLL_Thadronic_kappa_zct.lhe --filetype LHE --era Run2_2016 --fast -n 2500000 --eventcontent AODSIM --datatier AODSIM -s GEN,SIM,RECOBEFMIX,DIGI,L1,L1Reco,RECO,HLT --python_filename prodLHEtoAOD_ST_TZ_2L_Kappa_Zct.py --pileup 2016_25ns_SpringMC_PUScenarioV1_PoissonOOTPU --beamspot Realistic25ns13TeV2016Collision --pileup_input --pileup_input "dbs:/MinBias/almorton-CRAB3_MC_nTupilisation_PileUp_160905-0e8a9371e45edd808242a5d89d29dcd9/USER instance=prod/phys03" --fileout aod.root --no_exec
+cmsDriver.py FCNCProd/FastSim/Hadronizer_Generic_cfi.py --mc --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v1 --filein file:/scratch/data/TopPhysics/FCNC/lhe/TLL_Thadronic_kappa_zct.lhe --filetype LHE --era Run2_2016 --fast -n 2500000 --eventcontent AODSIM --datatier AODSIM -s GEN,SIM,RECOBEFMIX,DIGI,L1,L1Reco,RECO,HLT --python_filename prodLHEtoAOD_ST_TZ_2L_Kappa_Zct.py --pileup 2016_25ns_SpringMC_PUScenarioV1_PoissonOOTPU --beamspot Realistic25ns13TeV2016Collision --pileup_input "dbs:/MinBias/almorton-CRAB3_MC_nTupilisation_PileUp_160905-0e8a9371e45edd808242a5d89d29dcd9/USER instance=prod/phys03" --fileout aod.root --no_exec
 
+Current output dataset DAS URLs: In production
+
+FCNC script for AOD to miniAOD:
+To be written ...
 Current output dataset DAS URLs: In production
 
 Alexander.
