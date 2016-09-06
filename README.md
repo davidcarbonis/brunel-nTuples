@@ -19,8 +19,11 @@ For MET Filters not included in HLT collection to work, the following command mu
 git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
 
 For EGM Smearing to work follow the instructions below:
+
 git remote add -f -t ecal_smear_fix_80X emanueledimarco https://github.com/emanueledimarco/cmssw.git
+
 git cms-addpkg EgammaAnalysis/ElectronTools
+
 git checkout -b from-52f192a 52f192a
 
 // download the txt files with the corrections
@@ -39,6 +42,7 @@ FCNC Stuff:
 
 Generation of signal samples up till the LHE format: https://twiki.cern.ch/twiki/bin/view/CMS/TopFCNCgenerationSingletop
 Rest of instructions follow below ...
+N.B. For some reason I have not been able to get premixing to work correctly on pion - used lxplus machines to submit the Crab jobs and retrieved the final output (i.e. signal files) on pion.
 
 cmsDriver instructions used to create various FCNC files:
 
@@ -50,7 +54,7 @@ Current output dataset DAS URL: https://cmsweb.cern.ch/das/request?input=%2FMinB
 pileup premixing:
 cmsDriver.py SingleNuE10_cfi --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v1 --pileup_input "dbs:/MinBias/almorton-CRAB3_MC_nTupilisation_PileUp_160905-0e8a9371e45edd808242a5d89d29dcd9/USER instance=prod/phys03" --fast --mc --eventcontent PREMIX -s GEN,SIM,RECOBEFMIX,DIGIPREMIX,L1,DIGI2RAW --era Run2_2016 --beamspot Realistic25ns13TeV2016Collision --datatier GEN-SIM-DIGI-RAW --pileup 2016_25ns_SpringMC_PUScenarioV1_PoissonOOTPU -n 5000000 --fileout minbias_premixed.root --no_exec
 
-Current output dataset DAS URL: N/A - not used as minbias input currently
+Current output dataset DAS URL: In production
 
 FCNC script for LHE to AOD:
 cmsDriver.py FCNCProd/FastSim/Hadronizer_Generic_cfi.py --mc --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v1 --filein file:/scratch/data/TopPhysics/FCNC/lhe/TLL_Thadronic_kappa_zct.lhe --filetype LHE --era Run2_2016 --fast -n 2500000 --eventcontent AODSIM --datatier AODSIM -s GEN,SIM,RECOBEFMIX,DIGI,L1,L1Reco,RECO,HLT --python_filename prodLHEtoAOD_ST_TZ_2L_Kappa_Zct.py --pileup 2016_25ns_SpringMC_PUScenarioV1_PoissonOOTPU --beamspot Realistic25ns13TeV2016Collision --pileup_input "dbs:/MinBias/almorton-CRAB3_MC_nTupilisation_PileUp_160905-0e8a9371e45edd808242a5d89d29dcd9/USER instance=prod/phys03" --fileout aod.root --no_exec
