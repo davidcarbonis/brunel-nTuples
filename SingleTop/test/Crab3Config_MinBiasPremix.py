@@ -12,8 +12,8 @@ config.JobType.psetName = 'SingleNuE10_cfi_GEN_SIM_RECOBEFMIX_DIGIPREMIX_L1_DIGI
 
 config.Data.outputPrimaryDataset = 'MinBias'
 config.Data.splitting = 'EventBased'
-config.Data.unitsPerJob = 500000
-NJOBS = 10  # This is not a configuration parameter, but an auxiliary variable that we use in the next line.
+config.Data.unitsPerJob = 20000
+NJOBS = 250  # This is not a configuration parameter, but an auxiliary variable that we use in the next line.
 config.Data.totalUnits = config.Data.unitsPerJob * NJOBS
 config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB())
 
