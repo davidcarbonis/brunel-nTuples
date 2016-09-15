@@ -47,17 +47,8 @@ N.B. For some reason I have not been able to get premixing to work correctly on 
 cmsDriver instructions used to create various FCNC files:
 
 pileup:
-cmsDriver.py MinBias_13TeV_pythia8_TuneCUETP8M1_cfi --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v1 --fast -n 5000000 --mc --eventcontent FASTPU -s GEN,SIM,RECOBEFMIX --datatier GEN-SIM-RECO --beamspot Realistic25ns13TeV2016Collision --era Run2_2016 --fileout minbias.root --no_exec
-
-Current output dataset DAS URL: https://cmsweb.cern.ch/das/request?input=%2FMinBias%2Falmorton-CRAB3_MC_PileUp_160906b-0e8a9371e45edd808242a5d89d29dcd9%2FUSER&instance=prod%2Fphys03
-
-pileup premixing:
-cmsDriver.py SingleNuE10_cfi --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v1 --pileup_input "dbs:/MinBias/almorton-CRAB3_MC_PileUp_160906b-0e8a9371e45edd808242a5d89d29dcd9/USER instance=prod/phys03" --fast --mc --eventcontent PREMIX -s GEN,SIM,RECOBEFMIX,DIGIPREMIX,L1,DIGI2RAW --era Run2_2016 --beamspot Realistic25ns13TeV2016Collision --datatier GEN-SIM-DIGI-RAW --pileup 2016_25ns_SpringMC_PUScenarioV1_PoissonOOTPU -n 5000000 --fileout minbias_premixed.root --no_exec
-
-Current output dataset DAS URL: In production
-
 FCNC script for LHE to AOD:
-cmsDriver.py FCNCProd/FastSim/Hadronizer_Generic_cfi.py --mc --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v1 --filein file:/scratch/data/TopPhysics/FCNC/lhe/TLL_Thadronic_kappa_zct.lhe --filetype LHE --era Run2_2016 --fast -n 2500000 --eventcontent AODSIM --datatier AODSIM -s GEN,SIM,RECOBEFMIX,DIGI,L1,L1Reco,RECO,HLT --python_filename prodLHEtoAOD_ST_TZ_2L_Kappa_Zct.py --pileup 2016_25ns_SpringMC_PUScenarioV1_PoissonOOTPU --beamspot Realistic25ns13TeV2016Collision --pileup_input "dbs:/MinBias/almorton-CRAB3_MC_PileUp_160906b-0e8a9371e45edd808242a5d89d29dcd9/USER instance=prod/phys03" --fileout aod.root --no_exec
+cmsDriver.py FCNCProd/FastSim/Hadronizer_Generic_cfi.py --mc --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v1 --filein file:/scratch/data/TopPhysics/FCNC/lhe/TLL_Thadronic_kappa_zct.lhe --filetype LHE --era Run2_2016 --fast -n 2500000 --eventcontent AODSIM --datatier AODSIM -s GEN,SIM,RECOBEFMIX,DIGIPREMIX_S2,DATAMIX,L1,DIGI2RAW,L1Reco,RECO,HLT:@frozen2016 --python_filename prodLHEtoAOD_ST_TZ_2L_Kappa_Zct.py --pileup 2016_25ns_SpringMC_PUScenarioV1_PoissonOOTPU --customise SimGeneral/DataMixingModule/customiseForPremixingInput.customiseForPreMixingInput --beamspot Realistic25ns13TeV2016Collision --pileup_input "dbs:/Neutrino_E-10_gun/RunIISpring16FSPremix-PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/GEN-SIM-DIGI-RAW instance=prod/phys03" --fileout aod.root --no_exec
 
 Current output dataset DAS URLs: In production
 
