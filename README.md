@@ -64,11 +64,21 @@ ST FCNC script for LHE to AOD:-
 
 cmsDriver.py Configuration/GenProduction/python/Hadronizer_ZToLL_cfi.py  --mc --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v1 --filein file:/tmp/almorton/TLL_Thadronic_kappa_zct.lhe --filetype LHE --era Run2_2016 --fast -n 10 --eventcontent AODSIM --datatier AODSIM -s GEN,SIM,RECOBEFMIX,DIGIPREMIX_S2,DATAMIX,L1,DIGI2RAW,L1Reco,RECO,HLT:@frozen2016 --pileup_input "dbs:/Neutrino_E-10_gun/RunIISpring16FSPremix-PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/GEN-SIM-DIGI-RAW" --customise SimGeneral/DataMixingModule/customiseForPremixingInput.customiseForPreMixingInput --beamspot Realistic25ns13TeV2016Collision --python_filename prodLHEtoAOD_ST_TZ_2L_Kappa_Zct.py --datamix PreMix --fileout aod.root --no_exec
 
+Current output dataset DAS URLs:
+
 TTbar FCNC script for LHE to AOD:-
 
 cmsDriver.py Configuration/GenProduction/python/Hadronizer_TTbar_ZToLL_cfi.py --mc --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v1  --filein root://sbgse1.in2p3.fr//store/user/kskovpen/FCNCProdv2/LHE/TT_topLeptonicDecay_kappa_zut_LO/0.lhe --filetype LHE --era Run2_2016 --fast -n 10 --eventcontent AODSIM --datatier AODSIM -s GEN,SIM,RECOBEFMIX,DIGIPREMIX_S2,DATAMIX,L1,DIGI2RAW,L1Reco,RECO,HLT:@frozen2016 --pileup_input "dbs:/Neutrino_E-10_gun/RunIISpring16FSPremix-PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/GEN-SIM-DIGI-RAW" --customise SimGeneral/DataMixingModule/customiseForPremixingInput.customiseForPreMixingInput --beamspot Realistic25ns13TeV2016Collision --python_filename prodLHEtoAOD_TT_TopLeptonicDecay_TZ_2L_Kappa_Zut.py --datamix PreMix --fileout aod.root --no_exec
 
-Current output dataset DAS URLs: In production
+Current output dataset DAS URLs:
+/TT_TopLeptonicDecay_TZ_2L_Kappa_Zct_160919/almorton-CRAB3_MC_TT_TopLeptonicDecay_TZ_2L_Kappa_Zct_160919-58d7b4917a1118d8447b03a0cf3c4041/USER
+/TT_TopLeptonicDecay_TZ_2L_Kappa_Zut_160919/almorton-CRAB3_MC_TT_TopLeptonicDecay_TZ_2L_Kappa_Zut_160919-58d7b4917a1118d8447b03a0cf3c4041/USER
+/TT_TopLeptonicDecay_TZ_2L_Zeta_Zct_160919/almorton-CRAB3_MC_TT_TopLeptonicDecay_TZ_2L_Zeta_Zct_160919-58d7b4917a1118d8447b03a0cf3c4041/USER
+/TT_TopLeptonicDecay_TZ_2L_Zeta_Zut_160919/almorton-CRAB3_MC_TT_TopLeptonicDecay_TZ_2L_Zeta_Zut_160919-58d7b4917a1118d8447b03a0cf3c4041/USER
+/MinBias/almorton-CRAB3_MC_TT_AntiTopLeptonicDecay_TZ_2L_Kappa_Zct_160919-58d7b4917a1118d8447b03a0cf3c4041/USER
+/MinBias/almorton-CRAB3_MC_TT_AntiTopLeptonicDecay_TZ_2L_Kappa_Zut_160919-58d7b4917a1118d8447b03a0cf3c4041/USER
+/TT_AntiTopLeptonicDecay_TZ_2L_Zeta_Zct_160919/almorton-CRAB3_MC_TT_AntiTopLeptonicDecay_TZ_2L_Zeta_Zct_160919-58d7b4917a1118d8447b03a0cf3c4041/USER
+/TT_AntiTopLeptonicDecay_TZ_2L_Zeta_Zut_160919/almorton-CRAB3_MC_TT_AntiTopLeptonicDecay_TZ_2L_Zeta_Zut_160919-58d7b4917a1118d8447b03a0cf3c4041/USER
 
 FCNC script for AOD to miniAOD:
 
