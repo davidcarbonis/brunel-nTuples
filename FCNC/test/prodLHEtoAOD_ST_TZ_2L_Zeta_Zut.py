@@ -61,7 +61,7 @@ process.source = cms.Source("LHESource",
     'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zut/17.lhe',
     'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zut/18.lhe',
     'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zut/19.lhe',
-    )
+    ),
     inputCommands = cms.untracked.vstring('keep *', 
         'drop LHEXMLStringProduct_*_*_*')
 )
