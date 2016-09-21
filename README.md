@@ -71,7 +71,9 @@ cmsDriver.py Configuration/GenProduction/python/Hadronizer_TTbar_ZToLL_cfi.py --
 Current output dataset DAS URLs: In production
 
 FCNC script for AOD to miniAOD:
-To be written ...
+
+cmsDriver.py step2 --filein file:aod.root --fileout file:miniaod.root -n 10 -s PAT --eventcontent MINIAODSIM --runUnscheduled --mc --era Run2_2016 --no_exec --python_filename prodAODtoMINIAOD.py --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v1 --fast
+
 Current output dataset DAS URLs: In production
 
 Alexander.
