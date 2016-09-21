@@ -46,7 +46,16 @@ Rest of instructions follow below ...
 N.B. For some reason I have not been able to get premixing to work correctly on pion - used lxplus machines to submit the Crab jobs and retrieved the final output (i.e. signal files) on pion.
 
 The cmsDriver.py scripts must be run in the src directory of the CMSSW release ...
-Copy the hadroniser scripts from NTupliser/FCNC/python/ to Configuration/GenProduction/python/
+
+Additional setup if doing generation stuff (i.e. LHE to AOD):
+
+git cms-addpkg Configuration/Applications
+mkdir -p Configuration/GenProduction/
+git clone git@github.com:cms-sw/genproductions.git Configuration/GenProduction/
+git clone https://github.com/kskovpen/FCNCProd
+cp NTupliser/FCNC/python/* Configuration/GenProduction/python/
+
+Modify Configuration/Applications/python/ConfigBuilder.py to include "defaultOptions.limit = 0"
 
 cmsDriver instructions used to create various FCNC files:
 
