@@ -10,7 +10,6 @@ config.General.transferLogs = False
 config.JobType.pluginName = 'PrivateMC'
 config.JobType.psetName = 'prodLHEtoAOD_TT_TopLeptonicDecay_TZ_2L_Kappa_Zct.py'
 config.JobType.maxMemoryMB = 2500
-config.JobType.inputFiles = ['/tmp/almorton/TLL_Thadronic_kappa_zct.lhe'] #Required for local files, i.e. for ST gen
 
 config.Data.outputPrimaryDataset = 'TT_TopLeptonicDecay_TZ_2L_Kappa_Zct_160920'
 config.Data.splitting = 'EventBased'
