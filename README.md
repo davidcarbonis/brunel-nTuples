@@ -41,6 +41,7 @@ Status code for gen level is saved. Worth noting that other occasions where stat
 FCNC Stuff:
 
 Generation of signal samples up till the LHE format: https://twiki.cern.ch/twiki/bin/view/CMS/TopFCNCgenerationSingletop
+Due to the size of the lhe files generated, they cannot be included in the crab sandbox and have to be on a grid storage element to be accesible. The command to copy them is: xrdcopy <file> 'root://dc2-grid-64.brunel.ac.uk////cms/store/user/<username>/<dirPath>'
 Rest of instructions follow below ...
 N.B. For some reason I have not been able to get premixing to work correctly on pion - used lxplus machines to submit the Crab jobs and retrieved the final output (i.e. signal files) on pion.
 

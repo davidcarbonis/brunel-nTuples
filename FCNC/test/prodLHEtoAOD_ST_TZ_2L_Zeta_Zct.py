@@ -40,7 +40,28 @@ process.maxEvents = cms.untracked.PSet(
 # Input source
 process.source = cms.Source("LHESource",
     dropDescendantsOfDroppedBranches = cms.untracked.bool(False),
-    fileNames = cms.untracked.vstring('file:/tmp/almorton/TLL_Thadronic_zeta_zct.lhe'),
+    fileNames = cms.untracked.vstring(
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/0.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/1.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/2.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/3.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/4.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/5.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/6.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/7.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/8.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/9.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/10.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/11.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/12.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/13.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/14.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/15.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/16.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/17.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/18.lhe',
+    'root://dc2-grid-64.brunel.ac.uk////cms/store/user/almorton/FCNCProdv1/LHE/ST_TLL_Thadronic_zeta_zct/19.lhe',
+    )
     inputCommands = cms.untracked.vstring('keep *', 
         'drop LHEXMLStringProduct_*_*_*')
 )
