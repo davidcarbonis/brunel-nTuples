@@ -818,6 +818,12 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
 
     muonSortedGlobalID[ ID ][numMuo[ ID ]-1]=muo.isGlobalMuon();
     muonSortedTrackID[ ID ][numMuo[ ID ]-1]=muo.isTrackerMuon();
+    
+    muonValidFraction[ ID ][numMuo[ ID ]-1]=muo.innerTrack()->validFraction();
+    muonChi2LocalPosition[ ID ][numMuo[ ID ]-1]=muo.combinedQuality().chi2LocalPosition;
+    muonTrkKick[ ID ][numMuo[ ID ]-1]=muo.combinedQuality().trkKink;
+    muonSegmentCompatibility[ ID ][numMuo[ ID ]-1]=muon::segmentCompatibility(muo);
+
     //----------------------------------------------------------------------------
     if (muo.isTrackerMuon() && muo.isGlobalMuon()){
       muonSortedChi2[ ID ][numMuo[ ID ]-1]=muo.combinedMuon()->chi2(); //chi2 of the combined muon
@@ -1784,6 +1790,11 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
   muonSortedGlobalID[ ID ].clear();
   muonSortedTrackID[ ID ].clear();
 
+  muonValidFraction[ ID ].clear();
+  muonChi2LocalPosition[ ID ].clear();
+  muonTrkKick[ ID ].clear();
+  muonSegmentCompatibility[ ID ].clear();
+
   muonSortedChi2[ ID ].clear();
   muonSortedD0[ ID ].clear();
   muonSortedDBBeamSpotCorrectedTrackD0[ ID ].clear();
@@ -2643,6 +2654,11 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   muonSortedGlobalID[ ID ] = tempVecF;
   muonSortedTrackID[ ID ] = tempVecF;
 
+  muonValidFraction[ ID ] = tempVecF;
+  muonChi2LocalPosition[ ID ] = tempVecF;
+  muonTrkKick[ ID ] = tempVecF;
+  muonSegmentCompatibility[ ID ] = tempVecF;
+
   muonSortedChi2[ ID ] = tempVecF;
   muonSortedD0[ ID ] = tempVecF;
   muonSortedDBBeamSpotCorrectedTrackD0[ ID ] = tempVecF;
@@ -2740,6 +2756,11 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
 
   mytree_->Branch( (prefix + "NChambers").c_str(), &muonSortedNumChambers[ ID ][0], (prefix + "NChambers[numMuon" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "NMatches").c_str(), &muonSortedNumMatches[ ID ][0], (prefix + "NMatches[numMuon" + name + "]/I").c_str());
+
+  mytree_->Branch( (prefix + "ValidFraction").c_str(), &muonValidFraction[ ID ][0], (prefix + "ValidFraction[numMuon" + name + "]/F").c_str());
+  mytree_->Branch( (prefix + "Chi2LocalPosition").c_str(), &muonChi2LocalPosition[ ID ][0], (prefix + "Chi2LocalPosition[numMuon" + name + "]/F").c_str());
+  mytree_->Branch( (prefix + "TrkKick").c_str(), &muonTrkKick[ ID ][0], (prefix + "TrkKick[numMuon" + name + "]/F").c_str());
+  mytree_->Branch( (prefix + "SegmentCompatibility").c_str(), &muonSegmentCompatibility[ ID ][0], (prefix + "SegmentCompatibility[numMuon" + name + "]/F").c_str());
 
   if( runMCInfo_ )
   {

@@ -156,6 +156,10 @@ public :
    Int_t           muonPF2PATVldPixHits[20];   //[numMuonPF2PAT]
    Int_t           muonPF2PATMatchedStations[20];   //[numMuonPF2PAT]
    Float_t         muonPF2PATGlbTkNormChi2[20];   //[numMuonPF2PAT]
+   Float_t         muonPF2PATValidFraction[20];   //[numMuonPF2PAT]
+   Float_t         muonPF2PATChi2LocalPosition[20];   //[numMuonPF2PAT]
+   Float_t         muonPF2PATTrkKick[20];   //[numMuonPF2PAT]
+   Float_t         muonPF2PATSegmentCompatibility[20];   //[numMuonPF2PAT]
    Float_t         muonPF2PATDBPV[20];   //[numMuonPF2PAT]
    Float_t         muonPF2PATDZPV[20];   //[numMuonPF2PAT]
    Float_t         genMuonPF2PATPT[20];   //[numMuonPF2PAT]
@@ -496,6 +500,10 @@ public :
    TBranch        *b_muonPF2PATVldPixHits;   //!
    TBranch        *b_muonPF2PATMatchedStations;   //!
    TBranch        *b_muonPF2PATGlbTkNormChi2;   //!
+   TBranch        *b_muonPF2PATValidFraction;   //!
+   TBranch        *b_muonPF2PATChi2LocalPosition;   //!
+   TBranch        *b_muonPF2PATTrkKick;   //!
+   TBranch        *b_muonPF2PATSegmentCompatibility;   //!
    TBranch        *b_muonPF2PATDBPV;   //!
    TBranch        *b_muonPF2PATDZPV;   //!
    TBranch        *b_genMuonPF2PATPT;   //!
@@ -934,6 +942,10 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("muonPF2PATNMatches", muonPF2PATNMatches, &b_muonPF2PATNMatches);
    fChain->SetBranchAddress("muonPF2PATTkLysWithMeasurements", muonPF2PATTkLysWithMeasurements, &b_muonPF2PATTkLysWithMeasurements);
    fChain->SetBranchAddress("muonPF2PATGlbTkNormChi2", muonPF2PATGlbTkNormChi2, &b_muonPF2PATGlbTkNormChi2);
+   fChain->SetBranchAddress("muonPF2PATValidFraction", muonPF2PATValidFraction, &b_muonPF2PATValidFraction);
+   fChain->SetBranchAddress("muonPF2PATChi2LocalPosition", muonPF2PATChi2LocalPosition, &b_muonPF2PATChi2LocalPosition);
+   fChain->SetBranchAddress("muonPF2PATTrkKick", muonPF2PATTrkKick, &b_muonPF2PATTrkKick);
+   fChain->SetBranchAddress("muonPF2PATSegmentCompatibility", muonPF2PATSegmentCompatibility, &b_muonPF2PATSegmentCompatibility);
    fChain->SetBranchAddress("muonPF2PATDBPV", muonPF2PATDBPV, &b_muonPF2PATDBPV);
    fChain->SetBranchAddress("muonPF2PATDZPV", muonPF2PATDZPV, &b_muonPF2PATDZPV);
    fChain->SetBranchAddress("muonPF2PATVldPixHits", muonPF2PATVldPixHits, &b_muonPF2PATVldPixHits);

@@ -560,6 +560,12 @@ private:
   std::map< std::string, std::vector<int> > muonSortedNumChambers;
   std::map< std::string, std::vector<int> > muonSortedNumMatches;
 
+  //Extra variables used for ICHEP ID during HIP issue stuff
+  std::map< std::string, std::vector<float> > muonValidFraction;
+  std::map< std::string, std::vector<float> > muonChi2LocalPosition;
+  std::map< std::string, std::vector<float> > muonTrkKick;
+  std::map< std::string, std::vector<float> > muonSegmentCompatibility;
+
   std::map< std::string, std::vector<float> > genMuonSortedPt;
   std::map< std::string, std::vector<float> > genMuonSortedEt;
   std::map< std::string, std::vector<float> > genMuonSortedEta;
