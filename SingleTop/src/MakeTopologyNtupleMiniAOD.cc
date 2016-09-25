@@ -818,11 +818,13 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
 
     muonSortedGlobalID[ ID ][numMuo[ ID ]-1]=muo.isGlobalMuon();
     muonSortedTrackID[ ID ][numMuo[ ID ]-1]=muo.isTrackerMuon();
-    
-    muonValidFraction[ ID ][numMuo[ ID ]-1]=muo.innerTrack()->validFraction();
-    muonChi2LocalPosition[ ID ][numMuo[ ID ]-1]=muo.combinedQuality().chi2LocalPosition;
-    muonTrkKick[ ID ][numMuo[ ID ]-1]=muo.combinedQuality().trkKink;
-    muonSegmentCompatibility[ ID ][numMuo[ ID ]-1]=muon::segmentCompatibility(muo);
+
+    if ( muo.isTrackerMuon() || muo.isGlobalMuon()){
+      muonValidFraction[ ID ][numMuo[ ID ]-1]=muo.innerTrack()->validFraction();
+      muonChi2LocalPosition[ ID ][numMuo[ ID ]-1]=muo.combinedQuality().chi2LocalPosition;
+      muonTrkKick[ ID ][numMuo[ ID ]-1]=muo.combinedQuality().trkKink;
+      muonSegmentCompatibility[ ID ][numMuo[ ID ]-1]=muon::segmentCompatibility(muo);
+    }
 
     //----------------------------------------------------------------------------
     if (muo.isTrackerMuon() && muo.isGlobalMuon()){
