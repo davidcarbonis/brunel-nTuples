@@ -21,8 +21,7 @@ For MET Filters not included in HLT collection to work, the following command
 must be executed:
 
 ``` bash
-git cms-merge-topic -u
-cms-met:CMSSW_8_0_X-METFilterUpdate
+git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
 ```
 
 For EGM Smearing to work follow the instructions below:
