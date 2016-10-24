@@ -34,7 +34,7 @@ git checkout -b from-52f192a 52f192a
 # download the txt files with the corrections
 cd EgammaAnalysis/ElectronTools/data
 # corrections calculated with 12.9 fb-1 of 2016 data (ICHEP 16 dataset).
-git clone -b ICHEP2016_v2 https://github.com/ECALELFS/ScalesSmearings.git
+git submoudle add -b ICHEP2016_v2 https://github.com/ECALELFS/ScalesSmearings.git
 ```
 
 N.B. As Run 2 MC seems to use Pythia 8 for generation, the old status codes have
@@ -71,9 +71,9 @@ Additional setup if doing generation stuff (i.e. LHE to AOD):
 ``` bash
 git cms-addpkg Configuration/Applications
 
-git clone git@github.com:cms-sw/genproductions.git Configuration/GenProduction/
+git submoudle add git@github.com:cms-sw/genproductions.git Configuration/GenProduction/
 
-git clone https://github.com/kskovpen/FCNCProd
+git submoudle add https://github.com/kskovpen/FCNCProd
 
 cp NTupliser/FCNC/python/* Configuration/GenProduction/python/
 ```
