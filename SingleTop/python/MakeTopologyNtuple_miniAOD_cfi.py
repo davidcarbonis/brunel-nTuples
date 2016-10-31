@@ -59,7 +59,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6', 		#DoubleMuon
  
-	'', #MuonEG
+#	'', #MuonEG
 
 	#Updated MET Triggers for 2016
 	'HLT_MET250_v1',
@@ -99,7 +99,10 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 	'Flag_globalTightHalo2016Filter',
 	'Flag_EcalDeadCellTriggerPrimitiveFilter',		
 	'Flag_goodVertices',		
-	'Flag_eeBadScFilter',		
+	'Flag_eeBadScFilter',
+	'Flag_ecalLaserCorrFilter',
+	'Flag_chargedHadronTrackResolutionFilter',
+	'Flag_muonBadTrackFilter',
 	),	
                                            l1TriggerTag = cms.InputTag("gtDigis"),                                    
                                            checkTriggers = cms.bool(True),

@@ -159,8 +159,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     fakeTrigLabelList_(iConfig.getParameter<std::vector<std::string> >("fakeTriggerList")),
     triggerList_(iConfig.getParameter<std::vector<std::string> >("triggerList")),
     metFilterList_(iConfig.getParameter<std::vector<std::string> >("metFilterList")),
-    BadChCandFilterToken_(consumes<bool>(iConfig.getParameter<edm::InputTag>("BadChargedCandidateFilterToken"))), // Extra MET Filter token consumes
-    BadPFMuonFilterToken_(consumes<bool>(iConfig.getParameter<edm::InputTag>("BadPFMuonFilterToken"))), // Extra MET filter token consumes
 
     l1TrigLabel_(iConfig.getParameter<edm::InputTag>("l1TriggerTag")),
     genParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticles"))),
@@ -2072,10 +2070,6 @@ void MakeTopologyNtupleMiniAOD::cleararrays(void){
       metFilterRes[ iMetFilter ] = -99;		
   }
 
-  // Additional MET Filters which have to be manually run as they aren't saved in the HLT results collection
-  badChargedCandidateFilterRes_ = -99;
-  badPFMuonFilterRes_ = -99;
-
   for(size_t ii=0; ii<HLT_fakeTriggerValues.size(); ii++)
     HLT_fakeTriggerValues[ii]=-99;
   for(size_t ii=0; ii<200; ii++)
@@ -2330,13 +2324,6 @@ void MakeTopologyNtupleMiniAOD::bookBranches(){
       std::cout << "Booking MET filter branch: " << metFilterList_[iMetFilter]  << std::endl;
       mytree_->Branch( metFilterList_[iMetFilter].c_str(), &metFilterRes[iMetFilter], (metFilterList_[iMetFilter] + "/I").c_str() );
   }
-
-  // Additional MET Filters
-  std::cout << "Booking MET filter branch: Flag_BadChargedCandidateFilter" << std::endl;
-  mytree_->Branch( "Flag_BadChargedCandidateFilter", &badChargedCandidateFilterRes_, "Flag_BadChargedCandidateFilter/I" );
-  std::cout << "Booking MET filter branch: Flag_BadPFMuonFilter" << std::endl;
-  mytree_->Branch( "Flag_BadPFMuonFilter", &badPFMuonFilterRes_, "Flag_BadPFMuonFilter/I" );
-
 
 // generator level information
 //  mytree_->Branch("myProcess", &genMyProcId, "myProcess/I");
@@ -3353,7 +3340,7 @@ void MakeTopologyNtupleMiniAOD::fillTriggerData(const edm::Event& iEvent)
     { 		
       const bool accept(metFilterResults->accept(iFilter));		
       //      if(histocontainer_["eventcount"]->GetBinContent(0.0)<2)		
-      //	std::cout << "TRIGGER BIT:"<< iFilter <<", NAME:" << metFilterNames_[iFilter] << " FIRED:" << accept << std::endl;		
+      //      std::cout << "TRIGGER BIT:"<< iFilter <<", NAME:" << metFilterNames_[iFilter] << " FIRED:" << accept << std::endl;		
       int filterbit=0;		
       if(accept){		
 	filterbit=1;		
@@ -3371,20 +3358,6 @@ void MakeTopologyNtupleMiniAOD::fillTriggerData(const edm::Event& iEvent)
       }		
     }		
   }// metFilterResults.wasRun()	
-
-  // collect additional MET Filter Results
-
-  edm::Handle<bool> ifilterbadChCand;
-  iEvent.getByToken(BadChCandFilterToken_, ifilterbadChCand);
-  bool filterbadChCandidate = *ifilterbadChCand;
-
-  badChargedCandidateFilterRes_ = filterbadChCandidate;
-
-  edm::Handle<bool> ifilterbadPFMuon;
-  iEvent.getByToken(BadPFMuonFilterToken_, ifilterbadPFMuon);
-  bool filterbadPFMuon = *ifilterbadPFMuon;
-
-  badPFMuonFilterRes_ = filterbadPFMuon;
 
   // collect the fake trigger information:
   if(fakeTrigLabelList_.size()>0){

@@ -44,7 +44,7 @@ process.options = cms.untracked.PSet(
                      )
 
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag.globaltag = cms.string('80X_dataRun2_Prompt_ICHEP16JEC_v0')
+process.GlobalTag.globaltag = cms.string('80X_dataRun2_Prompt_v14')
 
 #There's a bit in here about some btau tags that the code looks for. I don't know if this is significant, however. I'm going to ignore it for now.
 
@@ -82,32 +82,32 @@ process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * proc
 #########EGM Smearing##########
 ###############################
 
-process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
+#process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
 
-process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-                                                       calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
-                                                                                                                 engineName = cms.untracked.string('TRandom3'),
-                                                                                           ),
-                                                       calibratedPatPhotons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
-                                                                                                                 engineName = cms.untracked.string('TRandom3'),
-                                                                                           ),
-                                                       )
-
-calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
+#process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+#                                                       calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
+#                                                                                                                 engineName = cms.untracked.string('TRandom3'),
+#                                                                                           ),
+#                                                       calibratedPatPhotons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
+#                                                                                                                 engineName = cms.untracked.string('TRandom3'),
+#                                                                                           ),
+#                                                       )
+#
+#calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
 
                                         # input collections
-                                        electrons = cms.InputTag('slimmedElectrons'),
-                                        gbrForestName = cms.string("gedelectron_p4combination_25ns"),
+#                                        electrons = cms.InputTag('slimmedElectrons'),
+#                                        gbrForestName = cms.string("gedelectron_p4combination_25ns"),
 
                                         # data or MC corrections
                                         # if isMC is false, data corrections are applied
-                                        isMC = cms.bool(False),
+#                                        isMC = cms.bool(False),
 
                                         # set to True to get special "fake" smearing for synchronization. Use JUST in case of synchron$
-                                        isSynchronization = cms.bool(False),
+#                                        isSynchronization = cms.bool(False),
 
-                                        correctionFile = cms.string("80Xapproval")
-                                        )
+#                                        correctionFile = cms.string("80Xapproval")
+#                                        )
 
 ###############################
 ###### Electron ID ############
@@ -123,18 +123,6 @@ my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID
 #add them to the VID producer
 for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
-
-###############################
-######## MET Filters ##########
-###############################
-
-process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
-process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
-process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
-
-process.load('RecoMET.METFilters.BadChargedCandidateFilter_cfi')
-process.BadChargedCandidateFilter.muons = cms.InputTag("slimmedMuons")
-process.BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidates")
 
 ###############################
 ##### MET Uncertainities ######
@@ -203,7 +191,7 @@ process.makeTopologyNtupleMiniAOD.runSwissCross = cms.bool(False)
 process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
 
 #Make the inputs for the n-tupliser right.
-process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("calibratedPatElectrons")
+process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("slimmedElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFToken = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
@@ -234,8 +222,9 @@ process.source = cms.Source("PoolSource",
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source.fileNames = [
-	'root://xrootd.unl.edu//store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v2/000/273/158/00000/0227DB1C-E719-E611-872C-02163E0141F9.root',
-	#'root://xrootd.unl.edu//store/data/Run2016B/DoubleMuon/MINIAOD/PromptReco-v2/000/273/158/00000/2C8772DF-F319-E611-AEC1-02163E014122.root',
+#	'root://xrootd.unl.edu//store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v2/000/273/158/00000/0227DB1C-E719-E611-872C-02163E0141F9.root',
+#	'root://xrootd.unl.edu//store/data/Run2016B/DoubleMuon/MINIAOD/PromptReco-v2/000/273/158/00000/2C8772DF-F319-E611-AEC1-02163E014122.root',
+	'root://xrootd.unl.edu//store/data/Run2016H/DoubleEG/MINIAOD/PromptReco-v2/000/281/382/00000/90277727-F882-E611-AF8D-02163E0144BE.root',
 	]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
@@ -267,9 +256,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
-    process.calibratedPatElectrons *
-    process.BadChargedCandidateFilter *
-    process.BadPFMuonFilter *
+#    process.calibratedPatElectrons *
     process.jetCorrection *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *
