@@ -11,31 +11,10 @@ enjoy, future students.
 
 ***
 
-The CMSSW_8_0_5 branch contains code from CMSSW_7_6_3 branch which is modified
-to work for Run 2 miniAOD 80X data and MC. As data/MC reprocessing taking is
-using CMSSW_8_0_X, the branch is named CMSSW_8_0_5 after the version which data
-and MC is currently avaliable for (and which electron VID and MET uncertainities
-are avlaiable for).
-
-For MET Filters not included in HLT collection to work, the following command
-must be executed:
-
-``` bash
-git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
-```
-
-For EGM Smearing to work follow the instructions below:
-
-``` bash
-git remote add -f -t ecal_smear_fix_80X emanueledimarco https://github.com/emanueledimarco/cmssw.git
-git cms-addpkg EgammaAnalysis/ElectronTools
-git checkout -b from-52f192a 52f192a
-
-# download the txt files with the corrections
-cd EgammaAnalysis/ElectronTools/data
-# corrections calculated with 12.9 fb-1 of 2016 data (ICHEP 16 dataset).
-git submoudle add -b ICHEP2016_v2 https://github.com/ECALELFS/ScalesSmearings.git
-```
+The CMSSW_8_0_20 branch contains code from CMSSW_8_0_5 branch which is modified
+to work for Run 2 miniAODv3 80X data and MC. As data/MC reprocessing taking is
+using CMSSW_8_0_X, the branch is named CMSSW_8_0_20 after the version which data
+and MC is currently avaliable for.
 
 N.B. As Run 2 MC seems to use Pythia 8 for generation, the old status codes have
 been updated from those used in Pythia 6. This WILL affect the output. Double
