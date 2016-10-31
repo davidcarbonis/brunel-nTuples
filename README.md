@@ -27,9 +27,7 @@ git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
 For EGM Smearing to work follow the instructions below:
 
 ``` bash
-git remote add -f -t ecal_smear_fix_80X emanueledimarco https://github.com/emanueledimarco/cmssw.git
-git cms-addpkg EgammaAnalysis/ElectronTools
-git checkout -b from-52f192a 52f192a
+git cms-merge-topic emanueledimarco:ecal_smear_fix_80X
 
 # download the txt files with the corrections
 cd EgammaAnalysis/ElectronTools/data
