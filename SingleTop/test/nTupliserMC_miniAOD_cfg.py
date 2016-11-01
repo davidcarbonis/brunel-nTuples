@@ -83,9 +83,13 @@ process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * proc
 ###############################
 
 process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
+process.load('EgammaAnalysis.ElectronTools.calibratedPhotonsRun2_cfi')
 
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
                                                        calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
+                                                                                                                 engineName = cms.untracked.string('TRandom3'),
+                                                                                           ),
+                                                       calibratedPatPhotons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
                                                                                                                  engineName = cms.untracked.string('TRandom3'),
                                                                                            ),
                                                        )
@@ -100,11 +104,28 @@ calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
                                         # if isMC is false, data corrections are applied
                                         isMC = cms.bool(True),
                                         
-                                        # set to True to get special "fake" smearing for synchronization. Use JUST in case of synchronization
+                                        # set to True to get special "fake" smearing for synchronization. Use JUST in case of 
+                                        # synchronization
                                         isSynchronization = cms.bool(False),
 
                                         correctionFile = cms.string("80Xapproval")
                                         )
+
+calibratedPatPhotons = cms.EDProducer("CalibratedPatPhotonProducerRun2",
+
+                                      # input collections
+                                      photons = cms.InputTag('slimmedPhotons'),
+
+                                      # data or MC corrections
+                                      # if isMC is false, data corrections are applied
+                                      isMC = cms.bool(True),
+
+                                     # set to True to get special "fake" smearing for synchronization. Use JUST in case of
+                                     # synchronization
+                                      isSynchronization = cms.bool(False),
+
+                                      correctionFile = cms.string("80Xapproval")
+                                      )
 
 ###############################
 ###### Electron ID ############
@@ -168,7 +189,7 @@ process.load("NTupliser.SingleTop.MakeTopologyNtuple_miniAOD_cfi")
 process.makeTopologyNtupleMiniAOD.flavorHistoryTag=cms.bool(False) # change to false at your convenience
 process.makeTopologyNtupleMiniAOD.runMCInfo=cms.bool(True) # prevent checking gen info
 process.makeTopologyNtupleMiniAOD.runPUReWeight=cms.bool(True) #Run the reweighting for MC. I think I'm doing this right, but I might check anyway.
-process.makeTopologyNtupleMiniAOD.triggerToken = cms.InputTag("TriggerResults","","HLT2") # or HLT, depends on file   
+process.makeTopologyNtupleMiniAOD.triggerToken = cms.InputTag("TriggerResults","","HLT") # or HLT, depends on file   
 
 #settings to apply tight selection:
 process.makeTopologyNtupleMiniAOD.minJetPt=cms.double(30.0)
@@ -201,6 +222,7 @@ process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will 
 
 #Make the inputs for the n-tupliser right.
 process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("calibratedPatElectrons")
+process.makeTopologyNtupleMiniAOD.photonToken = cms.InputTag("calibratedPatPhotons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFToken = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
@@ -232,8 +254,8 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.source.fileNames = [
 #	'root://xrootd.unl.edu//store/mc/RunIISpring16MiniAODv1/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/00000/0422A8C4-0E03-E611-8C29-00266CFF0B84.root',
 #	'root://xrootd.unl.edu//store/mc/RunIISpring16MiniAODv2/TprimeBToBW_M-800_TuneCUETP8M1_13TeV-madgraph-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2-v1/00000/66164700-7B10-E611-94EB-02163E00E9F1.root',
-#	'root://xrootd.unl.edu//store/mc/RunIISpring16MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/60000/02FAC354-971B-E611-845A-008CFA111358.root',
-	'root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/WZJToLLLNu_TuneCUETP8M1_13TeV-amcnlo-pythia8/MINIAODSIM/PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1/00000/02756EA9-1E42-E611-AF7A-A0369F7FC770.root',
+	'root://xrootd.unl.edu//store/mc/RunIISpring16MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/60000/02FAC354-971B-E611-845A-008CFA111358.root',
+#	'root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/WZJToLLLNu_TuneCUETP8M1_13TeV-amcnlo-pythia8/MINIAODSIM/PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1/00000/02756EA9-1E42-E611-AF7A-A0369F7FC770.root',
         ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
@@ -265,6 +287,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
 process.p = cms.Path(
     process.calibratedPatElectrons *
+    process.calibratedPatPhotons *
     process.BadChargedCandidateFilter *
     process.BadPFMuonFilter *
     process.jetCorrection *
