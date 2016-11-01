@@ -231,6 +231,7 @@ public :
    Float_t         jetPF2PATNeutralHadronEnergyFractionCorr[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATChargedEmEnergyFractionCorr[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATNeutralEmEnergyFractionCorr[40];   //[numJetPF2PAT]
+   Float_t         jetPF2PATMuonFraction[40];   //[numJetPF2PAT]
    Int_t           jetPF2PATNeutralMultiplicity[40];   //[numJetPF2PAT]
    Int_t           jetPF2PATChargedMultiplicity[40];   //[numJetPF2PAT]
    Double_t        metPF2PATE;
@@ -619,6 +620,7 @@ public :
    TBranch        *b_jetPF2PATNeutralHadronEnergyFractionCorr;   //!
    TBranch        *b_jetPF2PATChargedEmEnergyFractionCorr;   //!
    TBranch        *b_jetPF2PATNeutralEmEnergyFractionCorr;   //!
+   TBranch        *b_jetPF2PATMuonFraction;   //!
    TBranch        *b_jetPF2PATNeutralMultiplicity;   //!
    TBranch        *b_jetPF2PATChargedMultiplicity;   //!
    TBranch        *b_metPF2PATE;   //!
@@ -1111,6 +1113,7 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("jetPF2PATNeutralHadronEnergyFractionCorr", jetPF2PATNeutralHadronEnergyFractionCorr, &b_jetPF2PATNeutralHadronEnergyFractionCorr);
    fChain->SetBranchAddress("jetPF2PATChargedEmEnergyFractionCorr", jetPF2PATChargedEmEnergyFractionCorr, &b_jetPF2PATChargedEmEnergyFractionCorr);
    fChain->SetBranchAddress("jetPF2PATNeutralEmEnergyFractionCorr", jetPF2PATNeutralEmEnergyFractionCorr, &b_jetPF2PATNeutralEmEnergyFractionCorr);
+   fChain->SetBranchAddress("jetPF2PATMuonFraction", jetPF2PATMuonFraction, &b_jetPF2PATMuonFraction);
    fChain->SetBranchAddress("jetPF2PATNeutralMultiplicity", jetPF2PATNeutralMultiplicity, &b_jetPF2PATNeutralMultiplicity);
    fChain->SetBranchAddress("jetPF2PATChargedMultiplicity", jetPF2PATChargedMultiplicity, &b_jetPF2PATChargedMultiplicity);
    fChain->SetBranchAddress("metPF2PATE", &metPF2PATE, &b_metPF2PATE);
