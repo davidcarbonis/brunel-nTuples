@@ -44,7 +44,7 @@ process.options = cms.untracked.PSet(
                      )
 
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag.globaltag = cms.string('80X_dataRun2_Prompt_ICHEP16JEC_v0')
+process.GlobalTag.globaltag = cms.string('80X_dataRun2_ICHEP16_repro_v0')
 
 #There's a bit in here about some btau tags that the code looks for. I don't know if this is significant, however. I'm going to ignore it for now.
 
@@ -83,6 +83,7 @@ process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * proc
 ###############################
 
 process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
+process.load('EgammaAnalysis.ElectronTools.calibratedPhotonsRun2_cfi')
 
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
                                                        calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
@@ -108,6 +109,22 @@ calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
 
                                         correctionFile = cms.string("80Xapproval")
                                         )
+
+calibratedPatPhotons = cms.EDProducer("CalibratedPatPhotonProducerRun2",
+
+                                      # input collections
+                                      photons = cms.InputTag('slimmedPhotons'),
+
+                                      # data or MC corrections
+                                      # if isMC is false, data corrections are applied
+                                      isMC = cms.bool(False),
+
+                                     # set to True to get special "fake" smearing for synchronization. Use JUST in case of
+                                     # synchronization
+                                      isSynchronization = cms.bool(False),
+
+                                      correctionFile = cms.string("80Xapproval")
+                                      )
 
 ###############################
 ###### Electron ID ############
@@ -204,6 +221,7 @@ process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will 
 
 #Make the inputs for the n-tupliser right.
 process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("calibratedPatElectrons")
+process.makeTopologyNtupleMiniAOD.photonToken = cms.InputTag("calibratedPatPhotons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFToken = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
@@ -268,6 +286,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
 process.p = cms.Path(
     process.calibratedPatElectrons *
+    process.calibratedPatPhotons *
     process.BadChargedCandidateFilter *
     process.BadPFMuonFilter *
     process.jetCorrection *
