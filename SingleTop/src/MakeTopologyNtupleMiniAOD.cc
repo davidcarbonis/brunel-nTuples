@@ -976,6 +976,7 @@ void MakeTopologyNtupleMiniAOD::fillOtherJetInfo(const pat::Jet &jet, const size
       jetSortedNeutralHadronEnergyFractionCorr[ ID ][jetindex]=jet.neutralHadronEnergyFraction();
       jetSortedChargedEmEnergyFractionCorr[ ID ][jetindex]=jet.chargedEmEnergyFraction();
       jetSortedNeutralEmEnergyFractionCorr[ ID ][jetindex]=jet.neutralEmEnergyFraction();
+      jetSortedMuonFraction[ ID ][jetindex]=jet.muonEnergyFraction();
   }
 //  else if( jet.isJPTJet() ) //This function does not exist in 361, when we move to 382 reinstate
   else
@@ -2022,6 +2023,7 @@ void MakeTopologyNtupleMiniAOD::clearjetarrays(std::string ID){
     jetSortedNeutralHadronEnergyFractionCorr[ ID ].clear();
     jetSortedChargedEmEnergyFractionCorr[ ID ].clear();
     jetSortedNeutralEmEnergyFractionCorr[ ID ].clear();
+    jetSortedMuonFraction[ ID ].clear();
 
     genJetSortedEt[ ID ].clear();
     genJetSortedPt[ ID ].clear();
@@ -2981,6 +2983,7 @@ void MakeTopologyNtupleMiniAOD::bookPFJetBranches(std::string ID, std::string na
   jetSortedNeutralHadronEnergyFractionCorr[ ID ] = tempVecF;
   jetSortedChargedEmEnergyFractionCorr[ ID ] = tempVecF;
   jetSortedNeutralEmEnergyFractionCorr[ ID ] = tempVecF;
+  jetSortedMuonFraction[ ID ] = tempVecF;
 
   std::string prefix = "jet" + name;
   mytree_->Branch( (prefix + "MuEnergy").c_str(), &jetSortedMuEnergy[ ID ][0], (prefix + "MuEnergy[numJet" + name + "]/F").c_str() );
@@ -2996,6 +2999,7 @@ void MakeTopologyNtupleMiniAOD::bookPFJetBranches(std::string ID, std::string na
   mytree_->Branch( (prefix + "NeutralHadronEnergyFractionCorr").c_str(), &jetSortedNeutralHadronEnergyFractionCorr[ ID ][0], (prefix + "NeutralHadronEnergyFractionCorr[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "ChargedEmEnergyFractionCorr").c_str(), &jetSortedChargedEmEnergyFractionCorr[ ID ][0], (prefix + "ChargedEmEnergyFractionCorr[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "NeutralEmEnergyFractionCorr").c_str(), &jetSortedNeutralEmEnergyFractionCorr[ ID ][0], (prefix + "NeutralEmEnergyFractionCorr[numJet" + name + "]/F").c_str() );
+  mytree_->Branch( (prefix + "MuonFraction").c_str(), &jetSortedMuonFraction[ ID ][0], (prefix + "MuonFraction[numJet" + name + "]/F").c_str() );
 
   mytree_->Branch( (prefix + "NeutralMultiplicity").c_str(), &jetSortedNeutralMultiplicity[ ID ][0], (prefix + "NeutralMultiplicity[numJet" + name + "]/I").c_str() );
   mytree_->Branch( (prefix + "ChargedMultiplicity").c_str(), &jetSortedChargedMultiplicity[ ID ][0], (prefix + "ChargedMultiplicity[numJet" + name + "]/I").c_str() );

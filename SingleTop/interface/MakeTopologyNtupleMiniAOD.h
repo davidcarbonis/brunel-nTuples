@@ -649,6 +649,7 @@ private:
     std::map< std::string, std::vector<float> > jetSortedNeutralHadronEnergyFractionCorr;
     std::map< std::string, std::vector<float> > jetSortedChargedEmEnergyFractionCorr;
     std::map< std::string, std::vector<float> > jetSortedNeutralEmEnergyFractionCorr;
+    std::map< std::string, std::vector<float> > jetSortedMuonFraction;
 
     // more detailed BID info for a few algorithms.
     std::map< std::string, std::vector<float> > jetSortedBtagSoftMuonPtRel;
