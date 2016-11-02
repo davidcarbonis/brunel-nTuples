@@ -2593,7 +2593,6 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   mytree_->Branch( (prefix + "GammaIso").c_str(), &electronSortedGammaIso[ ID ][0], (prefix + "GammaIso[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "RhoIso").c_str(), &electronSortedRhoIso[ ID ][0], (prefix + "RhoIso[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "AEff03").c_str(), &electronSortedAEff03[ ID ][0], (prefix + "AEff03[numEle" + name + "]/F").c_str());
-  mytree_->Branch( (prefix + "ChHadIso").c_str(), &electronSortedChHadIso[ ID ][0], (prefix + "ChHadIso[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "MissingInnerLayers").c_str(), &electronSortedMissingInnerLayers[ ID ][0], (prefix + "MissingInnerLayers[numEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "HoverE").c_str(), &electronSortedHoverE[ ID ][0], (prefix + "HoverE[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "DeltaPhiSC").c_str(), &electronSortedDeltaPhiSC[ ID ][0], (prefix + "DeltaPhiSC[numEle" + name + "]/F").c_str());
