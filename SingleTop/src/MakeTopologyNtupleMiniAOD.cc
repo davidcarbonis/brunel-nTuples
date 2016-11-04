@@ -721,6 +721,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       electronSortedHoverE[ ID ][ numEle[ ID ] - 1 ] = ele.hadronicOverEm();
       electronSortedDeltaPhiSC[ ID ][ numEle[ ID ] - 1 ] = ele.deltaPhiSuperClusterTrackAtVtx();
       electronSortedDeltaEtaSC[ ID ][ numEle[ ID ] - 1 ] = ele.deltaEtaSuperClusterTrackAtVtx();
+      electronSortedDeltaEtaSeedSC[ ID ][ numEle[ ID ] - 1 ] = ( ele.deltaEtaSuperClusterTrackAtVtx() - ele.superCluster()->eta() + ele.superCluster()->seed()->eta() );
       electronSortedIsBarrel[ ID ][ numEle[ ID ] - 1 ] = ele.isEB();
     
       // calculate dcot and dist using the egamma code...
@@ -1745,6 +1746,7 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   electronSortedHoverE[ ID ].clear();
   electronSortedDeltaPhiSC[ ID ].clear();
   electronSortedDeltaEtaSC[ ID ].clear();
+  electronSortedDeltaEtaSeedSC[ ID ].clear();
   electronSortedIsBarrel[ ID ].clear();
   electronSortedPhotonConversionTag[ ID ].clear();
   electronSortedPhotonConversionTagCustom[ ID ].clear();
@@ -2492,6 +2494,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   electronSortedHoverE[ ID ] = tempVecF;
   electronSortedDeltaPhiSC[ ID ] = tempVecF;
   electronSortedDeltaEtaSC[ ID ] = tempVecF;
+  electronSortedDeltaEtaSeedSC[ ID ] = tempVecF;
   electronSortedPhotonConversionDcot[ ID ] = tempVecF;
   electronSortedPhotonConversionDist[ ID ] = tempVecF;
   electronSortedPhotonConversionVeto[ID] = tempVecI;
@@ -2610,6 +2613,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   mytree_->Branch( (prefix + "HoverE").c_str(), &electronSortedHoverE[ ID ][0], (prefix + "HoverE[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "DeltaPhiSC").c_str(), &electronSortedDeltaPhiSC[ ID ][0], (prefix + "DeltaPhiSC[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "DeltaEtaSC").c_str(), &electronSortedDeltaEtaSC[ ID ][0], (prefix + "DeltaEtaSC[numEle" + name + "]/F").c_str());
+  mytree_->Branch( (prefix + "DeltaEtaSeedSC").c_str(), &electronSortedDeltaEtaSeedSC[ ID ][0], (prefix + "DeltaEtaSeedSC[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "IsBarrel").c_str(), &electronSortedIsBarrel[ ID ][0], (prefix + "IsBarrel[numEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "PhotonConversionTag").c_str(), &electronSortedPhotonConversionTag[ ID ][0], (prefix + "PhotonConversionTag[numEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "PhotonConversionDist").c_str(), &electronSortedPhotonConversionDist[ ID ][0], (prefix + "PhotonConversionDist[numEle" + name + "]/F").c_str());
