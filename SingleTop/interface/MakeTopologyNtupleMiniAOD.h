@@ -389,6 +389,7 @@ private:
   std::map< std::string, std::vector<float> > electronSortedHoverE;
   std::map< std::string, std::vector<float> > electronSortedDeltaPhiSC;
   std::map< std::string, std::vector<float> > electronSortedDeltaEtaSC;
+  std::map< std::string, std::vector<float> > electronSortedDeltaEtaSeedSC;
   std::map< std::string, std::vector<int> > electronSortedIsBarrel;
   std::map< std::string, std::vector<int> > electronSortedPhotonConversionTag;
   std::map< std::string, std::vector<int> > electronSortedPhotonConversionTagCustom;
