@@ -1066,7 +1066,7 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
      fChain->SetBranchAddress("genMuonPF2PATEta", genMuonPF2PATEta, &b_genMuonPF2PATEta);
      fChain->SetBranchAddress("genMuonPF2PATCharge", genMuonPF2PATCharge, &b_genMuonPF2PATCharge);
      fChain->SetBranchAddress("genMuonPF2PATPdgId", genMuonPF2PATPdgId, &b_genMuonPF2PATPdgId);
-     fChain->SetBranchAddress("genMuonPF2PATMotherID", genMuonPF2PATMotherId, &b_genMuonPF2PATMotherId);
+     fChain->SetBranchAddress("genMuonPF2PATMotherId", genMuonPF2PATMotherId, &b_genMuonPF2PATMotherId);
    }
    fChain->SetBranchAddress("numJetPF2PAT", &numJetPF2PAT, &b_numJetPF2PAT);
    fChain->SetBranchAddress("jetPF2PATE", jetPF2PATE, &b_jetPF2PATE);
