@@ -914,7 +914,7 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("elePF2PATHoverE", elePF2PATHoverE, &b_elePF2PATHoverE);
    fChain->SetBranchAddress("elePF2PATDeltaPhiSC", elePF2PATDeltaPhiSC, &b_elePF2PATDeltaPhiSC);
    fChain->SetBranchAddress("elePF2PATDeltaEtaSC", elePF2PATDeltaEtaSC, &b_elePF2PATDeltaEtaSC);
-//   fChain->SetBranchAddress("elePF2PATDeltaEtaSeedSC", elePF2PATDeltaEtaSeedSC, &b_elePF2PATDeltaEtaSeedSC);
+   fChain->SetBranchAddress("elePF2PATDeltaEtaSeedSC", elePF2PATDeltaEtaSeedSC, &b_elePF2PATDeltaEtaSeedSC);
    fChain->SetBranchAddress("elePF2PATIsBarrel", elePF2PATIsBarrel, &b_elePF2PATIsBarrel);
    fChain->SetBranchAddress("elePF2PATPhotonConversionTag", elePF2PATPhotonConversionTag, &b_elePF2PATPhotonConversionTag);
    fChain->SetBranchAddress("elePF2PATPhotonConversionDist", elePF2PATPhotonConversionDist, &b_elePF2PATPhotonConversionDist);
