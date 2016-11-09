@@ -418,6 +418,8 @@ private:
   std::map< std::string, std::vector<float> > genElectronSortedPy;
   std::map< std::string, std::vector<float> > genElectronSortedPz;
   std::map< std::string, std::vector<int> > genElectronSortedCharge;
+  std::map< std::string, std::vector<int> > genElectronSortedPdgId;
+  std::map< std::string, std::vector<int> > genElectronSortedMotherId;
   
   // MC Truth
   int nT;
@@ -574,6 +576,8 @@ private:
   std::map< std::string, std::vector<float> > genMuonSortedPy;
   std::map< std::string, std::vector<float> > genMuonSortedPz;
   std::map< std::string, std::vector<int> > genMuonSortedCharge;
+  std::map< std::string, std::vector<int> > genMuonSortedPdgId;
+  std::map< std::string, std::vector<int> > genMuonSortedMotherId;
 
   size_t NJETSMAX; // max number of jets, set in constructor;
 
