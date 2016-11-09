@@ -118,6 +118,8 @@ public :
    Float_t         genElePF2PATTheta[20];   //[numElePF2PAT]
    Float_t         genElePF2PATEta[20];   //[numElePF2PAT]
    Int_t           genElePF2PATCharge[20];   //[numElePF2PAT]
+   Int_t           genElePF2PATPdgId[20];   //[numElePF2PAT]
+   Int_t           genElePF2PATMotherId[20];   //[numElePF2PAT]
    Int_t           numMuonPF2PAT;
    Float_t         muonPF2PATE[20];   //[numMuonPF2PAT]
    Float_t         muonPF2PATET[20];   //[numMuonPF2PAT]
@@ -172,6 +174,8 @@ public :
    Float_t         genMuonPF2PATTheta[20];   //[numMuonPF2PAT]
    Float_t         genMuonPF2PATEta[20];   //[numMuonPF2PAT]
    Int_t           genMuonPF2PATCharge[20];   //[numMuonPF2PAT]
+   Int_t           genMuonPF2PATPdgId[20];   //[numMuonPF2PAT]
+   Int_t           genMuonPF2PATMotherId[20];   //[numMuonPF2PAT]
    Int_t           numJetPF2PAT;
    Double_t        jetPF2PATE[40];   //[numJetPF2PAT]
    Double_t        jetPF2PATEt[40];   //[numJetPF2PAT]
@@ -473,6 +477,8 @@ public :
    TBranch        *b_genElePF2PATTheta;   //!
    TBranch        *b_genElePF2PATEta;   //!
    TBranch        *b_genElePF2PATCharge;   //!
+   TBranch        *b_genElePF2PATPdgId;   //!
+   TBranch        *b_genElePF2PATMotherId;   //!
    TBranch        *b_numMuonPF2PAT;   //!
    TBranch        *b_muonPF2PATE;   //!
    TBranch        *b_muonPF2PATET;   //!
@@ -527,6 +533,8 @@ public :
    TBranch        *b_genMuonPF2PATTheta;   //!
    TBranch        *b_genMuonPF2PATEta;   //!
    TBranch        *b_genMuonPF2PATCharge;   //!
+   TBranch        *b_genMuonPF2PATPdgId;   //!
+   TBranch        *b_genMuonPF2PATMotherId;   //!
    TBranch        *b_numJetPF2PAT;   //!
    TBranch        *b_jetPF2PATE;   //!
    TBranch        *b_jetPF2PATEt;   //!
@@ -906,7 +914,7 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("elePF2PATHoverE", elePF2PATHoverE, &b_elePF2PATHoverE);
    fChain->SetBranchAddress("elePF2PATDeltaPhiSC", elePF2PATDeltaPhiSC, &b_elePF2PATDeltaPhiSC);
    fChain->SetBranchAddress("elePF2PATDeltaEtaSC", elePF2PATDeltaEtaSC, &b_elePF2PATDeltaEtaSC);
-   fChain->SetBranchAddress("elePF2PATDeltaEtaSeedSC", elePF2PATDeltaEtaSeedSC, &b_elePF2PATDeltaEtaSeedSC);
+//   fChain->SetBranchAddress("elePF2PATDeltaEtaSeedSC", elePF2PATDeltaEtaSeedSC, &b_elePF2PATDeltaEtaSeedSC);
    fChain->SetBranchAddress("elePF2PATIsBarrel", elePF2PATIsBarrel, &b_elePF2PATIsBarrel);
    fChain->SetBranchAddress("elePF2PATPhotonConversionTag", elePF2PATPhotonConversionTag, &b_elePF2PATPhotonConversionTag);
    fChain->SetBranchAddress("elePF2PATPhotonConversionDist", elePF2PATPhotonConversionDist, &b_elePF2PATPhotonConversionDist);
@@ -927,6 +935,8 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
      fChain->SetBranchAddress("genElePF2PATTheta", genElePF2PATTheta, &b_genElePF2PATTheta);
      fChain->SetBranchAddress("genElePF2PATEta", genElePF2PATEta, &b_genElePF2PATEta);
      fChain->SetBranchAddress("genElePF2PATCharge", genElePF2PATCharge, &b_genElePF2PATCharge);
+     fChain->SetBranchAddress("genElePF2PATPdgId", genElePF2PATPdgId, &b_genElePF2PATPdgId);
+     fChain->SetBranchAddress("genElePF2PATMotherId", genElePF2PATMotherId, &b_genElePF2PATMotherId);
    }
    fChain->SetBranchAddress("numMuonPF2PAT", &numMuonPF2PAT, &b_numMuonPF2PAT);
    fChain->SetBranchAddress("muonPF2PATE", muonPF2PATE, &b_muonPF2PATE);
@@ -983,6 +993,8 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
      fChain->SetBranchAddress("genMuonPF2PATTheta", genMuonPF2PATTheta, &b_genMuonPF2PATTheta);
      fChain->SetBranchAddress("genMuonPF2PATEta", genMuonPF2PATEta, &b_genMuonPF2PATEta);
      fChain->SetBranchAddress("genMuonPF2PATCharge", genMuonPF2PATCharge, &b_genMuonPF2PATCharge);
+     fChain->SetBranchAddress("genMuonPF2PATPdgId", genMuonPF2PATPdgId, &b_genMuonPF2PATPdgId);
+     fChain->SetBranchAddress("genMuonPF2PATMotherID", genMuonPF2PATMotherId, &b_genMuonPF2PATMotherId);
    }
    fChain->SetBranchAddress("numJetPF2PAT", &numJetPF2PAT, &b_numJetPF2PAT);
    fChain->SetBranchAddress("jetPF2PATE", jetPF2PATE, &b_jetPF2PATE);
