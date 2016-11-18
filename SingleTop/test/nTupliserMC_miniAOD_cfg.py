@@ -94,10 +94,14 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
                                                                                            ),
                                                        )
 
+process.selectedSlimmedElectrons = cms.EDFilter("PATElectronSelector",     ## this protects against a crash in electron calibration     ## due to electrons with eta > 2.5     
+                                                src = cms.InputTag("slimmedElectrons"),      
+                                                cut = cms.string("pt>5 && abs(eta)<2.5") ) 
+
 calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
                                         
                                         # input collections
-                                        electrons = cms.InputTag('slimmedElectrons'),
+                                        electrons = cms.InputTag('selectedSlimmedElectrons'),
                                         gbrForestName = cms.string("gedelectron_p4combination_25ns"),
                                         
                                         # data or MC corrections
@@ -136,7 +140,8 @@ from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
 
 # define which IDs we want to produce
-my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_Trig_V1_cff']
+my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_Trig_V1_cff',
+                 'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff']
 
 #add them to the VID producer
 for idmod in my_id_modules:
@@ -243,6 +248,12 @@ process.makeTopologyNtupleMiniAOD.eleNonTrigTightIdMap = cms.InputTag("egmGsfEle
 process.makeTopologyNtupleMiniAOD.nonTrigMvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
 process.makeTopologyNtupleMiniAOD.nonTrigMvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories")
 
+# cut ID stuff
+process.makeTopologyNtupleMiniAOD.eleCutIdVetoMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto")
+process.makeTopologyNtupleMiniAOD.eleCutIdLooseMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose")
+process.makeTopologyNtupleMiniAOD.eleCutIdMediumMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium")
+process.makeTopologyNtupleMiniAOD.eleCutIdTightMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight")
+
 ## Source
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring()
@@ -254,8 +265,10 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.source.fileNames = [
 #	'root://xrootd.unl.edu//store/mc/RunIISpring16MiniAODv1/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/00000/0422A8C4-0E03-E611-8C29-00266CFF0B84.root',
 #	'root://xrootd.unl.edu//store/mc/RunIISpring16MiniAODv2/TprimeBToBW_M-800_TuneCUETP8M1_13TeV-madgraph-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2-v1/00000/66164700-7B10-E611-94EB-02163E00E9F1.root',
-	'root://xrootd.unl.edu//store/mc/RunIISpring16MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/60000/02FAC354-971B-E611-845A-008CFA111358.root',
+#	'root://xrootd.unl.edu//store/mc/RunIISpring16MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/60000/02FAC354-971B-E611-845A-008CFA111358.root',
+	'file:/scratch/eepgadm/data/tZq/02FAC354-971B-E611-845A-008CFA111358.root',
 #	'root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/WZJToLLLNu_TuneCUETP8M1_13TeV-amcnlo-pythia8/MINIAODSIM/PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1/00000/02756EA9-1E42-E611-AF7A-A0369F7FC770.root',
+#	'root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14_ext3-v1/20000/D6E845F3-8F3A-E611-8F96-0025905C3DD6.root',
         ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
@@ -278,7 +291,7 @@ process.out.outputCommands += cms.untracked.vstring('keep *_flavorHistoryFilter_
 process.out.fileName = cms.untracked.string('Data_out.root')
 
 #NTuple output
-process.TFileService = cms.Service("TFileService", fileName = cms.string('Data_test.root') )
+process.TFileService = cms.Service("TFileService", fileName = cms.string('MC.root') )
 process.options.wantSummary = False
 process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
@@ -286,6 +299,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
+    process.selectedSlimmedElectrons *
     process.calibratedPatElectrons *
     process.calibratedPatPhotons *
     process.BadChargedCandidateFilter *

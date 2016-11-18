@@ -44,7 +44,7 @@ process.options = cms.untracked.PSet(
                      )
 
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag.globaltag = cms.string('80X_dataRun2_Prompt_ICHEP16JEC_v0')
+process.GlobalTag.globaltag = cms.string('80X_dataRun2_2016SeptRepro_v4')
 
 #There's a bit in here about some btau tags that the code looks for. I don't know if this is significant, however. I'm going to ignore it for now.
 
@@ -85,19 +85,18 @@ process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * proc
 process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
 process.load('EgammaAnalysis.ElectronTools.calibratedPhotonsRun2_cfi')
 
-process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-                                                       calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
-                                                                                                                 engineName = cms.untracked.string('TRandom3'),
-                                                                                           ),
-                                                       calibratedPatPhotons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
-                                                                                                                 engineName = cms.untracked.string('TRandom3'),
-                                                                                           ),
-                                                       )
+files = {"Prompt2015":"EgammaAnalysis/ElectronTools/data/ScalesSmearings/74X_Prompt_2015",
+         "76XReReco" :"EgammaAnalysis/ElectronTools/data/ScalesSmearings/76X_16DecRereco_2015_Etunc",
+         "80Xapproval" : "EgammaAnalysis/ElectronTools/data/ScalesSmearings/80X_ichepV1_2016_ele"}
+
+process.selectedSlimmedElectrons = cms.EDFilter("PATElectronSelector",     ## this protects against a crash in electron calibration     ## due to electrons with eta > 2.5     
+                                                src = cms.InputTag("slimmedElectrons"),      
+                                                cut = cms.string("pt>5 && abs(eta)<2.5") ) 
 
 calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
 
                                         # input collections
-                                        electrons = cms.InputTag('slimmedElectrons'),
+                                        electrons = cms.InputTag('selectedSlimmedElectrons'),
                                         gbrForestName = cms.string("gedelectron_p4combination_25ns"),
 
                                         # data or MC corrections
@@ -135,7 +134,10 @@ from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
 
 # define which IDs we want to produce
-my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_Trig_V1_cff']
+my_id_modules = [
+'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_Trig_V1_cff',
+'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff',
+]
 
 #add them to the VID producer
 for idmod in my_id_modules:
@@ -242,6 +244,11 @@ process.makeTopologyNtupleMiniAOD.eleNonTrigTightIdMap = cms.InputTag("egmGsfEle
 process.makeTopologyNtupleMiniAOD.nonTrigMvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
 process.makeTopologyNtupleMiniAOD.nonTrigMvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories")
 
+# cut ID stuff
+process.makeTopologyNtupleMiniAOD.eleCutIdVetoMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto")
+process.makeTopologyNtupleMiniAOD.eleCutIdLooseMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose")
+process.makeTopologyNtupleMiniAOD.eleCutIdMediumMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium")
+process.makeTopologyNtupleMiniAOD.eleCutIdTightMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight")
 
 ## Source
 process.source = cms.Source("PoolSource",
@@ -285,6 +292,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
+    process.selectedSlimmedElectrons *
     process.calibratedPatElectrons *
     process.calibratedPatPhotons *
     process.BadChargedCandidateFilter *

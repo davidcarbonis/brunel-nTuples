@@ -188,6 +188,11 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     nonTrigMvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("nonTrigMvaValuesMap"))),
     nonTrigMvaCategoriesMapToken_(consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("nonTrigMvaCategoriesMap"))),
 
+    eleCutVetoIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleCutIdVetoMap"))),
+    eleCutLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleCutIdLooseMap"))),
+    eleCutMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleCutIdMediumMap"))),
+    eleCutTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleCutIdTightMap"))),
+
     hltnames_(0),
     metFilterNames_(0),	
     btaggingparamnames_(iConfig.getParameter<std::vector<std::string> >("btagParameterizationList")),
@@ -543,6 +548,11 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     edm::Handle<edm::ValueMap<bool> > medium_nonTrig_id_decisions;
     edm::Handle<edm::ValueMap<bool> > tight_nonTrig_id_decisions; 
 
+    edm::Handle<edm::ValueMap<bool> > veto_cut_id_decisions;
+    edm::Handle<edm::ValueMap<bool> > loose_cut_id_decisions;
+    edm::Handle<edm::ValueMap<bool> > medium_cut_id_decisions;
+    edm::Handle<edm::ValueMap<bool> > tight_cut_id_decisions;
+
     //   iEvent.getByToken(eleTrigLooseIdMapToken_,loose_trig_id_decisions);
     iEvent.getByToken(eleTrigMediumIdMapToken_,medium_trig_id_decisions);
     iEvent.getByToken(eleTrigTightIdMapToken_,tight_trig_id_decisions);
@@ -561,6 +571,12 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     edm::Handle<edm::ValueMap<int> > nonTrigMvaCategories;
     iEvent.getByToken(nonTrigMvaValuesMapToken_,nonTrigMvaValues);
     iEvent.getByToken(nonTrigMvaCategoriesMapToken_,nonTrigMvaCategories);
+
+    // Get cut-based ID values
+    iEvent.getByToken(eleCutVetoIdMapToken_,veto_cut_id_decisions);
+    iEvent.getByToken(eleCutLooseIdMapToken_,loose_cut_id_decisions);
+    iEvent.getByToken(eleCutMediumIdMapToken_,medium_cut_id_decisions);
+    iEvent.getByToken(eleCutTightIdMapToken_,tight_cut_id_decisions);
 
     //   !!!
     // IMPORTAnT: DO NOT CUT ON THE OBJECTS BEFORE THEY ARE SORTED, cuts should be applied in the second loop!!!
@@ -648,6 +664,11 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       	electronSortedMVAcategory[ ID ][numEle[ ID ]-1] = (*trigMvaCategories)[refel];
 	electronSortedNonTrigMVA[ ID ][numEle[ ID ]-1] = (*nonTrigMvaValues)[refel]; // Non-triggering MVA
 	electronSortedNonTrigMVAcategory[ ID ][numEle[ ID ]-1] = (*nonTrigMvaCategories)[refel];
+
+        electronSortedCutIdVeto[ ID ][numEle[ ID ]-1] = (*veto_cut_id_decisions)[refel]; // VID Veto ID
+        electronSortedCutIdLoose[ ID ][numEle[ ID ]-1] = (*loose_cut_id_decisions)[refel]; // VID Loose ID
+        electronSortedCutIdMedium[ ID ][numEle[ ID ]-1] = (*medium_cut_id_decisions)[refel]; // VID Medium ID
+        electronSortedCutIdTight[ ID ][numEle[ ID ]-1] = (*tight_cut_id_decisions)[refel]; // VID Tight ID
  
       electronSortedChargedHadronIso[ ID ][numEle[ ID ]-1]=ele.chargedHadronIso();
       electronSortedNeutralHadronIso[ ID ][numEle[ ID ]-1]=ele.neutralHadronIso();
@@ -721,7 +742,9 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       electronSortedHoverE[ ID ][ numEle[ ID ] - 1 ] = ele.hadronicOverEm();
       electronSortedDeltaPhiSC[ ID ][ numEle[ ID ] - 1 ] = ele.deltaPhiSuperClusterTrackAtVtx();
       electronSortedDeltaEtaSC[ ID ][ numEle[ ID ] - 1 ] = ele.deltaEtaSuperClusterTrackAtVtx();
-      electronSortedDeltaEtaSeedSC[ ID ][ numEle[ ID ] - 1 ] = ( ele.deltaEtaSuperClusterTrackAtVtx() - ele.superCluster()->eta() + ele.superCluster()->seed()->eta() );
+
+      electronSortedDeltaEtaSeedSC[ ID ][ numEle[ ID ] - 1 ] = ( ele.superCluster().isNonnull() && ele.superCluster()->seed().isNonnull() ? 
+           ele.deltaEtaSuperClusterTrackAtVtx() - ele.superCluster()->eta() + ele.superCluster()->seed()->eta() : std::numeric_limits<float>::max() );
       electronSortedIsBarrel[ ID ][ numEle[ ID ] - 1 ] = ele.isEB();
     
       // calculate dcot and dist using the egamma code...
@@ -1689,6 +1712,11 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   electronSortedNonTrigMVA[ ID ].clear();
   electronSortedNonTrigMVAcategory[ ID ].clear();
 
+  electronSortedCutIdVeto[ ID ].clear();
+  electronSortedCutIdLoose[ ID ].clear();
+  electronSortedCutIdMedium[ ID ].clear();
+  electronSortedCutIdTight[ ID ].clear();
+
   electronSortedChargedHadronIso[ ID ].clear();
   electronSortedNeutralHadronIso[ ID ].clear();
   electronSortedPhotonIso[ ID ].clear();
@@ -2440,6 +2468,11 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   electronSortedNonTrigMVA[ ID ] = tempVecF;  
   electronSortedNonTrigMVAcategory[ ID ] = tempVecI;
 
+  electronSortedCutIdVeto[ ID ] = tempVecI;
+  electronSortedCutIdLoose[ ID ] = tempVecI;
+  electronSortedCutIdMedium[ ID ] = tempVecI;
+  electronSortedCutIdTight[ ID ] = tempVecI;
+
   electronSortedChargedHadronIso[ ID ] = tempVecF;
   electronSortedNeutralHadronIso[ ID ] = tempVecF;
   electronSortedPhotonIso[ ID ] = tempVecF;
@@ -2553,6 +2586,11 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   mytree_->Branch( (prefix + "MVAcategory").c_str(), &electronSortedMVAcategory[ ID ][0], (prefix + "MVAcategory[numEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "NonTrigMVA").c_str(), &electronSortedNonTrigMVA[ ID ][0], (prefix + "NonTrigMVA[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "NonTrigMVAcategory").c_str(), &electronSortedNonTrigMVAcategory[ ID ][0], (prefix + "NonTrigMVAcategory[numEle" + name + "]/I").c_str());
+
+  mytree_->Branch( (prefix + "CutIdVeto").c_str(), &electronSortedCutIdVeto[ ID ][0], (prefix + "CutIdVeto[numEle" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "CutIdLoose").c_str(), &electronSortedCutIdLoose[ ID ][0], (prefix + "CutIdLoose[numEle" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "CutIdMedium").c_str(), &electronSortedCutIdMedium[ ID ][0], (prefix + "CutIdMedium[numEle" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "CutIdTight").c_str(), &electronSortedCutIdTight[ ID ][0], (prefix + "CutIdTight[numEle" + name + "]/I").c_str());
 
   mytree_->Branch( (prefix + "ImpactTransDist").c_str(), &electronSortedImpactTransDist[ ID ][0], (prefix + "ImpactTransDist[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "ImpactTransError").c_str(), &electronSortedImpactTransError[ ID ][0], (prefix + "ImpactTransError[numEle" + name + "]/F").c_str());
