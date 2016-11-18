@@ -32,7 +32,11 @@ git cms-merge-topic emanueledimarco:ecal_smear_fix_80X
 # download the txt files with the corrections
 cd EgammaAnalysis/ElectronTools/data
 # corrections calculated with 12.9 fb-1 of 2016 data (ICHEP 16 dataset).
-git submoudle add -b ICHEP2016_v2 https://github.com/ECALELFS/ScalesSmearings.git
+git clone  -b ICHEP2016_v2 https://github.com/ECALELFS/ScalesSmearings.git
+```
+To add VID cuts built into CMSSW to avoid by hand cuts:
+``` bash
+git cms-merge-topic ikrav:egm_id_80X_v1
 ```
 
 N.B. As Run 2 MC seems to use Pythia 8 for generation, the old status codes have
