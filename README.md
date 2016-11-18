@@ -11,11 +11,11 @@ enjoy, future students.
 
 ***
 
-The CMSSW_8_0_5 branch contains code from CMSSW_7_6_3 branch which is modified
+The CMSSW_8_0_12 branch contains code from CMSSW_8_0_5 branch which is modified
 to work for Run 2 miniAOD 80X data and MC. As data/MC reprocessing taking is
-using CMSSW_8_0_X, the branch is named CMSSW_8_0_5 after the version which data
+using CMSSW_8_0_X, the branch is named CMSSW_8_0_12 after the version which data
 and MC is currently avaliable for (and which electron VID and MET uncertainities
-are avlaiable for).
+are avaliable for).
 
 For MET Filters not included in HLT collection to work, the following command
 must be executed:
@@ -32,7 +32,7 @@ git cms-merge-topic emanueledimarco:ecal_smear_fix_80X
 # download the txt files with the corrections
 cd EgammaAnalysis/ElectronTools/data
 # corrections calculated with 12.9 fb-1 of 2016 data (ICHEP 16 dataset).
-git clone  -b ICHEP2016_v2 https://github.com/ECALELFS/ScalesSmearings.git
+git clone -b ICHEP2016_v2 https://github.com/ECALELFS/ScalesSmearings.git
 ```
 To add VID cuts built into CMSSW to avoid by hand cuts:
 ``` bash
