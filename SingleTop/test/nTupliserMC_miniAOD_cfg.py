@@ -85,6 +85,10 @@ process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * proc
 process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
 process.load('EgammaAnalysis.ElectronTools.calibratedPhotonsRun2_cfi')
 
+files = {"Prompt2015":"EgammaAnalysis/ElectronTools/data/ScalesSmearings/74X_Prompt_2015",
+         "76XReReco" :"EgammaAnalysis/ElectronTools/data/ScalesSmearings/76X_16DecRereco_2015_Etunc",
+         "80Xapproval" : "EgammaAnalysis/ElectronTools/data/ScalesSmearings/80X_ichepV1_2016_ele"}
+
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
                                                        calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
                                                                                                                  engineName = cms.untracked.string('TRandom3'),
@@ -98,7 +102,7 @@ process.selectedSlimmedElectrons = cms.EDFilter("PATElectronSelector",     ## th
                                                 src = cms.InputTag("slimmedElectrons"),      
                                                 cut = cms.string("pt>5 && abs(eta)<2.5") ) 
 
-calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
+process.calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
                                         
                                         # input collections
                                         electrons = cms.InputTag('selectedSlimmedElectrons'),
@@ -112,10 +116,10 @@ calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
                                         # synchronization
                                         isSynchronization = cms.bool(False),
 
-                                        correctionFile = cms.string("80Xapproval")
+                                        correctionFile = cms.string(files["80Xapproval"])
                                         )
 
-calibratedPatPhotons = cms.EDProducer("CalibratedPatPhotonProducerRun2",
+process.calibratedPatPhotons = cms.EDProducer("CalibratedPatPhotonProducerRun2",
 
                                       # input collections
                                       photons = cms.InputTag('slimmedPhotons'),
@@ -128,7 +132,7 @@ calibratedPatPhotons = cms.EDProducer("CalibratedPatPhotonProducerRun2",
                                      # synchronization
                                       isSynchronization = cms.bool(False),
 
-                                      correctionFile = cms.string("80Xapproval")
+                                      correctionFile = cms.string(files["80Xapproval"])
                                       )
 
 ###############################
