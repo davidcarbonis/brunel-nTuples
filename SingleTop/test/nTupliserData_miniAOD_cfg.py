@@ -118,7 +118,8 @@ from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
 
 # define which IDs we want to produce
-my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_Trig_V1_cff']
+my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_Trig_V1_cff',
+                 'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff']
 
 #add them to the VID producer
 for idmod in my_id_modules:
@@ -224,7 +225,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.source.fileNames = [
 #	'root://xrootd.unl.edu//store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v2/000/273/158/00000/0227DB1C-E719-E611-872C-02163E0141F9.root',
 #	'root://xrootd.unl.edu//store/data/Run2016B/DoubleMuon/MINIAOD/PromptReco-v2/000/273/158/00000/2C8772DF-F319-E611-AEC1-02163E014122.root',
-	'root://xrootd.unl.edu//store/data/Run2016H/DoubleEG/MINIAOD/PromptReco-v2/000/281/382/00000/90277727-F882-E611-AF8D-02163E0144BE.root',
+	'root://cms-xrd-global.cern.ch//store/data/Run2016D/DoubleEG/MINIAOD/23Sep2016-v1/100000/206CD6B5-AE87-E611-8B2B-0CC47A4D769A.root',
 	]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
