@@ -85,9 +85,13 @@ process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * proc
 process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
 process.load('EgammaAnalysis.ElectronTools.calibratedPhotonsRun2_cfi')
 
-files = {"Prompt2015":"EgammaAnalysis/ElectronTools/data/ScalesSmearings/74X_Prompt_2015",
+eleFiles = {"Prompt2015":"EgammaAnalysis/ElectronTools/data/ScalesSmearings/74X_Prompt_2015",
          "76XReReco" :"EgammaAnalysis/ElectronTools/data/ScalesSmearings/76X_16DecRereco_2015_Etunc",
          "80Xapproval" : "EgammaAnalysis/ElectronTools/data/ScalesSmearings/80X_ichepV1_2016_ele"}
+
+gammaFiles = {"Prompt2015":"EgammaAnalysis/ElectronTools/data/ScalesSmearings/74X_Prompt_2015",
+         "76XReReco" :"EgammaAnalysis/ElectronTools/data/ScalesSmearings/76X_16DecRereco_2015_Etunc",
+         "80Xapproval" : "EgammaAnalysis/ElectronTools/data/ScalesSmearings/80X_ichepV2_2016_pho"}
 
 process.selectedSlimmedElectrons = cms.EDFilter("PATElectronSelector",     ## this protects against a crash in electron calibration     ## due to electrons with eta > 2.5     
                                                 src = cms.InputTag("slimmedElectrons"),      
@@ -106,7 +110,7 @@ process.calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRu
                                         # set to True to get special "fake" smearing for synchronization. Use JUST in case of synchron$
                                         isSynchronization = cms.bool(False),
 
-                                        correctionFile = cms.string(files["80Xapproval"])
+                                        correctionFile = cms.string(eleFiles["80Xapproval"])
                                         )
 
 process.calibratedPatPhotons = cms.EDProducer("CalibratedPatPhotonProducerRun2",
@@ -122,7 +126,7 @@ process.calibratedPatPhotons = cms.EDProducer("CalibratedPatPhotonProducerRun2",
                                      # synchronization
                                       isSynchronization = cms.bool(False),
 
-                                      correctionFile = cms.string(files["80Xapproval"])
+                                      correctionFile = cms.string(gammaFiles["80Xapproval"])
                                       )
 
 ###############################

@@ -85,9 +85,13 @@ process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * proc
 process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
 process.load('EgammaAnalysis.ElectronTools.calibratedPhotonsRun2_cfi')
 
-files = {"Prompt2015":"EgammaAnalysis/ElectronTools/data/ScalesSmearings/74X_Prompt_2015",
+eleFiles = {"Prompt2015":"EgammaAnalysis/ElectronTools/data/ScalesSmearings/74X_Prompt_2015",
          "76XReReco" :"EgammaAnalysis/ElectronTools/data/ScalesSmearings/76X_16DecRereco_2015_Etunc",
          "80Xapproval" : "EgammaAnalysis/ElectronTools/data/ScalesSmearings/80X_ichepV1_2016_ele"}
+
+gammaFiles = {"Prompt2015":"EgammaAnalysis/ElectronTools/data/ScalesSmearings/74X_Prompt_2015",
+         "76XReReco" :"EgammaAnalysis/ElectronTools/data/ScalesSmearings/76X_16DecRereco_2015_Etunc",
+         "80Xapproval" : "EgammaAnalysis/ElectronTools/data/ScalesSmearings/80X_ichepV2_2016_pho"}
 
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
                                                        calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
@@ -116,7 +120,7 @@ process.calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRu
                                         # synchronization
                                         isSynchronization = cms.bool(False),
 
-                                        correctionFile = cms.string(files["80Xapproval"])
+                                        correctionFile = cms.string(eleFiles["80Xapproval"])
                                         )
 
 process.calibratedPatPhotons = cms.EDProducer("CalibratedPatPhotonProducerRun2",
@@ -132,7 +136,7 @@ process.calibratedPatPhotons = cms.EDProducer("CalibratedPatPhotonProducerRun2",
                                      # synchronization
                                       isSynchronization = cms.bool(False),
 
-                                      correctionFile = cms.string(files["80Xapproval"])
+                                      correctionFile = cms.string(gammaFiles["80Xapproval"])
                                       )
 
 ###############################
