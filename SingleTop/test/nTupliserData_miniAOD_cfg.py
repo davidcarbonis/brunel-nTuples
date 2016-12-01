@@ -295,9 +295,9 @@ process.p = cms.Path(
     process.selectedSlimmedElectrons *
     process.calibratedPatElectrons *
     process.calibratedPatPhotons *
+    process.jetCorrection *
     process.BadChargedCandidateFilter *
     process.BadPFMuonFilter *
-    process.jetCorrection *
 #    process.producePatPFMETCorrections *
     process.egmGsfElectronIDSequence *
     process.makeTopologyNtupleMiniAOD
