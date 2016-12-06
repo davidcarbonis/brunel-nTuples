@@ -501,7 +501,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     // if(ran_eleloop_)
     // 	return;
     // ran_eleloop_=true;
-  
+
     // info for 'default conversion finder
     edm::Handle< std::vector<pat::PackedCandidate> > lostTracks;
     iEvent.getByToken(trackToken_, lostTracks);
@@ -2175,7 +2175,7 @@ void
 MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   using namespace edm;
-  // std::cout << iEvent.id().run() << " " << iEvent.luminosityBlock() << " " << iEvent.id().event() << std::endl;
+  //std::cout << iEvent.id().run() << " " << iEvent.luminosityBlock() << " " << iEvent.id().event() << std::endl;
   //Run pile-up reweighting here
   numVert = 0;
   if (runPUReWeight_){
@@ -2210,7 +2210,6 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
   fillEventInfo(iEvent, iSetup);
   fillTriggerData(iEvent);
   fillBeamSpot(iEvent, iSetup);
-  
 
   //  std::cout << "done with trigger and beam spot" << std::endl;
 
@@ -2454,10 +2453,10 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   electronSortedNonTrigMVA[ ID ] = tempVecF;  
   electronSortedNonTrigMVAcategory[ ID ] = tempVecI;
 
-  electronSortedCutIdVeto[ ID ].clear();
-  electronSortedCutIdLoose[ ID ].clear();
-  electronSortedCutIdMedium[ ID ].clear();
-  electronSortedCutIdTight[ ID ].clear();
+  electronSortedCutIdVeto[ ID ] = tempVecI;
+  electronSortedCutIdLoose[ ID ] = tempVecI;
+  electronSortedCutIdMedium[ ID ] = tempVecI;
+  electronSortedCutIdTight[ ID ] = tempVecI;
 
   electronSortedChargedHadronIso[ ID ] = tempVecF;
   electronSortedNeutralHadronIso[ ID ] = tempVecF;
