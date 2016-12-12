@@ -40,7 +40,7 @@ public :
    Float_t         elePF2PATNonTrigMVA[20];   //[numElePF2PAT]
    Float_t         elePF2PATNonTrigMVAcategory[20];   //[numElePF2PAT]
    Float_t         elePF2PATCutIdVeto[20];   //[numElePF2PAT]
-   Intt_t          elePF2PATCutIdLoose[20];   //[numElePF2PAT]
+   Int_t           elePF2PATCutIdLoose[20];   //[numElePF2PAT]
    Int_t           elePF2PATCutIdMedium[20];   //[numElePF2PAT]
    Int_t           elePF2PATCutIdTight[20];   //[numElePF2PAT]
    Int_t           elePF2PATImpactTransDist[20];   //[numElePF2PAT]
