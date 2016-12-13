@@ -107,7 +107,7 @@ Kappa Zct (part1):
 `/ST_TZ_2L_Kappa_Zct_161006/almorton-CRAB3_MC_ST_TZ_2L_Kappa_Zct_161006-491cc9c0c16244aa3248937bd6af6e2c/USER`
 
 Kappa Zct (part2):
-`/ST_TZ_2L_Kappa_Zct_ext_161006/almorton-CRAB3_MC_ST_TZ_2L_Kappa_Zct_ext_161006-491cc9c0c16244aa3248937bd6af6e2c/USER`
+`/ST_TZ_2L_Kappa_Zct_ext_161020/almorton-CRAB3_MC_ST_TZ_2L_Kappa_Zct_ext_161020-491cc9c0c16244aa3248937bd6af6e2c/USER`
 
 Kappa Zut:
 `/ST_TZ_2L_Kappa_Zct_ext_161020/almorton-CRAB3_MC_ST_TZ_2L_Kappa_Zct_ext_161020-491cc9c0c16244aa3248937bd6af6e2c/USER`
