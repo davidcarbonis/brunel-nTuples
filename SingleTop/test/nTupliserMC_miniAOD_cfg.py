@@ -44,7 +44,7 @@ process.options = cms.untracked.PSet(
                      )
 
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag.globaltag = cms.string('80X_mcRun2_asymptotic_2016_miniAODv2_v1')
+process.GlobalTag.globaltag = cms.string('80X_mcRun2_asymptotic_2016_TrancheIV_v7')
 
 #There's a bit in here about some btau tags that the code looks for. I don't know if this is significant, however. I'm going to ignore it for now.
 

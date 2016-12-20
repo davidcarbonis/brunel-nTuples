@@ -44,7 +44,7 @@ process.options = cms.untracked.PSet(
                      )
 
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag.globaltag = cms.string('80X_dataRun2_Prompt_v14')
+process.GlobalTag.globaltag = cms.string('80X_dataRun2_2016SeptRepro_v6') #RunsA-F 80X_dataRun2_2016SeptRepro_v6; RunH 80X_dataRun2_Prompt_v15
 
 #There's a bit in here about some btau tags that the code looks for. I don't know if this is significant, however. I'm going to ignore it for now.
 
