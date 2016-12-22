@@ -2116,6 +2116,7 @@ void MakeTopologyNtupleMiniAOD::cleararrays(void){
   // Additional MET Filters which have to be manually run as they aren't saved in the HLT results collection
   badChargedCandidateFilterRes_ = -99;
   badPFMuonFilterRes_ = -99;
+  ecalLaserCorrFilter_ = 1;
 
   for(size_t ii=0; ii<HLT_fakeTriggerValues.size(); ii++)
     HLT_fakeTriggerValues[ii]=-99;
@@ -2373,11 +2374,12 @@ void MakeTopologyNtupleMiniAOD::bookBranches(){
   }
 
   // Additional MET Filters
-  std::cout << "Booking MET filter branch: Flag_BadChargedCandidateFilter" << std::endl;
-  mytree_->Branch( "Flag_BadChargedCandidateFilter", &badChargedCandidateFilterRes_, "Flag_BadChargedCandidateFilter/I" );
-  std::cout << "Booking MET filter branch: Flag_BadPFMuonFilter" << std::endl;
-  mytree_->Branch( "Flag_BadPFMuonFilter", &badPFMuonFilterRes_, "Flag_BadPFMuonFilter/I" );
-
+  std::cout << "Booking placeholder branch: Flag_ecalLaserCorrFilter" << std::endl;
+  mytree_->Branch( "Flag_ecalLaserCorrFilter", &ecalLaserCorrFilter_, "Flag_ecalLaserCorrFilter/I" );
+  std::cout << "Booking MET filter branch: Flag_chargedHadronTrackResolutionFilter" << std::endl;
+  mytree_->Branch( "Flag_chargedHadronTrackResolutionFilter", &badChargedCandidateFilterRes_, "Flag_chargedHadronTrackResolutionFilter/I" );
+  std::cout << "Booking MET filter branch: Flag_muonBadTrackFilter" << std::endl;
+  mytree_->Branch( "Flag_muonBadTrackFilter", &badPFMuonFilterRes_, "Flag_muonBadTrackFilter/I" );
 
 // generator level information
 //  mytree_->Branch("myProcess", &genMyProcId, "myProcess/I");

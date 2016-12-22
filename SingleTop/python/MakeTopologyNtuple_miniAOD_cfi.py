@@ -45,49 +45,85 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6',         #DoubleElectron
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7',         #DoubleElectron
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8',         #DoubleElectron
+	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9',         #DoubleElectron
 
 	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4', 		#DoubleMuon
+	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5', 		#DoubleMuon
+	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6', 		#DoubleMuon
+	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v7', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3', 		#DoubleMuon
+	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4', 		#DoubleMuon
+	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5', 		#DoubleMuon
+	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6', 		#DoubleMuon
 
-	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3', 	#Muon+Electron
-	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4', 	#Muon+Electron
-	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5', 	#Muon+Electron
-	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6', 	#Muon+Electron
-	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v7', 	#Muon+Electron
-	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3', 	#Muon+Electron
-	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4', 	#Muon+Electron
-	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5', 	#Muon+Electron
-	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v6', 	#Muon+Electron
-	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v7', 	#Muon+Electron
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3', #MuonEG Unprescaled for Runs B,C,D 
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4', #MuonEG Unprescaled for Runs B,C,D 
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5', #MuonEG Unprescaled for Runs B,C,D 
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6', #MuonEG Unprescaled for Runs B,C,D 
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v7', #MuonEG Unprescaled for Runs B,C,D 
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v8', #MuonEG Unprescaled for Runs B,C,D 
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v9', #MuonEG Unprescaled for Runs B,C,D 
+	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3', 	#Muon+Electron Unprescaled for Runs B,C,D
+	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4', 	#Muon+Electron Unprescaled for Runs B,C,D
+	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5', 	#Muon+Electron Unprescaled for Runs B,C,D
+	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v6', 	#Muon+Electron Unprescaled for Runs B,C,D
+	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v7', 	#Muon+Electron Unprescaled for Runs B,C,D
+	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v8', 	#Muon+Electron Unprescaled for Runs B,C,D
+	'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v9', 	#Muon+Electron Unprescaled for Runs B,C,D
+
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1', #MuonEG
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2', #MuonEG
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3', #MuonEG
+	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4', #MuonEG
+	'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v1', #MuonEG
+	'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v2', #MuonEG
+	'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v3', #MuonEG
+	'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4', #MuonEG
 
 	#Updated MET Triggers for 2016
 	'HLT_MET250_v1',
 	'HLT_MET250_v2',
 	'HLT_MET250_v3',
+	'HLT_MET250_v4',
+	'HLT_MET250_v5',
 	'HLT_PFMET120_PFMHT120_IDTight_v2',
 	'HLT_PFMET120_PFMHT120_IDTight_v3',
 	'HLT_PFMET120_PFMHT120_IDTight_v4',
 	'HLT_PFMET120_PFMHT120_IDTight_v5',
+	'HLT_PFMET120_PFMHT120_IDTight_v6',
+	'HLT_PFMET120_PFMHT120_IDTight_v7',
+	'HLT_PFMET120_PFMHT120_IDTight_v8',
 	'HLT_PFMET170_HBHECleaned_v2',
 	'HLT_PFMET170_HBHECleaned_v3',
 	'HLT_PFMET170_HBHECleaned_v4',
 	'HLT_PFMET170_HBHECleaned_v5',
 	'HLT_PFMET170_HBHECleaned_v6',
+	'HLT_PFMET170_HBHECleaned_v7',
+	'HLT_PFMET170_HBHECleaned_v8',
+	'HLT_PFMET170_HBHECleaned_v9',
 	'HLT_PFHT800_v2',
 	'HLT_PFHT800_v3',
 	'HLT_PFHT800_v4',
 	'HLT_PFHT800_v5',
+	'HLT_PFHT900_v4',
+	'HLT_PFHT900_v5',
+	'HLT_PFHT900_v6',
 	'HLT_PFHT750_4JetPt50_v3',
 	'HLT_PFHT750_4JetPt50_v4',
 	'HLT_PFHT750_4JetPt50_v5',
 	'HLT_PFHT750_4JetPt50_v6',
+	'HLT_PFHT750_4JetPt70_v1',
+	'HLT_PFHT750_4JetPt70_v2',
 	'HLT_PFHT300_PFMET100_v1',
 	'HLT_PFHT300_PFMET100_v2',
 	'HLT_PFHT300_PFMET100_v3',
 	'HLT_PFHT300_PFMET100_v4',
+	'HLT_PFHT300_PFMET110_v4',
+	'HLT_PFHT300_PFMET110_v5',
+	'HLT_PFHT300_PFMET110_v6',
         ),
                                            metFilterList = cms.vstring(		
 	#MET Filters		

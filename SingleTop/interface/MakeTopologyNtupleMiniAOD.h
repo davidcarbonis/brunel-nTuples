@@ -742,6 +742,7 @@ private:
   std::vector<int> metFilterRes;
   int badChargedCandidateFilterRes_;
   int badPFMuonFilterRes_;
+  int ecalLaserCorrFilter_;
   std::vector<int> HLT_fakeTriggerValues;
   int nTriggerBits;
   int TriggerBits[700];
