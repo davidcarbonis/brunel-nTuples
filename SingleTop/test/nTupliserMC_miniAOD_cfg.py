@@ -234,8 +234,8 @@ process.makeTopologyNtupleMiniAOD.runSwissCross = cms.bool(False)
 process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
 
 #Make the inputs for the n-tupliser right.
-process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("calibratedPatElectrons")
-process.makeTopologyNtupleMiniAOD.photonToken = cms.InputTag("calibratedPatPhotons")
+process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("slimmedElectrons")
+process.makeTopologyNtupleMiniAOD.photonToken = cms.InputTag("slimmedPhotons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFToken = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
@@ -277,6 +277,8 @@ process.source.fileNames = [
 	'file:/scratch/eepgadm/data/tZq/02FAC354-971B-E611-845A-008CFA111358.root',
 #	'root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/WZJToLLLNu_TuneCUETP8M1_13TeV-amcnlo-pythia8/MINIAODSIM/PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1/00000/02756EA9-1E42-E611-AF7A-A0369F7FC770.root',
 #	'root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14_ext3-v1/20000/D6E845F3-8F3A-E611-8F96-0025905C3DD6.root',
+#	'root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8_TuneCUETP8M1/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/60000/02FAC354-971B-E611-845A-008CFA111358.root',
+#	'root://cms-xrd-global.cern.ch//store/mc/RunIISpring16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14_ext1-v1/20000/00071E92-6F55-E611-B68C-0025905A6066.root'
         ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
@@ -307,9 +309,9 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
-    process.selectedSlimmedElectrons *
-    process.calibratedPatElectrons *
-    process.calibratedPatPhotons *
+#    process.selectedSlimmedElectrons *
+#    process.calibratedPatElectrons *
+#    process.calibratedPatPhotons *
     process.jetCorrection *
     process.BadChargedCandidateFilter *
     process.BadPFMuonFilter *
