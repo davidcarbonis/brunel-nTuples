@@ -72,7 +72,7 @@ int main(int argc, char* argv[]){
 	else summedWeights[13]++;
       }
 
-/*      int numLeps = 0;
+      int numLeps = 0;
       for (int j = 0; j < event->numElePF2PAT; j++){
 	if (event->elePF2PATPT[j] < 9) continue;
 	if (fabs(event->elePF2PATEta[j]) > 2.7) continue;
@@ -85,7 +85,7 @@ int main(int argc, char* argv[]){
 	if (fabs(event->muonPF2PATEta[j]) > 2.8) continue;
 	numLeps++;
       }
-      if (numLeps >= 2)*/ outTree->Fill();
+      if (numLeps >= 2) outTree->Fill();
     } 
 
     if ( isMC ) {
