@@ -24,6 +24,15 @@ varaibles are not saved to the final root nTuple output.
 
 ---
 
+## Additional setup info:
+
+Need to get latest additions to re-correct or re-cluster MET:
+
+``` bash
+git cms-merge-topic cms-met:METRecipe_8020
+```
+---
+
 ## FCNC Stuff:
 
 Generation of signal samples up till the LHE
