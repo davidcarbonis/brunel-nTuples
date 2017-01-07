@@ -34,6 +34,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 					   externalLHEToken = cms.InputTag("externalLHEProducer"), # "externalLHEProducer", "source" for THQ 
 					   pdfInfoFixingToken = cms.InputTag("pdfInfoFixing"),
 					   generatorToken = cms.InputTag("generator"),
+                                           minLeptons = cms.int32(2),
                                            
                                            triggerList = cms.vstring(                                                              
 	#Updated Triggers for 2016

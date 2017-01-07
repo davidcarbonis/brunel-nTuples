@@ -209,6 +209,8 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     useResidualJEC_(iConfig.getParameter<bool>("useResidualJEC")),
     ignore_emIDtight_(iConfig.getParameter<bool>("ignoreElectronID")),
 
+    minLeptons_(iConfig.getParameter<int>("minLeptons")),
+
     elePtCut_(iConfig.getParameter<double>("minElePt")),
     eleEtaCut_(iConfig.getParameter<double>("maxEleEta")),
     eleIsoCut_(iConfig.getParameter<double>("eleRelIso")),
@@ -272,28 +274,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     bookBranches(); // and fill tree
     bTags = 0;
     softTags = 0;
-
-    eleDebugNumberTotal=0;
-    eleDebugNumbermvaID=0;
-    eleDebugNumberEt=0;
-    eleDebugNumberEta=0;
-    eleDebugNumberCrack=0;
-    eleDebugNumberIso=0;
-    eleDebugNumberD0=0;
-    eleDebugNumberConV=0;
-
-    vanillaMuons=0;
-    globalPFMuons=0;
-    ptMuons=0;
-    validHitsMuons=0;
-    chi2Muons=0;
-    tkHitsMuons=0;
-    dbMuons=0;
-    dzMuons=0;
-    pixelHitsMuons=0;
-    trackerLayersMuons=0;
-    mvaTrig = 0;
-    mvaAsFunc = 0;
 
     //Some debugging variables
     
@@ -2182,7 +2162,12 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
   //Eventually this will require me putting in different selections for the different channels, but for now
   //just double electron.
 
-  mytree_->Fill();
+
+  if (!doCuts_) mytree_->Fill(); // If not doing cuts, fill up EVERYTHING
+
+  else { // If doing cuts, ensure that we have at least x leptons
+    if ( numEle["PF"] + numMuo["PF"] >= minLeptons_ ) mytree_->Fill();
+  }
 
   //fill debugging histograms.
   histocontainer_["tightElectrons"]->Fill(numEle["PF"]);
@@ -3243,32 +3228,6 @@ MakeTopologyNtupleMiniAOD::endJob() {
   std::cout << "number of events processed: " << histocontainer_["eventcount"]->GetEntries() << std::endl;
   std::cout << "number of events added to tree: " << mytree_->GetEntries() << std::endl;
   std::cout << "\n+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=" << std::endl;
-  std::cout << "Number of bTags found: " << bTags << std::endl;
-  std::cout << "Number of softTags found: " << softTags << std::endl;
-
-  std::cout << "Electron Debug stuff:" << std::endl;
-  std::cout <<  "Total In:  " << eleDebugNumberTotal << std::endl;
-  std::cout <<  "mvaID:     " << eleDebugNumbermvaID << std::endl;
-  std::cout <<  "et:        " << eleDebugNumberEt << std::endl;
-  std::cout <<  "eta:       " << eleDebugNumberEta << std::endl;
-  std::cout <<  "gap veto:  " << eleDebugNumberCrack << std::endl;
-  std::cout <<  "iso:       " << eleDebugNumberIso << std::endl;
-  std::cout <<  "d0:        " << eleDebugNumberD0 << std::endl;
-  std::cout <<  "conv veto: " << eleDebugNumberConV << std::endl;
-
-  std::cout << "Muon debug stuff:" << std::endl;
-  std::cout <<  "Total in:      " << vanillaMuons << std::endl;
-  std::cout <<  "Global and PF: " << globalPFMuons << std::endl;
-  std::cout <<  "Pt cut:        " << ptMuons << std::endl;
-  std::cout <<  "Valid hits:    " << validHitsMuons << std::endl;
-  std::cout <<  "Chi2:          " << chi2Muons << std::endl;
-  std::cout <<  "tkHits:        " << tkHitsMuons << std::endl;
-  std::cout <<  "db cut:        " << dbMuons << std::endl;
-  std::cout <<  "dz cut:        " << dzMuons << std::endl;
-  std::cout <<  "Pixel Hits:    " << pixelHitsMuons << std::endl;
-  std::cout <<  "Track layers:  " << trackerLayersMuons << std::endl;
-
-
 }
 void MakeTopologyNtupleMiniAOD::fillTriggerData(const edm::Event& iEvent)
 {

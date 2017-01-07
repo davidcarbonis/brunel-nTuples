@@ -136,6 +136,7 @@ private:
   std::string eleIDqualityLoose_;// only used for Z rejection
   bool ignore_emIDtight_; // possibility to completely ignore EM id
 
+  int minLeptons_;
   double elePtCut_;
   double eleEtaCut_;
   double eleIsoCut_;
@@ -731,32 +732,6 @@ private:
   
   int bTags;
   int softTags;
-
-  //Debugging variables used to see how many electrons are found at each cut.
-  int eleDebugNumberTotal;
-  int eleDebugNumbermvaID;
-  int eleDebugNumberEt;
-  int eleDebugNumberEta;
-  int eleDebugNumberCrack;
-  int eleDebugNumberIso;
-  int eleDebugNumberD0;
-  int eleDebugNumberConV;
-
-
-  //Debugging variables for muons
-  int vanillaMuons;
-  int globalPFMuons;
-  int ptMuons;
-  int validHitsMuons;
-  int chi2Muons;
-  int tkHitsMuons;
-  int dbMuons;
-  int dzMuons;
-  int pixelHitsMuons;
-  int trackerLayersMuons;
-  int mvaTrig;
-  int mvaAsFunc;
-
 };
 
 namespace LHAPDF {
