@@ -125,51 +125,23 @@ private:
   //jet cuts
   double jetPtCut_;
   double jetEtaCut_;
-  double jetMinConstituents_;
-  double jetNHEF_;
-  double jetHighEtaNHEF_;
-  double jetNeutralMultiplicity_;
-  double jetNEEF_;
-  double ecalEndRejectAngle_;
-  double jetCEF_;
-  double jetCHF_;
-  double jetNCH_;
   std::string bDiscName_; //The name of the b-discriminator to be used for the analysis.
   std::string cVsLDiscName_; //The name of the CvsL-discriminator to be used for the analysis.
   std::string cVsBDiscName_; //The name of the CvsB-discriminator to be used for the analysis.
   double bDiscCut_; //The cut applied for the bDiscriminator;
-  double jetPtCutLoose_;
 
-  //bool runSwissCross_;
   bool runPDFUncertainties_;
   bool useResidualJEC_;
   std::string eleIDquality_; 
   std::string eleIDqualityLoose_;// only used for Z rejection
   bool ignore_emIDtight_; // possibility to completely ignore EM id
 
-  double eleEtCut_;
+  double elePtCut_;
   double eleEtaCut_;
   double eleIsoCut_;
-  double eled0Cut_;
-  double eleECALbadLo_;
-  double eleECALbadHi_;
-  double eleMvaCut_;
-  double dREleJetCrossClean_;
-  double muoEtaCut_;
   double muoPtCut_;
-  double muoD0Cut_;
-  double muoNTkHitsCut_;
+  double muoEtaCut_;
   double muoIsoCut_;
-  double muoNormChi2_;
-  double muoHCalIso_;
-  double muoECalIso_;
-  double muoVldHits_;
-  double muoMtchdStns_;
-  double muoDB_;
-  double muoDZCut_;
-  double muoPxlHits_;
-  double muoTkLyrsWthHts_;
-  double muoRelIsoTight_;
   double metCut_;
   double rhoIso;
   
@@ -218,8 +190,8 @@ private:
   void fillGeneralTracks(const edm::Event&, const edm::EventSetup&);
   void fillFlavorHistory(const edm::Event&, const edm::EventSetup&);
   // ID functions
-  bool oldJetID(const pat::Jet &,const size_t jetindex, std::string, float);
   bool jetIDLoose(const pat::Jet &, float);
+  bool eleID(const pat::Electron &);
   bool muonID(const pat::Muon &);
   bool photonConversionVeto(const pat::Electron &, float &, float &);
 
@@ -409,7 +381,6 @@ private:
   std::map< std::string, std::vector<int> > electronSortedPhotonConversionVeto;
   std::map< std::string, std::vector<float> > electronSortedPhotonConversionDcotCustom;
   std::map< std::string, std::vector<float> > electronSortedPhotonConversionDistCustom;
-  //std::map< std::string, std::vector<float> > electronSortedSwissCross;
 
   std::map< std::string, std::vector<float> > electronSortedImpactTransDist;
   std::map< std::string, std::vector<float> > electronSortedImpactTransError;

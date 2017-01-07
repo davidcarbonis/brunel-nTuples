@@ -31,7 +31,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            metFilterToken  = cms.InputTag("TriggerResults", "", ""),
                                            fakeTriggerList = cms.vstring(), # empty. You can add fake triggers that are run on the fly to this list. No check on the process name is made so when duplicates are available only the latest one is added.
 					   isLHEflag = cms.bool(True),
-					   externalLHEToken = cms.InputTag("source"), # "externalLHEProducer", "source" for THQ 
+					   externalLHEToken = cms.InputTag("externalLHEProducer"), # "externalLHEProducer", "source" for THQ 
 					   pdfInfoFixingToken = cms.InputTag("pdfInfoFixing"),
 					   generatorToken = cms.InputTag("generator"),
                                            
@@ -147,18 +147,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 
                                            #Some jet cuts.
                                            minJetPt = cms.double(0.), #min jet pT in GeV/c
-                                           maxJetEta = cms.double(5.), # jet |eta|
-                                           isPF = cms.bool(False), #Particle flow or not
-                                           jetMinConstituents = cms.double(2),
-                                           jetNHEF = cms.double(0.99),	# for jet |eta| <= 3.0
-                                           jetHighEtaNHEF = cms.double(0.90),	# for jet |eta| > 3.0			    
-					   jetNeutralMultiplicity = cms.double(10), 
-                                           jetNEEF = cms.double(0.99),
-                                           ecalEndRejectAngle = cms.double(2.4), #Angle before which we care about the charged fraction
-                                           jetCEF = cms.double(0.99),
-                                           jetCHF = cms.double(0.),
-                                           jetNCH = cms.double(0.),
-                                           jetPtCutLoose = cms.double(20.),
+                                           maxJetEta = cms.double(5.5), # jet |eta|
 
                                            #electron triggering MVA ID (tight, for analysis)
 
@@ -184,41 +173,20 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            runPDFUncertainties = cms.bool(False),
                                            useResidualJEC = cms.bool(False),
                                            ignoreElectronID = cms.bool(True), # if set to true will save all electrons, also those not passing electronID.
-                                           minEleEt = cms.double(0), #  electron ET in GeV
-                                           eleMvaCut=cms.double(0.0), #mva minimum. Maximum mva value is hard-coded as 1, as I think that's the highest it can be.
-                                           maxEleEta = cms.double(5), #  electron |eta|
-                                           eleCombRelIso = cms.double(1.0), # V+jets adviced cut: 0.1. 
-                                           maxEled0 = cms.double(500), # D0 (beam spot corrected) in cm, V+jets adviced cut: 0.02 for prompt electrons
-                                           eleInterECALEtaLow = cms.double(1.4442),
-                                           eleInterECALEtaHigh = cms.double(1.5660),
-                                           # cross-cleaning parameter (jet is rejected if inside electron cone0
-                                           dREleJetCrossClean = cms.double(-1), # cone distance that an electron-jet match needs to have to reject the jet (the electron is always kept)
+                                           minElePt = cms.double(9.0), #  electron pT in GeV
+                                           maxEleEta = cms.double(2.70), #  electron |eta|
+					   eleRelIso = cms.double(0.50), # electron combined rel track iso with rho corrections
                                            # muon identification
-                                           maxMuonEta = cms.double(5.),
-                                           minMuonPt = cms.double(0.),
-                                           maxMuonD0 = cms.double(50), # D0 in cm, already corrected for Beam position. V+jets def: 0.02 (for prompt muons)
-                                           muoCombRelIso = cms.double(1.), #combined track isolation,
-                                           muoNormalizedChi2 = cms.double(5000), #normalized chi2 (Chi2/NDOF)
-                                           muoNTrkHits = cms.double(0), # minimal number of track hits
-                                           muonECalIso = cms.double(7000),
-                                           muonHCalIso = cms.double(7000),
-                                           flavorHistoryTag = cms.bool(True),
-                                           muoValidHits = cms.double(1), #at least one valid muon hit
-                                           muonMatchedStations = cms.double(2),
-                                           muonDZCut = cms.double(0.5),
-                                           muonDBCut = cms.double(0.2),
-                                           muonPixelHits = cms.double(1),#minimum of one
-                                           muonTrackLayersWithHits = cms.double(6), # 5 or less is skipped.
-                                           muonRelIsoTight = cms.double(0.2),
-                                           metCut = cms.double(30.0),
+                                           minMuonPt = cms.double(9.0),
+                                           maxMuonEta = cms.double(2.80),
+                                           muoRelIso = cms.double(0.50), # muon combined track isolation with delta beta corrections
+                                           metCut = cms.double(0.0),
                                            # photon rejection:
                                                dREleGeneralTrackMatchForPhotonRej=cms.double(0.3),
                                            magneticFieldForPhotonRej=cms.double(3.8),
                                            correctFactorForPhotonRej=cms.double(-0.003),
                                            maxDistForPhotonRej=cms.double(0),
                                            maxDcotForPhotonRej=cms.double(0),
-                                           ebRecHits=cms.InputTag('reducedEcalRecHitsEB'),
-                                           eeRecHits=cms.InputTag('reducedEcalRecHitsEE'),
                                            isMCatNLO=cms.bool(False),
                                            #New B-tagging info
                                            bDiscCut=cms.double(-1.0),

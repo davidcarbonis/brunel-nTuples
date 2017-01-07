@@ -201,49 +201,22 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     doCuts_(iConfig.getParameter<bool>("doCuts")),
     jetPtCut_(iConfig.getParameter<double>("minJetPt")),
     jetEtaCut_(iConfig.getParameter<double>("maxJetEta")),
-    jetMinConstituents_(iConfig.getParameter<double>("jetMinConstituents")),
-    jetNHEF_(iConfig.getParameter<double>("jetNHEF")),
-    jetHighEtaNHEF_(iConfig.getParameter<double>("jetHighEtaNHEF")),
-    jetNeutralMultiplicity_(iConfig.getParameter<double>("jetNeutralMultiplicity")),
-    jetNEEF_(iConfig.getParameter<double>("jetNEEF")), 
-    ecalEndRejectAngle_(iConfig.getParameter<double>("ecalEndRejectAngle")), 
-    jetCEF_(iConfig.getParameter<double>("jetCEF")), 
-    jetCHF_(iConfig.getParameter<double>("jetCHF")),
-    jetNCH_(iConfig.getParameter<double>("jetNCH")),
     bDiscName_(iConfig.getParameter<std::string>("bDiscName")),
     cVsLDiscName_(iConfig.getParameter<std::string>("cVsLDiscName")),
     cVsBDiscName_(iConfig.getParameter<std::string>("cVsBDiscName")),
     bDiscCut_(iConfig.getParameter<double>("bDiscCut")),
-    jetPtCutLoose_(iConfig.getParameter<double>("jetPtCutLoose")),
     runPDFUncertainties_(iConfig.getParameter<bool>("runPDFUncertainties")),
     useResidualJEC_(iConfig.getParameter<bool>("useResidualJEC")),
     ignore_emIDtight_(iConfig.getParameter<bool>("ignoreElectronID")),
 
-    eleEtCut_(iConfig.getParameter<double>("minEleEt")),
+    elePtCut_(iConfig.getParameter<double>("minElePt")),
     eleEtaCut_(iConfig.getParameter<double>("maxEleEta")),
-    eleIsoCut_(iConfig.getParameter<double>("eleCombRelIso")),
-    eled0Cut_(iConfig.getParameter<double>("maxEled0")),
-    eleECALbadLo_(iConfig.getParameter<double>("eleInterECALEtaLow")),
-    eleECALbadHi_(iConfig.getParameter<double>("eleInterECALEtaHigh")),
-    eleMvaCut_(iConfig.getParameter<double>("eleMvaCut")),
-    dREleJetCrossClean_(iConfig.getParameter<double>("dREleJetCrossClean")),
+    eleIsoCut_(iConfig.getParameter<double>("eleRelIso")),
 
-    muoEtaCut_(iConfig.getParameter<double>("maxMuonEta")),
     muoPtCut_(iConfig.getParameter<double>("minMuonPt")),
-    muoD0Cut_(iConfig.getParameter<double>("maxMuonD0")),
-    muoNTkHitsCut_(iConfig.getParameter<double>("muoNTrkHits")),
+    muoEtaCut_(iConfig.getParameter<double>("maxMuonEta")),
+    muoIsoCut_(iConfig.getParameter<double>("muoRelIso")),
     
-    //muoIsoCut_(iConfig.getParameter<double>("muoCombRelIso")),
-    muoNormChi2_(iConfig.getParameter<double>("muoNormalizedChi2")),
-    muoVldHits_(iConfig.getParameter<double>("muoValidHits")),
-    muoMtchdStns_(iConfig.getParameter<double>("muonMatchedStations")),
-    muoDB_(iConfig.getParameter<double>("muonDBCut")),
-    muoDZCut_(iConfig.getParameter<double>("muonDZCut")),
-    muoPxlHits_(iConfig.getParameter<double>("muonPixelHits")),
-    muoTkLyrsWthHts_(iConfig.getParameter<double>("muonTrackLayersWithHits")),
-    muoRelIsoTight_(iConfig.getParameter<double>("muonRelIsoTight")),
-    //muoHCalIso_(iConfig.getParameter<double>("muonHCalIso")),
-    //muoECalIso_(iConfig.getParameter<double>("muonECalIso")),
     metCut_(iConfig.getParameter<double>("metCut")), //met cut
 	
     check_triggers_(iConfig.getParameter<bool>("checkTriggers")),
@@ -252,8 +225,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     correctFactor_(iConfig.getParameter<double>("correctFactorForPhotonRej")),
     maxDist_(iConfig.getParameter<double>("maxDistForPhotonRej")),
     maxDcot_(iConfig.getParameter<double>("maxDcotForPhotonRej")),
-    ebRecHits_(iConfig.getParameter<edm::InputTag>("ebRecHits")),
-    eeRecHits_(iConfig.getParameter<edm::InputTag>("eeRecHits")),
     isMCatNLO_(iConfig.getParameter<bool>("isMCatNLO")),
     isLHEflag_(iConfig.getParameter<bool>("isLHEflag")),
     NELECTRONSMAX(30), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
@@ -594,12 +565,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     edm::Handle<reco::VertexCollection> pvHandle;
     iEvent.getByToken(pvLabel_,pvHandle);
 
-//Rechits for cleaning
-    edm::Handle<EcalRecHitCollection> recHits;
-    iEvent.getByLabel(ebRecHits_, recHits);
-    //#### Apparently not used, so have commented out
-    //const EcalRecHitCollection *myRecHits = recHits.product();
-
     //  std::cout << "now starting loop" << std::std::endl;
     // now loop again, in the correct order
     numEle[ ID ]=0;
@@ -609,14 +574,10 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       //const pat::Electron& ele = electrons[jele];
       const pat::Electron& ele = (*electronHandle)[jele];
 
+      if(!eleID(ele))
+        continue;
+
       pat::ElectronRef refel(electronOrgHandle, jele);
-
-      // look up id decisions
-      bool isPassTrigMedium = (*medium_trig_id_decisions)[refel]; // NEW
-      //      bool isPassTrigTight  = (*tight_trig_id_decisions)[refel]; // NEW - not used, commented out to avoid compilation errors
-
-      if(!isPassTrigMedium && doCuts_) // If not medium and we aren't doing a synch and have to save EVERYTHING
-	continue;
 
       int photonConversionTag=-1;
     
@@ -1173,7 +1134,6 @@ void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent, const edm::E
 
 
   std::vector<math::XYZTLorentzVector> candidatestoloopover;
-  std::vector<bool> passedtight;
   
   // use the sorted collection, it has no ID applied to it yet so that should be ok:
   electronEts.clear();
@@ -1187,17 +1147,11 @@ void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent, const edm::E
     size_t jele = etSortedIndex[iele];
     const pat::Electron& ele = electrons[jele];
 
-    // look up id decisions
-   //   bool isPassLoose = (*loose_id_decisions)[ele.gsfTrack()]; // NEW
-    bool isPassNonTrigMedium = (*medium_nonTrig_id_decisions)[ele.gsfTrack()]; // NEW - current electron selection requires medium ID
-   //   bool isPassTight  = (*tight_id_decisions)[ele.gsfTrack()]; // NEW
-  
-    if(!isPassNonTrigMedium && doCuts_)
+    if(!eleID(ele))
       continue;
 
     math::XYZTLorentzVector elecand(ele.px(),ele.py(),ele.pz(),ele.energy());
 //    bool tightcand=tightElectronID(ele, true); // Old Electron Id
-    passedtight.push_back(isPassNonTrigMedium);
     candidatestoloopover.push_back(elecand);
     
   }// end of electron loop
@@ -1206,14 +1160,11 @@ void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent, const edm::E
   for(size_t iele=0; iele<candidatestoloopover.size(); iele++){
     for(size_t jele=0; jele<candidatestoloopover.size(); jele++){
 	if( jele == iele ){ continue; }
-	if(!passedtight[iele]&& !passedtight[jele])// require *at least* one of the electrons to pass the tight ID
-	    continue;
 	zcandidatesvector[ ID ][ nzcandidates[ ID ] ]= (candidatestoloopover[iele]+candidatestoloopover[jele]).M();
 	nzcandidates[ ID ]++;
     }
   }
   // and clear the bookkeeping vectors:
-  passedtight.clear();
   candidatestoloopover.clear();
 }
 /////////////////////////////
@@ -1607,11 +1558,10 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
       fillMCJetInfo(0,numJet[ID],ID,false);
     }
 
-    //if(jetIDLoose(jet,jetSortedPt[ID][numJet[ID]])){
-    //	continue;
-    //}
+//    if(jetIDLoose(jet,jetSortedPt[ID][numJet[ID]])){
+//    	continue;
+//    }
 
-    //    if( jet.pt() < 10 ){ continue; }
    /////////////////////////////
     // no cuts that remove jets after this!
     
@@ -1626,23 +1576,6 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
   metEt[ID] = sqrt(pow(metPx[ID],2) + pow(metPy[ID],2));  
   if (numJet[ID] == 0)
     clearjetarrays(ID);
-  /*
-  for ( int ijet=0; ijet<(int)etJetSorted.size() && numJet[ ID ]<(int)NJETSMAX; ++ijet ) {
-    int jjet = etJetSorted[ijet];      
-                                   
-    const pat::Jet & jet = jets[jjet]; 
-    std::string eleCol;                                                 
-    if( jet.isCaloJet() ){ eleCol = "Calo"; }                           
-    else if( ID == "AK5PF" ){ eleCol ="Calo"; } //Pass for reco PF jets 
-    else if( jet.isPFJet() ){ eleCol = "PF"; }                          
-    else{ eleCol = "Calo"; } //For backup.                              
-    if (!jetIDLoose(jet))
-      continue;
-    if (oldJetID(jet,eleCol,(float)jet.pt()))
-      continue;
-    
-  }
-  */
 }
 
 void MakeTopologyNtupleMiniAOD::fillGeneralTracks(const edm::Event& iEvent, const edm::EventSetup& iSetup){
@@ -1784,7 +1717,6 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   electronSortedPhotonConversionVeto[ ID ].clear();
   electronSortedPhotonConversionDcotCustom[ ID ].clear();
   electronSortedPhotonConversionDistCustom[ ID ].clear();
-  //electronSortedSwissCross[ ID ].clear();
 
   electronSortedImpactTransDist[ ID ].clear();
   electronSortedImpactTransError[ ID ].clear();
@@ -3554,61 +3486,11 @@ void MakeTopologyNtupleMiniAOD::fillBIDParameters(const edm::EventSetup &iSetup,
   }
 }
 
-bool MakeTopologyNtupleMiniAOD::oldJetID(const pat::Jet& jet, const size_t jetindex, std::string ID,  float jetPt){
-  //  return true if object is good
-////std::cout << "jetID CHECK" << std::endl;
-
-    float bestdeltaR=10000.;
-    int eleindex=-1;
-    for(int iele=0; iele<numEle[ ID ];++iele){
-      if(bestdeltaR>reco::deltaR(electronSortedEta[ ID ][iele], electronSortedPhi[ ID ][iele], jet.eta(), jet.phi())){
-	bestdeltaR = reco::deltaR(electronSortedEta[ ID ][iele], electronSortedPhi[ ID ][iele], jet.eta(), jet.phi());
-	eleindex=iele;
-      }    
-      if(eleindex>=0){
-	electronSortedJetOverlap[ ID ][eleindex]=bestdeltaR; //electronSortedJetOverlap are used to store the smallest deltaR 
-      }      
-    }
-
-    jetSortedClosestLepton[ ID ][jetindex]=bestdeltaR;
-  // check if bestdeltaR is inside cone from config file (loose is -1 so nothing happens then)
-  if(!doCuts_)
-    return true;
-  if(jetPt<jetPtCut_ && doCuts_ )
-    return false;
-  if(fabs(jet.eta())>jetEtaCut_ && doCuts_ )
-    return false;
-    
-  // now check for electron overlaps:
-  
-  if(bestdeltaR<dREleJetCrossClean_ && dREleJetCrossClean_>=0.0 && doCuts_)
-    return false;
-  
-  // Loose PFJetID - if it's passed all the other stuff it should automatically get past here, but putting it in anyway
-  // For abs(eta)<= 3.0
-  if (fabs(jet.eta()) <= 3.0){
-    if (jet.numberOfDaughters() < jetMinConstituents_)
-      return false;
-
-    if (jet.neutralHadronEnergyFraction() >= jetNHEF_ || jet.neutralEmEnergyFraction() >= jetNEEF_)
-      return false;
-
-  
-    if (fabs(jet.eta()) <= ecalEndRejectAngle_ && ( jet.chargedEmEnergyFraction() >= jetCEF_ || jet.chargedHadronEnergyFraction() <= jetCHF_ || jet.chargedMultiplicity() <= jetNCH_))
-      return false;
-  }
-  else{
-    if (jet.neutralMultiplicity() <= jetNeutralMultiplicity_ || jet.neutralHadronEnergyFraction() >= jetHighEtaNHEF_)
-      return false;
-  }
-  return true;
-}
-
 bool MakeTopologyNtupleMiniAOD::jetIDLoose(const pat::Jet& jet, float jetPt){
   //Very basic loose jet id criteria - basically to veto on other loose b-tagged jets in the event.
   if (!doCuts_)
     return true;
-  if (jetPt < jetPtCutLoose_)
+  if (jetPt < jetPtCut_)
     return false;
   if(std::abs(jet.eta())>jetEtaCut_)
     return false;
@@ -3618,73 +3500,33 @@ bool MakeTopologyNtupleMiniAOD::jetIDLoose(const pat::Jet& jet, float jetPt){
   
 }
 
+bool MakeTopologyNtupleMiniAOD::eleID(const pat::Electron &ele){
+  if(!doCuts_)
+    return true;
+  if(ele.pt()<elePtCut_)
+    return false;
+  if(std::abs(ele.eta())>eleEtaCut_)
+    return false;
+
+  const reco::GsfElectron::PflowIsolationVariables& pfIso = ele.pfIsolationVariables();
+  const float AEff03 = effectiveAreaInfo_.getEffectiveArea( std::abs(ele.superCluster()->eta()) );
+  const double combrelisorho = ( pfIso.sumChargedHadronPt + std::max(0.0, pfIso.sumNeutralHadronEt + pfIso.sumPhotonEt - rhoIso*AEff03 ))/ele.pt();
+  if(combrelisorho > eleIsoCut_)
+    return false;
+
+  return true;
+}
+
 bool MakeTopologyNtupleMiniAOD::muonID(const pat::Muon &muo){
-  // hardcoded except for PT&eta, see V+jets ID definitions ( https://twiki.cern.ch/twiki/bin/view/CMS/VplusJets )
   if (!doCuts_)
     return true;
-  vanillaMuons++;
-  if (!muo.isPFMuon())
+  if(muo.pt()<muoPtCut_)
     return false;
-  if(!(muo.isGlobalMuon() || muo.isTrackerMuon()))                                                    //Debugging variables used to see how many electrons are found at each cut.
+  if(std::abs(muo.eta())>muoEtaCut_)
     return false;
-  globalPFMuons++;
-  //std::cout << "muonPt: " << muo.pt() << std::endl;
-  if(muo.pt()<=muoPtCut_)
-    return false;
-  ptMuons++;
-  if(fabs(muo.eta())>=muoEtaCut_ )
-    return false;
-  //Don't know what this is so I'm cutting it
-  //  if(!muo.combinedMuon())
-  //    return false;
-
-  //if(fabs(muo.combinedMuon()->dxy(beamSpotPoint_))> muoD0Cut_ && doCuts_)// d0< 2 mm
-  //  if(fabs(muo.innerTrack()->dxy(beamSpotPoint_))>= muoD0Cut_)
-  // return false;
-
-  //Inserting the extra cuts here. I am briefly commenting these out to see if it helps the muon numbers. I suspect these might be made in Brussel's pre-selection though.
-  //valid muon hits
-  /*  
-  if( muo.globalTrack()->hitPattern().numberOfValidMuonHits() < muoVldHits_)
-    return false;
-  validHitsMuons++;
-  //number of muon station hits
-  if (muo.numberOfMatchedStations() < muoMtchdStns_)
-    return false;
-  if(muo.globalTrack()->normalizedChi2() >= muoNormChi2_)
-    return false;
-  chi2Muons++;
-  //if(muo.track()->numberOfValidHits()<muoNTkHitsCut_ && doCuts_) // number of track hits >= 11
-  if(muo.innerTrack()->numberOfValidHits()<muoNTkHitsCut_)
-    return false;
-  tkHitsMuons++;
-  if (muo.dB() > muoDB_ )
-    return false;
-  dbMuons++;
-  if (fabs(muo.innerTrack()->dz(beamSpotPoint_) > muoDZCut_))
-    return false;
-  dzMuons++;
-  if (muo.innerTrack()->hitPattern().numberOfValidPixelHits() < muoPxlHits_)
-    return false;
-  pixelHitsMuons++;
-  if (muo.track()->hitPattern().trackerLayersWithMeasurement() < muoTkLyrsWthHts_)
-    return false;
-    trackerLayersMuons++;
-  */
-  // Changing the rel iso of the muon to that in Rebeca's code
-  //  if ((muo.neutralHadronIso() + muo.chargedHadronIso() + muo.photonIso())/muo.pt() > muoRelIsoTight_)
-  // Old way
-  //  if ((muo.chargedHadronIso() + std::max( 0.0, muo.neutralHadronIso() + muo.photonIso() - 0.5*muo.puChargedHadronIso() ) ) / muo.pt() >= muoRelIsoTight_)
-  // New way with iso cone 0.4
-  if ((muo.pfIsolationR04().sumChargedHadronPt + std::max( 0.0, muo.pfIsolationR04().sumNeutralHadronEt + muo.pfIsolationR04().sumPhotonEt - 0.5*muo.pfIsolationR04().sumPUPt))/muo.pt() >= muoRelIsoTight_)
-    return false;
-  //if(muo.globalTrack()->normalizedChi2()/muo.combinedMuon()->ndof()>muoNormChi2_ && doCuts_)
-  //have my own chi2 cut now so I'm removing this one
-  //  if(muo.combinedMuon()->chi2()/muo.combinedMuon()->ndof()>muoNormChi2_ && doCuts_)
-  //  return false;
-  //if(muo.ecalIso()>muoECalIso_ && doCuts_){ return false; }
-  //if(muo.hcalIso()>muoHCalIso_ && doCuts_){ return false; }
-  //if((muo.trackIso()+muo.ecalIso()+muo.hcalIso())/muo.pt()>muoIsoCut_ && doCuts_){ return false; }
+  const double combrelisodbeta = (muo.pfIsolationR04().sumChargedHadronPt + std::max( 0.0, muo.pfIsolationR04().sumNeutralHadronEt + muo.pfIsolationR04().sumPhotonEt - 0.5*muo.pfIsolationR04().sumPUPt))/muo.pt();
+  if(combrelisodbeta > muoIsoCut_)
+    return false; 
   return true;
 }
 

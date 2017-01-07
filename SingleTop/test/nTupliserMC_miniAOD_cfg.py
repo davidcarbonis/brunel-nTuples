@@ -160,33 +160,22 @@ process.makeTopologyNtupleMiniAOD.runPUReWeight=cms.bool(True) #Run the reweight
 process.makeTopologyNtupleMiniAOD.triggerToken = cms.InputTag("TriggerResults","","HLT") # or HLT, depends on file   
 
 #settings to apply tight selection:
-process.makeTopologyNtupleMiniAOD.minJetPt=cms.double(30.0)
-process.makeTopologyNtupleMiniAOD.maxJetEta=cms.double(5.0)
+process.makeTopologyNtupleMiniAOD.minJetPt=cms.double(0.0)
+process.makeTopologyNtupleMiniAOD.maxJetEta=cms.double(5.5)
 process.makeTopologyNtupleMiniAOD.bDiscCut=cms.double(-1.0)
-process.makeTopologyNtupleMiniAOD.minEleEt=cms.double(20.0)
-process.makeTopologyNtupleMiniAOD.maxEleEta=cms.double(2.5)
-process.makeTopologyNtupleMiniAOD.eleCombRelIso=cms.double(0.15)
-process.makeTopologyNtupleMiniAOD.maxEled0=cms.double(0.04)
-process.makeTopologyNtupleMiniAOD.eleInterECALEtaLow=cms.double(1.4442)
-process.makeTopologyNtupleMiniAOD.eleInterECALEtaHigh=cms.double(1.5660)
-process.makeTopologyNtupleMiniAOD.dREleJetCrossClean=cms.double(0.4)
-process.makeTopologyNtupleMiniAOD.maxMuonEta=cms.double(2.4)
-process.makeTopologyNtupleMiniAOD.minMuonPt=cms.double(20)
-process.makeTopologyNtupleMiniAOD.maxMuonD0=cms.double(0.02)
-process.makeTopologyNtupleMiniAOD.muonRelIsoTight=cms.double(0.2)
-process.makeTopologyNtupleMiniAOD.muoNormalizedChi2=cms.double(10)
-process.makeTopologyNtupleMiniAOD.muoNTrkHits=cms.double(11)
-process.makeTopologyNtupleMiniAOD.muonECalIso=cms.double(4)
-process.makeTopologyNtupleMiniAOD.muonHCalIso=cms.double(6)
-process.makeTopologyNtupleMiniAOD.dREleGeneralTrackMatchForPhotonRej=cms.double(0.3)
+process.makeTopologyNtupleMiniAOD.minElePt=cms.double(9.0)
+process.makeTopologyNtupleMiniAOD.maxEleEta=cms.double(2.7)
+process.makeTopologyNtupleMiniAOD.eleRelIso=cms.double(0.50)
+process.makeTopologyNtupleMiniAOD.maxMuonEta=cms.double(2.8)
+process.makeTopologyNtupleMiniAOD.minMuonPt=cms.double(9.0)
+process.makeTopologyNtupleMiniAOD.muonRelIso=cms.double(0.50)
 process.makeTopologyNtupleMiniAOD.maxDistForPhotonRej=cms.double(0.04)
 process.makeTopologyNtupleMiniAOD.maxDcotForPhotonRej=cms.double(0.03)
 process.makeTopologyNtupleMiniAOD.fillAll=cms.bool(True)
 #process.makeTopologyNtupleMiniAOD.btagParameterizationList = cms.vstring()
 #process.makeTopologyNtupleMiniAOD.btagParameterizationMode = cms.vstring()
-process.makeTopologyNtupleMiniAOD.runSwissCross = cms.bool(False)
 #Don't actually do cuts
-process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
+process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(True) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
 
 #Make the inputs for the n-tupliser right.
 process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("slimmedElectrons")
@@ -219,8 +208,8 @@ process.source = cms.Source("PoolSource",
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source.fileNames = [
-#	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_HCALDebug_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/00312D7A-FEBD-E611-A713-002590DB923E.root',
-	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/THQ_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/02259D47-A8D1-E611-AED1-02163E019BED.root',
+	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_HCALDebug_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/00312D7A-FEBD-E611-A713-002590DB923E.root',
+#	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/THQ_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/02259D47-A8D1-E611-AED1-02163E019BED.root',
        ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
