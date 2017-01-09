@@ -1,3 +1,4 @@
+
 #Set up the pat environment
 import FWCore.ParameterSet.Config as cms
 process = cms.Process("customPAT")
@@ -126,28 +127,19 @@ for idmod in my_id_modules:
 ##### MET Uncertainities ######
 ###############################
 
-##from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
-#default configuration for miniAOD reprocessing, change the isData flag to run on data
-#runMetCorAndUncFromMiniAOD(process, isData=False)#MC
-##runMetCorAndUncFromMiniAOD(process, isData=True)#Data
+from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 
-#### the lines below remove the L2L3 residual uncertainties when processing data
-#process.patPFMetT1T2Corr.jetCorrLabelRes = cms.InputTag("L3Absolute")
-#process.patPFMetT1T2SmearCorr.jetCorrLabelRes = cms.InputTag("L3Absolute")
-#process.patPFMetT2Corr.jetCorrLabelRes = cms.InputTag("L3Absolute")
-#process.patPFMetT2SmearCorr.jetCorrLabelRes = cms.InputTag("L3Absolute")
-#process.shiftedPatJetEnDown.jetCorrLabelUpToL3Res = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
-#process.shiftedPatJetEnUp.jetCorrLabelUpToL3Res = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
+## If you only want to re-correct and get the proper uncertainties
+#runMetCorAndUncFromMiniAOD(process,
+#                           isData=False,
+#                           )
 
-#from PhysicsTools.PatUtils.tools.runType1PFMEtUncertainties import runType1PFMEtUncertainties
-#runType1PFMEtUncertainties(process,addToPatDefaultSequence=False,
-#                           photonCollection="slimmedPhotons",
-#                           jetCollection="slimmedJets",
-#                           electronCollection="slimmedElectrons",
-#                           muonCollection="slimmedMuons",
-#                           tauCollection="slimmedTaus")
-
-
+# If you would like to re-cluster and get the proper uncertainties
+runMetCorAndUncFromMiniAOD(process,
+                           isData=False,
+#                           pfCandColl=cms.InputTag("packedPFCandidates"),
+#                           recoMetFromPFCs=True,
+                           )
 
 ####
 # The N-tupliser/cutFlow
@@ -242,7 +234,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 process.p = cms.Path(
 #    process.calibratedPatElectrons *
     process.jetCorrection *
-#    process.producePatPFMETCorrections *
+    process.fullPatMetSequence *
     process.egmGsfElectronIDSequence *
     process.makeTopologyNtupleMiniAOD
     )
