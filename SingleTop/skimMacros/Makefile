@@ -1,12 +1,7 @@
 # Adding in a few variables to change up flags etc
 CC = g++
-CFLAGS = -g -Wall -std=c++0x $(shell root-config --cflags)
-LIBS = $(shell root-config --libs)
-ROOTSYS = /cms/cmssw/slc5_amd64_gcc462/lcg/root/5.32.00/
-
-#EXECUTABLE_OBJECT_FILES = $(patsubst %.cpp,%.o,${EXECUTABLE_SOURCES})
-#EXECUTABLE_SOURCES = $(wildcard *.cpp)
-#EXECUTABLES = $(patsubst %.cpp,%.exe,${EXECUTABLE_SOURCES})
+CFLAGS = -g -Wall -O2 $(shell root-config --cflags)
+LIBS = $(shell root-config --libs) -lboost_filesystem -lboost_system
 
 default: build
 
@@ -21,15 +16,15 @@ buildall: _all
 _all: skims.exe eventCounter.exe
 
 skims.exe: makeDatasetSkim.o AnalysisEvent.o
-	$(CC) $(CFLAGS) $(LIBS) -o skims.exe makeDatasetSkim.o AnalysisEvent.o
+	$(CC) $(CFLAGS) -o skims.exe makeDatasetSkim.o AnalysisEvent.o $(LIBS)
 eventCounter.exe: eventCounter.o
-	$(CC) $(CFLAGS) $(LIBS) -o eventCounter.exe eventCounter.o
+	$(CC) $(CFLAGS) -o eventCounter.exe eventCounter.o $(LIBS)
 
 makeDatasetSkim.o: makeDatasetSkim.cpp
-	$(CC) $(CFLAGS) $(LIBS) -c makeDatasetSkim.cpp
+	$(CC) $(CFLAGS) -c makeDatasetSkim.cpp $(LIBS)
 eventCounter.o: eventCounter.cpp
-	$(CC) $(CFLAGS) $(LIBS) -c eventCounter.cpp
+	$(CC) $(CFLAGS) -c eventCounter.cpp $(LIBS)
 
-AnalysisEvent.o: AnalysisEvent.C AnalysisEvent.h   
-	$(CC) $(CFLAGS) $(LIBS) -c AnalysisEvent.C 
+AnalysisEvent.o: AnalysisEvent.C AnalysisEvent.h
+	$(CC) $(CFLAGS) -c AnalysisEvent.C $(LIBS)
 

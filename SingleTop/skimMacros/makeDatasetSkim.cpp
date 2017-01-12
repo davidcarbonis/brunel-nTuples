@@ -1,23 +1,40 @@
-#include<iostream>
-#include<string>
-#include<fstream>
-#include"AnalysisEvent.h"
-#include<sstream>
-#include<sys/stat.h>
-#include<TH1.h>
+#include <iostream>
+#include <string>
+#include <fstream>
+#include "AnalysisEvent.h"
+#include <sstream>
+#include <sys/stat.h>
+#include <regex>
+#include <TH1.h>
+
+#include <boost/range/iterator_range.hpp>
+#include <boost/filesystem.hpp>
+
+namespace fs = boost::filesystem;
 
 int main(int argc, char* argv[]){
-  
-  std::string fileName = argv[1];
-  std::string datasetName = argv[2];
-  bool isMC (false);
-  if ( argc == 4 ) isMC = std::stoi(argv[3]);
 
-  std::ifstream fileList(fileName.c_str());
-  std::string line;             
+  const std::string inDir = argv[1];
+  const std::string datasetName = argv[2];
+  const bool isMC{argc >= 4 ? std::stoi(argv[3]) : false};
+
+  const std::regex mask{".*.root"};
+  std::vector<std::string> inFiles;
+  for (const auto& file :
+          boost::make_iterator_range(fs::directory_iterator{inDir}, {}))
+  {
+      if (!fs::is_regular_file(file.status())
+              || !std::regex_match(file.path().filename(), mask))
+      {
+          continue;
+      }
+
+      inFiles.emplace_back(file.path().string());
+  }
 
   int fileNum = 0;
-  while(getline(fileList,line)){
+  for (const auto& file : inFiles)
+  {
 
     std::string numName, numNamePlus;
     std::ostringstream convert, convert1;
@@ -25,7 +42,7 @@ int main(int argc, char* argv[]){
     convert1 << fileNum+2;
     numName = convert.str();
     numNamePlus = convert1.str();
-    
+
     struct stat buffer;
     if (stat(("/scratch/data/tZqSkimsRun2016/" + datasetName + "/skimFile"+numNamePlus+".root").c_str(), &buffer) == 0) {
       fileNum++;
@@ -36,10 +53,10 @@ int main(int argc, char* argv[]){
     TH1I* weightHisto = new TH1I ("sumNumPosMinusNegWeights","sumNumPosMinusNegWeights", 7, -3.5, 3.5);
 
     TChain * datasetChain = new TChain("makeTopologyNtupleMiniAOD/tree");
-    datasetChain->Add(line.c_str());
-    
-    //    std::cout << line;
-    //TFile inFile(line.c_str());    
+    datasetChain->Add(file.c_str());
+
+    //    std::cout << file;
+    //TFile inFile(file.c_str());
 
     TTree * outTree = datasetChain->CloneTree(0);
 
