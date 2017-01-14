@@ -3,9 +3,11 @@
 #include <string>
 #include <sys/stat.h>
 #include <regex>
+#include <vector>
 
-#include <boost/range/iterator_range.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/range/iterator_range.hpp>
+#include <boost/progress.hpp>
 
 #include <TChain.h>
 #include <TH1I.h>
@@ -63,18 +65,19 @@ int main(int argc, char* argv[])
 
         TTree * const outTree = datasetChain.CloneTree(0);
 
-        TFile outFile{("/scratch/data/tZqSkimsRun2016/" + datasetName
-                + "/skimFile" + numName + ".root").c_str(),"RECREATE"};
+        std::string outFilePath{"/scratch/data/tZqSkimsRun2016/" + datasetName
+            + "/skimFile" + numName + ".root"};
+        TFile outFile{outFilePath.c_str(), "RECREATE"};
+
+        // std::cout << outFilePath << std::endl;
 
         const long long int numberOfEvents{datasetChain.GetEntries()};
+        boost::progress_display progress{numberOfEvents, std::cout, outFilePath + "\n"};
         AnalysisEvent event{isMC, "", &datasetChain};
+
         for (long long int i{0}; i < numberOfEvents; i++)
         {
-            if (i % 500 < 0.01)
-            {
-                std::cerr << i << "/" << numberOfEvents
-                    << " (" << 100*float(i)/numberOfEvents << "%)\r";
-            } // ??
+            ++progress;
 
             event.GetEntry(i);
 
@@ -159,6 +162,7 @@ int main(int argc, char* argv[])
         // inFile.Close();
 
         fileNum++;
-        std::cerr << std::endl;
+
+        std::cout << std::endl;
     }
 }
