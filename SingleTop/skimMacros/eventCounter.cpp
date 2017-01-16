@@ -5,7 +5,6 @@
 #include <boost/filesystem.hpp>
 
 #include <TChain.h>
-#include <TTree.h>
 
 
 namespace fs = boost::filesystem;
@@ -13,21 +12,24 @@ namespace fs = boost::filesystem;
 
 int main(int argc, char* argv[])
 {
-    const std::string inDir = argv[1];
-
     const std::regex mask{".*\\.root"};
     std::vector<std::string> inFiles;
 
-    for (const auto& file:
-            boost::make_iterator_range(fs::directory_iterator{inDir}, {}))
+    for (int i{1}; i < argc; i++)
     {
-        if (!fs::is_regular_file(file.status())
-                || !std::regex_match(file.path().filename(), mask))
-        {
-            continue;
-        }
+        const std::string inDir{argv[i]};
 
-        inFiles.emplace_back(file.path().string());
+        for (const auto& file:
+                boost::make_iterator_range(fs::directory_iterator{inDir}, {}))
+        {
+            if (!fs::is_regular_file(file.status())
+                    || !std::regex_match(file.path().string(), mask))
+            {
+                continue;
+            }
+
+            inFiles.emplace_back(file.path().string());
+        }
     }
 
     long long int totalEvents{0};
