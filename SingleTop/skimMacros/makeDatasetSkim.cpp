@@ -2,7 +2,6 @@
 #include <iostream>
 #include <regex>
 #include <string>
-#include <sys/stat.h>
 #include <vector>
 
 #include <boost/filesystem.hpp>
@@ -81,9 +80,8 @@ int main(int argc, char* argv[])
         const std::string numName{std::to_string(fileNum)};
         const std::string numNamePlus{std::to_string(fileNum + 2)};
 
-        struct stat buffer;
-         if (stat(("/scratch/data/tZqSkimsRun2016/" + datasetName + "/skimFile"
-                        + numNamePlus + ".root").c_str(), &buffer) == 0)
+         if (fs::is_regular_file("/scratch/data/tZqSkimsRun2016/" + datasetName
+                         + "/skimFile" + numNamePlus + ".root"))
          {
             fileNum++;
             continue;
