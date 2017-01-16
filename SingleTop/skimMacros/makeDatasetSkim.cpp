@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
     std::string datasetName;
     bool isMC;
 
+    // Define command-line flags
     namespace po = boost::program_options;
     po::options_description desc("Options");
     desc.add_options()
@@ -38,6 +39,7 @@ int main(int argc, char* argv[])
         ("MC", po::bool_switch(&isMC), "Set for MC data.");
     po::variables_map vm;
 
+    // Parse arguments
     try
     {
         po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -60,17 +62,17 @@ int main(int argc, char* argv[])
     const std::regex mask{".*\\.root"};
     int fileNum{0};
 
-    for (const auto& inDir: inDirs)
+    for (const auto& inDir: inDirs)  // for each input directory
     {
         for (const auto& file:
                 boost::make_iterator_range(fs::directory_iterator{inDir}, {}))
-        {
+        {  // for each file in directory
             const std::string path {file.path().string()};
 
             if (!fs::is_regular_file(file.status())
                     || !std::regex_match(path, mask))
             {
-                continue;
+                continue;  // skip if not a root file
             }
 
             const std::string numName{std::to_string(fileNum)};
@@ -78,10 +80,10 @@ int main(int argc, char* argv[])
 
              if (fs::is_regular_file("/scratch/data/tZqSkimsRun2016/" +
                          datasetName + "/skimFile" + numNamePlus + ".root"))
-             {
+             {  // don't overwrite existing skim files, except for the last two
                 fileNum++;
                 continue;
-            }
+             }
 
             std::array<unsigned int, 14> summedWeights{};
             TH1I weightHisto{"sumNumPosMinusNegWeights",
@@ -108,7 +110,7 @@ int main(int argc, char* argv[])
 
             for (long long int i{0}; i < numberOfEvents; i++)
             {
-                ++progress;
+                ++progress;  // update progress bar (++ must be prefix)
 
                 event.GetEntry(i);
 
@@ -132,7 +134,7 @@ int main(int argc, char* argv[])
                                                      : summedWeights[13]++;
                 }
 #endif
-
+                // Lepton cuts
                 int numLeps{0};
                 for (int j = 0; j < event.numElePF2PAT; j++)
                 {
@@ -147,8 +149,8 @@ int main(int argc, char* argv[])
                 for (int j = 0; j < event.numMuonPF2PAT; j++)
                 {
                     if (event.muonPF2PATPt[j] < 9
-                            || event.muonPF2PATComRelIsodBeta[j] > 0.5
-                            || std::abs(event.muonPF2PATEta[j]) > 2.8)
+                            || std::abs(event.muonPF2PATEta[j]) > 2.8
+                            || event.muonPF2PATComRelIsodBeta[j] > 0.5)
                     {
                         continue;
                     }
