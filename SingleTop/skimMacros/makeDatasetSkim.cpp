@@ -1,17 +1,18 @@
 #include <array>
 #include <iostream>
+#include <regex>
 #include <string>
 #include <sys/stat.h>
-#include <regex>
 #include <vector>
 
 #include <boost/filesystem.hpp>
-#include <boost/range/iterator_range.hpp>
+#include <boost/program_options.hpp>
 #include <boost/progress.hpp>
+#include <boost/range/iterator_range.hpp>
 
 #include <TChain.h>
-#include <TH1I.h>
 #include <TFile.h>
+#include <TH1I.h>
 #include <TTree.h>
 
 #include "AnalysisEvent.h"
@@ -22,21 +23,56 @@ namespace fs = boost::filesystem;
 
 int main(int argc, char* argv[])
 {
-    const std::string inDir{argv[1]};
-    const std::string datasetName{argv[2]};
-    const bool isMC{argc >= 4 ? std::stoi(argv[3]) : false};
+    std::vector<std::string> inDirs;
+    std::string datasetName;
+    bool isMC;
+
+    namespace po = boost::program_options;
+    po::options_description desc("Options");
+    desc.add_options()
+        ("help,h", "Print this message.")
+        ("inDirs,i", po::value<std::vector<std::string>>
+         (&inDirs)->multitoken()->required(),
+         "Directories in which to look for crab output.")
+        ("datasetName,o", po::value<std::string>(&datasetName)->required(),
+         "Output dataset name.")
+        ("MC", po::bool_switch(&isMC), "Set for MC data.");
+    po::variables_map vm;
+
+    try
+    {
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+
+        if (vm.count("help"))
+        {
+            std::cout << desc;
+            return 0;
+        }
+
+        po::notify(vm);
+    }
+    catch (const po::error& e)
+    {
+        std::cerr << "ERROR: " << e.what() << std::endl;
+        return 1;
+    }
+
 
     const std::regex mask{".*\\.root"};
     std::vector<std::string> inFiles;
-    for (const auto& file :
-            boost::make_iterator_range(fs::directory_iterator{inDir}, {}))
+
+    for (const auto& inDir: inDirs)
     {
-        if (!fs::is_regular_file(file.status())
-                || !std::regex_match(file.path().filename(), mask))
+        for (const auto& file :
+                boost::make_iterator_range(fs::directory_iterator{inDir}, {}))
         {
-            continue;
+            if (!fs::is_regular_file(file.status())
+                    || !std::regex_match(file.path().string(), mask))
+            {
+                continue;
+            }
+            inFiles.emplace_back(file.path().string());
         }
-        inFiles.emplace_back(file.path().string());
     }
 
     int fileNum{0};
@@ -46,12 +82,12 @@ int main(int argc, char* argv[])
         const std::string numNamePlus{std::to_string(fileNum + 2)};
 
         struct stat buffer;
-        if (stat(("/scratch/data/tZqSkimsRun2016/" + datasetName + "/skimFile"
+         if (stat(("/scratch/data/tZqSkimsRun2016/" + datasetName + "/skimFile"
                         + numNamePlus + ".root").c_str(), &buffer) == 0)
-        {
+         {
             fileNum++;
             continue;
-        } // ?
+        }
 
         std::array<unsigned int, 14> summedWeights{};
         TH1I weightHisto{"sumNumPosMinusNegWeights",
@@ -72,7 +108,8 @@ int main(int argc, char* argv[])
         // std::cout << outFilePath << std::endl;
 
         const long long int numberOfEvents{datasetChain.GetEntries()};
-        boost::progress_display progress{numberOfEvents, std::cout, outFilePath + "\n"};
+        boost::progress_display progress{numberOfEvents, std::cout, outFilePath
+            + "\n"};
         AnalysisEvent event{isMC, "", &datasetChain};
 
         for (long long int i{0}; i < numberOfEvents; i++)

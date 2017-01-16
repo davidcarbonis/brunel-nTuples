@@ -1,6 +1,6 @@
 # Adding in a few variables to change up flags etc
 CC = g++
-CFLAGS = -march=native -mtune=native -pthread -Wextra -O2 \
+CFLAGS = -march=native -mtune=native -pthread -fPIC -O2 \
 		$(shell root-config --auxcflags) \
 		-Wall \
 		-Wextra \
@@ -22,8 +22,14 @@ CFLAGS = -march=native -mtune=native -pthread -Wextra -O2 \
 		-Wuseless-cast \
 		-Wnon-virtual-dtor \
 		-Wzero-as-null-pointer-constant
-INCDIR = -isystem$(shell root-config --incdir)
-LIBS = $(shell root-config --libs) -lboost_filesystem -lboost_system
+INCDIR = -isystem$(shell root-config --incdir) \
+		 -isystem/usr/include/boost148
+LIBS = $(shell root-config --libs) -rdynamic \
+	   -L/usr/lib64/boost148 \
+	   -lboost_system-mt \
+	   -lboost_filesystem-mt \
+	   -lboost_program_options \
+
 
 default: build
 
