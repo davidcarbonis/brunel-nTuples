@@ -1,8 +1,8 @@
 #include <iostream>
 #include <regex>
 
-#include <boost/range/iterator_range.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/range/iterator_range.hpp>
 
 #include <TChain.h>
 
@@ -13,7 +13,7 @@ namespace fs = boost::filesystem;
 int main(int argc, char* argv[])
 {
     const std::regex mask{".*\\.root"};
-    std::vector<std::string> inFiles;
+    TChain datasetChain{"makeTopologyNtupleMiniAOD/tree"};
 
     for (int i{1}; i < argc; i++)
     {
@@ -28,20 +28,10 @@ int main(int argc, char* argv[])
                 continue;
             }
 
-            inFiles.emplace_back(file.path().string());
+            datasetChain.Add(file.path().string().c_str());
         }
     }
 
-    long long int totalEvents{0};
-    for (const auto& file: inFiles)
-    {
-
-        TChain datasetChain{"makeTopologyNtupleMiniAOD/tree"};
-        datasetChain.Add(file.c_str());
-
-        totalEvents += datasetChain.GetEntries();
-    }
-
-    std::cout << "Found " << totalEvents << " events." << std::endl;
-    std::cout << "\nFinished." << std::endl;
+    std::cout << "Found " << datasetChain.GetEntries() << " events."
+        << std::endl;
 }
