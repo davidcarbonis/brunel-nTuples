@@ -85,6 +85,11 @@
 // Including this for hit patterns - needed for getting the lost number of tracker hits
 #include "DataFormats/TrackReco/interface/HitPattern.h"
 
+// Temp EGM Smearing until final corrections are derived
+#include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
+#include "DataFormats/DetId/interface/DetId.h"
+#include "DataFormats/EcalDetId/interface/EBDetId.h"
+#include "DataFormats/EcalDetId/interface/EEDetId.h"
 
 #include "TH1D.h"
 #include "TH2D.h"
@@ -173,6 +178,9 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     externalLHEToken_(consumes<LHEEventProduct>(iConfig.getParameter<edm::InputTag>("externalLHEToken"))),
     pdfInfoToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("pdfInfoFixingToken"))),
     generatorToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("generatorToken"))),
+
+    // Temp EGM Smearing fix for data
+    _ebrechits_token(mayConsume<EBRecHitCollection>(iConfig.getParameter<edm::InputTag>("ebrechits"))),
 
     //    eleTrigLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTrigLooseIdMap"))),
     eleTrigMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTrigMediumIdMap"))),
@@ -589,7 +597,28 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	    }
 	}
 
-      	electronSortedE[ ID ][numEle[ ID ]-1]=ele.energy();
+        // Temp EGM Smearing fix - to be removed when updated derivation has been made
+
+        double Ecorr = 1.0;
+        if ( !runMCInfo_ ) {
+          edm::Handle<EBRecHitCollection> _ebrechits;
+          iEvent.getByToken(_ebrechits_token,_ebrechits);
+          DetId detid = ele.superCluster()->seed()->seed();
+          const EcalRecHit * rh = NULL;
+          if (detid.subdetId() == EcalBarrel) {
+            auto rh_i =  _ebrechits->find(detid);
+            if( rh_i != _ebrechits->end()) rh =  &(*rh_i);
+            else rh = NULL;
+          }
+          if(rh==NULL) Ecorr=1;
+          else {
+            if (rh->energy() > 200 && rh->energy()<300)  Ecorr=1.0199;
+            else if (rh->energy()>300 && rh->energy()<400) Ecorr=  1.052;
+            else if (rh->energy()>400 && rh->energy()<500) Ecorr = 1.015;
+          }
+        }
+
+      	electronSortedE[ ID ][numEle[ ID ]-1]=ele.energy() * Ecorr; // Temp EGM Smearing fix for data
       	electronSortedEt[ ID ][numEle[ ID ]-1]=ele.et();
       	electronSortedEta[ ID ][numEle[ ID ]-1]=ele.eta();
       	electronSortedPt[ ID ][numEle[ ID ]-1]=ele.pt();

@@ -88,6 +88,9 @@ private:
   edm::EDGetTokenT<GenEventInfoProduct> pdfInfoToken_;
   edm::EDGetTokenT<GenEventInfoProduct> generatorToken_;
 
+  // Temp EGM Smearing token
+  edm::EDGetTokenT<EBRecHitCollection> _ebrechits_token;
+
   // ID decisions objects
   //edm::EDGetTokenT<edm::ValueMap<bool> > eleTrigLooseIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > eleTrigMediumIdMapToken_;

@@ -92,29 +92,32 @@ process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
 #########EGM Smearing##########
 ###############################
 
-#process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
+process.load('EgammaAnalysis.ElectronTools.calibratedElectronsRun2_cfi')
 
-#process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-#                                                       calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
-#                                                                                                                 engineName = cms.untracked.string('TRandom3'),
-#                                                                                           ),
-#                                                       )
+process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+                                                       calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
+                                                                                                                 engineName = cms.untracked.string('TRandom3'),
+                                                                                           ),
+                                                       )
+process.selectedSlimmedElectrons = cms.EDFilter("PATElectronSelector",     ## this protects against a crash in electron calibration     ## due to electrons with eta > 2.5     
+                                                src = cms.InputTag("slimmedElectrons"),      
+                                                cut = cms.string("pt>5 && abs(eta)<2.5") ) 
 
-#calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
+calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
                                         
                                         # input collections
-#                                        electrons = cms.InputTag('slimmedElectrons'),
-#                                        gbrForestName = cms.string("gedelectron_p4combination_25ns"),
+                                        electrons = cms.InputTag('selectedSlimmedElectrons'),
+                                        gbrForestName = cms.string("gedelectron_p4combination_25ns"),
                                         
                                         # data or MC corrections
                                         # if isMC is false, data corrections are applied
-#                                        isMC = cms.bool(True),
+                                        isMC = cms.bool(True),
                                         
                                         # set to True to get special "fake" smearing for synchronization. Use JUST in case of synchronization
-#                                        isSynchronization = cms.bool(False),
+                                        isSynchronization = cms.bool(False),
 
-#                                        correctionFile = cms.string("80Xapproval")
-#                                        )
+                                        correctionFile = cms.string("Moriond2017_JEC")
+                                        )
 
 ###############################
 ###### Electron ID ############
@@ -184,7 +187,7 @@ process.makeTopologyNtupleMiniAOD.fillAll=cms.bool(True)
 process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(True) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
 
 #Make the inputs for the n-tupliser right.
-process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("slimmedElectrons")
+process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("calibratedPatElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFToken = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
@@ -247,7 +250,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 
 process.p = cms.Path(
     process.regressionApplication *
-#    process.calibratedPatElectrons *
+    process.calibratedPatElectrons *
     process.jetCorrection *
     process.fullPatMetSequence *
     process.egmGsfElectronIDSequence *

@@ -35,6 +35,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 					   pdfInfoFixingToken = cms.InputTag("pdfInfoFixing"),
 					   generatorToken = cms.InputTag("generator"),
                                            minLeptons = cms.int32(2),
+					   ebrechits = cms.InputTag("reducedEgamma","reducedEBRecHits"),
                                            
                                            triggerList = cms.vstring(                                                              
 	#Updated Triggers for 2016
