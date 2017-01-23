@@ -1,128 +1,202 @@
-#include<iostream>
-#include<string>
-#include<fstream>
-#include"AnalysisEvent.h"
-#include<sstream>
-#include<sys/stat.h>
-#include<TH1.h>
+#include <array>
+#include <iostream>
+#include <regex>
+#include <string>
+#include <vector>
 
-int main(int argc, char* argv[]){
-  
-  std::string fileName = argv[1];
-  std::string datasetName = argv[2];
-  bool isMC (false);
-  if ( argc == 4 ) isMC = std::stoi(argv[3]);
+#include <boost/filesystem.hpp>
+#include <boost/program_options.hpp>
+#include <boost/progress.hpp>
+#include <boost/range/iterator_range.hpp>
 
-  std::ifstream fileList(fileName.c_str());
-  std::string line;             
+#include <TChain.h>
+#include <TFile.h>
+#include <TH1I.h>
+#include <TTree.h>
 
-  int fileNum = 0;
-  while(getline(fileList,line)){
+#include "AnalysisEvent.h"
 
-    std::string numName, numNamePlus;
-    std::ostringstream convert, convert1;
-    convert << fileNum;
-    convert1 << fileNum+2;
-    numName = convert.str();
-    numNamePlus = convert1.str();
-    
-    struct stat buffer;
-    if (stat(("/scratch/data/tZqSkimsRun2016/" + datasetName + "/skimFile"+numNamePlus+".root").c_str(), &buffer) == 0) {
-      fileNum++;
-      continue;
+
+namespace fs = boost::filesystem;
+
+
+int main(int argc, char* argv[])
+{
+    std::vector<std::string> inDirs;
+    std::string datasetName;
+    bool isMC;
+
+    // Define command-line flags
+    namespace po = boost::program_options;
+    po::options_description desc("Options");
+    desc.add_options()
+        ("help,h", "Print this message.")
+        ("inDirs,i", po::value<std::vector<std::string>>
+         (&inDirs)->multitoken()->required(),
+         "Directories in which to look for crab output.")
+        ("datasetName,o", po::value<std::string>(&datasetName)->required(),
+         "Output dataset name.")
+        ("MC", po::bool_switch(&isMC), "Set for MC data.");
+    po::variables_map vm;
+
+    // Parse arguments
+    try
+    {
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+
+        if (vm.count("help"))
+        {
+            std::cout << desc;
+            return 0;
+        }
+
+        po::notify(vm);
+    }
+    catch (const po::error& e)
+    {
+        std::cerr << "ERROR: " << e.what() << std::endl;
+        return 1;
     }
 
-    unsigned int summedWeights [14] {};
-    TH1I* weightHisto = new TH1I ("sumNumPosMinusNegWeights","sumNumPosMinusNegWeights", 7, -3.5, 3.5);
 
-    TChain * datasetChain = new TChain("makeTopologyNtupleMiniAOD/tree");
-    datasetChain->Add(line.c_str());
-    
-    //    std::cout << line;
-    //TFile inFile(line.c_str());    
+    const std::regex mask{".*\\.root"};
+    int fileNum{0};
 
-    TTree * outTree = datasetChain->CloneTree(0);
+    for (const auto& inDir: inDirs)  // for each input directory
+    {
+        for (const auto& file:
+                boost::make_iterator_range(fs::directory_iterator{inDir}, {}))
+        {  // for each file in directory
+            const std::string path {file.path().string()};
 
-    //stupid long conversion between int and string.
+            if (!fs::is_regular_file(file.status())
+                    || !std::regex_match(path, mask))
+            {
+                continue;  // skip if not a root file
+            }
 
-    TFile outFile(("/scratch/data/tZqSkimsRun2016/" + datasetName + "/skimFile"+numName+".root").c_str(),"RECREATE");
-  
-    int numberOfEvents = datasetChain->GetEntries();
-    AnalysisEvent * event = new AnalysisEvent(isMC,"",datasetChain);
-    for (int i = 0; i < numberOfEvents; i++){
-      if (i % 500 < 0.01) std::cerr << i << "/" << numberOfEvents << " (" << 100*float(i)/numberOfEvents << "%)\r";
-    
-      event->GetEntry(i);
+            const std::string numName{std::to_string(fileNum)};
+            const std::string numNamePlus{std::to_string(fileNum + 2)};
 
-      // Get number of positive and negative amc@nlo weights
-      if ( isMC ) {
-	if ( event->origWeightForNorm >= 0.0 ) summedWeights[0]++;
-	else summedWeights[1]++;
-	if ( event->weight_muF0p5 >= 0.0 ) summedWeights[2]++;
-	else summedWeights[3]++;
-	if ( event->weight_muR0p5 >= 0.0 ) summedWeights[4]++;
-	else summedWeights[5]++;
-	if ( event->weight_muF0p5muR0p5 >= 0.0 ) summedWeights[6]++;
-	else summedWeights[7]++;
-	if ( event->weight_muF2 >= 0.0 ) summedWeights[8]++;
-	else summedWeights[9]++;
-	if ( event->weight_muR2 >= 0.0 ) summedWeights[10]++;
-	else summedWeights[11]++;
-	if ( event->weight_muF2muR2 >= 0.0 ) summedWeights[12]++;
-	else summedWeights[13]++;
-      }
+             if (fs::is_regular_file("/scratch/data/tZqSkimsRun2016/" +
+                         datasetName + "/skimFile" + numNamePlus + ".root"))
+             {  // don't overwrite existing skim files, except for the last two
+                fileNum++;
+                continue;
+             }
 
-      int numLeps = 0;
-      for (int j = 0; j < event->numElePF2PAT; j++){
-	if (event->elePF2PATPT[j] < 9) continue;
-	if (fabs(event->elePF2PATEta[j]) > 2.7) continue;
-	if (event->elePF2PATComRelIsoRho[j] > 0.5) continue;
-	numLeps++;
-      }
-      for (int j = 0; j < event->numMuonPF2PAT; j++){
-	if (event->muonPF2PATPt[j] < 9) continue;
-	if (event->muonPF2PATComRelIsodBeta[j] > 0.5) continue;
-	if (fabs(event->muonPF2PATEta[j]) > 2.8) continue;
-	numLeps++;
-      }
-      if (numLeps >= 2) outTree->Fill();
-    } 
+            std::array<unsigned int, 14> summedWeights{};
+            TH1I weightHisto{"sumNumPosMinusNegWeights",
+                "sumNumPosMinusNegWeights", 7, -3.5, 3.5};
 
-    if ( isMC ) {
+            TChain datasetChain{"makeTopologyNtupleMiniAOD/tree"};
+            datasetChain.Add(path.c_str());
 
-      weightHisto->Fill(0., summedWeights[0]-summedWeights[1]);
-      weightHisto->Fill(-1., summedWeights[2]-summedWeights[3]);
-      weightHisto->Fill(-2., summedWeights[4]-summedWeights[5]);
-      weightHisto->Fill(-3., summedWeights[6]-summedWeights[7]);
-      weightHisto->Fill(1., summedWeights[8]-summedWeights[9]);
-      weightHisto->Fill(2., summedWeights[10]-summedWeights[11]);
-      weightHisto->Fill(3., summedWeights[12]-summedWeights[13]);
-/*
-      weightHisto->Fill(0., -666.);
-      weightHisto->Fill(-1., -666);
-      weightHisto->Fill(-2., -666);
-      weightHisto->Fill(-3., -666);
-      weightHisto->Fill(1., -666);
-      weightHisto->Fill(2., -666);
-      weightHisto->Fill(3., -666);
-*/
+            // std::cout << path;
+            // TFile inFile(path.c_str());
+
+            TTree * const outTree = datasetChain.CloneTree(0);
+
+            std::string outFilePath{"/scratch/data/tZqSkimsRun2016/"
+                + datasetName + "/skimFile" + numName + ".root"};
+            TFile outFile{outFilePath.c_str(), "RECREATE"};
+
+            // std::cout << outFilePath << std::endl;
+
+            const long long int numberOfEvents{datasetChain.GetEntries()};
+            boost::progress_display progress{numberOfEvents, std::cout,
+                outFilePath + "\n"};
+            AnalysisEvent event{isMC, "", &datasetChain};
+
+            for (long long int i{0}; i < numberOfEvents; i++)
+            {
+                ++progress;  // update progress bar (++ must be prefix)
+
+                event.GetEntry(i);
+
+#ifndef NO_LHE
+                // Get number of positive and negative amc@nlo weights
+                if (isMC)
+                {
+                    event.origWeightForNorm >= 0.0   ? summedWeights[0]++
+                                                     : summedWeights[1]++;
+                    event.weight_muF0p5 >= 0.0       ? summedWeights[2]++
+                                                     : summedWeights[3]++;
+                    event.weight_muR0p5 >= 0.0       ? summedWeights[4]++
+                                                     : summedWeights[5]++;
+                    event.weight_muF0p5muR0p5 >= 0.0 ? summedWeights[6]++
+                                                     : summedWeights[7]++;
+                    event.weight_muF2 >= 0.0         ? summedWeights[8]++
+                                                     : summedWeights[9]++;
+                    event.weight_muR2 >= 0.0         ? summedWeights[10]++
+                                                     : summedWeights[11]++;
+                    event.weight_muF2muR2 >= 0.0     ? summedWeights[12]++
+                                                     : summedWeights[13]++;
+                }
+#endif
+                // Lepton cuts
+                int numLeps{0};
+                for (int j = 0; j < event.numElePF2PAT; j++)
+                {
+                    if (event.elePF2PATPT[j] < 9
+                            || std::abs(event.elePF2PATEta[j]) > 2.7
+                            || event.elePF2PATComRelIsoRho[j] > 0.5)
+                    {
+                        continue;
+                    }
+                    numLeps++;
+                }
+                for (int j = 0; j < event.numMuonPF2PAT; j++)
+                {
+                    if (event.muonPF2PATPt[j] < 9
+                            || std::abs(event.muonPF2PATEta[j]) > 2.8
+                            || event.muonPF2PATComRelIsodBeta[j] > 0.5)
+                    {
+                        continue;
+                    }
+                    numLeps++;
+                }
+                if (numLeps >= 2)
+                {
+                    outTree->Fill();
+                }
+            }
+
+            if (isMC)
+            {
+#ifndef NO_LHE
+                weightHisto.Fill(0., summedWeights[0] - summedWeights[1]);
+                weightHisto.Fill(-1., summedWeights[2] - summedWeights[3]);
+                weightHisto.Fill(-2., summedWeights[4] - summedWeights[5]);
+                weightHisto.Fill(-3., summedWeights[6] - summedWeights[7]);
+                weightHisto.Fill(1., summedWeights[8] - summedWeights[9]);
+                weightHisto.Fill(2., summedWeights[10] - summedWeights[11]);
+                weightHisto.Fill(3., summedWeights[12] - summedWeights[13]);
+#else
+                weightHisto.Fill(0., -666.);
+                weightHisto.Fill(-1., -666);
+                weightHisto.Fill(-2., -666);
+                weightHisto.Fill(-3., -666);
+                weightHisto.Fill(1., -666);
+                weightHisto.Fill(2., -666);
+                weightHisto.Fill(3., -666);
+#endif
+            }
+
+            outFile.cd();
+            outTree->Write();
+            if (isMC)
+            {
+                weightHisto.Write();
+            }
+
+            outFile.Write();
+            outFile.Close();
+            // inFile.Close();
+
+            fileNum++;
+
+            std::cout << std::endl;
+        }
     }
-
-    outFile.cd();
-    outTree->Write();
-    if (isMC) weightHisto->Write();
-
-    outFile.Write();
-    outFile.Close();
-    //    inFile.Close();
-    
-    delete datasetChain;
-    delete event;
-    delete outTree;
-    delete weightHisto;
-    fileNum++;
-    std::cerr << "" << std::endl;
-  }
-
 }
-

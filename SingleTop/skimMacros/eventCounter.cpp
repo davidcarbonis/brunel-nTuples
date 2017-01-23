@@ -1,32 +1,37 @@
-#include "TChain.h"
-#include "TTree.h"
-
-#include <stdlib.h> 
-#include <string>
-#include <fstream>
-#include <sstream>
 #include <iostream>
+#include <regex>
 
-int main(int argc, char* argv[]) {
+#include <boost/filesystem.hpp>
+#include <boost/range/iterator_range.hpp>
 
-  std::string fileName = argv[1];
+#include <TChain.h>
 
-  std::ifstream fileList(fileName.c_str());
-  std::string line;             
-  uint totalEvents(0);
 
-  while(getline(fileList,line)){
+namespace fs = boost::filesystem;
 
-    TChain * datasetChain = new TChain("makeTopologyNtupleMiniAOD/tree");
-    datasetChain->Add(line.c_str());
-    
-    uint numberOfEvents = datasetChain->GetEntries();
-    totalEvents += numberOfEvents;
 
-    delete datasetChain;
-  }
+int main(int argc, char* argv[])
+{
+    const std::regex mask{".*\\.root"};
+    TChain datasetChain{"makeTopologyNtupleMiniAOD/tree"};
 
-  std::cout << "Found " << totalEvents << " events." << std::endl;
+    for (int i{1}; i < argc; i++)
+    {  // for each directory given on the command line
+        const std::string inDir{argv[i]};
 
-  std::cout << "\nFinished." << std::endl;
+        for (const auto& file:
+                boost::make_iterator_range(fs::directory_iterator{inDir}, {}))
+        {  // for each file
+            if (!fs::is_regular_file(file.status())
+                    || !std::regex_match(file.path().string(), mask))
+            {
+                continue;  // skip if not a root file
+            }
+
+            datasetChain.Add(file.path().string().c_str());
+        }
+    }
+
+    std::cout << "Found " << datasetChain.GetEntries() << " events."
+        << std::endl;
 }
