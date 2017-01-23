@@ -33,6 +33,21 @@ git cms-merge-topic cms-met:METRecipe_8020
 ```
 ---
 
+Need to get EGM Regression Code:
+
+``` bash
+git cms-merge-topic rafaellopesdesa:Regression80XEgammaAnalysis_v2
+```
+
+Need to get EGM Smearer Code:
+``` bash
+git cms-merge-topic shervin86:Moriond2017_JEC_energyScales
+cd EgammaAnalysis/ElectronTools/data
+# download the txt files with the corrections
+git clone git@github.com:ECALELFS/ScalesSmearings.git
+```
+---
+
 ## FCNC Stuff:
 
 Generation of signal samples up till the LHE
