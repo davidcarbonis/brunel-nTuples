@@ -79,6 +79,15 @@ updateJetCollection(
 process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC )
 
 ###############################
+########EGM Regression#########
+###############################
+
+from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
+process = regressionWeights(process)
+
+process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
+
+###############################
 #########EGM Smearing##########
 ###############################
 
@@ -124,6 +133,11 @@ my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID
 #add them to the VID producer
 for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+
+process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
+process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
+process.load("RecoEgamma.ElectronIdentification.ElectronMVAValueMapProducer_cfi")
+process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
 
 ###############################
 ##### MET Uncertainities ######
@@ -238,6 +252,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
+    process.regressionApplication *
 #    process.calibratedPatElectrons *
     process.jetCorrection *
     process.fullPatMetSequence *
