@@ -102,10 +102,14 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
                                                                                            ),
                                                        )
 
+process.selectedSlimmedElectrons = cms.EDFilter("PATElectronSelector",     ## this protects against a crash in electron calibration     ## due to electrons with eta > 2.5     
+                                                src = cms.InputTag("slimmedElectrons"),      
+                                                cut = cms.string("pt>5 && abs(eta)<2.5") ) 
+
 calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
 
                                         # input collections
-                                        electrons = cms.InputTag('slimmedElectrons'),
+                                        electrons = cms.InputTag('selectedSlimmedElectrons'),
                                         gbrForestName = cms.string("gedelectron_p4combination_25ns"),
 
                                         # data or MC corrections
@@ -187,7 +191,7 @@ process.makeTopologyNtupleMiniAOD.fillAll=cms.bool(True)
 process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(True) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
 
 #Make the inputs for the n-tupliser right.
-process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("calibratedElectrons")
+process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("calibratedPatElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFToken = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
