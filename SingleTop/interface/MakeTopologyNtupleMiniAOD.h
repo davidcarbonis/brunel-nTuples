@@ -406,6 +406,7 @@ private:
   std::map< std::string, std::vector<int> > genElectronSortedCharge;
   std::map< std::string, std::vector<int> > genElectronSortedPdgId;
   std::map< std::string, std::vector<int> > genElectronSortedMotherId;
+  std::map< std::string, std::vector<int> > genElectronSortedPromptDecayed;
   std::map< std::string, std::vector<int> > genElectronSortedPromptFinalState;
   
   // MC Truth
@@ -565,6 +566,7 @@ private:
   std::map< std::string, std::vector<int> > genMuonSortedCharge;
   std::map< std::string, std::vector<int> > genMuonSortedPdgId;
   std::map< std::string, std::vector<int> > genMuonSortedMotherId;
+  std::map< std::string, std::vector<int> > genMuonSortedPromptDecayed;
   std::map< std::string, std::vector<int> > genMuonSortedPromptFinalState;
 
   size_t NJETSMAX; // max number of jets, set in constructor;

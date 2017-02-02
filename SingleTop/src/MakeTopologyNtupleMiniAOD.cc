@@ -755,6 +755,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	genElectronSortedCharge[ ID ][numEle[ ID ]-1]=ele.genLepton()->charge();
         genElectronSortedPdgId[ ID ][numEle[ ID ]-1]=ele.genLepton()->pdgId();
         genElectronSortedMotherId[ ID ][numEle[ ID ]-1]=ele.genLepton()->mother()->pdgId();
+        genElectronSortedPromptDecayed[ ID ][numEle[ ID ]-1]=ele.genLepton()->isPromptDecayed();
         genElectronSortedPromptFinalState[ ID ][numEle[ ID ]-1]=ele.genLepton()->isPromptFinalState();
       }
     }
@@ -889,6 +890,7 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
       genMuonSortedCharge[ ID ][numMuo[ ID ]-1]=muo.genLepton()->charge();
       genMuonSortedPdgId[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pdgId();
       genMuonSortedMotherId[ ID ][numMuo[ ID ]-1]=muo.genLepton()->mother()->pdgId();
+      genMuonSortedPromptDecayed[ ID ][numMuo[ ID ]-1]=muo.genLepton()->isPromptDecayed();
       genMuonSortedPromptFinalState[ ID ][numMuo[ ID ]-1]=muo.genLepton()->isPromptFinalState();
     } 
   }
@@ -1748,6 +1750,7 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   genElectronSortedCharge[ ID ].clear();
   genElectronSortedPdgId[ ID ].clear();
   genElectronSortedMotherId[ ID ].clear();
+  genElectronSortedPromptDecayed[ ID ].clear();
   genElectronSortedPromptFinalState[ ID ].clear();
 }
 
@@ -1821,6 +1824,7 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
   genMuonSortedCharge[ ID ].clear();
   genMuonSortedPdgId[ ID ].clear();
   genMuonSortedMotherId[ ID ].clear();
+  genMuonSortedPromptDecayed[ ID ].clear();
   genMuonSortedPromptFinalState[ ID ].clear();
 }
 
@@ -2493,6 +2497,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   genElectronSortedCharge[ ID ] = tempVecI;
   genElectronSortedPdgId[ ID ] = tempVecI;
   genElectronSortedMotherId[ ID ] = tempVecI;
+  genElectronSortedPromptDecayed[ ID ] = tempVecI;
   genElectronSortedPromptFinalState[ ID ] = tempVecI;
 
   std::string prefix = "ele" + name;
@@ -2622,6 +2627,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
       mytree_->Branch( ("genEle" + name + "Charge").c_str(), &genElectronSortedCharge[ ID ][0], ("genEle" + name + "EleCharge[numEle" + name + "]/I").c_str());
       mytree_->Branch( ("genEle" + name + "PdgId").c_str(), &genElectronSortedPdgId[ ID ][0], ("genEle" + name + "ElePdgId[numEle" + name + "]/I").c_str());
       mytree_->Branch( ("genEle" + name + "MotherId").c_str(), &genElectronSortedMotherId[ ID ][0], ("genEle" + name + "EleMotherId[numEle" + name + "]/I").c_str());
+      mytree_->Branch( ("genEle" + name + "PromptDecayed").c_str(), &genElectronSortedPromptDecayed[ ID ][0], ("genEle" + name + "ElePromptDecayed[numEle" + name + "]/I").c_str());
       mytree_->Branch( ("genEle" + name + "PromptFinalState").c_str(), &genElectronSortedPromptFinalState[ ID ][0], ("genEle" + name + "ElePromptFinalState[numEle" + name + "]/I").c_str());
   }
 
@@ -2700,6 +2706,7 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   genMuonSortedCharge[ ID ] = tempVecI;
   genMuonSortedPdgId[ ID ] = tempVecI;
   genMuonSortedMotherId[ ID ] = tempVecI;
+  genMuonSortedPromptDecayed[ ID ] = tempVecI;
   genMuonSortedPromptFinalState[ ID ] = tempVecI;
 
   mytree_->Branch( ("numMuon" + name).c_str(), &numMuo[ ID ], ("numMuon" + name + "/I").c_str());	
@@ -2774,6 +2781,7 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
     mytree_->Branch((prefix + "Charge").c_str(), &genMuonSortedCharge[ ID ][0], (prefix + "Charge[numMuon" + name + "]/I").c_str());
     mytree_->Branch((prefix + "PdgId").c_str(), &genMuonSortedPdgId[ ID ][0], (prefix + "PdgId[numMuon" + name + "]/I").c_str());
     mytree_->Branch((prefix + "MotherId").c_str(), &genMuonSortedMotherId[ ID ][0], (prefix + "MotherId[numMuon" + name + "]/I").c_str());
+    mytree_->Branch((prefix + "Decayed").c_str(), &genMuonSortedPromptDecayed[ ID ][0], (prefix + "PromptDecayed[numMuon" + name + "]/I").c_str());
     mytree_->Branch((prefix + "PromptFinalState").c_str(), &genMuonSortedPromptFinalState[ ID ][0], (prefix + "PromptFinalState[numMuon" + name + "]/I").c_str());
   }
 
