@@ -46,6 +46,11 @@ cd EgammaAnalysis/ElectronTools/data
 # download the txt files with the corrections
 git clone git@github.com:ECALELFS/ScalesSmearings.git
 ```
+
+And finally latest Electron ID code
+```bash
+git cms-merge-topic -u ikrav:egm_id_80X_v1
+```
 ---
 
 ## FCNC Stuff:
