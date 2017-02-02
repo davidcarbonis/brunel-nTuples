@@ -12,7 +12,7 @@ process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-	'file:/nfs/data/eepgadm/ROOTfiles/Summer12_tZq_signal_MC/001C0B68-536A-E311-B25F-002590D0B066.root',	
+	'file:/scratch/eepgadm/data/tZq/AOD.root',	
         )
 )
 
