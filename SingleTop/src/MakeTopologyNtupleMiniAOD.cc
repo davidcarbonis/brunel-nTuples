@@ -2781,7 +2781,7 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
     mytree_->Branch((prefix + "Charge").c_str(), &genMuonSortedCharge[ ID ][0], (prefix + "Charge[numMuon" + name + "]/I").c_str());
     mytree_->Branch((prefix + "PdgId").c_str(), &genMuonSortedPdgId[ ID ][0], (prefix + "PdgId[numMuon" + name + "]/I").c_str());
     mytree_->Branch((prefix + "MotherId").c_str(), &genMuonSortedMotherId[ ID ][0], (prefix + "MotherId[numMuon" + name + "]/I").c_str());
-    mytree_->Branch((prefix + "Decayed").c_str(), &genMuonSortedPromptDecayed[ ID ][0], (prefix + "PromptDecayed[numMuon" + name + "]/I").c_str());
+    mytree_->Branch((prefix + "PromptDecayed").c_str(), &genMuonSortedPromptDecayed[ ID ][0], (prefix + "PromptDecayed[numMuon" + name + "]/I").c_str());
     mytree_->Branch((prefix + "PromptFinalState").c_str(), &genMuonSortedPromptFinalState[ ID ][0], (prefix + "PromptFinalState[numMuon" + name + "]/I").c_str());
   }
 
