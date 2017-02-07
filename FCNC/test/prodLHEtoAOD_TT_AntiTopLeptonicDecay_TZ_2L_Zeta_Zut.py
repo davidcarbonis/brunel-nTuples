@@ -29,7 +29,7 @@ process.load('Configuration.StandardSequences.SimL1EmulatorDM_cff')
 process.load('Configuration.StandardSequences.DigiToRawDM_cff')
 process.load('FastSimulation.Configuration.L1Reco_cff')
 process.load('FastSimulation.Configuration.Reconstruction_AftMix_cff')
-process.load('HLTrigger.Configuration.HLT_25ns10e33_v2_cff')
+process.load('HLTrigger.Configuration.HLT_FULL_cff.py')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
