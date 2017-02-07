@@ -30,7 +30,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            triggerToken  = cms.InputTag("TriggerResults","","HLT"),
                                            metFilterToken  = cms.InputTag("TriggerResults", "", ""),
                                            fakeTriggerList = cms.vstring(), # empty. You can add fake triggers that are run on the fly to this list. No check on the process name is made so when duplicates are available only the latest one is added.
-					   isLHEflag = cms.bool(True),
+					   isLHEflag = cms.bool(False),
 					   externalLHEToken = cms.InputTag("externalLHEProducer"), # "externalLHEProducer", "source" for THQ 
 					   pdfInfoFixingToken = cms.InputTag("pdfInfoFixing"),
 					   generatorToken = cms.InputTag("generator"),
@@ -144,7 +144,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 					   genSimParticles = cms.InputTag("prunedGenParticles"),
                                            runMCInfo = cms.bool(True), # if set to true will skip MCInfo section
                                            runPUReWeight = cms.bool(False), #Run pile-up reweighting. Don't do if this is data I guess.
-                                           doCuts = cms.bool(True), # if set to false will skip ALL cuts. Z veto still applies electron cuts.
+                                           doCuts = cms.bool(False), # if set to false will skip ALL cuts. Z veto still applies electron cuts.
                                            # default preselection settings! see https://twiki.cern.ch/twiki/bin/view/CMS/VplusJets for inspiration
 
                                            #Some jet cuts.
