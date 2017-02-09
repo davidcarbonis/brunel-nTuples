@@ -16,6 +16,7 @@
 
 #include "AnalysisEvent.h"
 
+//#define NO_LHE
 
 namespace fs = boost::filesystem;
 
