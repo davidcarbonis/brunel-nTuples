@@ -1,4 +1,4 @@
 import FWCore.ParameterSet.Config as cms
 
-lheInfo = cms.EDProducer('lheInfo'
+lheInfo = cms.EDProducer('lheInfo',
 )

@@ -7,6 +7,7 @@
 
 // system include files
 #include <memory>
+#include <iostream>
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
@@ -39,7 +40,7 @@ class lheInfo : public edm::stream::EDProducer<> {
       virtual void produce(edm::Event&, const edm::EventSetup&) override;
       virtual void endStream() override;
 
-      //virtual void beginRun(edm::Run const&, edm::EventSetup const&) override;
+      virtual void beginRun(edm::Run const& iRun, edm::EventSetup const& iSetup) override;
       //virtual void endRun(edm::Run const&, edm::EventSetup const&) override;
       //virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&) override;
       //virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&) override;
@@ -72,7 +73,6 @@ lheInfo::lheInfo(const edm::ParameterSet& iConfig)
    produces<ExampleData2,InRun>();
 */
    //now do what ever other initialization is needed
-  
 }
 
 
@@ -125,14 +125,14 @@ lheInfo::endStream() {
 }
 
 // ------------ method called when starting to processes a run  ------------
-/*
+
 void
 lheInfo::beginRun(edm::Run const& iRun, edm::EventSetup const& iSetup)
 {
 	edm::Handle < LHERunInfoProduct > run;
 	typedef std::vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
 
-	iRun.getByLabel("externalLHEProducer", run);
+ 	iRun.getByLabel("externalLHEProducer", run);
 	LHERunInfoProduct myLHERunInfoProduct = *(run.product());
 
 	for (headers_const_iterator iter = myLHERunInfoProduct.headers_begin(); iter != myLHERunInfoProduct.headers_end();
@@ -145,7 +145,7 @@ lheInfo::beginRun(edm::Run const& iRun, edm::EventSetup const& iSetup)
 	}
 
 }
-*/
+
  
 // ------------ method called when ending the processing of a run  ------------
 /*
