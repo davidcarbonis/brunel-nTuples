@@ -73,6 +73,7 @@ lheInfo::lheInfo(const edm::ParameterSet& iConfig)
    produces<ExampleData2,InRun>();
 */
    //now do what ever other initialization is needed
+   consumes<LHERunInfoProduct,edm::InRun> (edm::InputTag("externalLHEProducer"));
 }
 
 
