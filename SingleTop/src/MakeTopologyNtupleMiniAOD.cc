@@ -176,6 +176,8 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     isttbar_(iConfig.getParameter<bool>("isttBar")),
     ttGenEvent_(iConfig.getParameter<edm::InputTag>("ttGenEvent")),
     externalLHEToken_(consumes<LHEEventProduct>(iConfig.getParameter<edm::InputTag>("externalLHEToken"))),
+    pdfIdStart_(iConfig.getParameter<int>("pdfIdStart")),
+    pdfIdEnd_(iConfig.getParameter<int>("pdfIdEnd")),
     pdfInfoToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("pdfInfoFixingToken"))),
     generatorToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("generatorToken"))),
 
@@ -237,6 +239,7 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     maxDcot_(iConfig.getParameter<double>("maxDcotForPhotonRej")),
     isMCatNLO_(iConfig.getParameter<bool>("isMCatNLO")),
     isLHEflag_(iConfig.getParameter<bool>("isLHEflag")),
+    hasAlphaWeightFlag_(iConfig.getParameter<bool>("hasAlphaWeightFlag")),
     NELECTRONSMAX(30), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
     NTOPMCINFOSMAX(20), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
     NMUONSMAX(20), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
@@ -1209,6 +1212,33 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
     weight_muF2muR2_ = EventHandle->weights()[5].wgt; // muF = 2 | muR = 2
 
     origWeightForNorm_ = EventHandle->originalXWGTUP();
+
+    double pdfMax {1.0}, pdfMin {1.0};
+
+    int intialIndex {pdfIdStart_}, finalIndex {pdfIdEnd_+1};
+    for ( int i = intialIndex; i != finalIndex; i ++ ) {
+      for ( uint w = 0; w != EventHandle->weights().size(); ++w ) {
+         if ( EventHandle->weights()[w].id == std::to_string(i) ){
+//           std::cout << "pdf weight: " << EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() <<std::endl;;
+           if ( EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() > pdfMax ) pdfMax = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+           if ( EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() < pdfMin ) pdfMin = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+         }
+      }
+    }
+
+    weight_pdfMax_ = pdfMax;
+    weight_pdfMin_ = pdfMin;
+    
+    if ( hasAlphaWeightFlag_ ) {
+      for ( uint w = 0; w != EventHandle->weights().size(); ++w ) {
+	if ( EventHandle->weights()[w].id == "2101" ) weight_alphaMax_ = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+	if ( EventHandle->weights()[w].id == "2102" ) weight_alphaMin_ = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+      }
+    }
+    else {
+      weight_alphaMax_ = 1.0;
+      weight_alphaMin_ = 1.0;
+    }
   }
 
   else {
@@ -1219,6 +1249,10 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
     weight_muF0p5muR0p5_ = -999.0;
     weight_muF2muR2_ = -999.0; 
     origWeightForNorm_ = 0.0;
+    weight_pdfMax_ = 1.0;
+    weight_pdfMin_ = 1.0;
+    weight_alphaMax_ = 1.0;
+    weight_alphaMin_ = 1.0;
   }
 
   edm::Handle<GenEventInfoProduct> genEventInfo;
@@ -2284,6 +2318,10 @@ void MakeTopologyNtupleMiniAOD::bookBranches(){
   mytree_->Branch("weight_muF0p5muR0p5", &weight_muF0p5muR0p5_, "weight_muF0p5muR0p5/D");		
   mytree_->Branch("weight_muF2muR2", &weight_muF2muR2_, "weight_muF2muR2/D");
   mytree_->Branch("origWeightForNorm", &origWeightForNorm_, "origWeightForNorm/D");
+  mytree_->Branch("weight_pdfMax", &weight_pdfMax_, "weight_pdfMax/D");
+  mytree_->Branch("weight_pdfMin", &weight_pdfMin_, "weight_pdfMin/D");
+  mytree_->Branch("weight_alphaMax", &weight_alphaMax_, "weight_alphaMax/D");
+  mytree_->Branch("weight_alphaMin", &weight_alphaMin_, "weight_alphaMin/D");
 
   while(HLT_fakeTriggerValues.size()<fakeTrigLabelList_.size())
     HLT_fakeTriggerValues.push_back(-99);

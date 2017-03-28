@@ -85,6 +85,8 @@ private:
 
   // Generator level info
   edm::EDGetTokenT<LHEEventProduct> externalLHEToken_;
+  int pdfIdStart_;
+  int pdfIdEnd_;
   edm::EDGetTokenT<GenEventInfoProduct> pdfInfoToken_;
   edm::EDGetTokenT<GenEventInfoProduct> generatorToken_;
 
@@ -169,6 +171,7 @@ private:
   edm::InputTag eeRecHits_;
   bool isMCatNLO_;
   bool isLHEflag_;
+  bool hasAlphaWeightFlag_;
 
   // and an ntuple (filling in the methods)
   void fillBeamSpot(const edm::Event&, const edm::EventSetup&);
@@ -224,6 +227,11 @@ private:
   double weight_muF2muR2_;
 
   double origWeightForNorm_;
+
+  double weight_pdfMax_;
+  double weight_pdfMin_;
+  double weight_alphaMax_;
+  double weight_alphaMin_;
 
   int processId_; int genMyProcId;
   float processPtHat_;

@@ -32,9 +32,20 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            fakeTriggerList = cms.vstring(), # empty. You can add fake triggers that are run on the fly to this list. No check on the process name is made so when duplicates are available only the latest one is added.
 					   isLHEflag = cms.bool(True),
 					   externalLHEToken = cms.InputTag("externalLHEProducer"), # "externalLHEProducer", "source" for THQ 
+
+					   #NNPDF30_nlo_nf_4_pdfas   : LHAID 292000; 292001-292100, as uncertainties 292101,292102
+					   #NNPDF30_nlo_nf_5_pdfas   : LHAID 292200; 292001-292100, as uncertainties 292101,292102
+					   #NNPDF30_nlo_as_0118_nf_4 : LHAID 260400; 260401-260500, as uncertainties 265400,266400
+					   #NNPDF30_nlo_as_0118      : LHAID 260000; 260001-260100, as uncertainties 265000,266000
+					   #NNPDF30_lo_as_0130_nf_4  : LHAID 263400; 263401-263500, no as uncertainties
+					   #NNPDF30_lo_as_0130       : LHAID 263000; 263401-263500, no ass uncertainties
+					   pdfIdStart = cms.int32(2001),
+					   pdfIdEnd = cms.int32(2100),
+					   hasAlphaWeightFlag = cms.bool(True),
+
 					   pdfInfoFixingToken = cms.InputTag("pdfInfoFixing"),
 					   generatorToken = cms.InputTag("generator"),
-                                           minLeptons = cms.int32(2),
+                                           minLeptons = cms.int32(0),
 					   ebrechits = cms.InputTag("reducedEgamma","reducedEBRecHits"),
                                            
                                            triggerList = cms.vstring(                                                              
