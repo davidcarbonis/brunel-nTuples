@@ -33,12 +33,6 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 					   isLHEflag = cms.bool(True),
 					   externalLHEToken = cms.InputTag("externalLHEProducer"), # "externalLHEProducer", "source" for THQ 
 
-					   #NNPDF30_nlo_nf_4_pdfas   : LHAID 292000; 292001-292100, as uncertainties 292101,292102
-					   #NNPDF30_nlo_nf_5_pdfas   : LHAID 292200; 292001-292100, as uncertainties 292101,292102
-					   #NNPDF30_nlo_as_0118_nf_4 : LHAID 260400; 260401-260500, as uncertainties 265400,266400
-					   #NNPDF30_nlo_as_0118      : LHAID 260000; 260001-260100, as uncertainties 265000,266000
-					   #NNPDF30_lo_as_0130_nf_4  : LHAID 263400; 263401-263500, no as uncertainties
-					   #NNPDF30_lo_as_0130       : LHAID 263000; 263401-263500, no ass uncertainties
 					   pdfIdStart = cms.int32(2001),
 					   pdfIdEnd = cms.int32(2100),
 					   hasAlphaWeightFlag = cms.bool(True),
@@ -95,6 +89,11 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 	'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4', #MuonEG
 
 	#Updated MET Triggers for 2016
+	'HLT_MET200_v1',
+	'HLT_MET200_v2',
+	'HLT_MET200_v3',
+	'HLT_MET200_v4',
+	'HLT_MET200_v5',
 	'HLT_MET250_v1',
 	'HLT_MET250_v2',
 	'HLT_MET250_v3',
