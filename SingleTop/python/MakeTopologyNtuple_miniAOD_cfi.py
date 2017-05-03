@@ -44,6 +44,37 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            
                                            triggerList = cms.vstring(                                                              
 	#Updated Triggers for 2016
+	'HLT_Ele25_eta2p1_WPTight_Gsf_v1'			#SingleElectron
+	'HLT_Ele25_eta2p1_WPTight_Gsf_v2'			#SingleElectron
+	'HLT_Ele25_eta2p1_WPTight_Gsf_v3'			#SingleElectron
+	'HLT_Ele25_eta2p1_WPTight_Gsf_v4'			#SingleElectron
+	'HLT_Ele25_eta2p1_WPTight_Gsf_v5'			#SingleElectron
+	'HLT_Ele25_eta2p1_WPTight_Gsf_v6'			#SingleElectron
+	'HLT_Ele25_eta2p1_WPTight_Gsf_v7'			#SingleElectron
+	'HLT_Ele27_WPTight_Gsf_v1'				#SingleElectron
+	'HLT_Ele27_WPTight_Gsf_v2'				#SingleElectron
+	'HLT_Ele27_WPTight_Gsf_v3'				#SingleElectron
+	'HLT_Ele27_WPTight_Gsf_v4'				#SingleElectron
+	'HLT_Ele27_WPTight_Gsf_v5'				#SingleElectron
+	'HLT_Ele27_WPTight_Gsf_v6'				#SingleElectron
+	'HLT_Ele27_WPTight_Gsf_v7'				#SingleElectron
+	'HLT_Ele32_eta2p1_WPTight_Gsf_v2'			#SingleElectron
+	'HLT_Ele32_eta2p1_WPTight_Gsf_v3'			#SingleElectron
+	'HLT_Ele32_eta2p1_WPTight_Gsf_v4'			#SingleElectron
+	'HLT_Ele32_eta2p1_WPTight_Gsf_v5'			#SingleElectron
+	'HLT_Ele32_eta2p1_WPTight_Gsf_v6'			#SingleElectron
+	'HLT_Ele32_eta2p1_WPTight_Gsf_v7'			#SingleElectron
+	'HLT_Ele32_eta2p1_WPTight_Gsf_v8'			#SingleElectron
+
+	'HLT_IsoMu24_v1'					#SingleMuon
+	'HLT_IsoMu24_v2'					#SingleMuon
+	'HLT_IsoMu24_v3'					#SingleMuon
+	'HLT_IsoMu24_v4'					#SingleMuon
+	'HLT_IsoTkMu24_v1'					#SingleMuon
+	'HLT_IsoTkMu24_v2'					#SingleMuon
+	'HLT_IsoTkMu24_v3'					#SingleMuon
+	'HLT_IsoTkMu24_v4'					#SingleMuon
+
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3',         #DoubleElectron
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4',         #DoubleElectron
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5',         #DoubleElectron
