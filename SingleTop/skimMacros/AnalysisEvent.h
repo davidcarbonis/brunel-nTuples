@@ -322,6 +322,35 @@ public :
    //   Int_t           numVert;
 
    //2016 Triggers
+   Int_t           HLT_Ele25_eta2p1_WPTight_Gsf_v1;
+   Int_t           HLT_Ele25_eta2p1_WPTight_Gsf_v2;
+   Int_t           HLT_Ele25_eta2p1_WPTight_Gsf_v3;
+   Int_t           HLT_Ele25_eta2p1_WPTight_Gsf_v4;
+   Int_t           HLT_Ele25_eta2p1_WPTight_Gsf_v5;
+   Int_t           HLT_Ele25_eta2p1_WPTight_Gsf_v6;
+   Int_t           HLT_Ele25_eta2p1_WPTight_Gsf_v7;
+   Int_t           HLT_Ele27_WPTight_Gsf_v1;
+   Int_t           HLT_Ele27_WPTight_Gsf_v2;
+   Int_t           HLT_Ele27_WPTight_Gsf_v3;
+   Int_t           HLT_Ele27_WPTight_Gsf_v4;
+   Int_t           HLT_Ele27_WPTight_Gsf_v5;
+   Int_t           HLT_Ele27_WPTight_Gsf_v6;
+   Int_t           HLT_Ele27_WPTight_Gsf_v7;
+   Int_t	   HLT_Ele32_eta2p1_WPTight_Gsf_v2;
+   Int_t	   HLT_Ele32_eta2p1_WPTight_Gsf_v3;
+   Int_t	   HLT_Ele32_eta2p1_WPTight_Gsf_v4;
+   Int_t	   HLT_Ele32_eta2p1_WPTight_Gsf_v5;
+   Int_t	   HLT_Ele32_eta2p1_WPTight_Gsf_v6;
+   Int_t	   HLT_Ele32_eta2p1_WPTight_Gsf_v7;
+   Int_t	   HLT_Ele32_eta2p1_WPTight_Gsf_v8;
+   Int_t           HLT_IsoMu24_v1;
+   Int_t           HLT_IsoMu24_v2;
+   Int_t           HLT_IsoMu24_v3;
+   Int_t           HLT_IsoMu24_v4;
+   Int_t           HLT_IsoTkMu24_v1;
+   Int_t           HLT_IsoTkMu24_v2;
+   Int_t           HLT_IsoTkMu24_v3;
+   Int_t           HLT_IsoTkMu24_v4;
 
    Int_t	   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3;
    Int_t	   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4;
@@ -733,6 +762,35 @@ public :
    TBranch	  *b_weight_alphaMax;   //!
    TBranch	  *b_weight_alphaMin;   //!
    //   TBranch        *b_numVert;    //!
+   TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v1;
+   TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v2;
+   TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v3;
+   TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v4;
+   TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v5;
+   TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v6;
+   TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v7;
+   TBranch        *b_HLT_Ele27_WPTight_Gsf_v1;
+   TBranch        *b_HLT_Ele27_WPTight_Gsf_v2;
+   TBranch        *b_HLT_Ele27_WPTight_Gsf_v3;
+   TBranch        *b_HLT_Ele27_WPTight_Gsf_v4;
+   TBranch        *b_HLT_Ele27_WPTight_Gsf_v5;
+   TBranch        *b_HLT_Ele27_WPTight_Gsf_v6;
+   TBranch        *b_HLT_Ele27_WPTight_Gsf_v7;
+   TBranch        *b_HLT_Ele32_eta2p1_WPTight_Gsf_v2;
+   TBranch        *b_HLT_Ele32_eta2p1_WPTight_Gsf_v3;
+   TBranch        *b_HLT_Ele32_eta2p1_WPTight_Gsf_v4;
+   TBranch        *b_HLT_Ele32_eta2p1_WPTight_Gsf_v5;
+   TBranch        *b_HLT_Ele32_eta2p1_WPTight_Gsf_v6;
+   TBranch        *b_HLT_Ele32_eta2p1_WPTight_Gsf_v7;
+   TBranch        *b_HLT_Ele32_eta2p1_WPTight_Gsf_v8;
+   TBranch        *b_HLT_IsoMu24_v1;
+   TBranch        *b_HLT_IsoMu24_v2;
+   TBranch        *b_HLT_IsoMu24_v3;
+   TBranch        *b_HLT_IsoMu24_v4;
+   TBranch        *b_HLT_IsoTkMu24_v1;
+   TBranch        *b_HLT_IsoTkMu24_v2;
+   TBranch        *b_HLT_IsoTkMu24_v3;
+   TBranch        *b_HLT_IsoTkMu24_v4;
    TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3;
    TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4;
    TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5;
@@ -1256,6 +1314,35 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    	fChain->SetBranchAddress("weight_alphaMin", &weight_alphaMin, &b_weight_alphaMin);
    }
    //Trigger branches
+   fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v1", &HLT_Ele25_eta2p1_WPTight_Gsf_v1, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v1);
+   fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v2", &HLT_Ele25_eta2p1_WPTight_Gsf_v2, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v2);
+   fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v3", &HLT_Ele25_eta2p1_WPTight_Gsf_v3, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v3);
+   fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v4", &HLT_Ele25_eta2p1_WPTight_Gsf_v4, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v4);
+   fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v5", &HLT_Ele25_eta2p1_WPTight_Gsf_v5, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v5);
+   fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v6", &HLT_Ele25_eta2p1_WPTight_Gsf_v6, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v6);
+   fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v7", &HLT_Ele25_eta2p1_WPTight_Gsf_v7, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v7);
+   fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v1", &HLT_Ele27_WPTight_Gsf_v1, &b_HLT_Ele27_WPTight_Gsf_v1);
+   fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v2", &HLT_Ele27_WPTight_Gsf_v2, &b_HLT_Ele27_WPTight_Gsf_v2);
+   fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v3", &HLT_Ele27_WPTight_Gsf_v3, &b_HLT_Ele27_WPTight_Gsf_v3);
+   fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v4", &HLT_Ele27_WPTight_Gsf_v4, &b_HLT_Ele27_WPTight_Gsf_v4);
+   fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v5", &HLT_Ele27_WPTight_Gsf_v5, &b_HLT_Ele27_WPTight_Gsf_v5);
+   fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v6", &HLT_Ele27_WPTight_Gsf_v6, &b_HLT_Ele27_WPTight_Gsf_v6);
+   fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v7", &HLT_Ele27_WPTight_Gsf_v7, &b_HLT_Ele27_WPTight_Gsf_v7);
+   fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v2", &HLT_Ele32_eta2p1_WPTight_Gsf_v2, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v2);
+   fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v3", &HLT_Ele32_eta2p1_WPTight_Gsf_v3, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v3);
+   fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v4", &HLT_Ele32_eta2p1_WPTight_Gsf_v4, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v4);
+   fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v5", &HLT_Ele32_eta2p1_WPTight_Gsf_v5, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v5);
+   fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v6", &HLT_Ele32_eta2p1_WPTight_Gsf_v6, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v6);
+   fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v7", &HLT_Ele32_eta2p1_WPTight_Gsf_v7, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v7);
+   fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v8", &HLT_Ele32_eta2p1_WPTight_Gsf_v8, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v8);
+   fChain->SetBranchAddress("HLT_IsoMu24_v1", &HLT_IsoMu24_v1, &b_HLT_IsoMu24_v1);
+   fChain->SetBranchAddress("HLT_IsoMu24_v2", &HLT_IsoMu24_v2, &b_HLT_IsoMu24_v2);
+   fChain->SetBranchAddress("HLT_IsoMu24_v3", &HLT_IsoMu24_v3, &b_HLT_IsoMu24_v3);
+   fChain->SetBranchAddress("HLT_IsoMu24_v4", &HLT_IsoMu24_v4, &b_HLT_IsoMu24_v4);
+   fChain->SetBranchAddress("HLT_IsoTkMu24_v1", &HLT_IsoTkMu24_v1, &b_HLT_IsoTkMu24_v1);
+   fChain->SetBranchAddress("HLT_IsoTkMu24_v2", &HLT_IsoTkMu24_v2, &b_HLT_IsoTkMu24_v2);
+   fChain->SetBranchAddress("HLT_IsoTkMu24_v3", &HLT_IsoTkMu24_v3, &b_HLT_IsoTkMu24_v3);
+   fChain->SetBranchAddress("HLT_IsoTkMu24_v4", &HLT_IsoTkMu24_v4, &b_HLT_IsoTkMu24_v4);
    fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3);
    fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4);
    fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5);
