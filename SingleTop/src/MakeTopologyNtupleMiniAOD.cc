@@ -565,8 +565,8 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       //const pat::Electron& ele = electrons[jele];
       const pat::Electron& ele = (*electronHandle)[jele];
 
-      if(!eleID(ele))
-        continue;
+//      if(!eleID(ele))
+//        continue;
 
       pat::ElectronRef refel(electronOrgHandle, jele);
 
@@ -798,8 +798,8 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     //    std::cout << imuo << " " << jmu << std::endl;
     const pat::Muon& muo = muons[jmu];
 
-    if(!muonID(muo))
-      continue;
+//    if(!muonID(muo))
+//      continue;
 
     numMuo[ ID ]++;
 
@@ -1163,8 +1163,8 @@ void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent, const edm::E
     size_t jele = etSortedIndex[iele];
     const pat::Electron& ele = electrons[jele];
 
-    if(!eleID(ele))
-      continue;
+//    if(!eleID(ele))
+//      continue;
 
     math::XYZTLorentzVector elecand(ele.px(),ele.py(),ele.pz(),ele.energy());
 //    bool tightcand=tightElectronID(ele, true); // Old Electron Id
