@@ -39,7 +39,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 
 					   pdfInfoFixingToken = cms.InputTag("pdfInfoFixing"),
 					   generatorToken = cms.InputTag("generator"),
-                                           minLeptons = cms.int32(0),
+                                           minLeptons = cms.int32(2),
 					   ebrechits = cms.InputTag("reducedEgamma","reducedEBRecHits"),
                                            
                                            triggerList = cms.vstring(                                                              
@@ -185,7 +185,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 					   genSimParticles = cms.InputTag("prunedGenParticles"),
                                            runMCInfo = cms.bool(True), # if set to true will skip MCInfo section
                                            runPUReWeight = cms.bool(False), #Run pile-up reweighting. Don't do if this is data I guess.
-                                           doCuts = cms.bool(False), # if set to false will skip ALL cuts. Z veto still applies electron cuts.
+                                           doCuts = cms.bool(True), # if set to false will skip ALL cuts. Z veto still applies electron cuts.
                                            # default preselection settings! see https://twiki.cern.ch/twiki/bin/view/CMS/VplusJets for inspiration
 
                                            #Some jet cuts.
