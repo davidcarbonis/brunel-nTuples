@@ -41,15 +41,23 @@ _cleanall:
 all: _all
 build: _all
 buildall: _all
-_all: skims.exe eventCounter.exe
+_all: skims.exe backup_skims.exe eventCounter.exe
 
 skims.exe: makeDatasetSkim.o AnalysisEvent.o
 	$(CC) $(CFLAGS) $(INCDIR) -o skims.exe makeDatasetSkim.o AnalysisEvent.o $(LIBS)
+
+backup_skims.exe: makeDatasetSkimBackup.o AnalysisEvent.o
+	$(CC) $(CFLAGS) $(INCDIR) -o backup_skims.exe makeDatasetSkimBackup.o AnalysisEvent.o $(LIBS)
+
 eventCounter.exe: eventCounter.o
 	$(CC) $(CFLAGS) $(INCDIR) -o eventCounter.exe eventCounter.o $(LIBS)
 
 makeDatasetSkim.o: makeDatasetSkim.cpp
 	$(CC) $(CFLAGS) $(INCDIR) -c makeDatasetSkim.cpp $(LIBS)
+
+makeDatasetSkimBackup.o: makeDatasetSkimBackup.cpp
+	$(CC) $(CFLAGS) $(INCDIR) -c makeDatasetSkimBackup.cpp $(LIBS)
+
 eventCounter.o: eventCounter.cpp
 	$(CC) $(CFLAGS) $(INCDIR) -c eventCounter.cpp $(LIBS)
 
