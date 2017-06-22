@@ -9,16 +9,11 @@ git clone –b <CMSSW_branch> git@github.com:davidcarbonis/NTupliser.git
 ```
 
 Currently the branches available are `CMSSW_5_3_20` for Run 1 data/MC and
-`CMSSW_7_4_7`, `CMSSW_7_4_14` and `CMSSW_7_6_3` for Run 2 data. This document
+`CMSSW_7_4_7`, `CMSSW_7_4_14`, `CMSSW_7_6_3`, `CMSSW_8_0_5`, `CMSSW_8_0_12` and `CMSSW_8_0_25` for Run 2 data. This document
 concerns using the nTupliser for Run 2 only.
  
-For `CMSSW_7_4_X` branches, the following CMSSW dependencies must be downloaded:
-* Electron Identification MVA: 
+See `README.md` for additional installation instructions for the relevant branches.
 
-```sh
-git git cms-merge-topic ikrav:egm_id_7.4.12_v1”
-```
- 
 Once all packages required have been downloaded, CMSSW will need to be compiled
 using the usual method:
 
@@ -42,12 +37,23 @@ check the following:
   found here:
   https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideFrontierConditions
 * The run range and luminosity mask for the Crab3 data config script. The
-  various JSON files for luminosity and the relevant runs for each run of data
-  taking can be found here:
+  various JSON files for luminosity and the relevant runs for each run of 2015
+  data taking can be found here:
   https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmV2015Analysis (N.B. Check
   elsewhere to confirm if there are any runs to avoid. At the time of writing, a
   number of runs for Run2015D have been excluded in the config file due to a
-  poorly reconstructed beam spot).
+  poorly reconstructed beam spot). 
+  For 2016 data taking, they can be found here:
+  https://twiki.cern.ch/twiki/bin/view/CMS/PdmV2016Analysis (N.B. Check
+  elsewhere to confirm if there are any runs to avoid.)
+* Currently the `doCuts` flag in the MakeTopologyNtuple_miniAOD_cfi.py file is
+  set to `True`. This applies a minimum number of leptons in the event cut to
+  help reduce the file sizes and thus improve time efficiency. This value is
+  controlled by `minLeptons` in the same python file. By default it is set to 
+  `2` for the dilepton tZq analysis (particularly useful when processing the
+  SingleElectron and SingleMuon datasets - removing events that'd never be
+  considered). For events requiring fewer leptons, this value will need to be
+  changed.
 * For MC datasets, check the the value of the bool flag `isLHEflag` in
   `python/MakeTopologyNtuple_miniAOD_cfi.py.` In the past, dedicated MC samples
   with vaired factorisation and renormalisation scales coherently vaired for the
@@ -60,6 +66,19 @@ check the following:
   avoid CMSSW from finishing prematurely with an error regarding a missing item,
   this flag for Powerheg V1 samples must be set to `False`. All other cases, the
   flag can be set to `True`.
+* For MC datasets where LHE information is stored (see above for `isLHEflag`),
+  there are three additional parameters to be considered: `pdfIdStart`, 
+  `pdfIdEnd`, and `hasAlphaWeightFlag`. These relate to the PDF systematics and
+  strong coupling constant systematics which can now, like the vaired 
+  factorisation and renormalisation scales, be measured using per-event weights.
+  Given that the indices used for the stored weights vary depending on the sample
+  and which PDF set(s) are included, the first and last indices need to be set by
+  the user. The file `pdf_sets.xlsx` lists the ranges and which PDF set should be
+  used for each sample. For Leading Order (LO) samples, the strong coupling constant
+  weights are not avaliable and the `hasAlphaWeightFlag` has to be set to `False`.
+  Otherwise, the weights have (or have been for all samples to date) directly
+  followed the PDF weights, and the code is setup to look for these values when
+  the parameter is set to `True`.
   
 The dataset (listed under the parameter config.Data.inputDataset), the local
 working directory (config.General.requestName), and the output dataset tag
