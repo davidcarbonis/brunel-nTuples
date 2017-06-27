@@ -47,6 +47,8 @@ cd EgammaAnalysis/ElectronTools/data
 git clone git@github.com:ECALELFS/ScalesSmearings.git
 ```
 
+N.B. Return to the src directory to continue installing patches/additional code.
+
 And finally latest Electron ID code
 ```bash
 git cms-merge-topic -u ikrav:egm_id_80X_v1
