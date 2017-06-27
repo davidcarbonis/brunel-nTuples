@@ -5,7 +5,7 @@ In the `src/` directory of CMSSW, the Brunel nTupliser is downloaded from github
 through the following command:
 
 ```sh
-git clone –b <CMSSW_branch> git@github.com:davidcarbonis/NTupliser.git
+git clone -b <CMSSW_branch> git@github.com:davidcarbonis/NTupliser.git
 ```
 
 Currently the branches available are `CMSSW_5_3_20` for Run 1 data/MC and
