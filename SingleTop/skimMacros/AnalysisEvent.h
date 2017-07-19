@@ -451,6 +451,9 @@ public :
    Int_t           Flag_ecalLaserCorrFilter;
    Int_t           Flag_chargedHadronTrackResolutionFilter;
    Int_t           Flag_muonBadTrackFilter;
+   Int_t	   Flag_badMuons;
+   Int_t	   Flag_duplicateMuons;
+   Int_t	   Flag_noBadMuons;
 
    //Gen info
    Int_t           nGenPar;
@@ -888,6 +891,9 @@ public :
    TBranch	  *b_Flag_ecalLaserCorrFilter;
    TBranch	  *b_Flag_chargedHadronTrackResolutionFilter;
    TBranch	  *b_Flag_muonBadTrackFilter;
+   TBranch	  *b_Flag_badMuons;
+   TBranch	  *b_Flag_duplicateMuons;
+   TBranch	  *b_Flag_noBadMuons;
 
    TBranch        *b_nGenPar;   //!
    TBranch        *b_genParEta;   //!
@@ -1439,7 +1445,10 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter, &b_Flag_eeBadScFilter);
    fChain->SetBranchAddress("Flag_ecalLaserCorrFilter", &Flag_ecalLaserCorrFilter, &b_Flag_ecalLaserCorrFilter);
    fChain->SetBranchAddress("Flag_chargedHadronTrackResolutionFilter", &Flag_chargedHadronTrackResolutionFilter, &b_Flag_chargedHadronTrackResolutionFilter);
-   fChain->SetBranchAddress("Flag_ecalLaserCorrFilter", &Flag_ecalLaserCorrFilter, &b_Flag_ecalLaserCorrFilter);
+   fChain->SetBranchAddress("Flag_muonBadTrackFilter", &Flag_muonBadTrackFilter, &b_Flag_muonBadTrackFilter);
+   fChain->SetBranchAddress("Flag_badMuons", &Flag_badMuons, &b_Flag_badMuons);
+   fChain->SetBranchAddress("Flag_duplicateMuons", &Flag_duplicateMuons, &b_Flag_duplicateMuons);
+   fChain->SetBranchAddress("Flag_noBadMuons", &Flag_noBadMuons, &b_Flag_noBadMuons);
    if (isMC) {
      fChain->SetBranchAddress("nGenPar", &nGenPar, &b_nGenPar);
      fChain->SetBranchAddress("genParEta", genParEta, &b_genParEta);
