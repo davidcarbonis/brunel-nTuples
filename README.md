@@ -11,9 +11,9 @@ enjoy, future students.
 
 ***
 
-The CMSSW_8_0_20 branch contains code from CMSSW_8_0_5 branch which is modified
+The CMSSW_8_0_27 branch contains code from CMSSW_8_0_25 branch which is modified
 to work for Run 2 miniAODv3 80X data and MC. As data/MC reprocessing taking is
-using CMSSW_8_0_X, the branch is named CMSSW_8_0_20 after the version which data
+using CMSSW_8_0_X, the branch is named CMSSW_8_0_27 after the version which data
 and MC is currently avaliable for.
 
 N.B. As Run 2 MC seems to use Pythia 8 for generation, the old status codes have
@@ -33,25 +33,12 @@ git cms-merge-topic cms-met:METRecipe_8020
 ```
 ---
 
-Need to get EGM Regression Code:
-
-``` bash
-git cms-merge-topic rafaellopesdesa:Regression80XEgammaAnalysis_v2
-```
-
-Need to get EGM Smearer Code:
-``` bash
-git cms-merge-topic shervin86:Moriond2017_JEC_energyScales
-cd EgammaAnalysis/ElectronTools/data
-# download the txt files with the corrections
-git clone git@github.com:ECALELFS/ScalesSmearings.git
-```
-
-N.B. Return to the src directory to continue installing patches/additional code.
-
-And finally latest Electron ID code
+And finally latest EGM Smearing and Regression code
 ```bash
-git cms-merge-topic -u ikrav:egm_id_80X_v1
+git cms-merge-topic cms-egamma:EGM_gain_v1
+cd EgammaAnalysis/ElectronTools/data
+git clone -b Moriond17_gainSwitch_unc https://github.com/ECALELFS/ScalesSmearings.git
+cd $CMSSW_BASE/src
 ```
 ---
 
