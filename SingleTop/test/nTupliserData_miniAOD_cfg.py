@@ -154,7 +154,7 @@ from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMet
 
 # If you only want to re-correct for JEC and get the proper uncertainties for the default MET
 runMetCorAndUncFromMiniAOD(process,
-                           isData=False
+                           isData=True
                            )
 
 # Now you are creating the bad muon corrected MET
@@ -176,7 +176,7 @@ muonRecoMitigation(
     )
 
 runMetCorAndUncFromMiniAOD(process,
-                           isData=False,
+                           isData=True,
                            pfCandColl="cleanMuonsPFCandidates",
                            recoMetFromPFCs=True,
                            postfix="MuClean"
@@ -263,7 +263,7 @@ process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("calibratedPatE
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFToken = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
-process.makeTopologyNtupleMiniAOD.metPFToken = cms.InputTag("slimmedMETs")
+process.makeTopologyNtupleMiniAOD.metPFToken = cms.InputTag("slimmedMETsMuEGClean","","customPAT")
 process.makeTopologyNtupleMiniAOD.rhoToken = cms.InputTag("fixedGridRhoFastjetAll")
 process.makeTopologyNtupleMiniAOD.conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions")
 
@@ -292,7 +292,8 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.source.fileNames = [
 #	'root://xrootd.unl.edu//store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v2/000/273/158/00000/0227DB1C-E719-E611-872C-02163E0141F9.root',
 #	'root://xrootd.unl.edu//store/data/Run2016B/DoubleMuon/MINIAOD/PromptReco-v2/000/273/158/00000/2C8772DF-F319-E611-AEC1-02163E014122.root',
-	'root://cms-xrd-global.cern.ch//store/data/Run2016D/DoubleEG/MINIAOD/23Sep2016-v1/100000/206CD6B5-AE87-E611-8B2B-0CC47A4D769A.root',
+#	'root://cms-xrd-global.cern.ch//store/data/Run2016D/DoubleEG/MINIAOD/23Sep2016-v1/100000/206CD6B5-AE87-E611-8B2B-0CC47A4D769A.root',
+	'root://cms-xrd-global.cern.ch//store/data/Run2016D/DoubleEG/MINIAOD/03Feb2017-v1/100000/002CE21C-0BEB-E611-8597-001E67E6F8E6.root',
 	]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
@@ -327,9 +328,9 @@ process.p = cms.Path(
     process.regressionApplication *
     process.calibratedPatElectrons *
     process.jetCorrection *
-#    process.mucorMET *
+    process.mucorMET *
     process.fullPatMetSequence *
-#    process.egcorrMET *
+    process.egcorrMET *
     process.selectedElectrons *
     process.egmGsfElectronIDSequence *
     process.makeTopologyNtupleMiniAOD

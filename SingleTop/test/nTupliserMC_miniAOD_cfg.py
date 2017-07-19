@@ -152,81 +152,18 @@ process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons'
 
 from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 
-# If you only want to re-correct for JEC and get the proper uncertainties for the default MET
-runMetCorAndUncFromMiniAOD(process,
-                           isData=False
-                           )
+## If you only want to re-correct and get the proper uncertainties
+#runMetCorAndUncFromMiniAOD(process,
+#                           isData=False,
+#                           )
 
-# Now you are creating the bad muon corrected MET
-process.load('RecoMET.METFilters.badGlobalMuonTaggersMiniAOD_cff')
-process.badGlobalMuonTaggerMAOD.taggingMode = cms.bool(True)
-process.cloneGlobalMuonTaggerMAOD.taggingMode = cms.bool(True)
-
-from PhysicsTools.PatUtils.tools.muonRecoMitigation import muonRecoMitigation
-
-muonRecoMitigation(
-    process = process,
-    pfCandCollection = "packedPFCandidates", #input PF Candidate Collection
-    runOnMiniAOD = True, #To determine if you are running on AOD or MiniAOD
-    selection="", #You can use a custom selection for your bad muons. Leave empty if you would like to use the bad muon recipe definition.
-    muonCollection="", #The muon collection name where your custom selection will be applied to. Leave empty if you would like to use the bad muon recipe definition.
-    cleanCollName="cleanMuonsPFCandidates", #output pf candidate collection ame
-    cleaningScheme="computeAllApplyClone", #Options are: "all", "computeAllApplyBad","computeAllApplyClone". Decides which (or both) bad muon collections to be used for MET cleaning coming from the bad muon recipe.
-    postfix="" #Use if you would like to add a post fix to your muon / pf collections
-    )
-
+# If you would like to re-cluster and get the proper uncertainties
 runMetCorAndUncFromMiniAOD(process,
                            isData=False,
-                           pfCandColl="cleanMuonsPFCandidates",
-                           recoMetFromPFCs=True,
-                           postfix="MuClean"
+#                           pfCandColl=cms.InputTag("packedPFCandidates"),
+#                           recoMetFromPFCs=True,
                            )
 
-process.mucorMET = cms.Sequence(                     
-    process.badGlobalMuonTaggerMAOD *
-    process.cloneGlobalMuonTaggerMAOD *
-    #process.badMuons * # If you are using cleaning mode "all", uncomment this line
-    process.cleanMuonsPFCandidates *
-    process.fullPatMetSequenceMuClean
-    )
-
-# Now you are creating the e/g corrected MET on top of the bad muon corrected MET (on re-miniaod)
-from PhysicsTools.PatUtils.tools.corMETFromMuonAndEG import corMETFromMuonAndEG
-corMETFromMuonAndEG(process,
-                    pfCandCollection="", #not needed                                                                                                                                                                                                                                                                                        
-                    electronCollection="slimmedElectronsBeforeGSFix",
-                    photonCollection="slimmedPhotonsBeforeGSFix",
-                    corElectronCollection="slimmedElectrons",
-                    corPhotonCollection="slimmedPhotons",
-                    allMETEGCorrected=True,
-                    muCorrection=False,
-                    eGCorrection=True,
-                    runOnMiniAOD=True,
-                    postfix="MuEGClean"
-                    )
-
-process.slimmedMETsMuEGClean = process.slimmedMETs.clone()
-process.slimmedMETsMuEGClean.src = cms.InputTag("patPFMetT1MuEGClean")
-process.slimmedMETsMuEGClean.rawVariation =  cms.InputTag("patPFMetRawMuEGClean")
-process.slimmedMETsMuEGClean.t1Uncertainties = cms.InputTag("patPFMetT1%sMuEGClean")
-del process.slimmedMETsMuEGClean.caloMET
-
-# If you are running in the scheduled mode:
-process.egcorrMET = cms.Sequence(
-    process.cleanedPhotonsMuEGClean+process.cleanedCorPhotonsMuEGClean+
-    process.matchedPhotonsMuEGClean + process.matchedElectronsMuEGClean +
-    process.corMETPhotonMuEGClean+process.corMETElectronMuEGClean+
-    process.patPFMetT1MuEGClean+process.patPFMetRawMuEGClean+
-    process.patPFMetT1SmearMuEGClean+process.patPFMetT1TxyMuEGClean+
-    process.patPFMetTxyMuEGClean+process.patPFMetT1JetEnUpMuEGClean+
-    process.patPFMetT1JetResUpMuEGClean+process.patPFMetT1SmearJetResUpMuEGClean+
-    process.patPFMetT1ElectronEnUpMuEGClean+process.patPFMetT1PhotonEnUpMuEGClean+
-    process.patPFMetT1MuonEnUpMuEGClean+process.patPFMetT1TauEnUpMuEGClean+
-    process.patPFMetT1UnclusteredEnUpMuEGClean+process.patPFMetT1JetEnDownMuEGClean+
-    process.patPFMetT1JetResDownMuEGClean+process.patPFMetT1SmearJetResDownMuEGClean+
-    process.patPFMetT1ElectronEnDownMuEGClean+process.patPFMetT1PhotonEnDownMuEGClean+
-    process.patPFMetT1MuonEnDownMuEGClean+process.patPFMetT1TauEnDownMuEGClean+
-    process.patPFMetT1UnclusteredEnDownMuEGClean+process.slimmedMETsMuEGClean)
 
 ####
 # The N-tupliser/cutFlow
@@ -323,9 +260,7 @@ process.p = cms.Path(
     process.regressionApplication *
     process.calibratedPatElectrons *
     process.jetCorrection *
-#    process.mucorMET *
     process.fullPatMetSequence *
-#    process.egcorrMET *
     process.selectedElectrons *
     process.egmGsfElectronIDSequence *
     process.makeTopologyNtupleMiniAOD
