@@ -1281,8 +1281,8 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
       if (TCand.pdgId() == 6) topPt = TCand.pt();
       if (TCand.pdgId() == -6) tBarPt = TCand.pt();
     }
-    //    std::cout << topPt << " " << tBarPt << " " << sqrt(exp(0.148 - 0.00129 * topPt) * exp(0.148 - 0.00129 * tBarPt)) << std::endl;
-    topPtReweight = sqrt(exp(0.148 - 0.00129 * topPt) * exp(0.148 - 0.00129 * tBarPt));
+    //    std::cout << topPt << " " << tBarPt << " " << sqrt(exp(0.0615 - 0.0005 * topPt) * exp(0.0615 - 0.0005 * tBarPt)) << std::endl;
+    topPtReweight = sqrt(exp(0.0615 - 0.0005 * topPt) * exp(0.0615 - 0.0005 * tBarPt));
     histocontainer_["topPtWeightSum"]->Fill(0.,topPtReweight);
   }
 
