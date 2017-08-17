@@ -2237,7 +2237,26 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
   if (!doCuts_) mytree_->Fill(); // If not doing cuts, fill up EVERYTHING
 
   else { // If doing cuts, ensure that we have at least x leptons
-    if ( numEle["PF"] + numMuo["PF"] >= minLeptons_ ) mytree_->Fill();
+
+    int numLeps {0};
+    numLeps = numEle["PF"] + numMuo["PF"];
+
+    for ( int j = 0; j < numEle["PF"]; j++ ) {
+      if ( electronSortedPt["PF"][0] < elePtCut_ ) continue; 
+      if ( std::abs( electronSortedEta["PF"][0] ) > eleEtaCut_ ) continue;
+      if ( electronSortedComRelIsoRho["PF"][0] > eleIsoCut_ ) continue;
+      numLeps++;
+    }
+
+    for ( int j = 0; j < numMuo["PF"]; j++ ) {
+      if ( muonSortedPt["PF"][0] < muoPtCut_ ) continue;
+      if ( std::abs( muonSortedEta["PF"][0] ) > muoEtaCut_ ) continue;
+      if ( muonSortedComRelIsodBeta["PF"][0] > muoIsoCut_ ) continue;
+      numLeps++;
+    }
+
+    if ( numLeps >= minLeptons_ ) mytree_->Fill();
+
   }
 
   //fill debugging histograms.
