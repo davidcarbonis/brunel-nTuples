@@ -194,6 +194,8 @@ int main(int argc, char* argv[])
             outFile.Close();
             // inFile.Close();
 
+            delete outTree;
+            
             fileNum++;
 
             std::cout << std::endl;
