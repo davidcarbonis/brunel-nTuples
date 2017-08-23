@@ -284,6 +284,7 @@ public :
    Float_t         genPDFx2;
    Int_t           genPDFf1;
    Int_t           genPDFf2;
+   Float_t         topPtReweight;
    Int_t           processId;
    Float_t         processPtHat;
    Double_t        processMCWeight;
@@ -729,6 +730,7 @@ public :
    TBranch        *b_genPDFx2;   //!
    TBranch        *b_genPDFf1;   //!
    TBranch        *b_genPDFf2;   //!
+   TBranch        *b_topPtReweight;   //!
    TBranch        *b_processId;   //!
    TBranch        *b_processPtHat;   //!
    TBranch        *b_processMCWeight;   //!
@@ -1281,6 +1283,7 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
      fChain->SetBranchAddress("genPDFx2", &genPDFx2, &b_genPDFx2);
      fChain->SetBranchAddress("genPDFf1", &genPDFf1, &b_genPDFf1);
      fChain->SetBranchAddress("genPDFf2", &genPDFf2, &b_genPDFf2);
+     fChain->SetBranchAddress("topPtReweight", &topPtReweight, &b_topPtReweight);
    }
    fChain->SetBranchAddress("processId", &processId, &b_processId);
    fChain->SetBranchAddress("processPtHat", &processPtHat, &b_processPtHat);
