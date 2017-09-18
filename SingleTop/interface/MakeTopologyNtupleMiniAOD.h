@@ -85,6 +85,8 @@ private:
 
   // Generator level info
   edm::EDGetTokenT<LHEEventProduct> externalLHEToken_;
+  int pdfIdStart_;
+  int pdfIdEnd_;
   edm::EDGetTokenT<GenEventInfoProduct> pdfInfoToken_;
   edm::EDGetTokenT<GenEventInfoProduct> generatorToken_;
 
@@ -194,6 +196,7 @@ private:
   edm::InputTag eeRecHits_;
   bool isMCatNLO_;
   bool isLHEflag_;
+  bool hasAlphaWeightFlag_;
 
   // and an ntuple (filling in the methods)
   void fillBeamSpot(const edm::Event&, const edm::EventSetup&);
@@ -247,7 +250,13 @@ private:
   double weight_muR2_;
   double weight_muF0p5muR0p5_;
   double weight_muF2muR2_;
+
   double origWeightForNorm_;
+
+  double weight_pdfMax_;
+  double weight_pdfMin_;
+  double weight_alphaMax_;
+  double weight_alphaMin_;
 
   int processId_; int genMyProcId;
   float processPtHat_;
@@ -400,6 +409,7 @@ private:
   std::map< std::string, std::vector<float> > electronSortedHoverE;
   std::map< std::string, std::vector<float> > electronSortedDeltaPhiSC;
   std::map< std::string, std::vector<float> > electronSortedDeltaEtaSC;
+  std::map< std::string, std::vector<float> > electronSortedDeltaEtaSeedSC;
   std::map< std::string, std::vector<int> > electronSortedIsBarrel;
   std::map< std::string, std::vector<int> > electronSortedPhotonConversionTag;
   std::map< std::string, std::vector<int> > electronSortedPhotonConversionTagCustom;
@@ -428,6 +438,10 @@ private:
   std::map< std::string, std::vector<float> > genElectronSortedPy;
   std::map< std::string, std::vector<float> > genElectronSortedPz;
   std::map< std::string, std::vector<int> > genElectronSortedCharge;
+  std::map< std::string, std::vector<int> > genElectronSortedPdgId;
+  std::map< std::string, std::vector<int> > genElectronSortedMotherId;
+  std::map< std::string, std::vector<int> > genElectronSortedPromptDecayed;
+  std::map< std::string, std::vector<int> > genElectronSortedPromptFinalState;
   
   // MC Truth
   int nT;
@@ -569,6 +583,11 @@ private:
   std::map< std::string, std::vector<int> > muonSortedNumChambers;
   std::map< std::string, std::vector<int> > muonSortedNumMatches;
 
+  std::map< std::string, std::vector<float> > muonValidFraction;
+  std::map< std::string, std::vector<float> > muonChi2LocalPosition;
+  std::map< std::string, std::vector<float> > muonTrkKick;
+  std::map< std::string, std::vector<float> > muonSegmentCompatibility;
+
   std::map< std::string, std::vector<float> > genMuonSortedPt;
   std::map< std::string, std::vector<float> > genMuonSortedEt;
   std::map< std::string, std::vector<float> > genMuonSortedEta;
@@ -578,6 +597,10 @@ private:
   std::map< std::string, std::vector<float> > genMuonSortedPy;
   std::map< std::string, std::vector<float> > genMuonSortedPz;
   std::map< std::string, std::vector<int> > genMuonSortedCharge;
+  std::map< std::string, std::vector<int> > genMuonSortedPdgId;
+  std::map< std::string, std::vector<int> > genMuonSortedMotherId;
+  std::map< std::string, std::vector<int> > genMuonSortedPromptDecayed;
+  std::map< std::string, std::vector<int> > genMuonSortedPromptFinalState;
 
   size_t NJETSMAX; // max number of jets, set in constructor;
 
@@ -648,10 +671,12 @@ private:
     std::map< std::string, std::vector<float> > jetSortedNeutralHadronEnergyFraction;
     std::map< std::string, std::vector<float> > jetSortedChargedEmEnergyFraction;
     std::map< std::string, std::vector<float> > jetSortedNeutralEmEnergyFraction;
+    std::map< std::string, std::vector<float> > jetSortedMuonFraction;
     std::map< std::string, std::vector<float> > jetSortedChargedHadronEnergyFractionCorr;
     std::map< std::string, std::vector<float> > jetSortedNeutralHadronEnergyFractionCorr;
     std::map< std::string, std::vector<float> > jetSortedChargedEmEnergyFractionCorr;
     std::map< std::string, std::vector<float> > jetSortedNeutralEmEnergyFractionCorr;
+    std::map< std::string, std::vector<float> > jetSortedMuonFractionCorr;
 
     // more detailed BID info for a few algorithms.
     std::map< std::string, std::vector<float> > jetSortedBtagSoftMuonPtRel;

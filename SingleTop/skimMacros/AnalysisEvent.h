@@ -39,6 +39,10 @@ public :
    Float_t         elePF2PATMVAcategory[20];   //[numElePF2PAT]
    Float_t         elePF2PATNonTrigMVA[20];   //[numElePF2PAT]
    Float_t         elePF2PATNonTrigMVAcategory[20];   //[numElePF2PAT]
+   Int_t           elePF2PATCutIdVeto[20];   //[numElePF2PAT]
+   Int_t           elePF2PATCutIdLoose[20];   //[numElePF2PAT]
+   Int_t           elePF2PATCutIdMedium[20];   //[numElePF2PAT]
+   Int_t           elePF2PATCutIdTight[20];   //[numElePF2PAT]
    Float_t         elePF2PATImpactTransDist[20];   //[numElePF2PAT]
    Float_t         elePF2PATImpactTransError[20];   //[numElePF2PAT]
    Float_t         elePF2PATImpactTransSignificance[20];   //[numElePF2PAT]
@@ -98,6 +102,7 @@ public :
    Float_t         elePF2PATHoverE[20];   //[numElePF2PAT]
    Float_t         elePF2PATDeltaPhiSC[20];   //[numElePF2PAT]
    Float_t         elePF2PATDeltaEtaSC[20];   //[numElePF2PAT]
+   Float_t	   elePF2PATDeltaEtaSeedSC[20];   //[numElePF2PAT]
    Int_t           elePF2PATIsBarrel[20];   //[numElePF2PAT]
    Int_t           elePF2PATPhotonConversionTag[20];   //[numElePF2PAT]
    Float_t         elePF2PATPhotonConversionDist[20];   //[numElePF2PAT]
@@ -117,6 +122,10 @@ public :
    Float_t         genElePF2PATTheta[20];   //[numElePF2PAT]
    Float_t         genElePF2PATEta[20];   //[numElePF2PAT]
    Int_t           genElePF2PATCharge[20];   //[numElePF2PAT]
+   Int_t           genElePF2PATPdgId[20];   //[numElePF2PAT]
+   Int_t           genElePF2PATMotherId[20];   //[numElePF2PAT]
+   Int_t           genElePF2PATPromptDecayed[20];   //[numElePF2PAT]
+   Int_t           genElePF2PATPromptFinalState[20];   //[numElePF2PAT]
    Int_t           numMuonPF2PAT;
    Float_t         muonPF2PATE[20];   //[numMuonPF2PAT]
    Float_t         muonPF2PATET[20];   //[numMuonPF2PAT]
@@ -156,6 +165,10 @@ public :
    Int_t           muonPF2PATVldPixHits[20];   //[numMuonPF2PAT]
    Int_t           muonPF2PATMatchedStations[20];   //[numMuonPF2PAT]
    Float_t         muonPF2PATGlbTkNormChi2[20];   //[numMuonPF2PAT]
+   Float_t         muonPF2PATValidFraction[20];   //[numMuonPF2PAT]
+   Float_t         muonPF2PATChi2LocalPosition[20];   //[numMuonPF2PAT]
+   Float_t         muonPF2PATTrkKick[20];   //[numMuonPF2PAT]
+   Float_t         muonPF2PATSegmentCompatibility[20];   //[numMuonPF2PAT]
    Float_t         muonPF2PATDBPV[20];   //[numMuonPF2PAT]
    Float_t         muonPF2PATDZPV[20];   //[numMuonPF2PAT]
    Float_t         genMuonPF2PATPT[20];   //[numMuonPF2PAT]
@@ -167,6 +180,10 @@ public :
    Float_t         genMuonPF2PATTheta[20];   //[numMuonPF2PAT]
    Float_t         genMuonPF2PATEta[20];   //[numMuonPF2PAT]
    Int_t           genMuonPF2PATCharge[20];   //[numMuonPF2PAT]
+   Int_t           genMuonPF2PATPdgId[20];   //[numMuonPF2PAT]
+   Int_t           genMuonPF2PATMotherId[20];   //[numMuonPF2PAT]
+   Int_t           genMuonPF2PATPromptDecayed[20];   //[numMuonPF2PAT]
+   Int_t           genMuonPF2PATPromptFinalState[20];   //[numMuonPF2PAT]
    Int_t           numJetPF2PAT;
    Double_t        jetPF2PATE[40];   //[numJetPF2PAT]
    Double_t        jetPF2PATEt[40];   //[numJetPF2PAT]
@@ -223,10 +240,12 @@ public :
    Float_t         jetPF2PATNeutralHadronEnergyFraction[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATChargedEmEnergyFraction[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATNeutralEmEnergyFraction[40];   //[numJetPF2PAT]
+   Float_t         jetPF2PATMuonFraction[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATChargedHadronEnergyFractionCorr[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATNeutralHadronEnergyFractionCorr[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATChargedEmEnergyFractionCorr[40];   //[numJetPF2PAT]
    Float_t         jetPF2PATNeutralEmEnergyFractionCorr[40];   //[numJetPF2PAT]
+   Float_t         jetPF2PATMuonFractionCorr[40];   //[numJetPF2PAT]
    Int_t           jetPF2PATNeutralMultiplicity[40];   //[numJetPF2PAT]
    Int_t           jetPF2PATChargedMultiplicity[40];   //[numJetPF2PAT]
    Double_t        metPF2PATE;
@@ -265,6 +284,7 @@ public :
    Float_t         genPDFx2;
    Int_t           genPDFf1;
    Int_t           genPDFf2;
+   Double_t        topPtReweight;
    Int_t           processId;
    Float_t         processPtHat;
    Double_t        processMCWeight;
@@ -296,6 +316,10 @@ public :
    Double_t	   weight_muF0p5muR0p5;
    Double_t	   weight_muF2muR2;
    Double_t	   origWeightForNorm;
+   Double_t	   weight_pdfMax;
+   Double_t	   weight_pdfMin;
+   Double_t	   weight_alphaMax;
+   Double_t	   weight_alphaMin;
    //   Int_t           numVert;
 
    //2015 Data Triggers
@@ -361,6 +385,10 @@ public :
    TBranch        *b_elePF2PATMVAcategory;   //!
    TBranch        *b_elePF2PATNonTrigMVA;   //!
    TBranch        *b_elePF2PATNonTrigMVAcategory;   //!
+   TBranch        *b_elePF2PATCutIdVeto;   //!
+   TBranch        *b_elePF2PATCutIdLoose;   //!
+   TBranch        *b_elePF2PATCutIdMedium;   //!
+   TBranch        *b_elePF2PATCutIdTight;   //!
    TBranch        *b_elePF2PATImpactTransDist;   //!
    TBranch        *b_elePF2PATImpactTransError;   //!
    TBranch        *b_elePF2PATImpactTransSignificance;   //!
@@ -420,6 +448,7 @@ public :
    TBranch        *b_elePF2PATHoverE;   //!
    TBranch        *b_elePF2PATDeltaPhiSC;   //!
    TBranch        *b_elePF2PATDeltaEtaSC;   //!
+   TBranch        *b_elePF2PATDeltaEtaSeedSC;   //!
    TBranch        *b_elePF2PATIsBarrel;   //!
    TBranch        *b_elePF2PATPhotonConversionTag;   //!
    TBranch        *b_elePF2PATPhotonConversionDist;   //!
@@ -439,6 +468,10 @@ public :
    TBranch        *b_genElePF2PATTheta;   //!
    TBranch        *b_genElePF2PATEta;   //!
    TBranch        *b_genElePF2PATCharge;   //!
+   TBranch        *b_genElePF2PATPdgId;   //!
+   TBranch        *b_genElePF2PATMotherId;   //!
+   TBranch        *b_genElePF2PATPromptDecayed;   //!
+   TBranch        *b_genElePF2PATPromptFinalState;   //!
    TBranch        *b_numMuonPF2PAT;   //!
    TBranch        *b_muonPF2PATE;   //!
    TBranch        *b_muonPF2PATET;   //!
@@ -478,6 +511,10 @@ public :
    TBranch        *b_muonPF2PATVldPixHits;   //!
    TBranch        *b_muonPF2PATMatchedStations;   //!
    TBranch        *b_muonPF2PATGlbTkNormChi2;   //!
+   TBranch        *b_muonPF2PATValidFraction;   //!
+   TBranch        *b_muonPF2PATChi2LocalPosition;   //!
+   TBranch        *b_muonPF2PATTrkKick;   //!
+   TBranch        *b_muonPF2PATSegmentCompatibility;   //!
    TBranch        *b_muonPF2PATDBPV;   //!
    TBranch        *b_muonPF2PATDZPV;   //!
    TBranch        *b_genMuonPF2PATPT;   //!
@@ -489,6 +526,10 @@ public :
    TBranch        *b_genMuonPF2PATTheta;   //!
    TBranch        *b_genMuonPF2PATEta;   //!
    TBranch        *b_genMuonPF2PATCharge;   //!
+   TBranch        *b_genMuonPF2PATPdgId;   //!
+   TBranch        *b_genMuonPF2PATMotherId;   //!
+   TBranch        *b_genMuonPF2PATPromptDecayed;   //!
+   TBranch        *b_genMuonPF2PATPromptFinalState;   //!
    TBranch        *b_numJetPF2PAT;   //!
    TBranch        *b_jetPF2PATE;   //!
    TBranch        *b_jetPF2PATEt;   //!
@@ -545,10 +586,12 @@ public :
    TBranch        *b_jetPF2PATNeutralHadronEnergyFraction;   //!
    TBranch        *b_jetPF2PATChargedEmEnergyFraction;   //!
    TBranch        *b_jetPF2PATNeutralEmEnergyFraction;   //!
+   TBranch        *b_jetPF2PATMuonFraction;   //!
    TBranch        *b_jetPF2PATChargedHadronEnergyFractionCorr;   //!
    TBranch        *b_jetPF2PATNeutralHadronEnergyFractionCorr;   //!
    TBranch        *b_jetPF2PATChargedEmEnergyFractionCorr;   //!
    TBranch        *b_jetPF2PATNeutralEmEnergyFractionCorr;   //!
+   TBranch        *b_jetPF2PATMuonFractionCorr;   //!
    TBranch        *b_jetPF2PATNeutralMultiplicity;   //!
    TBranch        *b_jetPF2PATChargedMultiplicity;   //!
    TBranch        *b_metPF2PATE;   //!
@@ -587,6 +630,7 @@ public :
    TBranch        *b_genPDFx2;   //!
    TBranch        *b_genPDFf1;   //!
    TBranch        *b_genPDFf2;   //!
+   TBranch        *b_topPtReweight;   //!
    TBranch        *b_processId;   //!
    TBranch        *b_processPtHat;   //!
    TBranch        *b_processMCWeight;   //!
@@ -618,6 +662,10 @@ public :
    TBranch	  *b_weight_muF0p5muR0p5;   //!
    TBranch	  *b_weight_muF2muR2;   //!
    TBranch	  *b_origWeightForNorm;   //!
+   TBranch	  *b_weight_pdfMax;   //!
+   TBranch	  *b_weight_pdfMin;   //!
+   TBranch	  *b_weight_alphaMax;   //!
+   TBranch	  *b_weight_alphaMin;   //!
    //   TBranch        *b_numVert;    //!
    TBranch        *b_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2;
    TBranch        *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2;
@@ -780,6 +828,10 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("elePF2PATMVAcategory", elePF2PATMVAcategory, &b_elePF2PATMVAcategory);
    fChain->SetBranchAddress("elePF2PATNonTrigMVA", elePF2PATNonTrigMVA, &b_elePF2PATNonTrigMVA);
    fChain->SetBranchAddress("elePF2PATNonTrigMVAcategory", elePF2PATNonTrigMVAcategory, &b_elePF2PATNonTrigMVAcategory);
+   fChain->SetBranchAddress("elePF2PATCutIdVeto", elePF2PATCutIdVeto, &b_elePF2PATCutIdVeto);
+   fChain->SetBranchAddress("elePF2PATCutIdLoose", elePF2PATCutIdLoose, &b_elePF2PATCutIdLoose);
+   fChain->SetBranchAddress("elePF2PATCutIdMedium", elePF2PATCutIdMedium, &b_elePF2PATCutIdMedium);
+   fChain->SetBranchAddress("elePF2PATCutIdTight", elePF2PATCutIdTight, &b_elePF2PATCutIdTight);
    fChain->SetBranchAddress("elePF2PATImpactTransDist", elePF2PATImpactTransDist, &b_elePF2PATImpactTransDist);
    fChain->SetBranchAddress("elePF2PATImpactTransError", elePF2PATImpactTransError, &b_elePF2PATImpactTransError);
    fChain->SetBranchAddress("elePF2PATImpactTransSignificance", elePF2PATImpactTransSignificance, &b_elePF2PATImpactTransSignificance);
@@ -839,6 +891,7 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("elePF2PATHoverE", elePF2PATHoverE, &b_elePF2PATHoverE);
    fChain->SetBranchAddress("elePF2PATDeltaPhiSC", elePF2PATDeltaPhiSC, &b_elePF2PATDeltaPhiSC);
    fChain->SetBranchAddress("elePF2PATDeltaEtaSC", elePF2PATDeltaEtaSC, &b_elePF2PATDeltaEtaSC);
+   fChain->SetBranchAddress("elePF2PATDeltaEtaSeedSC", elePF2PATDeltaEtaSeedSC, &b_elePF2PATDeltaEtaSeedSC);
    fChain->SetBranchAddress("elePF2PATIsBarrel", elePF2PATIsBarrel, &b_elePF2PATIsBarrel);
    fChain->SetBranchAddress("elePF2PATPhotonConversionTag", elePF2PATPhotonConversionTag, &b_elePF2PATPhotonConversionTag);
    fChain->SetBranchAddress("elePF2PATPhotonConversionDist", elePF2PATPhotonConversionDist, &b_elePF2PATPhotonConversionDist);
@@ -859,6 +912,10 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
      fChain->SetBranchAddress("genElePF2PATTheta", genElePF2PATTheta, &b_genElePF2PATTheta);
      fChain->SetBranchAddress("genElePF2PATEta", genElePF2PATEta, &b_genElePF2PATEta);
      fChain->SetBranchAddress("genElePF2PATCharge", genElePF2PATCharge, &b_genElePF2PATCharge);
+     fChain->SetBranchAddress("genElePF2PATPdgId", genElePF2PATPdgId, &b_genElePF2PATPdgId);
+     fChain->SetBranchAddress("genElePF2PATMotherId", genElePF2PATMotherId, &b_genElePF2PATMotherId);
+     fChain->SetBranchAddress("genElePF2PATPromptDecayed", genElePF2PATPromptDecayed, &b_genElePF2PATPromptDecayed);
+     fChain->SetBranchAddress("genElePF2PATPromptFinalState", genElePF2PATPromptFinalState, &b_genElePF2PATPromptFinalState);
    }
    fChain->SetBranchAddress("numMuonPF2PAT", &numMuonPF2PAT, &b_numMuonPF2PAT);
    fChain->SetBranchAddress("muonPF2PATE", muonPF2PATE, &b_muonPF2PATE);
@@ -897,6 +954,10 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("muonPF2PATNMatches", muonPF2PATNMatches, &b_muonPF2PATNMatches);
    fChain->SetBranchAddress("muonPF2PATTkLysWithMeasurements", muonPF2PATTkLysWithMeasurements, &b_muonPF2PATTkLysWithMeasurements);
    fChain->SetBranchAddress("muonPF2PATGlbTkNormChi2", muonPF2PATGlbTkNormChi2, &b_muonPF2PATGlbTkNormChi2);
+   fChain->SetBranchAddress("muonPF2PATValidFraction", muonPF2PATValidFraction, &b_muonPF2PATValidFraction);
+   fChain->SetBranchAddress("muonPF2PATChi2LocalPosition", muonPF2PATChi2LocalPosition, &b_muonPF2PATChi2LocalPosition);
+   fChain->SetBranchAddress("muonPF2PATTrkKick", muonPF2PATTrkKick, &b_muonPF2PATTrkKick);
+   fChain->SetBranchAddress("muonPF2PATSegmentCompatibility", muonPF2PATSegmentCompatibility, &b_muonPF2PATSegmentCompatibility);
    fChain->SetBranchAddress("muonPF2PATDBPV", muonPF2PATDBPV, &b_muonPF2PATDBPV);
    fChain->SetBranchAddress("muonPF2PATDZPV", muonPF2PATDZPV, &b_muonPF2PATDZPV);
    fChain->SetBranchAddress("muonPF2PATVldPixHits", muonPF2PATVldPixHits, &b_muonPF2PATVldPixHits);
@@ -911,6 +972,10 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
      fChain->SetBranchAddress("genMuonPF2PATTheta", genMuonPF2PATTheta, &b_genMuonPF2PATTheta);
      fChain->SetBranchAddress("genMuonPF2PATEta", genMuonPF2PATEta, &b_genMuonPF2PATEta);
      fChain->SetBranchAddress("genMuonPF2PATCharge", genMuonPF2PATCharge, &b_genMuonPF2PATCharge);
+     fChain->SetBranchAddress("genMuonPF2PATPdgId", genMuonPF2PATPdgId, &b_genMuonPF2PATPdgId);
+     fChain->SetBranchAddress("genMuonPF2PATMotherId", genMuonPF2PATMotherId, &b_genMuonPF2PATMotherId);
+     fChain->SetBranchAddress("genMuonPF2PATPromptDecayed", genMuonPF2PATPromptDecayed, &b_genMuonPF2PATPromptDecayed);
+     fChain->SetBranchAddress("genMuonPF2PATPromptFinalState", genMuonPF2PATPromptFinalState, &b_genMuonPF2PATPromptFinalState);
    }
    fChain->SetBranchAddress("numJetPF2PAT", &numJetPF2PAT, &b_numJetPF2PAT);
    fChain->SetBranchAddress("jetPF2PATE", jetPF2PATE, &b_jetPF2PATE);
@@ -970,10 +1035,12 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("jetPF2PATNeutralHadronEnergyFraction", jetPF2PATNeutralHadronEnergyFraction, &b_jetPF2PATNeutralHadronEnergyFraction);
    fChain->SetBranchAddress("jetPF2PATChargedEmEnergyFraction", jetPF2PATChargedEmEnergyFraction, &b_jetPF2PATChargedEmEnergyFraction);
    fChain->SetBranchAddress("jetPF2PATNeutralEmEnergyFraction", jetPF2PATNeutralEmEnergyFraction, &b_jetPF2PATNeutralEmEnergyFraction);
+   fChain->SetBranchAddress("jetPF2PATMuonFraction", jetPF2PATMuonFraction, &b_jetPF2PATMuonFraction);
    fChain->SetBranchAddress("jetPF2PATChargedHadronEnergyFractionCorr", jetPF2PATChargedHadronEnergyFractionCorr, &b_jetPF2PATChargedHadronEnergyFractionCorr);
    fChain->SetBranchAddress("jetPF2PATNeutralHadronEnergyFractionCorr", jetPF2PATNeutralHadronEnergyFractionCorr, &b_jetPF2PATNeutralHadronEnergyFractionCorr);
    fChain->SetBranchAddress("jetPF2PATChargedEmEnergyFractionCorr", jetPF2PATChargedEmEnergyFractionCorr, &b_jetPF2PATChargedEmEnergyFractionCorr);
    fChain->SetBranchAddress("jetPF2PATNeutralEmEnergyFractionCorr", jetPF2PATNeutralEmEnergyFractionCorr, &b_jetPF2PATNeutralEmEnergyFractionCorr);
+   fChain->SetBranchAddress("jetPF2PATMuonFractionCorr", jetPF2PATMuonFractionCorr, &b_jetPF2PATMuonFractionCorr);
    fChain->SetBranchAddress("jetPF2PATNeutralMultiplicity", jetPF2PATNeutralMultiplicity, &b_jetPF2PATNeutralMultiplicity);
    fChain->SetBranchAddress("jetPF2PATChargedMultiplicity", jetPF2PATChargedMultiplicity, &b_jetPF2PATChargedMultiplicity);
    fChain->SetBranchAddress("metPF2PATE", &metPF2PATE, &b_metPF2PATE);
@@ -1015,6 +1082,7 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
      fChain->SetBranchAddress("genPDFx2", &genPDFx2, &b_genPDFx2);
      fChain->SetBranchAddress("genPDFf1", &genPDFf1, &b_genPDFf1);
      fChain->SetBranchAddress("genPDFf2", &genPDFf2, &b_genPDFf2);
+     fChain->SetBranchAddress("topPtReweight", &topPtReweight, &b_topPtReweight);
    }
    fChain->SetBranchAddress("processId", &processId, &b_processId);
    fChain->SetBranchAddress("processPtHat", &processPtHat, &b_processPtHat);
@@ -1048,6 +1116,10 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    	fChain->SetBranchAddress("weight_muF0p5muR0p5", &weight_muF0p5muR0p5, &b_weight_muF0p5muR0p5);
    	fChain->SetBranchAddress("weight_muF2muR2", &weight_muF2muR2, &b_weight_muF2muR2);
    	fChain->SetBranchAddress("origWeightForNorm", &origWeightForNorm, &b_origWeightForNorm);
+   	fChain->SetBranchAddress("weight_pdfMax", &weight_pdfMax, &b_weight_pdfMax);
+   	fChain->SetBranchAddress("weight_pdfMin", &weight_pdfMin, &b_weight_pdfMin);
+   	fChain->SetBranchAddress("weight_alphaMax", &weight_alphaMax, &b_weight_alphaMax);
+   	fChain->SetBranchAddress("weight_alphaMin", &weight_alphaMin, &b_weight_alphaMin);
    }
    //Data trigger branches
    fChain->SetBranchAddress("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2", &HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2, &b_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2);

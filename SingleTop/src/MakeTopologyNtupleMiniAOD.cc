@@ -257,6 +257,7 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     eeRecHits_(iConfig.getParameter<edm::InputTag>("eeRecHits")),
     isMCatNLO_(iConfig.getParameter<bool>("isMCatNLO")),
     isLHEflag_(iConfig.getParameter<bool>("isLHEflag")),
+    hasAlphaWeightFlag_(iConfig.getParameter<bool>("hasAlphaWeightFlag")),
     NELECTRONSMAX(30), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
     NTOPMCINFOSMAX(20), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
     NMUONSMAX(20), // hardcoded, do NOT change unless you also change the size of the arrays that are saved in the root tree...
@@ -738,6 +739,8 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       electronSortedHoverE[ ID ][ numEle[ ID ] - 1 ] = ele.hadronicOverEm();
       electronSortedDeltaPhiSC[ ID ][ numEle[ ID ] - 1 ] = ele.deltaPhiSuperClusterTrackAtVtx();
       electronSortedDeltaEtaSC[ ID ][ numEle[ ID ] - 1 ] = ele.deltaEtaSuperClusterTrackAtVtx();
+      electronSortedDeltaEtaSeedSC[ ID ][ numEle[ ID ] - 1 ] = ( ele.superCluster().isNonnull() && ele.superCluster()->seed().isNonnull() ? 
+           ele.deltaEtaSuperClusterTrackAtVtx() - ele.superCluster()->eta() + ele.superCluster()->seed()->eta() : std::numeric_limits<float>::max() );
       electronSortedIsBarrel[ ID ][ numEle[ ID ] - 1 ] = ele.isEB();
     
       // calculate dcot and dist using the egamma code...
@@ -779,6 +782,10 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	genElectronSortedPy[ ID ][numEle[ ID ]-1]=ele.genLepton()->py();
 	genElectronSortedPz[ ID ][numEle[ ID ]-1]=ele.genLepton()->pz();
 	genElectronSortedCharge[ ID ][numEle[ ID ]-1]=ele.genLepton()->charge();
+        genElectronSortedPdgId[ ID ][numEle[ ID ]-1]=ele.genLepton()->pdgId();
+        genElectronSortedMotherId[ ID ][numEle[ ID ]-1]=ele.genLepton()->mother()->pdgId();
+        genElectronSortedPromptDecayed[ ID ][numEle[ ID ]-1]=ele.genLepton()->isPromptDecayed();
+        genElectronSortedPromptFinalState[ ID ][numEle[ ID ]-1]=ele.genLepton()->isPromptFinalState();
       }
     }
 }
@@ -835,6 +842,14 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
 
     muonSortedGlobalID[ ID ][numMuo[ ID ]-1]=muo.isGlobalMuon();
     muonSortedTrackID[ ID ][numMuo[ ID ]-1]=muo.isTrackerMuon();
+
+    if ( muo.isTrackerMuon() || muo.isGlobalMuon()){
+      muonValidFraction[ ID ][numMuo[ ID ]-1]=muo.innerTrack()->validFraction();
+      muonChi2LocalPosition[ ID ][numMuo[ ID ]-1]=muo.combinedQuality().chi2LocalPosition;
+      muonTrkKick[ ID ][numMuo[ ID ]-1]=muo.combinedQuality().trkKink;
+      muonSegmentCompatibility[ ID ][numMuo[ ID ]-1]=muon::segmentCompatibility(muo);
+    }
+
     //----------------------------------------------------------------------------
     if (muo.isTrackerMuon() && muo.isGlobalMuon()){
       muonSortedChi2[ ID ][numMuo[ ID ]-1]=muo.combinedMuon()->chi2(); //chi2 of the combined muon
@@ -902,7 +917,11 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
       genMuonSortedPy[ ID ][numMuo[ ID ]-1]=muo.genLepton()->py();
       genMuonSortedPz[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pz();
       genMuonSortedCharge[ ID ][numMuo[ ID ]-1]=muo.genLepton()->charge();
-      } 
+      genMuonSortedPdgId[ ID ][numMuo[ ID ]-1]=muo.genLepton()->pdgId();
+      genMuonSortedMotherId[ ID ][numMuo[ ID ]-1]=muo.genLepton()->mother()->pdgId();
+      genMuonSortedPromptDecayed[ ID ][numMuo[ ID ]-1]=muo.genLepton()->isPromptDecayed();
+      genMuonSortedPromptFinalState[ ID ][numMuo[ ID ]-1]=muo.genLepton()->isPromptFinalState();
+    } 
   }
 }
 /////////////////////////////
@@ -981,10 +1000,12 @@ void MakeTopologyNtupleMiniAOD::fillOtherJetInfo(const pat::Jet &jet, const size
       jetSortedNeutralHadronEnergyFraction[ ID ][jetindex]=jet.correctedJet("Uncorrected").neutralHadronEnergyFraction();
       jetSortedChargedEmEnergyFraction[ ID ][jetindex]=jet.correctedJet("Uncorrected").chargedEmEnergyFraction();
       jetSortedNeutralEmEnergyFraction[ ID ][jetindex]=jet.correctedJet("Uncorrected").neutralEmEnergyFraction();
+      jetSortedMuonFraction[ ID ][jetindex]=jet.correctedJet("Uncorrected").muonEnergyFraction();
       jetSortedChargedHadronEnergyFractionCorr[ ID ][jetindex]=jet.chargedHadronEnergyFraction();
       jetSortedNeutralHadronEnergyFractionCorr[ ID ][jetindex]=jet.neutralHadronEnergyFraction();
       jetSortedChargedEmEnergyFractionCorr[ ID ][jetindex]=jet.chargedEmEnergyFraction();
       jetSortedNeutralEmEnergyFractionCorr[ ID ][jetindex]=jet.neutralEmEnergyFraction();
+      jetSortedMuonFractionCorr[ ID ][jetindex]=jet.muonEnergyFraction();
   }
 //  else if( jet.isJPTJet() ) //This function does not exist in 361, when we move to 382 reinstate
   else
@@ -1226,6 +1247,33 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
     weight_muF2muR2_ = EventHandle->weights()[5].wgt; // muF = 2 | muR = 2
 
     origWeightForNorm_ = EventHandle->originalXWGTUP();
+
+    double pdfMax {1.0}, pdfMin {1.0};
+
+    int intialIndex {pdfIdStart_}, finalIndex {pdfIdEnd_+1};
+    for ( int i = intialIndex; i != finalIndex; i ++ ) {
+      for ( uint w = 0; w != EventHandle->weights().size(); ++w ) {
+         if ( EventHandle->weights()[w].id == std::to_string(i) ){
+//           std::cout << "pdf weight: " << EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() <<std::endl;;
+           if ( EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() > pdfMax ) pdfMax = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+           if ( EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() < pdfMin ) pdfMin = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+         }
+      }
+    }
+
+    weight_pdfMax_ = pdfMax;
+    weight_pdfMin_ = pdfMin;
+    
+    if ( hasAlphaWeightFlag_ ) {
+      for ( uint w = 0; w != EventHandle->weights().size(); ++w ) {
+	if ( EventHandle->weights()[w].id == "2101" ) weight_alphaMax_ = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+	if ( EventHandle->weights()[w].id == "2102" ) weight_alphaMin_ = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+      }
+    }
+    else {
+      weight_alphaMax_ = 1.0;
+      weight_alphaMin_ = 1.0;
+    }
   }
 
   else {
@@ -1236,6 +1284,10 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
     weight_muF0p5muR0p5_ = -999.0;
     weight_muF2muR2_ = -999.0;
     origWeightForNorm_ = -999.0;
+    weight_pdfMax_ = 1.0;
+    weight_pdfMin_ = 1.0;
+    weight_alphaMax_ = 1.0;
+    weight_alphaMin_ = 1.0;
   }
 
   edm::Handle<GenEventInfoProduct> genEventInfo;
@@ -1756,6 +1808,7 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   electronSortedHoverE[ ID ].clear();
   electronSortedDeltaPhiSC[ ID ].clear();
   electronSortedDeltaEtaSC[ ID ].clear();
+  electronSortedDeltaEtaSeedSC[ ID ].clear();
   electronSortedIsBarrel[ ID ].clear();
   electronSortedPhotonConversionTag[ ID ].clear();
   electronSortedPhotonConversionTagCustom[ ID ].clear();
@@ -1783,6 +1836,10 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   genElectronSortedPx[ ID ].clear();
   genElectronSortedPy[ ID ].clear();
   genElectronSortedCharge[ ID ].clear();
+  genElectronSortedPdgId[ ID ].clear();
+  genElectronSortedMotherId[ ID ].clear();
+  genElectronSortedPromptDecayed[ ID ].clear();
+  genElectronSortedPromptFinalState[ ID ].clear();
 
 }
 
@@ -1804,6 +1861,11 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
 
   muonSortedGlobalID[ ID ].clear();
   muonSortedTrackID[ ID ].clear();
+
+  muonValidFraction[ ID ].clear();
+  muonChi2LocalPosition[ ID ].clear();
+  muonTrkKick[ ID ].clear();
+  muonSegmentCompatibility[ ID ].clear();
 
   muonSortedChi2[ ID ].clear();
   muonSortedD0[ ID ].clear();
@@ -1849,6 +1911,10 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
   genMuonSortedPy[ ID ].clear();
   genMuonSortedPz[ ID ].clear();
   genMuonSortedCharge[ ID ].clear();
+  genMuonSortedPdgId[ ID ].clear();
+  genMuonSortedMotherId[ ID ].clear();
+  genMuonSortedPromptDecayed[ ID ].clear();
+  genMuonSortedPromptFinalState[ ID ].clear();
 }
 
 void MakeTopologyNtupleMiniAOD::clearMetArrays(std::string ID)
@@ -2026,10 +2092,12 @@ void MakeTopologyNtupleMiniAOD::clearjetarrays(std::string ID){
     jetSortedNeutralHadronEnergyFraction[ ID ].clear();
     jetSortedChargedEmEnergyFraction[ ID ].clear();
     jetSortedNeutralEmEnergyFraction[ ID ].clear();
+    jetSortedMuonFraction[ ID ].clear();
     jetSortedChargedHadronEnergyFractionCorr[ ID ].clear();
     jetSortedNeutralHadronEnergyFractionCorr[ ID ].clear();
     jetSortedChargedEmEnergyFractionCorr[ ID ].clear();
     jetSortedNeutralEmEnergyFractionCorr[ ID ].clear();
+    jetSortedMuonFractionCorr[ ID ].clear();
 
     genJetSortedEt[ ID ].clear();
     genJetSortedPt[ ID ].clear();
@@ -2324,6 +2392,10 @@ void MakeTopologyNtupleMiniAOD::bookBranches(){
   mytree_->Branch("weight_muF0p5muR0p5", &weight_muF0p5muR0p5_, "weight_muF0p5muR0p5/D");
   mytree_->Branch("weight_muF2muR2", &weight_muF2muR2_, "weight_muF2muR2/D");
   mytree_->Branch("origWeightForNorm", &origWeightForNorm_, "origWeightForNorm/D");
+  mytree_->Branch("weight_pdfMax", &weight_pdfMax_, "weight_pdfMax/D");
+  mytree_->Branch("weight_pdfMin", &weight_pdfMin_, "weight_pdfMin/D");
+  mytree_->Branch("weight_alphaMax", &weight_alphaMax_, "weight_alphaMax/D");
+  mytree_->Branch("weight_alphaMin", &weight_alphaMin_, "weight_alphaMin/D");
 
   while(HLT_fakeTriggerValues.size()<fakeTrigLabelList_.size())
     HLT_fakeTriggerValues.push_back(-99);
@@ -2513,6 +2585,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   electronSortedHoverE[ ID ] = tempVecF;
   electronSortedDeltaPhiSC[ ID ] = tempVecF;
   electronSortedDeltaEtaSC[ ID ] = tempVecF;
+  electronSortedDeltaEtaSeedSC[ ID ] = tempVecF;
   electronSortedPhotonConversionDcot[ ID ] = tempVecF;
   electronSortedPhotonConversionDist[ ID ] = tempVecF;
   electronSortedPhotonConversionVeto[ID] = tempVecI;
@@ -2534,6 +2607,10 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   genElectronSortedPy[ ID ] = tempVecF;
   genElectronSortedPz[ ID ] = tempVecF;
   genElectronSortedCharge[ ID ] = tempVecI;
+  genElectronSortedPdgId[ ID ] = tempVecI;
+  genElectronSortedMotherId[ ID ] = tempVecI;
+  genElectronSortedPromptDecayed[ ID ] = tempVecI;
+  genElectronSortedPromptFinalState[ ID ] = tempVecI;
 
   std::string prefix = "ele" + name;
   mytree_->Branch( ("numEle"+name).c_str(), &numEle[ ID ], ("numEle" + name + "/I").c_str());
@@ -2637,6 +2714,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   mytree_->Branch( (prefix + "HoverE").c_str(), &electronSortedHoverE[ ID ][0], (prefix + "HoverE[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "DeltaPhiSC").c_str(), &electronSortedDeltaPhiSC[ ID ][0], (prefix + "DeltaPhiSC[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "DeltaEtaSC").c_str(), &electronSortedDeltaEtaSC[ ID ][0], (prefix + "DeltaEtaSC[numEle" + name + "]/F").c_str());
+  mytree_->Branch( (prefix + "DeltaEtaSeedSC").c_str(), &electronSortedDeltaEtaSeedSC[ ID ][0], (prefix + "DeltaEtaSeedSC[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "IsBarrel").c_str(), &electronSortedIsBarrel[ ID ][0], (prefix + "IsBarrel[numEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "PhotonConversionTag").c_str(), &electronSortedPhotonConversionTag[ ID ][0], (prefix + "PhotonConversionTag[numEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "PhotonConversionDist").c_str(), &electronSortedPhotonConversionDist[ ID ][0], (prefix + "PhotonConversionDist[numEle" + name + "]/F").c_str());
@@ -2660,6 +2738,10 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
       mytree_->Branch( ("genEle" + name + "Theta").c_str(), &genElectronSortedTheta[ ID ][0], ("genEle" + name + "EleTheta[numEle" + name + "]/F").c_str());
       mytree_->Branch( ("genEle" + name + "Eta").c_str(), &genElectronSortedEta[ ID ][0], ("genEle" + name + "EleEta[numEle" + name + "]/F").c_str());
       mytree_->Branch( ("genEle" + name + "Charge").c_str(), &genElectronSortedCharge[ ID ][0], ("genEle" + name + "EleCharge[numEle" + name + "]/I").c_str());
+      mytree_->Branch( ("genEle" + name + "PdgId").c_str(), &genElectronSortedPdgId[ ID ][0], ("genEle" + name + "ElePdgId[numEle" + name + "]/I").c_str());
+      mytree_->Branch( ("genEle" + name + "MotherId").c_str(), &genElectronSortedMotherId[ ID ][0], ("genEle" + name + "EleMotherId[numEle" + name + "]/I").c_str());
+      mytree_->Branch( ("genEle" + name + "PromptDecayed").c_str(), &genElectronSortedPromptDecayed[ ID ][0], ("genEle" + name + "ElePromptDecayed[numEle" + name + "]/I").c_str());
+      mytree_->Branch( ("genEle" + name + "PromptFinalState").c_str(), &genElectronSortedPromptFinalState[ ID ][0], ("genEle" + name + "ElePromptFinalState[numEle" + name + "]/I").c_str());
   }
 
 //Also handle z candidates
@@ -2685,6 +2767,11 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
 
   muonSortedGlobalID[ ID ] = tempVecF;
   muonSortedTrackID[ ID ] = tempVecF;
+
+  muonValidFraction[ ID ] = tempVecF;
+  muonChi2LocalPosition[ ID ] = tempVecF;
+  muonTrkKick[ ID ] = tempVecF;
+  muonSegmentCompatibility[ ID ] = tempVecF;
 
   muonSortedChi2[ ID ] = tempVecF;
   muonSortedD0[ ID ] = tempVecF;
@@ -2730,6 +2817,10 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   genMuonSortedPy[ ID ] = tempVecF;
   genMuonSortedPz[ ID ] = tempVecF;
   genMuonSortedCharge[ ID ] = tempVecI;
+  genMuonSortedPdgId[ ID ] = tempVecI;
+  genMuonSortedMotherId[ ID ] = tempVecI;
+  genMuonSortedPromptDecayed[ ID ] = tempVecI;
+  genMuonSortedPromptFinalState[ ID ] = tempVecI;
 
   mytree_->Branch( ("numMuon" + name).c_str(), &numMuo[ ID ], ("numMuon" + name + "/I").c_str());	
   std::string prefix = "muon" + name;
@@ -2784,6 +2875,11 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   mytree_->Branch( (prefix + "NChambers").c_str(), &muonSortedNumChambers[ ID ][0], (prefix + "NChambers[numMuon" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "NMatches").c_str(), &muonSortedNumMatches[ ID ][0], (prefix + "NMatches[numMuon" + name + "]/I").c_str());
 
+  mytree_->Branch( (prefix + "ValidFraction").c_str(), &muonValidFraction[ ID ][0], (prefix + "ValidFraction[numMuon" + name + "]/F").c_str());
+  mytree_->Branch( (prefix + "Chi2LocalPosition").c_str(), &muonChi2LocalPosition[ ID ][0], (prefix + "Chi2LocalPosition[numMuon" + name + "]/F").c_str());
+  mytree_->Branch( (prefix + "TrkKick").c_str(), &muonTrkKick[ ID ][0], (prefix + "TrkKick[numMuon" + name + "]/F").c_str());
+  mytree_->Branch( (prefix + "SegmentCompatibility").c_str(), &muonSegmentCompatibility[ ID ][0], (prefix + "SegmentCompatibility[numMuon" + name + "]/F").c_str());
+
   if( runMCInfo_ )
   {
     prefix = "genMuon" + name;
@@ -2796,6 +2892,10 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
     mytree_->Branch((prefix + "Theta").c_str(), &genMuonSortedTheta[ ID ][0], (prefix + "Theta[numMuon" + name + "]/F").c_str());
     mytree_->Branch((prefix + "Eta").c_str(), &genMuonSortedEta[ ID ][0], (prefix + "Eta[numMuon" + name + "]/F").c_str());
     mytree_->Branch((prefix + "Charge").c_str(), &genMuonSortedCharge[ ID ][0], (prefix + "Charge[numMuon" + name + "]/I").c_str());
+    mytree_->Branch((prefix + "PdgId").c_str(), &genMuonSortedPdgId[ ID ][0], (prefix + "PdgId[numMuon" + name + "]/I").c_str());
+    mytree_->Branch((prefix + "MotherId").c_str(), &genMuonSortedMotherId[ ID ][0], (prefix + "MotherId[numMuon" + name + "]/I").c_str());
+    mytree_->Branch((prefix + "PromptDecayed").c_str(), &genMuonSortedPromptDecayed[ ID ][0], (prefix + "PromptDecayed[numMuon" + name + "]/I").c_str());
+    mytree_->Branch((prefix + "PromptFinalState").c_str(), &genMuonSortedPromptFinalState[ ID ][0], (prefix + "PromptFinalState[numMuon" + name + "]/I").c_str());
   }
   
 
@@ -2997,10 +3097,12 @@ void MakeTopologyNtupleMiniAOD::bookPFJetBranches(std::string ID, std::string na
   jetSortedNeutralHadronEnergyFraction[ ID ] = tempVecF;
   jetSortedChargedEmEnergyFraction[ ID ] = tempVecF;
   jetSortedNeutralEmEnergyFraction[ ID ] = tempVecF;
+  jetSortedMuonFraction[ ID ] = tempVecF;
   jetSortedChargedHadronEnergyFractionCorr[ ID ] = tempVecF;
   jetSortedNeutralHadronEnergyFractionCorr[ ID ] = tempVecF;
   jetSortedChargedEmEnergyFractionCorr[ ID ] = tempVecF;
   jetSortedNeutralEmEnergyFractionCorr[ ID ] = tempVecF;
+  jetSortedMuonFractionCorr[ ID ] = tempVecF;
 
   std::string prefix = "jet" + name;
   mytree_->Branch( (prefix + "MuEnergy").c_str(), &jetSortedMuEnergy[ ID ][0], (prefix + "MuEnergy[numJet" + name + "]/F").c_str() );
@@ -3012,10 +3114,12 @@ void MakeTopologyNtupleMiniAOD::bookPFJetBranches(std::string ID, std::string na
   mytree_->Branch( (prefix + "NeutralHadronEnergyFraction").c_str(), &jetSortedNeutralHadronEnergyFraction[ ID ][0], (prefix + "NeutralHadronEnergyFraction[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "ChargedEmEnergyFraction").c_str(), &jetSortedChargedEmEnergyFraction[ ID ][0], (prefix + "ChargedEmEnergyFraction[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "NeutralEmEnergyFraction").c_str(), &jetSortedNeutralEmEnergyFraction[ ID ][0], (prefix + "NeutralEmEnergyFraction[numJet" + name + "]/F").c_str() );
+  mytree_->Branch( (prefix + "MuonFraction").c_str(), &jetSortedMuonFraction[ ID ][0], (prefix + "MuonFraction[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "ChargedHadronEnergyFractionCorr").c_str(), &jetSortedChargedHadronEnergyFractionCorr[ ID ][0], (prefix + "ChargedHadronEnergyFractionCorr[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "NeutralHadronEnergyFractionCorr").c_str(), &jetSortedNeutralHadronEnergyFractionCorr[ ID ][0], (prefix + "NeutralHadronEnergyFractionCorr[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "ChargedEmEnergyFractionCorr").c_str(), &jetSortedChargedEmEnergyFractionCorr[ ID ][0], (prefix + "ChargedEmEnergyFractionCorr[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "NeutralEmEnergyFractionCorr").c_str(), &jetSortedNeutralEmEnergyFractionCorr[ ID ][0], (prefix + "NeutralEmEnergyFractionCorr[numJet" + name + "]/F").c_str() );
+  mytree_->Branch( (prefix + "MuonFractionCorr").c_str(), &jetSortedMuonFractionCorr[ ID ][0], (prefix + "MuonFractionCorr[numJet" + name + "]/F").c_str() );
 
   mytree_->Branch( (prefix + "NeutralMultiplicity").c_str(), &jetSortedNeutralMultiplicity[ ID ][0], (prefix + "NeutralMultiplicity[numJet" + name + "]/I").c_str() );
   mytree_->Branch( (prefix + "ChargedMultiplicity").c_str(), &jetSortedChargedMultiplicity[ ID ][0], (prefix + "ChargedMultiplicity[numJet" + name + "]/I").c_str() );
