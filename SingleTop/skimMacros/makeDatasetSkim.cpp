@@ -27,7 +27,7 @@ int main(int argc, char* argv[]){
     numNamePlus = convert1.str();
     
     struct stat buffer;
-    if (stat(("/scratch/data/tZqSkimsRun2015/" + datasetName + "/skimFile"+numNamePlus+".root").c_str(), &buffer) == 0) {
+    if (stat(("/data0/data/tZqSkimsRun2015/" + datasetName + "/skimFile"+numNamePlus+".root").c_str(), &buffer) == 0) {
       fileNum++;
       continue;
     }
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]){
 
     //stupid long conversion between int and string.
 
-    TFile outFile(("/scratch/data/tZqSkimsRun2015/" + datasetName + "/skimFile"+numName+".root").c_str(),"RECREATE");
+    TFile outFile(("/data0/data/tZqSkimsRun2015/" + datasetName + "/skimFile"+numName+".root").c_str(),"RECREATE");
   
     int numberOfEvents = datasetChain->GetEntries();
     AnalysisEvent * event = new AnalysisEvent(isMC,"",datasetChain);
