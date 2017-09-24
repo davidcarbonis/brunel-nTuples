@@ -170,6 +170,8 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     isttbar_(iConfig.getParameter<bool>("isttBar")),
     ttGenEvent_(iConfig.getParameter<edm::InputTag>("ttGenEvent")),
     externalLHEToken_(consumes<LHEEventProduct>(iConfig.getParameter<edm::InputTag>("externalLHEToken"))),
+    pdfIdStart_(iConfig.getParameter<int>("pdfIdStart")),
+    pdfIdEnd_(iConfig.getParameter<int>("pdfIdEnd")),
     pdfInfoToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("pdfInfoFixingToken"))),
     generatorToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("generatorToken"))),
 
@@ -1251,8 +1253,10 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
     double pdfMax {1.0}, pdfMin {1.0};
 
     int intialIndex {pdfIdStart_}, finalIndex {pdfIdEnd_+1};
+//    std::cout << intialIndex << " : " << finalIndex << std::endl;
     for ( int i = intialIndex; i != finalIndex; i ++ ) {
       for ( uint w = 0; w != EventHandle->weights().size(); ++w ) {
+//         std::cout << EventHandle->weights()[w].id << " : " << std::to_string(i) << std::endl;
          if ( EventHandle->weights()[w].id == std::to_string(i) ){
 //           std::cout << "pdf weight: " << EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() <<std::endl;;
            if ( EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() > pdfMax ) pdfMax = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
