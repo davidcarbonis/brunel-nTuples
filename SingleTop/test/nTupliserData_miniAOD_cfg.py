@@ -100,7 +100,8 @@ from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
 
 # define which IDs we want to produce
-my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_Trig_V1_cff']
+my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_Trig_V1_cff',
+		 'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff']
 
 #add them to the VID producer
 for idmod in my_id_modules:
