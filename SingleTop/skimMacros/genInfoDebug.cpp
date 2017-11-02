@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
                 continue;  // skip if not a root file
             }
 
-            TChain datasetChain{"makeTopologyNtupleMiniAOD/tree"};
+            TChain datasetChain{"GenInfoMiniAOD/tree"};
             datasetChain.Add(path.c_str());
 
             const long long int numberOfEvents{datasetChain.GetEntries()};
