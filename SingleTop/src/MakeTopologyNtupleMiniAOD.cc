@@ -172,6 +172,8 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     externalLHEToken_(consumes<LHEEventProduct>(iConfig.getParameter<edm::InputTag>("externalLHEToken"))),
     pdfIdStart_(iConfig.getParameter<int>("pdfIdStart")),
     pdfIdEnd_(iConfig.getParameter<int>("pdfIdEnd")),
+    alphaIdStart_(iConfig.getParameter<int>("alphaIdStart")),
+    alphaIdEnd_(iConfig.getParameter<int>("alphaIdEnd")),
     pdfInfoToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("pdfInfoFixingToken"))),
     generatorToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("generatorToken"))),
 
@@ -1209,9 +1211,18 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
     weight_pdfMin_ = pdfMin;
     
     if ( hasAlphaWeightFlag_ ) {
+      double alphaMax {1.0}, alphaMin {1.0};
       for ( uint w = 0; w != EventHandle->weights().size(); ++w ) {
-	if ( EventHandle->weights()[w].id == "2101" ) weight_alphaMax_ = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
-	if ( EventHandle->weights()[w].id == "2102" ) weight_alphaMin_ = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+	if ( EventHandle->weights()[w].id == alphaIdStart_ ) alphaMax = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+	if ( EventHandle->weights()[w].id == alphaIdEnd_ )   alphaMin = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+      }
+      if ( alphaMax > alphaMin ) { 
+        weight_alphaMax_ = alphaMax;
+        weight_alphaMin_ = alphaMin;
+      }
+      else {
+        weight_alphaMax_ = alphaMin;
+        weight_alphaMin_ = alphaMax;
       }
     }
     else {

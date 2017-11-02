@@ -87,6 +87,8 @@ private:
   edm::EDGetTokenT<LHEEventProduct> externalLHEToken_;
   int pdfIdStart_;
   int pdfIdEnd_;
+  int alphaIdStart_;
+  int alphaIdEnd_;
   edm::EDGetTokenT<GenEventInfoProduct> pdfInfoToken_;
   edm::EDGetTokenT<GenEventInfoProduct> generatorToken_;
 
