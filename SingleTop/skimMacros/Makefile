@@ -41,7 +41,7 @@ _cleanall:
 all: _all
 build: _all
 buildall: _all
-_all: skims.exe backup_skims.exe eventCounter.exe
+_all: skims.exe backup_skims.exe eventCounter.exe printGenInfo.exe
 
 skims.exe: makeDatasetSkim.o AnalysisEvent.o
 	$(CC) $(CFLAGS) $(INCDIR) -o skims.exe makeDatasetSkim.o AnalysisEvent.o $(LIBS)
@@ -52,6 +52,9 @@ backup_skims.exe: makeDatasetSkimBackup.o AnalysisEvent.o
 eventCounter.exe: eventCounter.o
 	$(CC) $(CFLAGS) $(INCDIR) -o eventCounter.exe eventCounter.o $(LIBS)
 
+printGenInfo.exe: genInfoDebug.o GenInfoEvent.o
+	$(CC) $(CFLAGS) $(INCDIR) -o printGenInfo.exe genInfoDebug.o GenInfoEvent.o $(LIBS)
+
 makeDatasetSkim.o: makeDatasetSkim.cpp
 	$(CC) $(CFLAGS) $(INCDIR) -c makeDatasetSkim.cpp $(LIBS)
 
@@ -61,6 +64,12 @@ makeDatasetSkimBackup.o: makeDatasetSkimBackup.cpp
 eventCounter.o: eventCounter.cpp
 	$(CC) $(CFLAGS) $(INCDIR) -c eventCounter.cpp $(LIBS)
 
+genInfoDebug.o : genInfoDebug.cpp
+	$(CC) $(CFLAGS) $(INCDIR) -c genInfoDebug.cpp $(LIBS)
+
 AnalysisEvent.o: AnalysisEvent.C AnalysisEvent.h
 	$(CC) $(CFLAGS) $(INCDIR) -c AnalysisEvent.C $(LIBS)
+
+GenInfoEvent.o: GenInfoEvent.C GenInfoEvent.h
+	$(CC) $(CFLAGS) $(INCDIR) -c GenInfoEvent.C $(LIBS)
 
