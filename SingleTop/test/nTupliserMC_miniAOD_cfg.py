@@ -29,7 +29,7 @@ process.load("PhysicsTools.HepMCCandAlgos.genParticles_cfi")
 process.load('Configuration.StandardSequences.Services_cff')
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
-process.MessageLogger.destinations = ['cerr']
+vprocess.MessageLogger.destinations = ['cerr']
 process.MessageLogger.statistics = []
 process.MessageLogger.fwkJobReports = []
 process.MessageLogger.categories=cms.untracked.vstring('FwkJob'
@@ -115,7 +115,7 @@ calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
                                         # set to True to get special "fake" smearing for synchronization. Use JUST in case of synchronization
                                         isSynchronization = cms.bool(False),
 
-                                        correctionFile = cms.string("Moriond2017_JEC")
+                                        correctionFile = cms.string("Moriond17_23Jan")
                                         )
 
 process.selectedElectrons = cms.EDFilter("PATElectronSelector",

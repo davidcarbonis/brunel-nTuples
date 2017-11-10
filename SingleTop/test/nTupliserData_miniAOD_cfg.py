@@ -115,7 +115,7 @@ calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
                                         # set to True to get special "fake" smearing for synchronization. Use JUST in case of synchron$
                                         isSynchronization = cms.bool(False),
 
-                                        correctionFile = cms.string("Moriond2017_JEC")
+                                        correctionFile = cms.string("Moriond17_23Jan")
                                         )
 
 process.selectedElectrons = cms.EDFilter("PATElectronSelector",
