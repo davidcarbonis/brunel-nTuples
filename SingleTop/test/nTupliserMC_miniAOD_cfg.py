@@ -29,7 +29,7 @@ process.load("PhysicsTools.HepMCCandAlgos.genParticles_cfi")
 process.load('Configuration.StandardSequences.Services_cff')
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
-vprocess.MessageLogger.destinations = ['cerr']
+process.MessageLogger.destinations = ['cerr']
 process.MessageLogger.statistics = []
 process.MessageLogger.fwkJobReports = []
 process.MessageLogger.categories=cms.untracked.vstring('FwkJob'
