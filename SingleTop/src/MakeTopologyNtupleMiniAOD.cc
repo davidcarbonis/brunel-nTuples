@@ -735,6 +735,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
         genElectronSortedMotherId[ ID ][numEle[ ID ]-1]=ele.genLepton()->mother()->pdgId();
         genElectronSortedPromptDecayed[ ID ][numEle[ ID ]-1]=ele.genLepton()->isPromptDecayed();
         genElectronSortedPromptFinalState[ ID ][numEle[ ID ]-1]=ele.genLepton()->isPromptFinalState();
+        genElectronSortedHardProcess[ ID ][numEle[ ID ]-1]=ele.genLepton()->isHardProcess();
       }
     }
 }
@@ -876,6 +877,7 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
       genMuonSortedMotherId[ ID ][numMuo[ ID ]-1]=muo.genLepton()->mother()->pdgId();
       genMuonSortedPromptDecayed[ ID ][numMuo[ ID ]-1]=muo.genLepton()->isPromptDecayed();
       genMuonSortedPromptFinalState[ ID ][numMuo[ ID ]-1]=muo.genLepton()->isPromptFinalState();
+      genMuonSortedHardProcess[ ID ][numMuo[ ID ]-1]=muo.genLepton()->isHardProcess();
     } 
   }
 }
@@ -1778,6 +1780,7 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   genElectronSortedMotherId[ ID ].clear();
   genElectronSortedPromptDecayed[ ID ].clear();
   genElectronSortedPromptFinalState[ ID ].clear();
+  genElectronSortedHardProcess[ ID ].clear();
 }
 
 void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
@@ -1852,6 +1855,7 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
   genMuonSortedMotherId[ ID ].clear();
   genMuonSortedPromptDecayed[ ID ].clear();
   genMuonSortedPromptFinalState[ ID ].clear();
+  genMuonSortedHardProcess[ ID ].clear();
 }
 
 void MakeTopologyNtupleMiniAOD::clearMetArrays(std::string ID)
@@ -2547,6 +2551,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   genElectronSortedMotherId[ ID ] = tempVecI;
   genElectronSortedPromptDecayed[ ID ] = tempVecI;
   genElectronSortedPromptFinalState[ ID ] = tempVecI;
+  genElectronSortedHardProcess[ ID ] = tempVecI;
 
   std::string prefix = "ele" + name;
   mytree_->Branch( ("numEle"+name).c_str(), &numEle[ ID ], ("numEle" + name + "/I").c_str());
@@ -2677,6 +2682,7 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
       mytree_->Branch( ("genEle" + name + "MotherId").c_str(), &genElectronSortedMotherId[ ID ][0], ("genEle" + name + "EleMotherId[numEle" + name + "]/I").c_str());
       mytree_->Branch( ("genEle" + name + "PromptDecayed").c_str(), &genElectronSortedPromptDecayed[ ID ][0], ("genEle" + name + "ElePromptDecayed[numEle" + name + "]/I").c_str());
       mytree_->Branch( ("genEle" + name + "PromptFinalState").c_str(), &genElectronSortedPromptFinalState[ ID ][0], ("genEle" + name + "ElePromptFinalState[numEle" + name + "]/I").c_str());
+      mytree_->Branch( ("genEle" + name + "HardProcess").c_str(), &genElectronSortedHardProcess[ ID ][0], ("genEle" + name + "ElePromptHardProcess[numEle" + name + "]/I").c_str());
   }
 
 //Also handle z candidates
@@ -2756,6 +2762,7 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   genMuonSortedMotherId[ ID ] = tempVecI;
   genMuonSortedPromptDecayed[ ID ] = tempVecI;
   genMuonSortedPromptFinalState[ ID ] = tempVecI;
+  genMuonSortedHardProcess[ ID ] = tempVecI;
 
   mytree_->Branch( ("numMuon" + name).c_str(), &numMuo[ ID ], ("numMuon" + name + "/I").c_str());	
   std::string prefix = "muon" + name;
@@ -2831,6 +2838,7 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
     mytree_->Branch((prefix + "MotherId").c_str(), &genMuonSortedMotherId[ ID ][0], (prefix + "MotherId[numMuon" + name + "]/I").c_str());
     mytree_->Branch((prefix + "PromptDecayed").c_str(), &genMuonSortedPromptDecayed[ ID ][0], (prefix + "PromptDecayed[numMuon" + name + "]/I").c_str());
     mytree_->Branch((prefix + "PromptFinalState").c_str(), &genMuonSortedPromptFinalState[ ID ][0], (prefix + "PromptFinalState[numMuon" + name + "]/I").c_str());
+    mytree_->Branch((prefix + "HardProcess").c_str(), &genMuonSortedHardProcess[ ID ][0], (prefix + "HardProcess[numMuon" + name + "]/I").c_str());
   }
 
 }
