@@ -292,6 +292,6 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
         "BTAGLEFF", "BTAGLERR", "BTAGLEFFCORR", "BTAGLERRCORR",
         "BTAGLEFF", "BTAGLERR", "BTAGLEFFCORR", "BTAGLERRCORR"
         ),
-                                           isttBar = cms.bool(False),# This affects reweighting things. If set to false, then has a weight of 1.
+                                           isttBar = cms.bool(True),# This affects reweighting things. If set to false, then has a weight of 1.
                                            ttGenEvent = cms.InputTag("null")
                                            )# end of MakeTopologyNtupleMiniAOD

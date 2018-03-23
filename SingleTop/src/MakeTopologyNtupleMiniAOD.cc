@@ -1196,21 +1196,42 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::
 
     origWeightForNorm_ = EventHandle->originalXWGTUP();
 
-    double pdfMax {1.0}, pdfMin {1.0};
+    int initialIndex {pdfIdStart_}, finalIndex {pdfIdEnd_+1};
+    int N {finalIndex - initialIndex};
+    double pdfSum{0.0}, pdfSum2 {0.0};
 
-    int intialIndex {pdfIdStart_}, finalIndex {pdfIdEnd_+1};
-    for ( int i = intialIndex; i != finalIndex; i ++ ) {
+    for ( int i = initialIndex; i != finalIndex; i ++ ) {
       for ( uint w = 0; w != EventHandle->weights().size(); ++w ) {
          if ( EventHandle->weights()[w].id == std::to_string(i) ){
-//           std::cout << "pdf weight: " << EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() <<std::endl;;
-           if ( EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() > pdfMax ) pdfMax = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
-           if ( EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() < pdfMin ) pdfMin = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+	   pdfSum +=  (EventHandle->weights()[w].wgt);
          }
       }
     }
 
-    weight_pdfMax_ = pdfMax;
-    weight_pdfMin_ = pdfMin;
+    double meanObs = (pdfSum)/(double(N));
+    for ( int i = initialIndex; i != finalIndex; i ++ ) {
+      for ( uint w = 0; w != EventHandle->weights().size(); ++w ) {
+         if ( EventHandle->weights()[w].id == std::to_string(i) ){
+	   pdfSum2 +=  (EventHandle->weights()[w].wgt - meanObs)*(EventHandle->weights()[w].wgt - meanObs);
+         }
+      }
+    }
+
+    double sd = std::sqrt( pdfSum2 / ( finalIndex - initialIndex -1 ) );
+    weight_pdfMax_ = (EventHandle->originalXWGTUP() + sd)/EventHandle->originalXWGTUP();
+    weight_pdfMin_ = (EventHandle->originalXWGTUP() - sd)/EventHandle->originalXWGTUP();
+
+// Debug couts
+//    std::cout << "N: " << N << std::endl;
+//    std::cout << "pdfSum: " << pdfSum << std::endl;
+//    std::cout << "meanObs: " << meanObs << std::endl;
+//    std::cout << "evt weight: " << EventHandle->originalXWGTUP() << std::endl;
+//    std::cout << "pdfSum2: " << pdfSum2 << std::endl;
+//    std::cout << std::setprecision(10) << std::fixed;
+//    std::cout << "sd: " << sd << std::endl;
+
+//    std::cout << (EventHandle->originalXWGTUP() + sd)/EventHandle->originalXWGTUP() << std::endl;
+//    std::cout << (EventHandle->originalXWGTUP() - sd)/EventHandle->originalXWGTUP() << std::endl;
     
     if ( hasAlphaWeightFlag_ ) {
       double alphaMax {1.0}, alphaMin {1.0};
