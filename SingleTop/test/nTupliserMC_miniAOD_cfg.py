@@ -120,7 +120,7 @@ calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
 
 process.selectedElectrons = cms.EDFilter("PATElectronSelector",
     src = cms.InputTag("calibratedPatElectrons"),
-    cut = cms.string("pt>5 && abs(2.5)")
+    cut = cms.string("pt>5 && abs(eta)")
                                          )
 
 ###############################
@@ -140,11 +140,11 @@ for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 
 process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
-process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
-#process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
+#process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('calibratedPatElectrons')
+process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
 process.load("RecoEgamma.ElectronIdentification.ElectronMVAValueMapProducer_cfi")
-process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
-#process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
+#process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('calibratedPatElectrons')
+process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
 
 ###############################
 ##### MET Uncertainities ######
@@ -194,7 +194,7 @@ process.makeTopologyNtupleMiniAOD.fillAll=cms.bool(True)
 process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
 
 #Make the inputs for the n-tupliser right.
-process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("selectedElectrons")
+process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("calibratedPatElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFToken = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
