@@ -38,7 +38,7 @@ process.MessageLogger.categories=cms.untracked.vstring('FwkJob'
                                                        )
 
 process.MessageLogger.cerr.INFO = cms.untracked.PSet(limit = cms.untracked.int32(0))
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(10000)
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(-1)
 process.options = cms.untracked.PSet(
                      wantSummary = cms.untracked.bool(True)
                      )
@@ -120,7 +120,7 @@ calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
 
 process.selectedElectrons = cms.EDFilter("PATElectronSelector",
     src = cms.InputTag("calibratedPatElectrons"),
-    cut = cms.string("pt>5 && abs(eta)")
+    cut = cms.string("pt>5 && abs(2.5)")
                                          )
 
 ###############################
@@ -140,11 +140,11 @@ for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 
 process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
-#process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
-process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
+process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
+#process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
 process.load("RecoEgamma.ElectronIdentification.ElectronMVAValueMapProducer_cfi")
-#process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
-process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
+process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
+#process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
 
 ###############################
 ##### MET Uncertainities ######
@@ -194,7 +194,7 @@ process.makeTopologyNtupleMiniAOD.fillAll=cms.bool(True)
 process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
 
 #Make the inputs for the n-tupliser right.
-process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("calibratedPatElectrons")
+process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("selectedElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFToken = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
@@ -221,12 +221,15 @@ process.source = cms.Source("PoolSource",
 )
 
 ## Maximal Number of Events
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) )
 
 process.source.fileNames = [
 #	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_HCALDebug_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/00312D7A-FEBD-E611-A713-002590DB923E.root',
 #	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/THQ_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/02259D47-A8D1-E611-AED1-02163E019BED.root',
-	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/120000/04A3B6DA-91C0-E611-BFF9-002590E39D8A.root',
+#	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/120000/04A3B6DA-91C0-E611-BFF9-002590E39D8A.root',
+#	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/36CDAE89-B3BE-E611-B022-0025905B8604.root',
+#	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/ST_tW_top_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/0E4CD60A-0FC3-E611-BCB5-0CC47A7C3420.root',
+	'file:/scratch/eepgadm/data/tZq_2016/04A3B6DA-91C0-E611-BFF9-002590E39D8A.root',
        ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
