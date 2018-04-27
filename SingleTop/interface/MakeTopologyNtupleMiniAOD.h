@@ -100,12 +100,6 @@ private:
   edm::EDGetTokenT<edm::ValueMap<bool> > eleNonTrigMediumIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > eleNonTrigTightIdMapToken_;
 
-  // MVA values and categories (optional)
-  edm::EDGetTokenT<edm::ValueMap<float> > trigMvaValuesMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<int> > trigMvaCategoriesMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<float> > nonTrigMvaValuesMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<int> > nonTrigMvaCategoriesMapToken_;
-
   // Cut based ID
   edm::EDGetTokenT<edm::ValueMap<bool> > eleCutVetoIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > eleCutLooseIdMapToken_;
@@ -312,11 +306,6 @@ private:
   std::map< std::string, std::vector<float> > electronSortedPz;
   std::map< std::string, std::vector<int> > electronSortedCharge;
 
-  std::map< std::string, std::vector<float> > electronSortedMVA;
-  std::map< std::string, std::vector<int> > electronSortedMVAcategory;
-  std::map< std::string, std::vector<float> > electronSortedNonTrigMVA;
-  std::map< std::string, std::vector<int> > electronSortedNonTrigMVAcategory;
-  
   std::map< std::string, std::vector<int> > electronSortedCutIdVeto;
   std::map< std::string, std::vector<int> > electronSortedCutIdLoose;
   std::map< std::string, std::vector<int> > electronSortedCutIdMedium;
