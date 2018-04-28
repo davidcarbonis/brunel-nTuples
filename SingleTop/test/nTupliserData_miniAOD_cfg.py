@@ -90,61 +90,45 @@ process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
 #########EGM Smearing##########
 ###############################
 
-process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
-
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
                                                    calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
                                                                                        engineName = cms.untracked.string('TRandom3'),
                                                                                        ),
                                                    )
 
-process.selectedSlimmedElectrons = cms.EDFilter("PATElectronSelector",     ## this protects against a crash in electron calibration     ## due to electrons with eta > 2.5     
-                                                src = cms.InputTag("slimmedElectrons"),      
-                                                cut = cms.string("pt>5 && abs(eta)<2.5") ) 
+process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
 
-calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducerRun2",
-
-                                        # input collections
-                                        electrons = cms.InputTag('selectedSlimmedElectrons'),
-                                        gbrForestName = cms.string("gedelectron_p4combination_25ns"),
-
-                                        # data or MC corrections
-                                        # if isMC is false, data corrections are applied
-                                        isMC = cms.bool(False),
-
-                                        # set to True to get special "fake" smearing for synchronization. Use JUST in case of synchron$
-                                        isSynchronization = cms.bool(False),
-
-                                        correctionFile = cms.string("Moriond17_23Jan")
-                                        )
-
-process.selectedElectrons = cms.EDFilter("PATElectronSelector",
-    src = cms.InputTag("calibratedPatElectrons"),
-    cut = cms.string("pt>5 && abs(eta)")
-                                         )
+process.calibratedPatElectrons.isMC = cms.bool(False)
+#process.calibratedPatElectrons.correctionFile = cms.string("Moriond17_23Jan")
 
 ###############################
 ###### Electron ID ############
 ###############################
+
+process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
+process.load("RecoEgamma.ElectronIdentification.ElectronMVAValueMapProducer_cfi")
 
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 
 switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
 
 # define which IDs we want to produce
-my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_Trig_V1_cff',
-                 'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff']
+my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff']
 
 #add them to the VID producer
 for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 
-process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
-#process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
-process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
-process.load("RecoEgamma.ElectronIdentification.ElectronMVAValueMapProducer_cfi")
-#process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
-process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
+process.selectedElectrons = cms.EDFilter("PATElectronSelector",
+    src = cms.InputTag("calibratedPatElectrons"),
+    cut = cms.string("pt>5 && abs(2.5)")
+                                         )
+
+process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag("selectedElectrons")
+process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
+process.electronRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
+
+process.processedElectrons = cms.Sequence( process.regressionApplication + process.calibratedPatElectrons + process.selectedElectrons + process.egmGsfElectronIDSequence + process.electronIDValueMapProducer + process.electronRegressionValueMapProducer )
 
 ###############################
 ##### MET Uncertainities ######
@@ -259,7 +243,7 @@ process.makeTopologyNtupleMiniAOD.fillAll=cms.bool(True)
 process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
 
 #Make the inputs for the n-tupliser right.
-process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("calibratedPatElectrons")
+process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("selectedElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFToken = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
@@ -267,33 +251,20 @@ process.makeTopologyNtupleMiniAOD.metPFToken = cms.InputTag("slimmedMETsMuEGClea
 process.makeTopologyNtupleMiniAOD.rhoToken = cms.InputTag("fixedGridRhoFastjetAll")
 process.makeTopologyNtupleMiniAOD.conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions")
 
-##electronIdMva Stuff.
-## triggering MVA
-process.makeTopologyNtupleMiniAOD.eleTrigMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp90")
-process.makeTopologyNtupleMiniAOD.eleTrigTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp90")
-process.makeTopologyNtupleMiniAOD.trigMvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15Trig25nsV1Values")
-process.makeTopologyNtupleMiniAOD.trigMvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15Trig25nsV1Categories")
-
-# non-triggering MVA
-process.makeTopologyNtupleMiniAOD.eleNonTrigMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp90")
-process.makeTopologyNtupleMiniAOD.eleNonTrigTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80")
-process.makeTopologyNtupleMiniAOD.nonTrigMvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
-process.makeTopologyNtupleMiniAOD.nonTrigMvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories")
-
-
 ## Source
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring()
 )
 
 ## Maximal Number of Events
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 
 process.source.fileNames = [
 #	'root://xrootd.unl.edu//store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v2/000/273/158/00000/0227DB1C-E719-E611-872C-02163E0141F9.root',
 #	'root://xrootd.unl.edu//store/data/Run2016B/DoubleMuon/MINIAOD/PromptReco-v2/000/273/158/00000/2C8772DF-F319-E611-AEC1-02163E014122.root',
 #	'root://cms-xrd-global.cern.ch//store/data/Run2016D/DoubleEG/MINIAOD/23Sep2016-v1/100000/206CD6B5-AE87-E611-8B2B-0CC47A4D769A.root',
-	'root://cms-xrd-global.cern.ch//store/data/Run2016D/DoubleEG/MINIAOD/03Feb2017-v1/100000/002CE21C-0BEB-E611-8597-001E67E6F8E6.root',
+#	'root://cms-xrd-global.cern.ch//store/data/Run2016D/DoubleEG/MINIAOD/03Feb2017-v1/100000/002CE21C-0BEB-E611-8597-001E67E6F8E6.root',
+	'file:/scratch/eepgadm/data/DoubleEG/Run2016D/002CE21C-0BEB-E611-8597-001E67E6F8E6.root',
 	]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
@@ -325,14 +296,11 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
-    process.regressionApplication *
-    process.calibratedPatElectrons *
+    process.processedElectrons *
     process.jetCorrection *
     process.mucorMET *
     process.fullPatMetSequence *
     process.egcorrMET *
-    process.selectedElectrons *
-    process.egmGsfElectronIDSequence *
     process.makeTopologyNtupleMiniAOD
     )
 

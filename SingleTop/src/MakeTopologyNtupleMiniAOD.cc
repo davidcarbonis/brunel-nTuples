@@ -177,18 +177,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     pdfInfoToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("pdfInfoFixingToken"))),
     generatorToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("generatorToken"))),
 
-    //    eleTrigLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTrigLooseIdMap"))),
-    eleTrigMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTrigMediumIdMap"))),
-    eleTrigTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTrigTightIdMap"))),
-    //    eleNonTrigLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleNonTrigLooseIdMap"))),
-    eleNonTrigMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleNonTrigMediumIdMap"))),
-    eleNonTrigTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleNonTrigTightIdMap"))),
-
-    trigMvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("trigMvaValuesMap"))),
-    trigMvaCategoriesMapToken_(consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("trigMvaCategoriesMap"))),
-    nonTrigMvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("nonTrigMvaValuesMap"))),
-    nonTrigMvaCategoriesMapToken_(consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("nonTrigMvaCategoriesMap"))),
-
     eleCutVetoIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleCutIdVetoMap"))),
     eleCutLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleCutIdLooseMap"))),
     eleCutMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleCutIdMediumMap"))),
@@ -494,36 +482,10 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     // Note: this implies that the VID ID modules have been run upstream.
     // If you need more info, check with the EGM group.
 
-    //    edm::Handle<edm::ValueMap<bool> > loose_trig_id_decisions;
-    edm::Handle<edm::ValueMap<bool> > medium_trig_id_decisions;
-    edm::Handle<edm::ValueMap<bool> > tight_trig_id_decisions; 
-    //    edm::Handle<edm::ValueMap<bool> > loose_nontrig_id_decisions;
-    edm::Handle<edm::ValueMap<bool> > medium_nonTrig_id_decisions;
-    edm::Handle<edm::ValueMap<bool> > tight_nonTrig_id_decisions; 
-
     edm::Handle<edm::ValueMap<bool> > veto_cut_id_decisions;
     edm::Handle<edm::ValueMap<bool> > loose_cut_id_decisions;
     edm::Handle<edm::ValueMap<bool> > medium_cut_id_decisions;
     edm::Handle<edm::ValueMap<bool> > tight_cut_id_decisions;
-
-    //   iEvent.getByToken(eleTrigLooseIdMapToken_,loose_trig_id_decisions);
-    iEvent.getByToken(eleTrigMediumIdMapToken_,medium_trig_id_decisions);
-    iEvent.getByToken(eleTrigTightIdMapToken_,tight_trig_id_decisions);
-    //   iEvent.getByToken(eleNonTrigLooseIdMapToken_,loose_nonTrig_id_decisions);
-    iEvent.getByToken(eleNonTrigMediumIdMapToken_,medium_nonTrig_id_decisions);
-    iEvent.getByToken(eleNonTrigTightIdMapToken_,tight_nonTrig_id_decisions);
-
-    // Get triggering MVA values and categories (optional)
-    edm::Handle<edm::ValueMap<float> > trigMvaValues;
-    edm::Handle<edm::ValueMap<int> > trigMvaCategories;
-    iEvent.getByToken(trigMvaValuesMapToken_,trigMvaValues);
-    iEvent.getByToken(trigMvaCategoriesMapToken_,trigMvaCategories);
-
-    // Get non-triggering MVA values and categories (optional)
-    edm::Handle<edm::ValueMap<float> > nonTrigMvaValues;
-    edm::Handle<edm::ValueMap<int> > nonTrigMvaCategories;
-    iEvent.getByToken(nonTrigMvaValuesMapToken_,nonTrigMvaValues);
-    iEvent.getByToken(nonTrigMvaCategoriesMapToken_,nonTrigMvaCategories);
 
     // Get cut-based ID values
     iEvent.getByToken(eleCutVetoIdMapToken_,veto_cut_id_decisions);
@@ -606,10 +568,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       	electronSortedPy[ ID ][numEle[ ID ]-1]=ele.py();
       	electronSortedPz[ ID ][numEle[ ID ]-1]=ele.pz();
       	electronSortedCharge[ ID ][numEle[ ID ]-1]=ele.charge();
-      	electronSortedMVA[ ID ][numEle[ ID ]-1] = (*trigMvaValues)[refel]; // Triggering MVA
-      	electronSortedMVAcategory[ ID ][numEle[ ID ]-1] = (*trigMvaCategories)[refel];
-	electronSortedNonTrigMVA[ ID ][numEle[ ID ]-1] = (*nonTrigMvaValues)[refel]; // Non-triggering MVA
-	electronSortedNonTrigMVAcategory[ ID ][numEle[ ID ]-1] = (*nonTrigMvaCategories)[refel];
  
         electronSortedCutIdVeto[ ID ][numEle[ ID ]-1] = (*veto_cut_id_decisions)[refel]; // VID Veto ID
         electronSortedCutIdLoose[ ID ][numEle[ ID ]-1] = (*loose_cut_id_decisions)[refel]; // VID Loose ID
@@ -1116,20 +1074,6 @@ void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent, const edm::E
     // Get the electron ID data from the event stream.
     // Note: this implies that the VID ID modules have been run upstream.
     // If you need more info, check with the EGM group.
-
-    //   edm::Handle<edm::ValueMap<bool> > loose_nonTrig_id_decisions;
-    edm::Handle<edm::ValueMap<bool> > medium_nonTrig_id_decisions;
-    edm::Handle<edm::ValueMap<bool> > tight_nonTrig_id_decisions; 
-
-    //   iEvent.getByToken(eleNonTrigLooseIdMapToken_,loose_id_decisions);
-    iEvent.getByToken(eleNonTrigMediumIdMapToken_,medium_nonTrig_id_decisions);
-    iEvent.getByToken(eleNonTrigTightIdMapToken_,tight_nonTrig_id_decisions);
-
-    // Get MVA values and categories (optional)
-    edm::Handle<edm::ValueMap<float> > nonTrigMvaValues;
-    edm::Handle<edm::ValueMap<int> > nonTrigMvaCategories;
-    iEvent.getByToken(nonTrigMvaValuesMapToken_,nonTrigMvaValues);
-    iEvent.getByToken(nonTrigMvaCategoriesMapToken_,nonTrigMvaCategories);
 
 
   std::vector<math::XYZTLorentzVector> candidatestoloopover;
@@ -1699,10 +1643,6 @@ void MakeTopologyNtupleMiniAOD::clearelectronarrays(std::string ID){
   electronSortedPy[ ID ].clear();
   electronSortedPz[ ID ].clear();
   electronSortedCharge[ ID ].clear();
-  electronSortedMVA[ ID ].clear();
-  electronSortedMVAcategory[ ID ].clear();
-  electronSortedNonTrigMVA[ ID ].clear();
-  electronSortedNonTrigMVAcategory[ ID ].clear();
 
   electronSortedCutIdVeto[ ID ].clear();
   electronSortedCutIdLoose[ ID ].clear();
@@ -2475,10 +2415,6 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   electronSortedPx[ ID ] = tempVecF;
   electronSortedPy[ ID ] = tempVecF;
   electronSortedPz[ ID ] = tempVecF;
-  electronSortedMVA[ ID ] = tempVecF;  
-  electronSortedMVAcategory[ ID ] = tempVecI;
-  electronSortedNonTrigMVA[ ID ] = tempVecF;  
-  electronSortedNonTrigMVAcategory[ ID ] = tempVecI;
 
   electronSortedCutIdVeto[ ID ] = tempVecI;
   electronSortedCutIdLoose[ ID ] = tempVecI;
@@ -2597,10 +2533,6 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(std::string ID, std::string
   mytree_->Branch( (prefix + "Eta").c_str(), &electronSortedEta[ ID ][0], (prefix + "Eta[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "PT").c_str(), &electronSortedPt[ ID ][0], (prefix + "PT[numEle" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "Charge").c_str(), &electronSortedCharge[ ID ][0], (prefix + "Charge[numEle" + name + "]/I").c_str());
-  mytree_->Branch( (prefix + "MVA").c_str(), &electronSortedMVA[ ID ][0], (prefix + "MVA[numEle" + name + "]/F").c_str());
-  mytree_->Branch( (prefix + "MVAcategory").c_str(), &electronSortedMVAcategory[ ID ][0], (prefix + "MVAcategory[numEle" + name + "]/I").c_str());
-  mytree_->Branch( (prefix + "NonTrigMVA").c_str(), &electronSortedNonTrigMVA[ ID ][0], (prefix + "NonTrigMVA[numEle" + name + "]/F").c_str());
-  mytree_->Branch( (prefix + "NonTrigMVAcategory").c_str(), &electronSortedNonTrigMVAcategory[ ID ][0], (prefix + "NonTrigMVAcategory[numEle" + name + "]/I").c_str());
 
   mytree_->Branch( (prefix + "CutIdVeto").c_str(), &electronSortedCutIdVeto[ ID ][0], (prefix + "CutIdVeto[numEle" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "CutIdLoose").c_str(), &electronSortedCutIdLoose[ ID ][0], (prefix + "CutIdLoose[numEle" + name + "]/I").c_str());

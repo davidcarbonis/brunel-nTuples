@@ -5,7 +5,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 					   beamSpotToken = cms.InputTag("offlineBeamSpot"),
                                            trackToken  = cms.InputTag("lostTracks"),
                                            conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions"),
-                                           electronTag = cms.InputTag("slimmedElectrons"),
+                                           electronTag = cms.InputTag("selectedElectrons"),
                                            tauTag      = cms.InputTag("slimmedTaus"),
                                            muonTag     = cms.InputTag("slimmedMuons"),
                                            jetLabel    = cms.InputTag("slimmedJets"),
@@ -13,7 +13,7 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            photonToken = cms.InputTag("slimmedPhotons"),
                                            metTag      = cms.InputTag("patMETs"),
                                            # PF
-                                           electronPFToken = cms.InputTag("calibratedPatElectrons"),
+                                           electronPFToken = cms.InputTag("selectedElectrons"),
                                            tauPFTag      = cms.InputTag("slimmedTaus"),
                                            muonPFToken   = cms.InputTag("slimmedMuons"),
                                            jetPFToken    = cms.InputTag("slimmedJets"),
@@ -201,20 +201,6 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            #Some jet cuts.
                                            minJetPt = cms.double(0.), #min jet pT in GeV/c
                                            maxJetEta = cms.double(5.5), # jet |eta|
-
-                                           #electron triggering MVA ID (tight, for analysis)
-
-                                           eleTrigMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp90"),
-                                           eleTrigTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp80"),
-                                           trigMvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15Trig25nsV1Values"),
-                                           trigMvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15Trig25nsV1Categories"),
-
-                                           #electron non-triggering MVA ID (tight, for analysis)
-
-                                           eleNonTrigMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp90"),
-                                           eleNonTrigTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80"),
-                                           nonTrigMvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"),
-                                           nonTrigMvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories"),
 
                                            #electron cut based ID
 					   eleCutIdVetoMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto"),
