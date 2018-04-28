@@ -124,9 +124,7 @@ process.selectedElectrons = cms.EDFilter("PATElectronSelector",
                                          )
 
 process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag("selectedElectrons")
-
 process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
-
 process.electronRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
 
 process.processedElectrons = cms.Sequence( process.regressionApplication + process.calibratedPatElectrons + process.selectedElectrons + process.egmGsfElectronIDSequence + process.electronIDValueMapProducer + process.electronRegressionValueMapProducer )
@@ -193,7 +191,7 @@ process.source = cms.Source("PoolSource",
 )
 
 ## Maximal Number of Events
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source.fileNames = [
 #	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_HCALDebug_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/00312D7A-FEBD-E611-A713-002590DB923E.root',
@@ -201,7 +199,8 @@ process.source.fileNames = [
 #	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/120000/04A3B6DA-91C0-E611-BFF9-002590E39D8A.root',
 #	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/36CDAE89-B3BE-E611-B022-0025905B8604.root',
 #	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/ST_tW_top_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/0E4CD60A-0FC3-E611-BCB5-0CC47A7C3420.root',
-	'file:/scratch/eepgadm/data/tZq_2016/04A3B6DA-91C0-E611-BFF9-002590E39D8A.root',
+#	'file:/scratch/eepgadm/data/tZq_2016/04A3B6DA-91C0-E611-BFF9-002590E39D8A.root',
+	'file:/scratch/eepgadm/data/ttbarInc_2016/18E31463-B3BE-E611-B6A3-0CC47A4D7678.root',
        ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
