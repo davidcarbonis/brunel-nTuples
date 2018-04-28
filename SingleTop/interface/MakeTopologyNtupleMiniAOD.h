@@ -92,14 +92,6 @@ private:
   edm::EDGetTokenT<GenEventInfoProduct> pdfInfoToken_;
   edm::EDGetTokenT<GenEventInfoProduct> generatorToken_;
 
-  // ID decisions objects
-  //edm::EDGetTokenT<edm::ValueMap<bool> > eleTrigLooseIdMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleTrigMediumIdMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleTrigTightIdMapToken_;
-  //edm::EDGetTokenT<edm::ValueMap<bool> > eleNonTrigLooseIdMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleNonTrigMediumIdMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleNonTrigTightIdMapToken_;
-
   // Cut based ID
   edm::EDGetTokenT<edm::ValueMap<bool> > eleCutVetoIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > eleCutLooseIdMapToken_;
