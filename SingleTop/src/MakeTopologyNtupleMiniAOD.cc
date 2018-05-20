@@ -156,6 +156,7 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     trigToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("triggerToken"))),
     metFilterToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("metFilterToken"))),
     fakeTrigLabelList_(iConfig.getParameter<std::vector<std::string> >("fakeTriggerList")),
+    bTagList_(iConfig.getParameter<std::vector<std::string> >("bTagList")),
     triggerList_(iConfig.getParameter<std::vector<std::string> >("triggerList")),
     metFilterList_(iConfig.getParameter<std::vector<std::string> >("metFilterList")),
 
@@ -192,10 +193,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     doCuts_(iConfig.getParameter<bool>("doCuts")),
     jetPtCut_(iConfig.getParameter<double>("minJetPt")),
     jetEtaCut_(iConfig.getParameter<double>("maxJetEta")),
-    bDiscName_(iConfig.getParameter<std::string>("bDiscName")),
-    cVsLDiscName_(iConfig.getParameter<std::string>("cVsLDiscName")),
-    cVsBDiscName_(iConfig.getParameter<std::string>("cVsBDiscName")),
-    bDiscCut_(iConfig.getParameter<double>("bDiscCut")),
     runPDFUncertainties_(iConfig.getParameter<bool>("runPDFUncertainties")),
     useResidualJEC_(iConfig.getParameter<bool>("useResidualJEC")),
     ignore_emIDtight_(iConfig.getParameter<bool>("ignoreElectronID")),
@@ -1039,8 +1036,10 @@ void MakeTopologyNtupleMiniAOD::fillMCJetInfo(int empty, const size_t jetindex, 
 
 void MakeTopologyNtupleMiniAOD::fillBTagInfo(const pat::Jet &jet, const size_t jetindex, std::string ID){
   
-  jetSortedBDiscriminator[ ID ][jetindex]=jet.bDiscriminator(bDiscName_);
-  
+  for( size_t iBtag = 0; iBtag < bTagList_.size(); iBtag++ ) {
+    bTagRes[ bTagList_[iBtag] ][ ID ][jetindex] = jet.bDiscriminator( bTagList_[iBtag] );
+  }
+
   const reco::SecondaryVertexTagInfo *svTagInfo = jet.tagInfoSecondaryVertex();
   if (svTagInfo){
     bTags++;
@@ -1054,12 +1053,6 @@ void MakeTopologyNtupleMiniAOD::fillBTagInfo(const pat::Jet &jet, const size_t j
 
 }
 
-void MakeTopologyNtupleMiniAOD::fillCTagInfo(const pat::Jet &jet, const size_t jetindex, std::string ID){
-
-  jetSortedCvsLDiscriminator[ ID ][jetindex]=jet.bDiscriminator(cVsLDiscName_);
-  jetSortedCvsBDiscriminator[ ID ][jetindex]=jet.bDiscriminator(cVsBDiscName_);
-
-}
 
 /////////////////////////////
 void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::InputTag eleIn_, std::string ID){
@@ -1575,8 +1568,6 @@ void MakeTopologyNtupleMiniAOD::fillJets(const edm::Event& iEvent, const edm::Ev
 
     fillBTagInfo(jet,numJet[ ID ]-1, ID);
 
-    fillCTagInfo(jet,numJet[ ID ]-1, ID);
-
   } 
   metE[ID] = sqrt(pow(metPx[ID],2) + pow(metPy[ID],2) + pow(metPz[ID],2));  
   metEt[ID] = sqrt(pow(metPx[ID],2) + pow(metPy[ID],2));  
@@ -1968,9 +1959,11 @@ void MakeTopologyNtupleMiniAOD::clearjetarrays(std::string ID){
     jetSortedBIDParams_[ ID ].clear();
     jetSortedNConstituents[ ID ].clear();
     bidParamsDiscCut_[ ID ]=-1.0;
-    jetSortedBDiscriminator[ ID ].clear();
-    jetSortedCvsLDiscriminator[ ID ].clear();
-    jetSortedCvsBDiscriminator[ ID ].clear();
+
+    for ( size_t iBtag = 0; iBtag < bTagList_.size(); iBtag++ )
+    {
+      bTagRes[ bTagList_[iBtag] ][ ID ].clear();
+    }
 
 //Calo specific
     jetSortedEMEnergyInEB[ ID ].clear();
@@ -3082,9 +3075,12 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
   jetSortedSVDX[ ID ] = tempVecF;
   jetSortedSVDY[ ID ] = tempVecF;
   jetSortedSVDZ[ ID ] = tempVecF;
-  jetSortedBDiscriminator[ ID ] = tempVecF;
-  jetSortedCvsLDiscriminator[ ID ] = tempVecF;
-  jetSortedCvsBDiscriminator[ ID ] = tempVecF;
+
+  for ( size_t iBtag = 0; iBtag < bTagList_.size(); iBtag++ )
+  {
+    bTagRes[ bTagList_[iBtag] ][ ID ] = tempVecF;
+  }
+
   genJetSortedEt[ ID ] = tempVecF;
   genJetSortedPt[ ID ] = tempVecF;
   genJetSortedEta[ ID ] = tempVecF;
@@ -3132,10 +3128,13 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
   mytree_->Branch( (prefix + "SVDX").c_str(), &jetSortedSVDX[ ID ][0], (prefix + "SVDX[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "SVDY").c_str(), &jetSortedSVDY[ ID ][0], (prefix + "SVDY[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "SVDZ").c_str(), &jetSortedSVDZ[ ID ][0], (prefix + "SVDZ[numJet" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "BDiscriminator").c_str(), &jetSortedBDiscriminator[ ID ][0], (prefix + "BDiscriminator[numJet" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "CvsLDiscriminator").c_str(), &jetSortedCvsLDiscriminator[ ID ][0], (prefix + "CvsLDiscriminator[numJet" + name + "]/F").c_str() );
-  mytree_->Branch( (prefix + "CvsBDiscriminator").c_str(), &jetSortedCvsBDiscriminator[ ID ][0], (prefix + "CvsBDiscriminator[numJet" + name + "]/F").c_str() );
   mytree_->Branch( (prefix + "NConstituents").c_str(), &jetSortedNConstituents[ ID ][0], (prefix + "NConstituents[numJet" + name + "]/I").c_str() );
+
+  for( size_t iBtag = 0; iBtag < bTagList_.size(); iBtag++ )
+  {
+      std::cout << "Booking bTag disc branch: " << bTagList_[iBtag] << std::endl;
+      mytree_->Branch( (prefix + bTagList_[iBtag]).c_str(), &bTagRes[bTagList_[iBtag]][ ID ][0], (prefix + bTagList_[iBtag] + "[numJet" + name + "]/F").c_str() );
+  }
 
   // generator information
   mytree_->Branch( (prefix + "PID").c_str(), &jetSortedPID[ ID ][0], (prefix + "PID[numJet" + name + "]/I").c_str());
@@ -3503,8 +3502,6 @@ bool MakeTopologyNtupleMiniAOD::jetIDLoose(const pat::Jet& jet, float jetPt){
   if (jetPt < jetPtCut_)
     return false;
   if(std::abs(jet.eta())>jetEtaCut_)
-    return false;
-  if (jet.bDiscriminator(bDiscName_) < bDiscCut_)
     return false;
   return true;
   

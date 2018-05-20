@@ -68,6 +68,7 @@ private:
   edm::EDGetTokenT<edm::TriggerResults> trigToken_;
   edm::EDGetTokenT<edm::TriggerResults> metFilterToken_;
   std::vector<std::string> fakeTrigLabelList_;
+  std::vector<std::string> bTagList_;
   std::vector<std::string> triggerList_;
   std::vector<std::string> metFilterList_;
 
@@ -115,10 +116,6 @@ private:
   //jet cuts
   double jetPtCut_;
   double jetEtaCut_;
-  std::string bDiscName_; //The name of the b-discriminator to be used for the analysis.
-  std::string cVsLDiscName_; //The name of the CvsL-discriminator to be used for the analysis.
-  std::string cVsBDiscName_; //The name of the CvsB-discriminator to be used for the analysis.
-  double bDiscCut_; //The cut applied for the bDiscriminator;
 
   bool runPDFUncertainties_;
   bool useResidualJEC_;
@@ -601,9 +598,6 @@ private:
     std::map< std::string, std::vector<float> >  jetSortedSVDY;
     std::map< std::string, std::vector<float> > jetSortedSVDZ;
     std::map< std::string, std::vector<int> > jetSortedNConstituents;
-    std::map< std::string, std::vector<float> > jetSortedBDiscriminator;
-    std::map< std::string, std::vector<float> > jetSortedCvsLDiscriminator;
-    std::map< std::string, std::vector<float> > jetSortedCvsBDiscriminator;
 
 //Calo Jet
     std::map< std::string, std::vector<float> > jetSortedEMEnergyInEB;
@@ -705,6 +699,7 @@ private:
   std::map< std::string, std::vector<float> > tau_eta;
   std::map< std::string, std::vector<float> > tau_pt;
   
+  std::map< std::string, std::map< std::string, std::vector<float> > > bTagRes;
   std::vector<int> triggerRes;
   std::vector<int> metFilterRes;
   std::vector<int> HLT_fakeTriggerValues;

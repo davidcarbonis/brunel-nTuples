@@ -33,9 +33,9 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 					   isLHEflag = cms.bool(True),
 					   externalLHEToken = cms.InputTag("externalLHEProducer"), # "externalLHEProducer", "source" for THQ 
 
-					   pdfIdStart = cms.int32(2001),
-					   pdfIdEnd = cms.int32(2100),
-					   hasAlphaWeightFlag = cms.bool(True),
+					   pdfIdStart = cms.int32(10),
+					   pdfIdEnd = cms.int32(110),
+					   hasAlphaWeightFlag = cms.bool(False),
 					   alphaIdStart = cms.int32(2101),
 					   alphaIdEnd = cms.int32(2102),
 
@@ -43,6 +43,22 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 					   generatorToken = cms.InputTag("generator"),
                                            minLeptons = cms.int32(0),
                                            
+                                           bTagList = cms.vstring(
+        'pfCombinedInclusiveSecondaryVertexV2BJetTags',        #CombinedSecondaryVertex v2
+        'pfCombinedMVAV2BJetTags',                             #CombinedMVA v2	
+        #'pfDeepCSVJetTags:probudsg',                           #Deep Flavour CSV
+        #'pfDeepCSVJetTags:probb',                              #Deep Flavour CSV
+        #'pfDeepCSVJetTags:probc',                              #Deep Flavour CSV
+        #'pfDeepCSVJetTags:probbb',                             #Deep Flavour CSV
+        #'pfDeepCSVJetTags:probcc',                             #Deep Flavour CSV
+        #'pfDeepCMVAJetTags:probudsg',                          #Deep Flavour CMVA
+        #'pfDeepCMVAJetTags:probb',                             #Deep Flavour CMVA
+        #'pfDeepCMVAJetTags:probc',                             #Deep Flavour CMVA
+        #'pfDeepCMVAJetTags:probbb',                            #Deep Flavour CMVA
+        #'pfDeepCMVAJetTags:probcc',                            #Deep Flavour CMVA
+        'pfCombinedCvsLJetTags',                               #Charm vs Light jets
+        'pfCombinedCvsBJetTags',                               #Charm vs B jets
+        ),
                                            triggerList = cms.vstring(                                                              
 	#Updated Triggers for 2016
 	'HLT_Ele25_eta2p1_WPTight_Gsf_v1',			#SingleElectron
@@ -228,13 +244,6 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            maxDcotForPhotonRej=cms.double(0),
                                            isMCatNLO=cms.bool(False),
                                            #New B-tagging info
-                                           bDiscCut=cms.double(-1.0),
-                                           bDiscName=cms.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'),
-					   cVsLDiscName=cms.string('pfCombinedCvsLJetTags'), 
-					   cVsBDiscName=cms.string('pfCombinedCvsBJetTags'),
-
-                                           # Btagging algorithms: "pfJetProbabilityBJetTags","pfCombinedInclusiveSecondaryVertexV2BJetTags", "pfCombinedMVAV2BJetTags"
-					   # Ctagging algorithms: "pfCombinedCvsLJetTags", "pfCombinedCvsBJetTags"
 
                                            # Btagging parameterizations to look at (the vectors btagParameterizationList and btagParameterizationMode are coupled!). Documentation on algo names (go in btagParamerizationList) and parameterizations (go in btagParameterizationMode) are available on this twiki:
                                                # https://twiki.cern.ch/twiki/bin/view/CMS/BtagOctober09ExerciseUsePayload
