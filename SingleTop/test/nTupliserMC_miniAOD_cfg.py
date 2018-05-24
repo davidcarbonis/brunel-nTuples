@@ -120,7 +120,7 @@ for idmod in my_id_modules:
 
 process.selectedElectrons = cms.EDFilter("PATElectronSelector",
     src = cms.InputTag("calibratedPatElectrons"),
-    cut = cms.string("pt>5 && abs(2.5)")
+    cut = cms.string("pt>5 && abs(eta)<2.50")
                                          )
 
 process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag("selectedElectrons")
@@ -191,7 +191,7 @@ process.source = cms.Source("PoolSource",
 )
 
 ## Maximal Number of Events
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 
 process.source.fileNames = [
 #	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_HCALDebug_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/00312D7A-FEBD-E611-A713-002590DB923E.root',
