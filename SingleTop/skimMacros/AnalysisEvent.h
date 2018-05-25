@@ -659,10 +659,10 @@ public :
    TBranch        *b_jetPF2PATSVDX;   //!
    TBranch        *b_jetPF2PATSVDY;   //!
    TBranch        *b_jetPF2PATSVDZ;   //!
-   TBranch        *b_jetPF2PATpfCombinedInclusiveSecondaryVertexV2BJetTags[40];   //!
-   TBranch        *b_jetPF2PATpfCombinedMVAV2BJetTags[40];   //!
-   TBranch        *b_jetPF2PATpfCombinedCvsLJetTags[40];   //!
-   TBranch        *b_jetPF2PATpfCombinedCvsBJetTags[40];   //!
+   TBranch        *b_jetPF2PATpfCombinedInclusiveSecondaryVertexV2BJetTags;   //!
+   TBranch        *b_jetPF2PATpfCombinedMVAV2BJetTags;   //!
+   TBranch        *b_jetPF2PATpfCombinedCvsLJetTags;   //!
+   TBranch        *b_jetPF2PATpfCombinedCvsBJetTags;   //!
    TBranch        *b_jetPF2PATNConstituents;   //!
    TBranch        *b_jetPF2PATPID;   //!
    TBranch        *b_jetPF2PATClosestBPartonDeltaR;   //!
