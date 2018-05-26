@@ -121,7 +121,7 @@ for idmod in my_id_modules:
 
 process.selectedElectrons = cms.EDFilter("PATElectronSelector",
     src = cms.InputTag("calibratedPatElectrons"),
-    cut = cms.string("pt>5 && abs(eta)<2.50")
+    cut = cms.string("pt>5 && abs(superCluster.eta)<2.50")
                                          )
 
 process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag("selectedElectrons")
@@ -263,7 +263,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.source.fileNames = [
 #	'root://xrootd.unl.edu//store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v2/000/273/158/00000/0227DB1C-E719-E611-872C-02163E0141F9.root',
 #	'root://xrootd.unl.edu//store/data/Run2016B/DoubleMuon/MINIAOD/PromptReco-v2/000/273/158/00000/2C8772DF-F319-E611-AEC1-02163E014122.root',
-	'root://cms-xrd-global.cern.ch//store/data/Run2016D/DoubleEG/MINIAOD/23Sep2016-v1/100000/206CD6B5-AE87-E611-8B2B-0CC47A4D769A.root',
+#	'root://cms-xrd-global.cern.ch//store/data/Run2016D/DoubleEG/MINIAOD/23Sep2016-v1/100000/206CD6B5-AE87-E611-8B2B-0CC47A4D769A.root',
 #	'root://cms-xrd-global.cern.ch//store/data/Run2016D/DoubleEG/MINIAOD/03Feb2017-v1/100000/002CE21C-0BEB-E611-8597-001E67E6F8E6.root',
 #	'file:/scratch/eepgadm/data/DoubleEG/Run2016D/002CE21C-0BEB-E611-8597-001E67E6F8E6.root',
 	'file:/scratch/eepgadm/data/SingleElectron/Run2016D/00393BA2-6AEB-E611-8417-0CC47A4D7692.root',

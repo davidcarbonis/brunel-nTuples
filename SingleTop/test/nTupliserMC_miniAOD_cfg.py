@@ -120,7 +120,7 @@ for idmod in my_id_modules:
 
 process.selectedElectrons = cms.EDFilter("PATElectronSelector",
     src = cms.InputTag("calibratedPatElectrons"),
-    cut = cms.string("pt>5 && abs(eta)<2.50")
+    cut = cms.string("pt>5 && abs(superCluster.eta)<2.50")
                                          )
 
 process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag("selectedElectrons")
