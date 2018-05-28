@@ -25,6 +25,8 @@ To be fixed:
 
 - Use correct Global Tags.
 
+- Check DeepCSV and DeepCMVA b-taggers actually work and include them in the skimmer's AnalysisEvent.h
+
 - Implement EGM smearing and regression for 94X: 92X required EGM smearing and regression and VID (ie ID cuts) to be added in python
 config files and run on top of the miniAOD. The 94X or 2017 and 2016 re-reco miniAODv2s have these already done.
 However, using normal accessors such as ele.p4() returns unsmeared values. The correct accessors have been done for the VID for both
