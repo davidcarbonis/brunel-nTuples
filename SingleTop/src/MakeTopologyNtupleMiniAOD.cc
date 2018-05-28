@@ -168,6 +168,7 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     effectiveAreaInfo_( (iConfig.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath() ),
     pileupToken_(mayConsume<std::vector< PileupSummaryInfo > >(iConfig.getParameter<edm::InputTag>("pileupToken"))),
 
+    is2016rereco_(iConfig.getParameter<bool>("is2016rereco")),
     isttbar_(iConfig.getParameter<bool>("isttBar")),
     ttGenEvent_(iConfig.getParameter<edm::InputTag>("ttGenEvent")),
     externalLHEToken_(consumes<LHEEventProduct>(iConfig.getParameter<edm::InputTag>("externalLHEToken"))),
@@ -177,11 +178,6 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(const edm::ParameterSet& iC
     alphaIdEnd_(iConfig.getParameter<int>("alphaIdEnd")),
     pdfInfoToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("pdfInfoFixingToken"))),
     generatorToken_(mayConsume<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("generatorToken"))),
-
-    eleCutVetoIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleCutIdVetoMap"))),
-    eleCutLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleCutIdLooseMap"))),
-    eleCutMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleCutIdMediumMap"))),
-    eleCutTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleCutIdTightMap"))),
 
     hltnames_(0),
     metFilterNames_(0),	
@@ -475,27 +471,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     iEvent.getByToken(rhoToken_,rhoHand_);
     rhoIso = *(rhoHand_.product());
 
-    // Get the electron ID data from the event stream.
-    // Note: this implies that the VID ID modules have been run upstream.
-    // If you need more info, check with the EGM group.
-
-    edm::Handle<edm::ValueMap<bool> > veto_cut_id_decisions;
-    edm::Handle<edm::ValueMap<bool> > loose_cut_id_decisions;
-    edm::Handle<edm::ValueMap<bool> > medium_cut_id_decisions;
-    edm::Handle<edm::ValueMap<bool> > tight_cut_id_decisions;
-
-    // Get cut-based ID values
-    iEvent.getByToken(eleCutVetoIdMapToken_,veto_cut_id_decisions);
-    iEvent.getByToken(eleCutLooseIdMapToken_,loose_cut_id_decisions);
-    iEvent.getByToken(eleCutMediumIdMapToken_,medium_cut_id_decisions);
-    iEvent.getByToken(eleCutTightIdMapToken_,tight_cut_id_decisions);
-
-    //   !!!
-    // IMPORTAnT: DO NOT CUT ON THE OBJECTS BEFORE THEY ARE SORTED, cuts should be applied in the second loop!!!
-    //   !!!
-
-//    std::cout << __LINE__ << " : " << __FILE__ << " : nElectrons = " << electrons.size() << std::endl;
-
     electronEts.clear();
     for(pat::ElectronCollection::const_iterator electron_iter = electrons.begin(); electron_iter!=electrons.end(); ++electron_iter){
 	float et =electron_iter->et();
@@ -526,7 +501,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 
       int photonConversionTag=-1;
 
-    
       numEle[ ID ]++;
 
       //Impact param significance
@@ -565,12 +539,19 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
       	electronSortedPy[ ID ][numEle[ ID ]-1]=ele.py();
       	electronSortedPz[ ID ][numEle[ ID ]-1]=ele.pz();
       	electronSortedCharge[ ID ][numEle[ ID ]-1]=ele.charge();
- 
-        electronSortedCutIdVeto[ ID ][numEle[ ID ]-1] = (*veto_cut_id_decisions)[refel]; // VID Veto ID
-        electronSortedCutIdLoose[ ID ][numEle[ ID ]-1] = (*loose_cut_id_decisions)[refel]; // VID Loose ID
-        electronSortedCutIdMedium[ ID ][numEle[ ID ]-1] = (*medium_cut_id_decisions)[refel]; // VID Medium ID
-        electronSortedCutIdTight[ ID ][numEle[ ID ]-1] = (*tight_cut_id_decisions)[refel]; // VID Tight ID
 
+        if ( is2016rereco_ ) {
+          electronSortedCutIdVeto[ ID ][numEle[ ID ]-1] = ele.userInt("cutBasedElectronID-Fall17-94X-V1-veto");
+          electronSortedCutIdLoose[ ID ][numEle[ ID ]-1] = ele.userInt("cutBasedElectronID-Fall17-94X-V1-loose");
+          electronSortedCutIdMedium[ ID ][numEle[ ID ]-1] = ele.userInt("cutBasedElectronID-Fall17-94X-V1-medium");
+          electronSortedCutIdTight[ ID ][numEle[ ID ]-1] = ele.userInt("cutBasedElectronID-Fall17-94X-V1-tight");
+        }
+        else {
+          electronSortedCutIdVeto[ ID ][numEle[ ID ]-1] = ele.userInt("cutBasedElectronID-Summer16-80X-V1-veto");
+          electronSortedCutIdLoose[ ID ][numEle[ ID ]-1] = ele.userInt("cutBasedElectronID-Summer16-80X-V1-loose");
+          electronSortedCutIdMedium[ ID ][numEle[ ID ]-1] = ele.userInt("cutBasedElectronID-Summer16-80X-V1-medium");
+          electronSortedCutIdTight[ ID ][numEle[ ID ]-1] = ele.userInt("cutBasedElectronID-Summer16-80X-V1-tight");
+        }
       electronSortedChargedHadronIso[ ID ][numEle[ ID ]-1]=ele.chargedHadronIso();
       electronSortedNeutralHadronIso[ ID ][numEle[ ID ]-1]=ele.neutralHadronIso();
       electronSortedPhotonIso[ ID ][numEle[ ID ]-1]=ele.photonIso();
@@ -750,6 +731,21 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     muonSortedPy[ ID ][numMuo[ ID ]-1]=muo.py();
     muonSortedPz[ ID ][numMuo[ ID ]-1]=muo.pz();
     muonSortedCharge[ ID ][numMuo[ ID ]-1]=muo.charge();
+
+    muonSortedLooseCutId[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::CutBasedIdLoose);
+    muonSortedMediumCutId[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::CutBasedIdMedium);
+    muonSortedMediumPromptCutId[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::CutBasedIdMediumPrompt);
+    muonSortedTightCutId[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::CutBasedIdTight);
+    muonSortedPfIsoVeryLoose[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::PFIsoVeryLoose);
+    muonSortedPfIsoLoose[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::PFIsoLoose);
+    muonSortedPfIsoMedium[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::PFIsoMedium);
+    muonSortedPfIsoTight[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::PFIsoTight);
+    muonSortedPfIsoVeryTight[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::PFIsoVeryTight);
+    muonSortedTkIsoLoose[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::TkIsoLoose);
+    muonSortedTkIsoTight[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::TkIsoTight);
+    muonSortedMvaLoose[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::MvaLoose);
+    muonSortedMvaMedium[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::MvaMedium);
+    muonSortedMvaTight[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::MvaTight);
 
     muonSortedGlobalID[ ID ][numMuo[ ID ]-1]=muo.isGlobalMuon();
     muonSortedTrackID[ ID ][numMuo[ ID ]-1]=muo.isTrackerMuon();
@@ -1751,6 +1747,21 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
   muonSortedPz[ ID ].clear();
   muonSortedCharge[ ID ].clear();
 
+  muonSortedLooseCutId[ ID ].clear();
+  muonSortedMediumCutId[ ID ].clear();
+  muonSortedMediumPromptCutId.clear();
+  muonSortedTightCutId[ ID ].clear();
+  muonSortedPfIsoVeryLoose[ ID ].clear();
+  muonSortedPfIsoLoose[ ID ].clear();
+  muonSortedPfIsoMedium[ ID ].clear();
+  muonSortedPfIsoTight[ ID ].clear();
+  muonSortedPfIsoVeryTight[ ID ].clear();
+  muonSortedTkIsoLoose[ ID ].clear();
+  muonSortedTkIsoTight[ ID ].clear();
+  muonSortedMvaLoose[ ID ].clear();
+  muonSortedMvaMedium[ ID ].clear();
+  muonSortedMvaTight[ ID ].clear();
+
   muonSortedGlobalID[ ID ].clear();
   muonSortedTrackID[ ID ].clear();
 
@@ -2651,6 +2662,20 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   muonSortedPy[ ID ] = tempVecF;
   muonSortedPz[ ID ] = tempVecF;
   muonSortedCharge[ ID ] = tempVecI;
+  muonSortedLooseCutId[ ID ] = tempVecI;
+  muonSortedMediumCutId[ ID ] = tempVecI;
+  muonSortedMediumPromptCutId[ ID ] = tempVecI;
+  muonSortedTightCutId[ ID ] = tempVecI;
+  muonSortedPfIsoVeryLoose[ ID ] = tempVecI;
+  muonSortedPfIsoLoose[ ID ] = tempVecI;
+  muonSortedPfIsoMedium[ ID ] = tempVecI;
+  muonSortedPfIsoTight[ ID ] = tempVecI;
+  muonSortedPfIsoVeryTight[ ID ] = tempVecI;
+  muonSortedTkIsoLoose[ ID ] = tempVecI;
+  muonSortedTkIsoTight[ ID ] = tempVecI;
+  muonSortedMvaLoose[ ID ] = tempVecI;
+  muonSortedMvaMedium[ ID ] = tempVecI;
+  muonSortedMvaTight[ ID ] = tempVecI;
 
   muonSortedGlobalID[ ID ] = tempVecF;
   muonSortedTrackID[ ID ] = tempVecF;
@@ -2722,6 +2747,21 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   mytree_->Branch( (prefix + "Theta").c_str(), &muonSortedTheta[ ID ][0], (prefix + "Theta[numMuon" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "Eta").c_str(), &muonSortedEta[ ID ][0], (prefix + "Eta[numMuon" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "Charge").c_str(), &muonSortedCharge[ ID ][0], (prefix + "Charge[numMuon" + name + "]/I").c_str());
+  
+  mytree_->Branch( (prefix + "LooseCutId").c_str(), &muonSortedLooseCutId[ ID ][0], (prefix + "LooseCutId[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "MediumCutId").c_str(), &muonSortedMediumCutId[ ID ][0], (prefix + "MediumCutId[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "MediumPromptCutId").c_str(), &muonSortedMediumPromptCutId[ ID ][0], (prefix + "MediumPromptCutId[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "TightCutId").c_str(), &muonSortedTightCutId[ ID ][0], (prefix + "TightCutId[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "PfIsoVeryLoose").c_str(), &muonSortedPfIsoVeryLoose[ ID ][0], (prefix + "PfIsoVeryLoose[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "PfIsoLoose").c_str(), &muonSortedPfIsoLoose[ ID ][0], (prefix + "PfIsoLoose[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "PfIsoMedium").c_str(), &muonSortedPfIsoMedium[ ID ][0], (prefix + "PfIsoMedium[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "PfIsoTight").c_str(), &muonSortedPfIsoTight[ ID ][0], (prefix + "PfIsoTight[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "PfIsoVeryTight").c_str(), &muonSortedPfIsoVeryTight[ ID ][0], (prefix + "PfIsoVeryTight[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "TkIsoLoose").c_str(), &muonSortedTkIsoLoose[ ID ][0], (prefix + "TkIsoLoose[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "TkIsoTight").c_str(), &muonSortedTkIsoTight[ ID ][0], (prefix + "TkIsoTight[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "MvaLoose").c_str(), &muonSortedMvaLoose[ ID ][0], (prefix + "MvaLoose[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "MvaMedium").c_str(), &muonSortedMvaMedium[ ID ][0], (prefix + "MvaMedium[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "MvaTight").c_str(), &muonSortedMvaTight[ ID ][0], (prefix + "MvaTight[numMuon" + name + "]/I").c_str());
 
   mytree_->Branch( (prefix + "GlobalID").c_str(), &muonSortedGlobalID[ ID ][0], (prefix + "GlobalID[numMuon" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "TrackID").c_str(), &muonSortedTrackID[ ID ][0], (prefix + "TrackID[numMuon" + name + "]/F").c_str());

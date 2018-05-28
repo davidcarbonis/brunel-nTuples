@@ -11,133 +11,46 @@ enjoy, future students.
 
 ***
 
-The CMSSW_8_0_27 branch contains code from CMSSW_8_0_25 branch which is modified
-to work for Run 2 miniAODv3 80X data and MC. As data/MC reprocessing taking is
-using CMSSW_8_0_X, the branch is named CMSSW_8_0_27 after the version which data
-and MC is currently avaliable for.
+The CMSSW_9_4_8 branch contains code from CMSSW_8_0_25 branch which is modified
+to work for Run 2 miniAODv2 94X data and MC. 
 
-N.B. As Run 2 MC seems to use Pythia 8 for generation, the old status codes have
-been updated from those used in Pythia 6. This WILL affect the output. Double
-check generator used if running over old data. Status code for gen level is
-saved. Worth noting that other occasions where status code is checked, these dsfsdf
-varaibles are not saved to the final root nTuple output.
+This is currently a work in progress left to be completed by the next generation.
+
+Added since last version (8_0_27):
+- Muon ID/Iso/etc bools
+- Electron VIDs (see below under to be fixed)
+- DeepCSV and DeepCMVA added to bTagger list
+
+To be fixed:
+
+- Implement EGM smearing and regression for 94X: 92X required EGM smearing and regression and VID (ie ID cuts) to be added in python
+config files and run on top of the miniAOD. The 94X or 2017 and 2016 re-reco miniAODv2s have these already done.
+However, using normal accessors such as ele.p4() returns unsmeared values. The correct accessors have been done for the VID for both
+2016 and 2017 (set by the is2016rereco flag in the python cfi file), but has not been done for things like energy/momentum smearing.
+
+- Compiling the skimmer: currently fails to compile
+
+- Running MC and Data scripts leads to the following error message which needs to be fixed: 
+```bash 
+	An exception of category 'ScheduleExecutionFailure' occurred while
+	   [0] Calling beginJob
+	Exception Message:
+	Unrunnable schedule
+	Module run order problem found:
+	p after makeTopologyNtupleMiniAOD [path p], makeTopologyNtupleMiniAOD consumes TriggerResults, TriggerResults consumes p
+	 Running in the threaded framework would lead to indeterminate results.
+	 Please change order of modules in mentioned Path(s) to avoid inconsistent module ordering.
+	----- End Fatal Exception -------------------------------------------------
+```
 
 ---
 
 ## Additional setup info:
 
-Need to get latest additions to re-correct or re-cluster MET:
-
-``` bash
-git cms-merge-topic cms-met:METRecipe_8020
-```
----
-
-And finally latest EGM Smearing and Regression code
+NOTE!!!! YOU DO NOT HAVE TO DO THIS!!!
+Only if you want to recreate the EGM regression/smearing corrections that are already in the re-miniAODv2
 ```bash
-git cms-merge-topic cms-egamma:EGM_gain_v1
-cd EgammaAnalysis/ElectronTools/data
-git clone -b Moriond17_gainSwitch_unc https://github.com/ECALELFS/ScalesSmearings.git
-cd $CMSSW_BASE/src
+git cms-merge-topic cms-egamma:EgammaPostRecoTools_940 #just adds in an extra file to have a setup function to make things easier
+git cms-merge-topic cms-egamma:Egamma80XMiniAODV2_946 #adds the c++ changes necessary to enable 2016 scale & smearing corrections
 ```
 ---
-
-## FCNC Stuff:
-
-Generation of signal samples up till the LHE
-format: <https://twiki.cern.ch/twiki/bin/view/CMS/TopFCNCgenerationSingletop>
-
-Due to the size of the lhe files generated, they cannot be included in the crab
-sandbox and have to be on a grid storage element to be accesible. The command to
-copy them is: 
-
-``` bash
-xrdcopy <file> 'root://dc2-grid-64.brunel.ac.uk////cms/store/user/<username>/<dirPath>'
-```
-
-Rest of instructions follow below ...
-
-N.B. For some reason I have not been able to get premixing to work correctly on
-pion - used lxplus machines to submit the Crab jobs and retrieved the final
-output (i.e. signal files) on pion.
-
-The cmsDriver.py scripts must be run in the src directory of the CMSSW release.
-
-Additional setup if doing generation stuff (i.e. LHE to AOD):
-
-``` bash
-git cms-addpkg Configuration/Applications
-
-git submoudle add git@github.com:cms-sw/genproductions.git Configuration/GenProduction/
-
-git submoudle add https://github.com/kskovpen/FCNCProd
-
-cp NTupliser/FCNC/python/* Configuration/GenProduction/python/
-```
-
-Modify Configuration/Applications/python/ConfigBuilder.py to include
-`defaultOptions.limit = 0`
-
-cmsDriver instructions used to create various FCNC files:
-
-pileup:
-ST FCNC script for LHE to AOD:-
-
-``` bash
-cmsDriver.py Configuration/GenProduction/python/Hadronizer_ZToLL_cfi.py \
-    --mc --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v1 \
-    --filein file:/tmp/almorton/TLL_Thadronic_kappa_zct.lhe --filetype LHE \
-    --era Run2_2016 --fast -n 10 --eventcontent AODSIM --datatier AODSIM \
-    -s GEN,SIM,RECOBEFMIX,DIGIPREMIX_S2,DATAMIX,L1,DIGI2RAW,L1Reco,RECO,HLT:@frozen2016 \
-    --pileup_input "dbs:/Neutrino_E-10_gun/RunIISpring16FSPremix-PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/GEN-SIM-DIGI-RAW" \
-    --customise SimGeneral/DataMixingModule/customiseForPremixingInput.customiseForPreMixingInput \
-    --beamspot Realistic25ns13TeV2016Collision \
-    --python_filename prodLHEtoAOD_ST_TZ_2L_Kappa_Zct.py --datamix PreMix \
-    --fileout aod.root --no_exec
-```
-
-Current output dataset DAS URLs:
-
-Kappa Zct (part1):
-`/ST_TZ_2L_Kappa_Zct_161006/almorton-CRAB3_MC_ST_TZ_2L_Kappa_Zct_161006-491cc9c0c16244aa3248937bd6af6e2c/USER`
-
-Kappa Zct (part2):
-`/ST_TZ_2L_Kappa_Zct_ext_161006/almorton-CRAB3_MC_ST_TZ_2L_Kappa_Zct_ext_161006-491cc9c0c16244aa3248937bd6af6e2c/USER`
-
-Kappa Zut:
-`/ST_TZ_2L_Kappa_Zct_ext_161020/almorton-CRAB3_MC_ST_TZ_2L_Kappa_Zct_ext_161020-491cc9c0c16244aa3248937bd6af6e2c/USER`
-
-Zeta Zct:
-`/ST_TZ_2L_Zeta_Zct_161007/almorton-CRAB3_MC_ST_TZ_2L_Zeta_Zct_161007-491cc9c0c16244aa3248937bd6af6e2c/USER`
-
-Zeta Zut:
-`/ST_TZ_2L_Zeta_Zut_20161124/choad-CRAB3_MC_ST_TZ_2L_Zeta_Zut_20161124-491cc9c0c16244aa3248937bd6af6e2c/USER`
-
-TTbar FCNC script for LHE to AOD:
-
-``` bash
-cmsDriver.py Configuration/GenProduction/python/Hadronizer_TTbar_ZToLL_cfi.py \
-    --mc --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v1 \
-    --filein root://sbgse1.in2p3.fr//store/user/kskovpen/FCNCProdv2/LHE/TT_topLeptonicDecay_kappa_zut_LO/0.lhe \
-    --filetype LHE --era Run2_2016 --fast -n 10 --eventcontent AODSIM \
-    --datatier AODSIM \
-    -s GEN,SIM,RECOBEFMIX,DIGIPREMIX_S2,DATAMIX,L1,DIGI2RAW,L1Reco,RECO,HLT:@frozen2016 \
-    --pileup_input "dbs:/Neutrino_E-10_gun/RunIISpring16FSPremix-PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/GEN-SIM-DIGI-RAW" \
-    --customise SimGeneral/DataMixingModule/customiseForPremixingInput.customiseForPreMixingInput \
-    --beamspot Realistic25ns13TeV2016Collision \
-    --python_filename prodLHEtoAOD_TT_TopLeptonicDecay_TZ_2L_Kappa_Zut.py \
-    --datamix PreMix --fileout aod.root --no_exec
-```
-
-### FCNC script for AOD to miniAOD:
-
-``` bash
-cmsDriver.py step2 --filein file:aod.root --fileout file:miniaod.root -n 10 \
-    -s PAT --eventcontent MINIAODSIM --runUnscheduled --mc --era Run2_2016 \
-    --no_exec --python_filename prodAODtoMINIAOD.py \
-    --conditions 80X_mcRun2_asymptotic_2016_miniAODv2_v1 --fast
-```
-
-Current output dataset DAS URLs: In production
-
-Alexander.

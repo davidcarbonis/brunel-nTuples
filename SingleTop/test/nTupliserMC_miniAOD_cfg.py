@@ -79,61 +79,22 @@ updateJetCollection(
 process.jetCorrection = cms.Sequence( process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC )
 
 ###############################
-########EGM Regression#########
+###EGM Smearing + Regression###
 ###############################
 
-from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
-process = regressionWeights(process)
-process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
-
-###############################
-#########EGM Smearing##########
-###############################
-
-process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-                                                   calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
-                                                                                       engineName = cms.untracked.string('TRandom3'),
-                                                                                       ),
-                                                   )
-
-process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
-
-process.calibratedPatElectrons.isMC = cms.bool(True)
-#process.calibratedPatElectrons.correctionFile = cms.string("Moriond17_23Jan")
+## All embedded in 2017 miniAODv2
 
 ###############################
 ###### Electron ID ############
 ###############################
 
-process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
-
-from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
-
-switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
-
-# define which IDs we want to produce
-my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff']
-
-#add them to the VID producer
-for idmod in my_id_modules:
-    setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
-
-process.selectedElectrons = cms.EDFilter("PATElectronSelector",
-    src = cms.InputTag("calibratedPatElectrons"),
-    cut = cms.string("pt>5 && abs(superCluster.eta)<2.50")
-                                         )
-
-process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag("selectedElectrons")
-process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
-process.electronRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
-
-process.processedElectrons = cms.Sequence( process.regressionApplication + process.calibratedPatElectrons + process.selectedElectrons + process.egmGsfElectronIDSequence + process.electronIDValueMapProducer + process.electronRegressionValueMapProducer )
+## All embedded in 2017 miniAODv2
 
 ###############################
 ##### MET Uncertainities ######
 ###############################
 
-from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+#from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 
 ## If you only want to re-correct and get the proper uncertainties
 #runMetCorAndUncFromMiniAOD(process,
@@ -141,11 +102,11 @@ from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMet
 #                           )
 
 # If you would like to re-cluster and get the proper uncertainties
-runMetCorAndUncFromMiniAOD(process,
-                           isData=False,
+#runMetCorAndUncFromMiniAOD(process,
+#                           isData=False,
 #                           pfCandColl=cms.InputTag("packedPFCandidates"),
 #                           recoMetFromPFCs=True,
-                           )
+#                           )
 
 
 ####
@@ -177,7 +138,7 @@ process.makeTopologyNtupleMiniAOD.fillAll=cms.bool(True)
 process.makeTopologyNtupleMiniAOD.doCuts=cms.bool(False) # if set to false will skip ALL cuts. Z veto still applies electron cuts.
 
 #Make the inputs for the n-tupliser right.
-process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("selectedElectrons")
+process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("slimmedElectrons")
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFToken = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
@@ -194,13 +155,7 @@ process.source = cms.Source("PoolSource",
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 
 process.source.fileNames = [
-#	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_HCALDebug_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/00312D7A-FEBD-E611-A713-002590DB923E.root',
-#	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/THQ_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/02259D47-A8D1-E611-AED1-02163E019BED.root',
-#	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/tZq_ll_4f_13TeV-amcatnlo-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/120000/04A3B6DA-91C0-E611-BFF9-002590E39D8A.root',
-#	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/36CDAE89-B3BE-E611-B022-0025905B8604.root',
-#	'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/ST_tW_top_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/0E4CD60A-0FC3-E611-BCB5-0CC47A7C3420.root',
-#	'file:/scratch/eepgadm/data/tZq_2016/04A3B6DA-91C0-E611-BFF9-002590E39D8A.root',
-	'file:/scratch/eepgadm/data/ttbarInc_2016/18E31463-B3BE-E611-B6A3-0CC47A4D7678.root',
+	'file:/scratch/eepgadm/data/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/06176A4A-3942-E811-9191-008CFA165F5C.root',
        ]
 
 from PhysicsTools.PatAlgos.patEventContent_cff import *
@@ -231,9 +186,7 @@ process.out.SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring('p'))
 #del process.out
 
 process.p = cms.Path(
-    process.processedElectrons *
     process.jetCorrection *
-    process.fullPatMetSequence *
     process.makeTopologyNtupleMiniAOD
     )
 

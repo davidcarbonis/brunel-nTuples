@@ -134,6 +134,20 @@ public :
    Float_t         muonPF2PATTheta[20];   //[numMuonPF2PAT]
    Float_t         muonPF2PATEta[20];   //[numMuonPF2PAT]
    Int_t           muonPF2PATCharge[20];   //[numMuonPF2PAT]
+   Int_t           muonPF2PATLooseCutId[20];   //[numMuonPF2PAT]
+   Int_t           muonPF2PATMediumCutId[20];   //[numMuonPF2PAT]
+   Int_t           muonPF2PATMediumPromptCutId[20];   //[numMuonPF2PAT]
+   Int_t           muonPF2PATTightCutId[20];   //[numMuonPF2PAT]
+   Int_t           muonPF2PATPfIsoVeryLoose[20];   //[numMuonPF2PAT]
+   Int_t           muonPF2PATPfIsoLoose[20];   //[numMuonPF2PAT]
+   Int_t           muonPF2PATPfIsoMedium[20];   //[numMuonPF2PAT]
+   Int_t           muonPF2PATPfIsoTight[20];   //[numMuonPF2PAT]
+   Int_t           muonPF2PATPfIsoVeryTight[20];   //[numMuonPF2PAT]
+   Int_t           muonPF2PATTkIsoLoose[20];   //[numMuonPF2PAT]
+   Int_t           muonPF2PATTkIsoTight[20];   //[numMuonPF2PAT]
+   Int_t           muonPF2PATMvaLoose[20];   //[numMuonPF2PAT]
+   Int_t           muonPF2PATMvaMedium[20];   //[numMuonPF2PAT]
+   Int_t           muonPF2PATMvaTight[20];   //[numMuonPF2PAT]
    Float_t         muonPF2PATGlobalID[20];   //[numMuonPF2PAT]
    Float_t         muonPF2PATTrackID[20];   //[numMuonPF2PAT]
    Float_t         muonPF2PATChi2[20];   //[numMuonPF2PAT]
@@ -579,6 +593,20 @@ public :
    TBranch        *b_muonPF2PATTheta;   //!
    TBranch        *b_muonPF2PATEta;   //!
    TBranch        *b_muonPF2PATCharge;   //!
+   TBranch        *b_muonPF2PATLooseCutId;   //!
+   TBranch        *b_muonPF2PATMediumCutId;   //!
+   TBranch        *b_muonPF2PATMediumPromptCutId;   //!
+   TBranch        *b_muonPF2PATTightCutId;   //!
+   TBranch        *b_muonPF2PATPfIsoVeryLoose;   //!
+   TBranch        *b_muonPF2PATPfIsoLoose;   //!
+   TBranch        *b_muonPF2PATPfIsoMedium;   //!
+   TBranch        *b_muonPF2PATPfIsoTight;   //!
+   TBranch        *b_muonPF2PATPfIsoVeryTight;   //!
+   TBranch        *b_muonPF2PATTkIsoLoose;   //!
+   TBranch        *b_muonPF2PATTkIsoTight;   //!
+   TBranch        *b_muonPF2PATMvaLoose;   //!
+   TBranch        *b_muonPF2PATMvaMedium;   //!
+   TBranch        *b_muonPF2PATMvaTight;   //!
    TBranch        *b_muonPF2PATGlobalID;   //!
    TBranch        *b_muonPF2PATTrackID;   //!
    TBranch        *b_muonPF2PATChi2;   //!
@@ -1124,6 +1152,20 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("muonPF2PATTheta", muonPF2PATTheta, &b_muonPF2PATTheta);
    fChain->SetBranchAddress("muonPF2PATEta", muonPF2PATEta, &b_muonPF2PATEta);
    fChain->SetBranchAddress("muonPF2PATCharge", muonPF2PATCharge, &b_muonPF2PATCharge);
+   fChain->SetBranchAddress("muonPF2PATLooseCutId", muonPF2PATLooseCutId, &b_muonPF2PATLooseCutId);
+   fChain->SetBranchAddress("muonPF2PATMediumCutId", muonPF2PATMediumCutId, &b_muonPF2PATMediumCutId);
+   fChain->SetBranchAddress("muonPF2PATMediumPromptCutId", muonPF2PATMediumPromptCutId, &b_muonPF2PATMediumPromptCutId);
+   fChain->SetBranchAddress("muonPF2PATTightCutId", muonPF2PATTightCutId, &b_muonPF2PATTightCutId);
+   fChain->SetBranchAddress("muonPF2PATPfIsoVeryLoose", muonPF2PATPfIsoVeryLoose, &b_muonPF2PATPfIsoVeryLoose);
+   fChain->SetBranchAddress("muonPF2PATPfIsoLoose", muonPF2PATPfIsoLoose, &b_muonPF2PATPfIsoLoose);
+   fChain->SetBranchAddress("muonPF2PATPfIsoMedium", muonPF2PATPfIsoMedium, &b_muonPF2PATPfIsoMedium);
+   fChain->SetBranchAddress("muonPF2PATPfIsoTight", muonPF2PATPfIsoTight, &b_muonPF2PATPfIsoTight);
+   fChain->SetBranchAddress("muonPF2PATPfIsoVeryTight", muonPF2PATPfIsoVeryTight, &b_muonPF2PATPfIsoVeryTight);
+   fChain->SetBranchAddress("muonPF2PATTkIsoLoose", muonPF2PATTkIsoLoose, &b_muonPF2PATTkIsoLoose);
+   fChain->SetBranchAddress("muonPF2PATTkIsoTight", muonPF2PATTkIsoTight, &b_muonPF2PATTkIsoTight);
+   fChain->SetBranchAddress("muonPF2PATMvaLoose", muonPF2PATMvaLoose, &b_muonPF2PATMvaLoose);
+   fChain->SetBranchAddress("muonPF2PATMvaMedium", muonPF2PATMvaMedium, &b_muonPF2PATMvaMedium);
+   fChain->SetBranchAddress("muonPF2PATMvaTight", muonPF2PATMvaTight, &b_muonPF2PATMvaTight);
    fChain->SetBranchAddress("muonPF2PATGlobalID", muonPF2PATGlobalID, &b_muonPF2PATGlobalID);
    fChain->SetBranchAddress("muonPF2PATTrackID", muonPF2PATTrackID, &b_muonPF2PATTrackID);
    fChain->SetBranchAddress("muonPF2PATChi2", muonPF2PATChi2, &b_muonPF2PATChi2);

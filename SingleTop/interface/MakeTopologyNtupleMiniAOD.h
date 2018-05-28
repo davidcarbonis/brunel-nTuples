@@ -80,6 +80,9 @@ private:
   EffectiveAreas effectiveAreaInfo_;
   edm::EDGetTokenT<std::vector< PileupSummaryInfo > > pileupToken_;
 
+  //Sets stuff for 2016 rereco, namely ele IDs
+  bool is2016rereco_;
+
   //Sets whether the sample is ttbar or not. Default is false. This affects top pt reweighting of the sample.
   bool isttbar_;
   edm::InputTag ttGenEvent_;
@@ -92,12 +95,6 @@ private:
   int alphaIdEnd_;
   edm::EDGetTokenT<GenEventInfoProduct> pdfInfoToken_;
   edm::EDGetTokenT<GenEventInfoProduct> generatorToken_;
-
-  // Cut based ID
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleCutVetoIdMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleCutLooseIdMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleCutMediumIdMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<bool> > eleCutTightIdMapToken_;
 
   std::map<std::string,int> hltpasses_;
   std::vector<std::string> hltnames_;
@@ -495,6 +492,21 @@ private:
   std::map< std::string, std::vector<float> > muonSortedPy;
   std::map< std::string, std::vector<float> > muonSortedPz;
   std::map< std::string, std::vector<int> > muonSortedCharge;
+  std::map< std::string, std::vector<int> > muonSortedLooseCutId;
+  std::map< std::string, std::vector<int> > muonSortedMediumCutId;
+  std::map< std::string, std::vector<int> > muonSortedMediumPromptCutId;
+  std::map< std::string, std::vector<int> > muonSortedTightCutId;
+  std::map< std::string, std::vector<int> > muonSortedPfIsoVeryLoose;
+  std::map< std::string, std::vector<int> > muonSortedPfIsoLoose;
+  std::map< std::string, std::vector<int> > muonSortedPfIsoMedium;
+  std::map< std::string, std::vector<int> > muonSortedPfIsoTight;
+  std::map< std::string, std::vector<int> > muonSortedPfIsoVeryTight;
+  std::map< std::string, std::vector<int> > muonSortedTkIsoLoose;
+  std::map< std::string, std::vector<int> > muonSortedTkIsoTight;
+  std::map< std::string, std::vector<int> > muonSortedMvaLoose;
+  std::map< std::string, std::vector<int> > muonSortedMvaMedium;
+  std::map< std::string, std::vector<int> > muonSortedMvaTight;
+
   std::map< std::string, std::vector<float> > muonSortedGlobalID;
   std::map< std::string, std::vector<float> > muonSortedTrackID;
   std::map< std::string, std::vector<float> > muonSortedChi2;
