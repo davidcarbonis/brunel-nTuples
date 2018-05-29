@@ -724,8 +724,8 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
 //Impact param significance
   std::vector<reco::Vertex> pv {};
   if(pvHandle.isValid()) pv = *pvHandle;
-//  std::cout << __LINE__ << " : " << __FILE__ << " : nMuons = " << muons.size() << std::endl;
 
+//  std::cout << __LINE__ << " : " << __FILE__ << " : nMuons = " << muons.size() << std::endl;
 //  std::cout << iEvent.id().event() << " " << muons.size() << std::endl;
 
   if(muonEts.size()==0)// prevents a crash, the IndexSorter does not know what to do with zero-size vectors
@@ -756,8 +756,6 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     muonSortedPy[ ID ][numMuo[ ID ]-1]=muo.py();
     muonSortedPz[ ID ][numMuo[ ID ]-1]=muo.pz();
     muonSortedCharge[ ID ][numMuo[ ID ]-1]=muo.charge();
-
-    if(!pvHandle.isValid()) std::cout << "No primary vertex; tight ID : " << muon::isTightMuon(muo, pv[0]) << std::endl;;
 
     muonSortedLooseCutId[ ID ][numMuo[ ID ]-1]=muon::isLooseMuon(muo);
     muonSortedMediumCutId[ ID ][numMuo[ ID ]-1]=muon::isMediumMuon(muo);
