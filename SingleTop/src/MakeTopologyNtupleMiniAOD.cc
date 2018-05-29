@@ -718,6 +718,12 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     muonEts.push_back(et);
   }
 
+//Primary vertex
+  edm::Handle<reco::VertexCollection> pvHandle;
+  iEvent.getByToken(pvLabel_,pvHandle);
+//Impact param significance
+  std::vector<reco::Vertex> pv {};
+  if(pvHandle.isValid()) pv = *pvHandle;
 //  std::cout << __LINE__ << " : " << __FILE__ << " : nMuons = " << muons.size() << std::endl;
 
 //  std::cout << iEvent.id().event() << " " << muons.size() << std::endl;
@@ -750,6 +756,12 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
     muonSortedPy[ ID ][numMuo[ ID ]-1]=muo.py();
     muonSortedPz[ ID ][numMuo[ ID ]-1]=muo.pz();
     muonSortedCharge[ ID ][numMuo[ ID ]-1]=muo.charge();
+
+    if(!pvHandle.isValid()) std::cout << "No primary vertex; tight ID : " << muon::isTightMuon(muo, pv[0]) << std::endl;;
+
+    muonSortedLooseCutId[ ID ][numMuo[ ID ]-1]=muon::isLooseMuon(muo);
+    muonSortedMediumCutId[ ID ][numMuo[ ID ]-1]=muon::isMediumMuon(muo);
+    muonSortedTightCutId[ ID ][numMuo[ ID ]-1]=muon::isTightMuon(muo, pv[0]);
 
     muonSortedGlobalID[ ID ][numMuo[ ID ]-1]=muo.isGlobalMuon();
     muonSortedTrackID[ ID ][numMuo[ ID ]-1]=muo.isTrackerMuon();
@@ -1751,6 +1763,10 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
   muonSortedPz[ ID ].clear();
   muonSortedCharge[ ID ].clear();
 
+  muonSortedLooseCutId[ ID ].clear();
+  muonSortedMediumCutId[ ID ].clear();
+  muonSortedTightCutId[ ID ].clear();
+
   muonSortedGlobalID[ ID ].clear();
   muonSortedTrackID[ ID ].clear();
 
@@ -2652,6 +2668,10 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   muonSortedPz[ ID ] = tempVecF;
   muonSortedCharge[ ID ] = tempVecI;
 
+  muonSortedLooseCutId[ ID ] = tempVecI;
+  muonSortedMediumCutId[ ID ] = tempVecI;
+  muonSortedTightCutId[ ID ] = tempVecI;
+
   muonSortedGlobalID[ ID ] = tempVecF;
   muonSortedTrackID[ ID ] = tempVecF;
 
@@ -2722,6 +2742,10 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   mytree_->Branch( (prefix + "Theta").c_str(), &muonSortedTheta[ ID ][0], (prefix + "Theta[numMuon" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "Eta").c_str(), &muonSortedEta[ ID ][0], (prefix + "Eta[numMuon" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "Charge").c_str(), &muonSortedCharge[ ID ][0], (prefix + "Charge[numMuon" + name + "]/I").c_str());
+
+  mytree_->Branch( (prefix + "LooseCutId").c_str(), &muonSortedLooseCutId[ ID ][0], (prefix + "LooseCutId[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "MediumCutId").c_str(), &muonSortedMediumCutId[ ID ][0], (prefix + "MediumCutId[numMuon" + name + "]/I").c_str());
+  mytree_->Branch( (prefix + "TightCutId").c_str(), &muonSortedTightCutId[ ID ][0], (prefix + "TightCutId[numMuon" + name + "]/I").c_str());
 
   mytree_->Branch( (prefix + "GlobalID").c_str(), &muonSortedGlobalID[ ID ][0], (prefix + "GlobalID[numMuon" + name + "]/F").c_str());
   mytree_->Branch( (prefix + "TrackID").c_str(), &muonSortedTrackID[ ID ][0], (prefix + "TrackID[numMuon" + name + "]/F").c_str());

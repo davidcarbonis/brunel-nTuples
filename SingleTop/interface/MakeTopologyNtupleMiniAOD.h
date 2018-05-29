@@ -495,6 +495,9 @@ private:
   std::map< std::string, std::vector<float> > muonSortedPy;
   std::map< std::string, std::vector<float> > muonSortedPz;
   std::map< std::string, std::vector<int> > muonSortedCharge;
+  std::map< std::string, std::vector<int> > muonSortedLooseCutId;
+  std::map< std::string, std::vector<int> > muonSortedMediumCutId;
+  std::map< std::string, std::vector<int> > muonSortedTightCutId;
   std::map< std::string, std::vector<float> > muonSortedGlobalID;
   std::map< std::string, std::vector<float> > muonSortedTrackID;
   std::map< std::string, std::vector<float> > muonSortedChi2;
