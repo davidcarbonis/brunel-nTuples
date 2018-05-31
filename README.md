@@ -23,6 +23,8 @@ Added since last version (8_0_27):
 
 To be fixed:
 
+- Update effective area to be used by electron isolation (either replace the copy of the file from the CMSSW trunk, or point to it, or remove? Historically was there due to mis-matched effective area in trunk wrt. what was used by the ID requirement)
+
 - Use correct Global Tags.
 
 - Check DeepCSV and DeepCMVA b-taggers actually work and include them in the skimmer's AnalysisEvent.h
