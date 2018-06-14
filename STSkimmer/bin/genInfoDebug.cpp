@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
     }
 
 
-    const std::regex mask{".*\\.root"};
+    const std::regex mask{R"(.*\.root)"};
 
     std::array<unsigned int, 14> summedWeights{};
 
