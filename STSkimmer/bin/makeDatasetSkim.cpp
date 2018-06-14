@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
     std::vector<std::string> inDirs;
     std::string datasetName;
     bool isMC;
+    bool hasLHE;
 
     // Define command-line flags
     namespace po = boost::program_options;
@@ -37,6 +38,7 @@ int main(int argc, char* argv[])
          "Directories in which to look for crab output.")
         ("datasetName,o", po::value<std::string>(&datasetName)->required(),
          "Output dataset name.")
+        ("LHE", po::bool_switch(&hasLHE), "Set for data with LHE weights.")
         ("MC", po::bool_switch(&isMC), "Set for MC data.");
     po::variables_map vm;
 
@@ -115,9 +117,8 @@ int main(int argc, char* argv[])
 
                 event.GetEntry(i);
 
-#ifndef NO_LHE
                 // Get number of positive and negative amc@nlo weights
-                if (isMC)
+                if (isMC && hasLHE)
                 {
                     event.origWeightForNorm >= 0.0   ? summedWeights[0]++
                                                      : summedWeights[1]++;
@@ -134,7 +135,7 @@ int main(int argc, char* argv[])
                     event.weight_muF2muR2 >= 0.0     ? summedWeights[12]++
                                                      : summedWeights[13]++;
                 }
-#endif
+
                 // Lepton cuts
                 int numLeps{0};
                 for (int j = 0; j < event.numElePF2PAT; j++)
@@ -165,23 +166,27 @@ int main(int argc, char* argv[])
 
             if (isMC)
             {
-#ifndef NO_LHE
-                weightHisto.Fill(0., summedWeights[0] - summedWeights[1]);
-                weightHisto.Fill(-1., summedWeights[2] - summedWeights[3]);
-                weightHisto.Fill(-2., summedWeights[4] - summedWeights[5]);
-                weightHisto.Fill(-3., summedWeights[6] - summedWeights[7]);
-                weightHisto.Fill(1., summedWeights[8] - summedWeights[9]);
-                weightHisto.Fill(2., summedWeights[10] - summedWeights[11]);
-                weightHisto.Fill(3., summedWeights[12] - summedWeights[13]);
-#else
-                weightHisto.Fill(0., -666.);
-                weightHisto.Fill(-1., -666);
-                weightHisto.Fill(-2., -666);
-                weightHisto.Fill(-3., -666);
-                weightHisto.Fill(1., -666);
-                weightHisto.Fill(2., -666);
-                weightHisto.Fill(3., -666);
-#endif
+
+                if (hasLHE)
+                {
+                    weightHisto.Fill(0., summedWeights[0] - summedWeights[1]);
+                    weightHisto.Fill(-1., summedWeights[2] - summedWeights[3]);
+                    weightHisto.Fill(-2., summedWeights[4] - summedWeights[5]);
+                    weightHisto.Fill(-3., summedWeights[6] - summedWeights[7]);
+                    weightHisto.Fill(1., summedWeights[8] - summedWeights[9]);
+                    weightHisto.Fill(2., summedWeights[10] - summedWeights[11]);
+                    weightHisto.Fill(3., summedWeights[12] - summedWeights[13]);
+                }
+                else
+                {
+                    weightHisto.Fill(0., -666.);
+                    weightHisto.Fill(-1., -666);
+                    weightHisto.Fill(-2., -666);
+                    weightHisto.Fill(-3., -666);
+                    weightHisto.Fill(1., -666);
+                    weightHisto.Fill(2., -666);
+                    weightHisto.Fill(3., -666);
+                }
             }
 
             outFile.cd();
