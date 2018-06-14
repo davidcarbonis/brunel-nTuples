@@ -1,0 +1,24 @@
+<bin file="makeDatasetSkim.cpp" name="skim">
+    <use name="NTupliser/STSkimmer"/>
+    <use name="root"/>
+    <use name="boost"/>
+    <use name="boost_program_options"/>
+    <use name="boost_filesystem"/>
+    <use name="boost_system"/>
+</bin>
+<bin file="eventCounter.cpp" name="eventCounter">
+    <use name="NTupliser/STSkimmer"/>
+    <use name="root"/>
+    <use name="boost"/>
+    <use name="boost_program_options"/>
+    <use name="boost_filesystem"/>
+    <use name="boost_system"/>
+</bin>
+<bin file="genInfoDebug.cpp" name="genInfoDebug">
+    <use name="NTupliser/STSkimmer"/>
+    <use name="root"/>
+    <use name="boost"/>
+    <use name="boost_program_options"/>
+    <use name="boost_filesystem"/>
+    <use name="boost_system"/>
+</bin>

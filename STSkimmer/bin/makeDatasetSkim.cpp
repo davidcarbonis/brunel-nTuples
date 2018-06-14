@@ -14,7 +14,7 @@
 #include <TH1I.h>
 #include <TTree.h>
 
-#include "AnalysisEvent.h"
+#include "../interface/AnalysisEvent.h"
 
 //#define NO_LHE
 
@@ -105,8 +105,8 @@ int main(int argc, char* argv[])
             // std::cout << outFilePath << std::endl;
 
             const long long int numberOfEvents{datasetChain.GetEntries()};
-            boost::progress_display progress{numberOfEvents, std::cout,
-                outFilePath + "\n"};
+            boost::progress_display progress(numberOfEvents, std::cout,
+                outFilePath + "\n");
             AnalysisEvent event{isMC, "", &datasetChain};
 
             for (long long int i{0}; i < numberOfEvents; i++)

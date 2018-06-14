@@ -14,7 +14,7 @@
 #include <TH1I.h>
 #include <TTree.h>
 
-#include "GenInfoEvent.h"
+#include "../interface/GenInfoEvent.h"
 
 namespace fs = boost::filesystem;
 

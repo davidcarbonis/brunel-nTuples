@@ -1,14 +1,14 @@
-#define GenInfoEvent_cxx
-#include "GenInfoEvent.h"
+#define AnalysisEvent_cxx
+#include "NTupliser/STSkimmer/interface/AnalysisEvent.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
 
-void GenInfoEvent::Loop()
+void AnalysisEvent::Loop()
 {
 //   In a ROOT session, you can do:
-//      Root > .L GenInfoEvent.C
-//      Root > GenInfoEvent t
+//      Root > .L AnalysisEvent.C
+//      Root > AnalysisEvent t
 //      Root > t.GetEntry(12); // Fill t data members with entry number 12
 //      Root > t.Show();       // Show values of entry 12
 //      Root > t.Show(16);     // Read and show values of entry 16
@@ -42,7 +42,7 @@ void GenInfoEvent::Loop()
    }
 }
 
-float GenInfoEvent::getEventWeight(Long64_t entry){
+float AnalysisEvent::getEventWeight(Long64_t entry){
   return 1.;
 }
 

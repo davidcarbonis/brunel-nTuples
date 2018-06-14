@@ -30,8 +30,6 @@ config files and run on top of the miniAOD. The 94X or 2017 and 2016 re-reco min
 However, using normal accessors such as ele.p4() returns unsmeared values. The correct accessors have been done for the VID for both
 2016 and 2017 (set by the is2016rereco flag in the python cfi file), but has not been done for things like energy/momentum smearing.
 
-- Compiling the skimmer: currently fails to compile
-
 - Running MC and Data scripts leads to the following error message which needs to be fixed: 
 ```bash 
 	An exception of category 'ScheduleExecutionFailure' occurred while
