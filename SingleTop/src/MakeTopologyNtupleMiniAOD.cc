@@ -451,10 +451,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
     //    double realMagfield=magneticField_;
 //    if(magneticField->inTesla(GlobalPoint(0.,0.,0.)).z()>0) //Accept 0?
 //    realMagfield=magneticField->inTesla(GlobalPoint(0.,0.,0.)).z();
-    //  needs beam spot
-    fillBeamSpot(iEvent,iSetup);
-    // and tracks for photon conversion checks:
-    fillGeneralTracks(iEvent, iSetup);
   
     // note that the fillJets() method needs electrons, due to the fact that we do our own 'cross' cleaning
     edm::Handle<pat::ElectronCollection> electronHandle; //changed handle from pat::Electron to reco::GsfElectron
@@ -702,9 +698,6 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
   edm::Handle<pat::MuonCollection> muonHandle;
   iEvent.getByToken(muIn_,muonHandle);
   const pat::MuonCollection & muons = *muonHandle;
-
-  fillBeamSpot(iEvent,iSetup);
-  fillGeneralTracks(iEvent, iSetup);
 
 
   //   !!!
@@ -2157,6 +2150,7 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
   fillEventInfo(iEvent, iSetup);
   fillTriggerData(iEvent);
   fillBeamSpot(iEvent, iSetup);
+  fillGeneralTracks(iEvent, iSetup); 
 
   //  std::cout << "done with trigger and beam spot" << std::endl;
 
@@ -2177,8 +2171,6 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
   // fillJets(iEvent,iSetup, jetJPTTag_, "JPT");
 
   //  std::cout << "done with jets" << std::endl;
-  fillGeneralTracks(iEvent, iSetup); 
-
 
   //  fillElectrons(iEvent,iSetup, eleLabel_, "Calo");
   fillMCInfo(iEvent,iSetup);
@@ -3155,7 +3147,8 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(std::string ID, std::string name
   for( size_t iBtag = 0; iBtag < bTagList_.size(); iBtag++ )
   {
       std::cout << "Booking bTag disc branch: " << bTagList_[iBtag] << std::endl;
-      mytree_->Branch( (prefix + bTagList_[iBtag]).c_str(), &bTagRes[bTagList_[iBtag]][ ID ][0], (prefix + bTagList_[iBtag] + "[numJet" + name + "]/F").c_str() );
+      if ( bTagList_[iBtag] != "pfCombinedInclusiveSecondaryVertexV2BJetTags" ) mytree_->Branch( (prefix + bTagList_[iBtag]).c_str(), &bTagRes[bTagList_[iBtag]][ ID ][0], (prefix + bTagList_[iBtag] + "[numJet" + name + "]/F").c_str() );
+      else   mytree_->Branch( (prefix + "BDiscriminator").c_str(), &bTagRes[bTagList_[iBtag]][ ID ][0], (prefix + "BDiscriminator[numJet" + name + "]/F").c_str() );
   }
 
   // generator information
