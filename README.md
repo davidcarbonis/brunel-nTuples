@@ -30,21 +30,6 @@ config files and run on top of the miniAOD. The 94X or 2017 and 2016 re-reco min
 However, using normal accessors such as ele.p4() returns unsmeared values. The correct accessors have been done for the VID for both
 2016 and 2017 (set by the is2016rereco flag in the python cfi file), but has not been done for things like energy/momentum smearing.
 
-- Running MC and Data scripts leads to the following error message which needs to be fixed: 
-```bash 
-	An exception of category 'ScheduleExecutionFailure' occurred while
-	   [0] Calling beginJob
-	Exception Message:
-	Unrunnable schedule
-	Module run order problem found:
-	p after makeTopologyNtupleMiniAOD [path p], makeTopologyNtupleMiniAOD consumes TriggerResults, TriggerResults consumes p
-	 Running in the threaded framework would lead to indeterminate results.
-	 Please change order of modules in mentioned Path(s) to avoid inconsistent module ordering.
-	----- End Fatal Exception -------------------------------------------------
-```
-
----
-
 ## Additional setup info:
 
 NOTE!!!! YOU DO NOT HAVE TO DO THIS!!!

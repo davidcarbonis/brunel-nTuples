@@ -494,7 +494,6 @@ private:
   std::map< std::string, std::vector<int> > muonSortedCharge;
   std::map< std::string, std::vector<int> > muonSortedLooseCutId;
   std::map< std::string, std::vector<int> > muonSortedMediumCutId;
-  std::map< std::string, std::vector<int> > muonSortedMediumPromptCutId;
   std::map< std::string, std::vector<int> > muonSortedTightCutId;
   std::map< std::string, std::vector<int> > muonSortedPfIsoVeryLoose;
   std::map< std::string, std::vector<int> > muonSortedPfIsoLoose;

@@ -181,7 +181,7 @@ process.load("NTupliser.SingleTop.MakeTopologyNtuple_miniAOD_cfi")
 process.makeTopologyNtupleMiniAOD.flavorHistoryTag=cms.bool(False) # change to false at your convenience
 process.makeTopologyNtupleMiniAOD.runMCInfo=cms.bool(False) # prevent checking gen info
 process.makeTopologyNtupleMiniAOD.runPUReWeight=cms.bool(False) #Run the reweighting for MC. I think I'm doing this right, but I might check anyway.
-process.makeTopologyNtupleMiniAOD.triggerToken = cms.InputTag("TriggerResults","","HLT") # or HLT, depends on file   
+#process.makeTopologyNtupleMiniAOD.triggerToken = cms.InputTag("TriggerResults","","HLT") # or HLT, depends on file   
 
 #settings to apply tight selection:
 process.makeTopologyNtupleMiniAOD.minJetPt=cms.double(0.0)
@@ -208,7 +208,7 @@ process.makeTopologyNtupleMiniAOD.electronPFToken = cms.InputTag("slimmedElectro
 process.makeTopologyNtupleMiniAOD.tauPFTag = cms.InputTag("slimmedTaus")
 process.makeTopologyNtupleMiniAOD.muonPFToken = cms.InputTag("slimmedMuons")
 process.makeTopologyNtupleMiniAOD.jetPFToken = cms.InputTag("updatedPatJetsUpdatedJEC") # Originally slimmedJets, patJetsReapplyJEC is the jet collection with reapplied JECs
-process.makeTopologyNtupleMiniAOD.metPFToken = cms.InputTag("slimmedMETsMuEGClean","","customPAT")
+process.makeTopologyNtupleMiniAOD.metPFToken = cms.InputTag("slimmedMETs")
 process.makeTopologyNtupleMiniAOD.rhoToken = cms.InputTag("fixedGridRhoFastjetAll")
 process.makeTopologyNtupleMiniAOD.conversionsToken = cms.InputTag("reducedEgamma", "reducedConversions")
 

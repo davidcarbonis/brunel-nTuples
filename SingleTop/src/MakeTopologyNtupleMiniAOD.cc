@@ -678,7 +678,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::EventSetup& iSetup, edm::EDGetTokenT<pat::MuonCollection> muIn_, std::string ID){
-     
+
   // ran_muonloop_=true;
   edm::Handle<pat::MuonCollection> muonHandle;
   iEvent.getByToken(muIn_,muonHandle);
@@ -734,7 +734,6 @@ void MakeTopologyNtupleMiniAOD::fillMuons(const edm::Event& iEvent, const edm::E
 
     muonSortedLooseCutId[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::CutBasedIdLoose);
     muonSortedMediumCutId[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::CutBasedIdMedium);
-    muonSortedMediumPromptCutId[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::CutBasedIdMediumPrompt);
     muonSortedTightCutId[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::CutBasedIdTight);
     muonSortedPfIsoVeryLoose[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::PFIsoVeryLoose);
     muonSortedPfIsoLoose[ ID ][numMuo[ ID ]-1]=muo.passed(reco::Muon::PFIsoLoose);
@@ -1749,7 +1748,6 @@ void MakeTopologyNtupleMiniAOD::clearmuonarrays(std::string ID){
 
   muonSortedLooseCutId[ ID ].clear();
   muonSortedMediumCutId[ ID ].clear();
-  muonSortedMediumPromptCutId.clear();
   muonSortedTightCutId[ ID ].clear();
   muonSortedPfIsoVeryLoose[ ID ].clear();
   muonSortedPfIsoLoose[ ID ].clear();
@@ -2158,7 +2156,6 @@ MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent, const edm::EventSet
   //  std::cout << "done with trigger and beam spot" << std::endl;
 
   // Here I am taking out the Calo and JPT stuff. I don't think this should matter, as I'm only using PF things. If it turns out to be a problem I can add them back in later.
-
 
   //  fillMuons(iEvent,iSetup, muoLabel_, "Calo");
   fillMuons(iEvent,iSetup, patMuonsToken_, "PF");
@@ -2664,7 +2661,6 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   muonSortedCharge[ ID ] = tempVecI;
   muonSortedLooseCutId[ ID ] = tempVecI;
   muonSortedMediumCutId[ ID ] = tempVecI;
-  muonSortedMediumPromptCutId[ ID ] = tempVecI;
   muonSortedTightCutId[ ID ] = tempVecI;
   muonSortedPfIsoVeryLoose[ ID ] = tempVecI;
   muonSortedPfIsoLoose[ ID ] = tempVecI;
@@ -2750,7 +2746,6 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(std::string ID, std::string nam
   
   mytree_->Branch( (prefix + "LooseCutId").c_str(), &muonSortedLooseCutId[ ID ][0], (prefix + "LooseCutId[numMuon" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "MediumCutId").c_str(), &muonSortedMediumCutId[ ID ][0], (prefix + "MediumCutId[numMuon" + name + "]/I").c_str());
-  mytree_->Branch( (prefix + "MediumPromptCutId").c_str(), &muonSortedMediumPromptCutId[ ID ][0], (prefix + "MediumPromptCutId[numMuon" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "TightCutId").c_str(), &muonSortedTightCutId[ ID ][0], (prefix + "TightCutId[numMuon" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "PfIsoVeryLoose").c_str(), &muonSortedPfIsoVeryLoose[ ID ][0], (prefix + "PfIsoVeryLoose[numMuon" + name + "]/I").c_str());
   mytree_->Branch( (prefix + "PfIsoLoose").c_str(), &muonSortedPfIsoLoose[ ID ][0], (prefix + "PfIsoLoose[numMuon" + name + "]/I").c_str());
@@ -3404,7 +3399,6 @@ void MakeTopologyNtupleMiniAOD::fillTriggerData(const edm::Event& iEvent)
 
   // collect the fake trigger information:
   if(fakeTrigLabelList_.size()>0){
-    //    std::cout << "collecting fake trigger info..." << std::endl;
     edm::Handle<edm::TriggerResults> fakeResults;
     // gettnig the default TriggerResults, which is (by definition) the latest one produced.
     iEvent.getByLabel(edm::InputTag("TriggerResults"),fakeResults); 
