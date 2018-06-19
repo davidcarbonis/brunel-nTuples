@@ -529,7 +529,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(const edm::Event& iEvent, const ed
 	    }
 	}
 
-      	electronSortedE[ ID ][numEle[ ID ]-1]=ele.userFloat("ecalTrkEnergyPostCorr");
+      	electronSortedE[ ID ][numEle[ ID ]-1]=ele.energy();
       	electronSortedEt[ ID ][numEle[ ID ]-1]=ele.et();
       	electronSortedEta[ ID ][numEle[ ID ]-1]=ele.eta();
       	electronSortedPt[ ID ][numEle[ ID ]-1]=ele.pt();
@@ -1081,7 +1081,7 @@ void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent, const edm::E
 //    if(!eleID(ele))
 //      continue;
 
-    math::XYZTLorentzVector elecand(ele.px(),ele.py(),ele.pz(),ele.userFloat("ecalTrkEnergyPostCorr"));
+    math::XYZTLorentzVector elecand(ele.px(),ele.py(),ele.pz(),ele.energy());
 //    bool tightcand=tightElectronID(ele, true); // Old Electron Id
     candidatestoloopover.push_back(elecand);
     
