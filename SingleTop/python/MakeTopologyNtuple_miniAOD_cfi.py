@@ -28,8 +28,8 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
                                            rhoToken           = cms.InputTag("fixedGridRhoFastjetAll"),
 					   effAreasConfigFile =cms.FileInPath("RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_92X.txt"),
 					   pileupToken	      = cms.InputTag("slimmedAddPileupInfo"),
-                                           triggerToken  = cms.InputTag("TriggerResults","","HLT"),
-                                           metFilterToken  = cms.InputTag("TriggerResults", "", ""),
+                                           triggerToken  = cms.InputTag("TriggerResults","","PAT"),
+                                           metFilterToken  = cms.InputTag("TriggerResults", "", "PAT"),
                                            fakeTriggerList = cms.vstring(), # empty. You can add fake triggers that are run on the fly to this list. No check on the process name is made so when duplicates are available only the latest one is added.
 					   isLHEflag = cms.bool(True),
 					   externalLHEToken = cms.InputTag("externalLHEProducer"), # "externalLHEProducer", "source" for THQ 
@@ -76,13 +76,13 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 	'HLT_Ele35_WPTight_Gsf_v6',
 	'HLT_Ele35_WPTight_Gsf_v7',
 
-	'HLT_IsoMu27_v8' ## All Runs
-	'HLT_IsoMu27_v9' ## All Runs
-	'HLT_IsoMu27_v10' ## All Runs
-	'HLT_IsoMu27_v11' ## All Runs
-	'HLT_IsoMu27_v12' ## All Runs
-	'HLT_IsoMu27_v13' ## All Runs
-	'HLT_IsoMu27_v14' ## All Runs
+	'HLT_IsoMu27_v8', ## All Runs
+	'HLT_IsoMu27_v9', ## All Runs
+	'HLT_IsoMu27_v10', ## All Runs
+	'HLT_IsoMu27_v11', ## All Runs
+	'HLT_IsoMu27_v12', ## All Runs
+	'HLT_IsoMu27_v13', ## All Runs
+	'HLT_IsoMu27_v14', ## All Runs
 
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v10', ## All Runs
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v11', ## All Runs
