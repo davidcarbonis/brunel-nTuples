@@ -6,7 +6,7 @@
 
 // system include files
 #include <memory>
-#include <stdio.h>
+#include <cstdio>
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
@@ -14,46 +14,46 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 
-#include "FWCore/Framework/interface/EventSetup.h"
+#include "CommonTools/UtilAlgos/interface/TFileService.h"
+#include "DataFormats/Candidate/interface/Candidate.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "FWCore/Common/interface/TriggerNames.h"
 #include "FWCore/Framework/interface/ESHandle.h"
+#include "FWCore/Framework/interface/EventSetup.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
-#include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "FWCore/Utilities/interface/InputTag.h"
-#include "FWCore/Common/interface/TriggerNames.h"
-#include "DataFormats/Common/interface/TriggerResults.h"
-#include "SimDataFormats/GeneratorProducts/interface/HepMCProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
+#include "SimDataFormats/GeneratorProducts/interface/HepMCProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/PdfInfo.h"
-#include "DataFormats/Candidate/interface/Candidate.h"
-#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 
-#include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
 #include "MagneticField/Engine/interface/MagneticField.h"
+#include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
 #include "RecoEgamma/EgammaTools/interface/ConversionFinder.h"
 #include "RecoEgamma/EgammaTools/interface/ConversionInfo.h"
 
 
+#include "Math/GenVector/PxPyPzM4D.h"
+#include "TClonesArray.h"
 #include "TH1D.h"
 #include "TH2D.h"
-#include "TClonesArray.h"
 #include "TLorentzVector.h"
 #include "TTree.h"
-#include "Math/GenVector/PxPyPzM4D.h"
 #include <cmath>
-#include <map>
-#include <vector>
-#include <string>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
 
 #include "DataFormats/Common/interface/View.h"
-#include <string>
 #include "NTupliser/SingleTop/interface/GenInfoMiniAOD.h"
+#include <string>
 
 GenInfoMiniAOD::GenInfoMiniAOD(const edm::ParameterSet& iConfig):
-    histocontainer_(),
+    
 
     externalLHEToken_(consumes<LHEEventProduct>(iConfig.getParameter<edm::InputTag>("externalLHEToken"))),
     pdfIdStart_(iConfig.getParameter<int>("pdfIdStart")),
@@ -83,7 +83,7 @@ GenInfoMiniAOD::~GenInfoMiniAOD()
 // member functions
 //
 
-void GenInfoMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::EventSetup& iSetup){
+void GenInfoMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::EventSetup&  /*iSetup*/){
 
   if( isLHEflag_ ){
     edm::Handle<LHEEventProduct> EventHandle;
@@ -105,8 +105,10 @@ void GenInfoMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::EventSetup&
       for ( uint w = 0; w != EventHandle->weights().size(); ++w ) {
          if ( EventHandle->weights()[w].id == std::to_string(i) ){
 //           std::cout << "pdf weight: " << EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() <<std::endl;;
-           if ( EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() > pdfMax ) pdfMax = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
-           if ( EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() < pdfMin ) pdfMin = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+           if ( EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() > pdfMax ) { pdfMax = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+}
+           if ( EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP() < pdfMin ) { pdfMin = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+}
          }
       }
     }
@@ -117,8 +119,10 @@ void GenInfoMiniAOD::fillMCInfo(const edm::Event& iEvent, const edm::EventSetup&
     if ( hasAlphaWeightFlag_ ) {
       double alphaMax {1.0}, alphaMin {1.0};
       for ( uint w = 0; w != EventHandle->weights().size(); ++w ) {
-	if ( EventHandle->weights()[w].id == alphaIdStart_ ) alphaMax = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
-	if ( EventHandle->weights()[w].id == alphaIdEnd_ )   alphaMin = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+	if ( EventHandle->weights()[w].id == alphaIdStart_ ) { alphaMax = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+}
+	if ( EventHandle->weights()[w].id == alphaIdEnd_ ) {   alphaMin = EventHandle->weights()[w].wgt/EventHandle->originalXWGTUP();
+}
       }
       if ( alphaMax > alphaMin ) { 
         weight_alphaMax_ = alphaMax;

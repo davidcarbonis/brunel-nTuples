@@ -108,7 +108,7 @@ private:
   bool runMCInfo_;
   bool runPUReWeight_;
   bool doCuts_;
-  bool doSynch_;
+  bool doSynch_{};
 
   //jet cuts
   double jetPtCut_;
@@ -128,19 +128,19 @@ private:
   double muoEtaCut_;
   double muoIsoCut_;
   double metCut_;
-  double rhoIso;
+  double rhoIso{};
   
-  bool ran_jetloop_;
-  bool ran_eleloop_;
-  bool ran_muonloop_;
-  bool ran_mcloop_;
-  bool ran_postloop_;
-  bool ran_PV_;
-  bool ran_tracks_;
-  bool ran_photonTau_;
+  bool ran_jetloop_{};
+  bool ran_eleloop_{};
+  bool ran_muonloop_{};
+  bool ran_mcloop_{};
+  bool ran_postloop_{};
+  bool ran_PV_{};
+  bool ran_tracks_{};
+  bool ran_photonTau_{};
   bool check_triggers_;
   std::string muoIDquality_;
-  bool flavorHistoryTag_;
+  bool flavorHistoryTag_{};
   double  dREleGeneralTrackMatch_;
   double  magneticField_;
   double  correctFactor_;
@@ -154,21 +154,21 @@ private:
 
   // and an ntuple (filling in the methods)
   void fillBeamSpot(const edm::Event&, const edm::EventSetup&);
-  void fillJets(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::JetCollection>, std::string);
-  void fillBTagInfo(const pat::Jet &jet, const size_t jetindex, std::string ID);
+  void fillJets(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::JetCollection>, const std::string&);
+  void fillBTagInfo(const pat::Jet &jet, const size_t jetindex, const std::string& ID);
   void fillCTagInfo(const pat::Jet &jet, const size_t jetindex, std::string ID);
-  void fillBIDParameters(const edm::EventSetup&, std::string);
+  void fillBIDParameters(const edm::EventSetup&, const std::string&);
   void makeBIDInfoHistos(const edm::EventSetup&);
   void fillBIDInfoHistos( const edm::EventSetup&, TH2D *, PerformanceResult::ResultType &, BinningVariables::BinningVariablesType, BinningVariables::BinningVariablesType, const BtagPerformance &);
-  void fillOtherJetInfo(const pat::Jet &jet, const size_t jetindex, std::string ID, const edm::Event& iEvent);
-  void fillMCJetInfo(const reco::GenJet &jet, const size_t jetindex, std::string ID, bool fillMC);
-  void fillMCJetInfo(int empty, const size_t jetindex, std::string ID, bool fillMC);
-  void fillZVeto(const edm::Event &, const edm::EventSetup&, edm::InputTag, std::string);
-  void fillMuons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::MuonCollection>, std::string);
-  void fillPhotons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::PhotonCollection>, std::string);
-  void fillTaus(const edm::Event&, const edm::EventSetup&, edm::InputTag, std::string);
-  void fillElectrons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::ElectronCollection>, std::string, edm::EDGetTokenT<pat::ElectronCollection>);
-  void fillMissingET(const edm::Event&, const edm::EventSetup&,edm::EDGetTokenT<pat::METCollection>, std::string);
+  void fillOtherJetInfo(const pat::Jet &jet, const size_t jetindex, const std::string& ID, const edm::Event& iEvent);
+  void fillMCJetInfo(const reco::GenJet &jet, const size_t jetindex, const std::string& ID, bool runMC);
+  void fillMCJetInfo(int empty, const size_t jetindex, const std::string& ID, bool fillMC);
+  void fillZVeto(const edm::Event &, const edm::EventSetup&, const edm::InputTag&, const std::string&);
+  void fillMuons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::MuonCollection>, const std::string&);
+  void fillPhotons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::PhotonCollection>, const std::string&);
+  void fillTaus(const edm::Event&, const edm::EventSetup&, const edm::InputTag&, const std::string&);
+  void fillElectrons(const edm::Event&, const edm::EventSetup&, edm::EDGetTokenT<pat::ElectronCollection>, const std::string&, edm::EDGetTokenT<pat::ElectronCollection>);
+  void fillMissingET(const edm::Event&, const edm::EventSetup&,edm::EDGetTokenT<pat::METCollection>, const std::string&);
   void fillEventInfo(const edm::Event&, const edm::EventSetup&);
   void fillMCInfo(const edm::Event&, const edm::EventSetup&);
   void fillTriggerData(const edm::Event&);
@@ -182,43 +182,43 @@ private:
   bool photonConversionVeto(const pat::Electron &, float &, float &);
 
   void bookBranches(void);// does all the branching.
-  void bookJetBranches(std::string ID, std::string name);// called by bookBranches, makes jet branches.
-  void bookBIDInfoBranches(std::string, std::string);// called by bookJetBranches, makes branches for B-ID.
-  void bookCaloJetBranches(std::string ID, std::string name);// called by bookBranches, makes jet branches.
-  void bookPFJetBranches(std::string ID, std::string name);// called by bookBranches, makes jet branches.
-  void bookJPTJetBranches(std::string ID, std::string name);// called by bookBranches, makes jet branches.
-  void bookTauBranches(std::string ID, std::string name);
-  void bookPhotonBranches(std::string ID, std::string name);
-  void bookElectronBranches(std::string ID, std::string name);// called by bookBranches, makes electron branches.
-  void bookMuonBranches(std::string ID, std::string name);// called by bookBranches, makes muon branches.
-  void bookMETBranches(std::string ID, std::string name); //called by bookBranches , makes MET branches
-  void bookCaloMETBranches(std::string ID, std::string name); //called by bookBranches , makes MET branches
+  void bookJetBranches(const std::string& ID, const std::string& name);// called by bookBranches, makes jet branches.
+  void bookBIDInfoBranches(const std::string&, const std::string&);// called by bookJetBranches, makes branches for B-ID.
+  void bookCaloJetBranches(const std::string& ID, const std::string& name);// called by bookBranches, makes jet branches.
+  void bookPFJetBranches(const std::string& ID, const std::string& name);// called by bookBranches, makes jet branches.
+  void bookJPTJetBranches(const std::string& ID, const std::string& name);// called by bookBranches, makes jet branches.
+  void bookTauBranches(const std::string& ID, const std::string& name);
+  void bookPhotonBranches(const std::string& ID, const std::string& name);
+  void bookElectronBranches(const std::string& ID, const std::string& name);// called by bookBranches, makes electron branches.
+  void bookMuonBranches(const std::string& ID, const std::string& name);// called by bookBranches, makes muon branches.
+  void bookMETBranches(const std::string& ID, const std::string& name); //called by bookBranches , makes MET branches
+  void bookCaloMETBranches(const std::string& ID, const std::string& name); //called by bookBranches , makes MET branches
   void bookMCBranches(void); // called by bookBranches, makes MC branches.
   void bookGeneralTracksBranches(void); // called by bookBranches, makes generalTracks branches.
   
-  TTree *mytree_;
+  TTree *mytree_{};
 
-  double weight_muF0p5_;
-  double weight_muF2_;
-  double weight_muR0p5_;
-  double weight_muR2_;
-  double weight_muF0p5muR0p5_;
-  double weight_muF2muR2_;
+  double weight_muF0p5_{};
+  double weight_muF2_{};
+  double weight_muR0p5_{};
+  double weight_muR2_{};
+  double weight_muF0p5muR0p5_{};
+  double weight_muF2muR2_{};
 
-  double origWeightForNorm_;
+  double origWeightForNorm_{};
 
-  double weight_pdfMax_;
-  double weight_pdfMin_;
-  double weight_alphaMax_;
-  double weight_alphaMin_;
+  double weight_pdfMax_{};
+  double weight_pdfMin_{};
+  double weight_alphaMax_{};
+  double weight_alphaMin_{};
 
-  int processId_; int genMyProcId;
-  float processPtHat_;
+  int processId_{}; int genMyProcId{};
+  float processPtHat_{};
   
-  double weight_;
-  double topPtReweight;
+  double weight_{};
+  double topPtReweight{};
 
-  int numGeneralTracks;
+  int numGeneralTracks{};
     std::map< std::string, int > numJet;
     std::map< std::string, int > numEle;
     std::map< std::string, int > numMuo;
@@ -226,7 +226,7 @@ private:
   math::XYZPoint beamSpotPoint_; 
   math::XYZPoint vertexPoint_; 
   
-  unsigned int flavorHistory;
+  unsigned int flavorHistory{};
 
   template <class C>
   struct IndexSorter {
@@ -250,32 +250,32 @@ private:
   };
 
   void cleararrays(void);// used to set everything in the following arrays to zero or unphysical numbers
-  void clearjetarrays(std::string);// clearing jet info, used by cleararrays]
-  void clearTauArrays(std::string);
-  void clearPhotonArrays(std::string);
-  void clearelectronarrays(std::string);//clearing electron info, used by cleararrays
-  void clearmuonarrays(std::string);//clearing muon info, used by cleararrays
-  void clearMetArrays(std::string); //clearing met info
+  void clearjetarrays(const std::string&);// clearing jet info, used by cleararrays]
+  void clearTauArrays(const std::string&);
+  void clearPhotonArrays(const std::string&);
+  void clearelectronarrays(const std::string&);//clearing electron info, used by cleararrays
+  void clearmuonarrays(const std::string&);//clearing muon info, used by cleararrays
+  void clearMetArrays(const std::string&); //clearing met info
   void clearMCarrays(void); //clearing MC info
   void clearGeneralTracksarrays(void);//clearing generalTracks info, used by cleararrays
 
   std::vector<float> electronEts; //just used for sorting
 
-  float beamSpotX;
-  float beamSpotY;
-  float beamSpotZ;
+  float beamSpotX{};
+  float beamSpotY{};
+  float beamSpotZ{};
 
-  int numPv;
-  float pvX;
-  float pvY;
-  float pvZ;
-  float pvDX;
-  float pvDY;
-  float pvDZ;
-  float pvRho;
-  int pvIsFake;
-  float pvChi2;
-  float pvNdof;
+  int numPv{};
+  float pvX{};
+  float pvY{};
+  float pvZ{};
+  float pvDX{};
+  float pvDY{};
+  float pvDZ{};
+  float pvRho{};
+  int pvIsFake{};
+  float pvChi2{};
+  float pvNdof{};
 
   std::map< std::string, int >nzcandidates; 
   std::map< std::string, std::vector<float> > zcandidatesvector;// stores the Z candidates
@@ -393,50 +393,50 @@ private:
   std::map< std::string, std::vector<int> > genElectronSortedHardProcess;  
 
   // MC Truth
-  int nT;
-  int nThadronic, nb, nWhadronic;
-  int nTleptonic, nWleptonic;
-  int VQQBosonAbsId; 
+  int nT{};
+  int nThadronic{}, nb{}, nWhadronic{};
+  int nTleptonic{}, nWleptonic{};
+  int VQQBosonAbsId{}; 
 
   int NTOPMCINFOSMAX;
-  float T_hadronicMCTruthE[20];
-  float T_hadronicMCTruthEt[20];
-  float T_hadronicMCTruthPx[20];
-  float T_hadronicMCTruthPy[20];
-  float T_hadronicMCTruthPz[20];
-  int T_hadronicMotherIndex[20];
+  float T_hadronicMCTruthE[20]{};
+  float T_hadronicMCTruthEt[20]{};
+  float T_hadronicMCTruthPx[20]{};
+  float T_hadronicMCTruthPy[20]{};
+  float T_hadronicMCTruthPz[20]{};
+  int T_hadronicMotherIndex[20]{};
 
-  float T_leptonicMCTruthE[20];
-  float T_leptonicMCTruthEt[20];
-  float T_leptonicMCTruthPx[20];
-  float T_leptonicMCTruthPy[20];
-  float T_leptonicMCTruthPz[20];
-  int T_leptonicMotherIndex[20];
+  float T_leptonicMCTruthE[20]{};
+  float T_leptonicMCTruthEt[20]{};
+  float T_leptonicMCTruthPx[20]{};
+  float T_leptonicMCTruthPy[20]{};
+  float T_leptonicMCTruthPz[20]{};
+  int T_leptonicMotherIndex[20]{};
 
-  float bMCTruthE[20];
-  float bMCTruthEt[20];
-  float bMCTruthPx[20];
-  float bMCTruthPy[20];
-  float bMCTruthPz[20];
-  int bMCTruthMother[20];
+  float bMCTruthE[20]{};
+  float bMCTruthEt[20]{};
+  float bMCTruthPx[20]{};
+  float bMCTruthPy[20]{};
+  float bMCTruthPz[20]{};
+  int bMCTruthMother[20]{};
 
-  float W_hadronicMCTruthE[20];
-  float W_hadronicMCTruthEt[20];
-  float W_hadronicMCTruthPx[20];
-  float W_hadronicMCTruthPy[20];
-  float W_hadronicMCTruthPz[20];
-  int W_hadronicMCTruthPID[20];
-  int W_hadronicMCTruthMother[20];
+  float W_hadronicMCTruthE[20]{};
+  float W_hadronicMCTruthEt[20]{};
+  float W_hadronicMCTruthPx[20]{};
+  float W_hadronicMCTruthPy[20]{};
+  float W_hadronicMCTruthPz[20]{};
+  int W_hadronicMCTruthPID[20]{};
+  int W_hadronicMCTruthMother[20]{};
 
-  float W_leptonicMCTruthE[20];
-  float W_leptonicMCTruthEt[20];
-  float W_leptonicMCTruthPx[20];
-  float W_leptonicMCTruthPy[20];
-  float W_leptonicMCTruthPz[20];
-  int W_leptonicMCTruthPID[20];
-  int W_leptonicMCTruthMother[20];
+  float W_leptonicMCTruthE[20]{};
+  float W_leptonicMCTruthEt[20]{};
+  float W_leptonicMCTruthPx[20]{};
+  float W_leptonicMCTruthPy[20]{};
+  float W_leptonicMCTruthPz[20]{};
+  int W_leptonicMCTruthPID[20]{};
+  int W_leptonicMCTruthMother[20]{};
 
-  int isElePlusJets;
+  int isElePlusJets{};
   
   //  float remainingEnergy[20];
 
@@ -471,14 +471,14 @@ private:
   std::map< std::string, float > genMetPy; 
   std::map< std::string, float > genMetPz; 
 
-  int numVert;
+  int numVert{};
 
-  float mhtPx;
-  float mhtPy;
-  float mhtPt;
-  float mhtPhi;
-  float mhtSumEt;
-  float mhtSignif;
+  float mhtPx{};
+  float mhtPy{};
+  float mhtPt{};
+  float mhtPhi{};
+  float mhtSumEt{};
+  float mhtSignif{};
   
   size_t NMUONSMAX;// max array size, set in constructor.
   std::vector<float> muonEts;
@@ -570,12 +570,12 @@ private:
   size_t NJETSMAX; // max number of jets, set in constructor;
 
 //JEC to be initialised once per collection.
-    FactorizedJetCorrector *jecCalo;
-    FactorizedJetCorrector *jecPF;
-    FactorizedJetCorrector *jecJPT;
-    JetCorrectionUncertainty *jecCaloUncertainty;
-    JetCorrectionUncertainty *jecPFUncertainty;
-    JetCorrectionUncertainty *jecJPTUncertainty;
+    FactorizedJetCorrector *jecCalo{};
+    FactorizedJetCorrector *jecPF{};
+    FactorizedJetCorrector *jecJPT{};
+    JetCorrectionUncertainty *jecCaloUncertainty{};
+    JetCorrectionUncertainty *jecPFUncertainty{};
+    JetCorrectionUncertainty *jecJPTUncertainty{};
 
     std::vector<float> correctedJetEts;
     std::map< std::string, std::vector<double> > jetSortedE;
@@ -663,38 +663,38 @@ private:
 
   //generalTracks are used to subtract photon conversion background
   size_t NTRACKSMAX;
-  float generalTracksPt[1000];
-  float generalTracksEta[1000];
-  float generalTracksTheta[1000];
-  float generalTracksPhi[1000];
-  float generalTracksBeamSpotCorrectedD0[1000];
-  int   generalTracksCharge[1000];
+  float generalTracksPt[1000]{};
+  float generalTracksEta[1000]{};
+  float generalTracksTheta[1000]{};
+  float generalTracksPhi[1000]{};
+  float generalTracksBeamSpotCorrectedD0[1000]{};
+  int   generalTracksCharge[1000]{};
   
 
   // gen particle vars
   int NGENPARMAX;
-  int nGenPar;
-  int genParStatus[50]; // 150927 - ADM - Added as Pythia 8 uses different status codes - cannot just select events which are used in the matrix element calculation!
-  float genParEta[50];
-  float genParPhi[50];
-  float genParE[50];
-  float genParPt[50];
-  int genParId[50];
-  int genParNumMothers[50]; // 150318 - ADM - Added so one can look for b's from gluon splitting - need to know how many parents
-  int genParMotherId[50];  // 150318 - ADM - Added son one can look for b's from gluon splitting - need to know what parent was
-  int genParNumDaughters [50]; // 150318 - ADM - Added so one can look for b's from gluon splitting - need to know how many decay product(s)
-  int genParDaughterId[50][50]; // 150318 - ADM - Added so one can look for b's from gluon splitting - need to know what decay product(s) are
-  int genParCharge[50];
+  int nGenPar{};
+  int genParStatus[50]{}; // 150927 - ADM - Added as Pythia 8 uses different status codes - cannot just select events which are used in the matrix element calculation!
+  float genParEta[50]{};
+  float genParPhi[50]{};
+  float genParE[50]{};
+  float genParPt[50]{};
+  int genParId[50]{};
+  int genParNumMothers[50]{}; // 150318 - ADM - Added so one can look for b's from gluon splitting - need to know how many parents
+  int genParMotherId[50]{};  // 150318 - ADM - Added son one can look for b's from gluon splitting - need to know what parent was
+  int genParNumDaughters [50]{}; // 150318 - ADM - Added so one can look for b's from gluon splitting - need to know how many decay product(s)
+  int genParDaughterId[50][50]{}; // 150318 - ADM - Added so one can look for b's from gluon splitting - need to know what decay product(s) are
+  int genParCharge[50]{};
 //PDF info
-    float genPDFScale;
-    float genPDFx1;
-    float genPDFx2;
-    int genPDFf1;
-    int genPDFf2;
+    float genPDFScale{};
+    float genPDFx1{};
+    float genPDFx2{};
+    int genPDFf1{};
+    int genPDFf2{};
 //CTEQ_6.6 general purpose
-    float genCTEQ66_Weight[44];
+    float genCTEQ66_Weight[44]{};
 //MRST98 NLO
-    float genMRST2006nnlo_Weight[31];
+    float genMRST2006nnlo_Weight[31]{};
 
   // basic 4-vectors for photons,taus as we're not interested in them.
   int NTAUSMAX; // set to array size in constructor
@@ -714,23 +714,23 @@ private:
   std::vector<int> triggerRes;
   std::vector<int> metFilterRes;
   std::vector<int> HLT_fakeTriggerValues;
-  int nTriggerBits;
-  int TriggerBits[700];
+  int nTriggerBits{};
+  int TriggerBits[700]{};
 
-  float topo_sphericity;
-  float topo_aplanarity;
-  float topo_sphericitye;
-  float topo_aplanaritye;
-  float topo_oblateness;
-  float topo_sqrts;
-  float topo_sqrtse;
-  float topo_ht3;
-  float topo_hte;
-  float topo_ht;
+  float topo_sphericity{};
+  float topo_aplanarity{};
+  float topo_sphericitye{};
+  float topo_aplanaritye{};
+  float topo_oblateness{};
+  float topo_sqrts{};
+  float topo_sqrtse{};
+  float topo_ht3{};
+  float topo_hte{};
+  float topo_ht{};
   
-  int evtRun;
-  int evtnum;
-  float evtlumiblock;
+  int evtRun{};
+  int evtnum{};
+  float evtlumiblock{};
   int eventCount;
   
   int bTags;

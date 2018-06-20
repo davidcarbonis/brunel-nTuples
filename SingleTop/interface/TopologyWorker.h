@@ -124,8 +124,8 @@ private:
   TMatrix m_mom;
   TMatrix m_mom2;
   
-  double m_dThrust[4];
-  double m_dOblateness;
+  double m_dThrust[4]{};
+  double m_dOblateness{};
   int m_np;
   int m_np2;
   bool m_sanda_called;
@@ -138,15 +138,15 @@ private:
   double m_h20;
   double m_h30;
   double m_h40;
-  double m_h50;
-  double m_h60;
+  double m_h50{};
+  double m_h60{};
   double m_ht;
   double m_ht3;
   double m_et0;
   double m_sqrts;
   double m_njetsweighed;
   double m_et56;
-  double m_centrality;
+  double m_centrality{};
   
   void sanda();
   void fowo();

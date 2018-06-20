@@ -1,6 +1,6 @@
-#include <iostream>
 #include "NTupliser/SingleTop/interface/TopologyWorker.h"
 #include "TMatrix.h"
+#include <iostream>
 
 using namespace std;
 using namespace cu_ejetmet;
@@ -200,7 +200,8 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector> & e1, std::vector<T
 	if ( mom(i,4) > fast(ifas,4) ) {
 	  for ( Int_t j = 1; j < 6; j++ ) {
 	    fast(ifas+1,j) = fast(ifas,j);
-	    if ( ifas == 0 ) fast(ifas,j) = mom(i,j);	    
+	    if ( ifas == 0 ) { fast(ifas,j) = mom(i,j);	    
+}
 	  }
 	}
 	else {
@@ -294,7 +295,7 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector> & e1, std::vector<T
       }
       if ( thp > m_dThrust[pass] + m_dConv ) {
 	nagree = 0;
-	sgn = iPow( -1, (Int_t)TMath::Nint(m_random.Rndm()) );
+	sgn = iPow( -1, TMath::Nint(m_random.Rndm()) );
 	for ( Int_t j = 1; j < 4; j++ ) {
 	  m_dAxes(pass,j) = sgn*tpr[j]/(tmax*thp);
 	}
@@ -304,7 +305,7 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector> & e1, std::vector<T
     }
   }
   // Find minor axis and value by orthogonality.
-  sgn = iPow( -1, (Int_t)TMath::Nint(m_random.Rndm()));
+  sgn = iPow( -1, TMath::Nint(m_random.Rndm()));
   m_dAxes(3,1) = -sgn*m_dAxes(2,2);
   m_dAxes(3,2) = sgn*m_dAxes(2,1);
   m_dAxes(3,3) = 0.;
@@ -344,9 +345,9 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector> & e1, std::vector<T
 void TopologyWorker::setThMomPower(double tp)
 {
   // Error if sp not positive.
-  if ( tp > 0. ) m_dDeltaThPower = tp - 1.0;
-  return;
+  if ( tp > 0. ) { m_dDeltaThPower = tp - 1.0;
 }
+  }
 //______________________________________________________________
 
 double TopologyWorker::getThMomPower()
@@ -358,9 +359,9 @@ double TopologyWorker::getThMomPower()
 void TopologyWorker::setFast(Int_t nf)
 {
   // Error if sp not positive.
-  if ( nf > 3 ) m_iFast = nf;
-  return;
+  if ( nf > 3 ) { m_iFast = nf;
 }
+  }
 //______________________________________________________________
 
 Int_t TopologyWorker::getFast()
@@ -428,9 +429,9 @@ double TopologyWorker::sign(double a, double b) {
   if ( b < 0 ) {
     return -TMath::Abs(a);
   }
-  else {
+  
     return TMath::Abs(a);
-  }
+  
 }
 //______________________________________________________________
 
@@ -500,8 +501,7 @@ void TopologyWorker::ludbrb(TMatrix* mom,
 	    }
 	}
     }
-  return;
-}
+  }
 
 
 
@@ -655,7 +655,6 @@ void TopologyWorker::sanda() {
 
       m_sph=SPH;
       m_apl=APL;
-      return;
 } // end sanda
 
 
@@ -859,8 +858,10 @@ void TopologyWorker::planes_sphe(double& pnorm, double& p2, double& p3) {
 	  double x2=(-sqrt(disc)-b)/2/a;
 	  phi=atan(x1);
 	  phip=atan(x2);
-	  if (phi<0) phi=2.*pi+phi;
-	  if (phip<0) phip=2.*pi+phip;
+	  if (phi<0) { phi=2.*pi+phi;
+}
+	  if (phip<0) { phip=2.*pi+phip;
+}
 	}
 	double p21=sum22*cos(phi)*cos(phi)+sum33*sin(phi)*sin(phi)+2*sum23*cos(phi)*sin(phi);
 	double p31=sum22*sin(phi)*sin(phi)+sum33*cos(phi)*cos(phi)-2*sum23*cos(phi)*sin(phi);
@@ -893,8 +894,7 @@ void TopologyWorker::planes_sphe(double& pnorm, double& p2, double& p3) {
 	//cout << " p2 p3 " << p2 << " " << p3 << endl;
 	//double els=sqrt(eltot[2]*eltot[2]+eltot[3]*eltot[3]);
 	//	cout << " ets els " << (ettot[1]) << " " << els << endl;
-    return;
-} // end planes_sphe
+    } // end planes_sphe
 
 
 void TopologyWorker::planes_sphe_wei(double& pnorm, double& p2, double& p3) {
@@ -1094,8 +1094,10 @@ void TopologyWorker::planes_sphe_wei(double& pnorm, double& p2, double& p3) {
 	  double x2=(-sqrt(disc)-b)/2/a;
 	  phi=atan(x1);
 	  phip=atan(x2);
-	  if (phi<0) phi=2.*pi+phi;
-	  if (phip<0) phip=2.*pi+phip;
+	  if (phi<0) { phi=2.*pi+phi;
+}
+	  if (phip<0) { phip=2.*pi+phip;
+}
 	}
 	double p21=sum22*cos(phi)*cos(phi)+sum33*sin(phi)*sin(phi)+2*sum23*cos(phi)*sin(phi);
 	double p31=sum22*sin(phi)*sin(phi)+sum33*cos(phi)*cos(phi)-2*sum23*cos(phi)*sin(phi);
@@ -1128,8 +1130,7 @@ void TopologyWorker::planes_sphe_wei(double& pnorm, double& p2, double& p3) {
 	//cout << " p2 p3 " << p2 << " " << p3 << endl;
 	//double els=sqrt(eltot[2]*eltot[2]+eltot[3]*eltot[3]);
 	//	cout << " ets els " << (ettot[1]) << " " << els << endl;
-    return;
-} // end planes_sphe
+    } // end planes_sphe
 
 
 
@@ -1192,8 +1193,10 @@ void TopologyWorker::planes_thrust(double& pnorm, double& p2, double& p3) {
 	  double x2=(-sqrt(disc)-b)/2/a;
 	  phi=atan(x1);
 	  phip=atan(x2);
-	  if (phi<0) phi=2.*pi+phi;
-	  if (phip<0) phip=2.*pi+phip;
+	  if (phi<0) { phi=2.*pi+phi;
+}
+	  if (phip<0) { phip=2.*pi+phip;
+}
 	}
 	double p21=sum22*cos(phi)*cos(phi)+sum33*sin(phi)*sin(phi)+2*sum23*cos(phi)*sin(phi);
 	double p31=sum22*sin(phi)*sin(phi)+sum33*cos(phi)*cos(phi)-2*sum23*cos(phi)*sin(phi);
@@ -1226,8 +1229,7 @@ void TopologyWorker::planes_thrust(double& pnorm, double& p2, double& p3) {
 	//cout << " p2 p3 " << p2 << " " << p3 << endl;
 	//double els=sqrt(eltot[2]*eltot[2]+eltot[3]*eltot[3]);
 	//	cout << " ets els " << (ettot[1]) << " " << els << endl;
-    return;
-} // end planes_thru
+    } // end planes_thru
 
 
 void TopologyWorker::fowo() {
@@ -1333,38 +1335,46 @@ void TopologyWorker::fowo() {
 }
 
 double TopologyWorker::get_h10() {
-  if (!m_fowo_called) fowo();
+  if (!m_fowo_called) { fowo();
+}
   return m_h10;
 }
 double TopologyWorker::get_h20() {
-  if (!m_fowo_called) fowo();
+  if (!m_fowo_called) { fowo();
+}
   return m_h20;
 }
 double TopologyWorker::get_h30() {
-  if (!m_fowo_called) fowo();
+  if (!m_fowo_called) { fowo();
+}
   return m_h30;
 }
 double TopologyWorker::get_h40() {
-  if (!m_fowo_called) fowo();
+  if (!m_fowo_called) { fowo();
+}
   return m_h40;
 }
 
 double TopologyWorker::get_h50() {
-  if (!m_fowo_called) fowo();
+  if (!m_fowo_called) { fowo();
+}
   return m_h50;
 }
 double TopologyWorker::get_h60() {
-  if (!m_fowo_called) fowo();
+  if (!m_fowo_called) { fowo();
+}
   return m_h60;
 }
 
 
 double TopologyWorker::get_sphericity() {
-  if (!m_sanda_called) sanda();
+  if (!m_sanda_called) { sanda();
+}
   return m_sph;
 }
 double TopologyWorker::get_aplanarity() {
-  if (!m_sanda_called) sanda();
+  if (!m_sanda_called) { sanda();
+}
   return m_apl;
 }
 
@@ -1387,9 +1397,9 @@ void TopologyWorker::getetaphi(double px, double py, double pz, double& eta, dou
     eta = -log( tan( thg/2.0 ) );    
   }
   phi = atan2(py,px);
-  if(phi<=0) phi += 2.0*pi;
-  return;
+  if(phi<=0) { phi += 2.0*pi;
 }
+  }
 
 
 
@@ -1403,15 +1413,15 @@ void TopologyWorker::sumangles(float& sdeta, float& sdr) {
       getetaphi(m_mom(k,1) , m_mom(k,2), m_mom(k,3), eta1,phi1);
       getetaphi(m_mom(kp,1) , m_mom(kp,2), m_mom(kp,3), eta2,phi2);
       dphi=fabs(phi1-phi2);
-      if (dphi>3.1415) dphi=2*3.1415-dphi;
+      if (dphi>3.1415) { dphi=2*3.1415-dphi;
+}
       deta=fabs(eta1-eta2);
       dr=sqrt(dphi*dphi+deta*deta);
       sdeta+=deta;
       sdr+=dr;
     }
   }
-  return;
-}
+  }
 
 //______________________________________________________________
 
@@ -1434,10 +1444,12 @@ void TopologyWorker::CalcWmul(){
   for(Int_t ijet=0; ijet<njets-1; ijet++){
     double emin=55;
     double emax=55;
-    if(CalcPt(ijet)<55)
+    if(CalcPt(ijet)<55) {
       emax=CalcPt(ijet);
-    if(CalcPt(ijet+1)<55)
+}
+    if(CalcPt(ijet+1)<55) {
       emin=CalcPt(ijet+1);
+}
     result+=0.5 * (emax*emax-emin*emin)*(ijet+1);
   }
   double elo=15;
@@ -1458,8 +1470,9 @@ void TopologyWorker::CalcSqrts(){
 
   for(int i=0; i< m_np; i++){
     double energy=m_mom(i,4);
-    if(m_mom(i,4)<0.00001)
+    if(m_mom(i,4)<0.00001) {
       energy=sqrt(pow(m_mom(i,1),2)+pow(m_mom(i,2),2)+pow(m_mom(i,3),2));
+}
     // assume massless particle if only TVector3s are provided...
     worker.SetXYZT(m_mom(i,1),m_mom(i,2),m_mom(i,3),energy);
     event+=worker;
@@ -1479,24 +1492,28 @@ void TopologyWorker::CalcHTstuff(){
     //cout << i << "/" << m_np << ":" << CalcPt(i) <<  endl;
     m_ht+=CalcPt(i);
     h+=m_mom(i,4);
-    if(i>1)
+    if(i>1) {
       m_ht3+=CalcPt(i);
-    if(i==5)
+}
+    if(i==5) {
       m_et56=sqrt(CalcPt(i)*CalcPt(i-1));
+}
   }
   
   for(int j=0; j< m_np2; j++){
     //cout << j << "/" << m_np2 << ":" << CalcPt2(j) <<  endl;
-    if(ptlead<CalcPt2(j))
+    if(ptlead<CalcPt2(j)) {
       ptlead=CalcPt2(j);
+}
 
   }
   if(m_ht>0.0001){
     m_et0=ptlead/m_ht;
     //cout << "calculating ETO" << m_et0 << "=" << ptlead << endl;
   }
-  if(h>0.00001)
+  if(h>0.00001) {
     m_centrality=m_ht/h;
+}
 }
 
 /////////////////////////////////////////////////

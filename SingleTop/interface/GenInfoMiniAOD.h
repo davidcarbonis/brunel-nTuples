@@ -40,21 +40,21 @@ private:
 
   void bookBranches(void);// does all the branching.
   
-  TTree *mytree_;
+  TTree *mytree_{};
 
-  double weight_muF0p5_;
-  double weight_muF2_;
-  double weight_muR0p5_;
-  double weight_muR2_;
-  double weight_muF0p5muR0p5_;
-  double weight_muF2muR2_;
+  double weight_muF0p5_{};
+  double weight_muF2_{};
+  double weight_muR0p5_{};
+  double weight_muR2_{};
+  double weight_muF0p5muR0p5_{};
+  double weight_muF2muR2_{};
 
-  double origWeightForNorm_;
+  double origWeightForNorm_{};
 
-  double weight_pdfMax_;
-  double weight_pdfMin_;
-  double weight_alphaMax_;
-  double weight_alphaMin_;
+  double weight_pdfMax_{};
+  double weight_pdfMin_{};
+  double weight_alphaMax_{};
+  double weight_alphaMin_{};
 
 };
 
