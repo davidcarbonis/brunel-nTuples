@@ -7,37 +7,13 @@
 using namespace std;
 using namespace cu_ejetmet;
 
-Int_t TopologyWorker::m_maxpart = 1000;
+Int_t TopologyWorker::m_maxpart{1000};
 
-TopologyWorker::TopologyWorker(bool boost)
-    : m_dSphMomPower(2.0)
-    , m_dDeltaThPower(0)
-    , m_iFast(4)
-    , m_dConv(0.0001)
-    , m_iGood(2)
+TopologyWorker::TopologyWorker(bool boost) : m_boost{boost}
 {
     m_dAxes.ResizeTo(4, 4);
     m_mom.ResizeTo(m_maxpart, 6);
     m_mom2.ResizeTo(m_maxpart, 6);
-    m_np = -1;
-    m_np2 = -1;
-    m_sanda_called = false;
-    m_fowo_called = false;
-    m_sumangles_called = false;
-    m_verbose = false;
-    m_boost = boost;
-    m_sph = -1;
-    m_apl = -1;
-    m_h10 = -1;
-    m_h20 = -1;
-    m_h30 = -1;
-    m_h40 = -1;
-    m_sqrts = 0;
-    m_ht = 0;
-    m_ht3 = 0;
-    m_et56 = 0;
-    m_njetsweighed = 0;
-    m_et0 = 0;
 }
 //______________________________________________________________
 
@@ -57,35 +33,35 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector>& e1,
     TMatrix mom2(m_maxpart, 6);
 
     // std::cout << "now in setPartList 1" << std::endl;
-    double tmax = 0;
-    double phi = 0.;
-    double the = 0.;
-    double sgn;
+    double tmax{0};
+    double phi{0.};
+    double the{0.};
+    double sgn{};
     // std::cout << "now in setPartList 2 " << m_iFast << std::endl;
-    TMatrix fast(m_iFast + 1, 6);
+    TMatrix fast{m_iFast + 1, 6};
     // std::cout << "now in setPartList 3" << std::endl;
-    TMatrix work(11, 6);
-    double tdi[4] = {0., 0., 0., 0.};
-    double tds;
-    double tpr[4] = {0., 0., 0., 0.};
-    double thp;
-    double thps;
-    double pxtot = 0;
-    double pytot = 0;
-    double pztot = 0;
-    double etot = 0;
+    TMatrix work{11, 6};
+    double tdi[4]{0., 0., 0., 0.};
+    double tds{};
+    double tpr[4]{0., 0., 0., 0.};
+    double thp{};
+    double thps{};
+    double pxtot{0};
+    double pytot{0};
+    double pztot{0};
+    double etot{0};
 
-    TMatrix temp(3, 5);
-    Int_t np = 0;
+    TMatrix temp{3, 5};
+    Int_t np{0};
     // std::cout << "filling" << std::endl;
 
-    Int_t numElements = e1.size();
-    Int_t numElements2 = e2.size();
+    ULong64_t numElements{e1.size()};
+    ULong64_t numElements2{e2.size()};
 
     // trying to sort...
 
     m_np = 0;
-    for (Int_t elem = 0; elem < numElements; elem++)
+    for (ULong64_t elem{0}; elem < numElements; elem++)
     {
         mom(np, 1) = e1[elem].X();
         mom(np, 2) = e1[elem].Y();
@@ -108,9 +84,9 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector>& e1,
         np++;
         m_np = np;
     }
-    Int_t np2 = 0;
+    Int_t np2{0};
     // second jet array.... only use some values here.
-    for (Int_t elem = 0; elem < numElements2; elem++)
+    for (ULong64_t elem{0}; elem < numElements2; elem++)
     {
         // cout << elem << endl;
         if (np2 >= m_maxpart)
@@ -135,9 +111,9 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector>& e1,
     {
         printf("TopologyWorker::setEvent Only boosting first vector so watch "
                "out when you do this!!!");
-        TVector3 booze(-pxtot / etot, -pytot / etot, -pztot / etot);
-        TLorentzVector l1;
-        for (int k = 0; k < m_np; k++)
+        TVector3 booze{-pxtot / etot, -pytot / etot, -pztot / etot};
+        TLorentzVector l1{};
+        for (int k{0}; k < m_np; k++)
         {
             l1.SetPx(mom(k, 1));
             l1.SetPy(mom(k, 2));
@@ -153,9 +129,9 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector>& e1,
 
     m_sanda_called = false;
     m_fowo_called = false;
-    for (int ip = 0; ip < m_maxpart; ip++)
+    for (int ip{0}; ip < m_maxpart; ip++)
     {
-        for (int id = 0; id < 6; id++)
+        for (int id{0}; id < 6; id++)
         {
             m_mom(ip, id) = mom(ip, id);
         }
@@ -169,22 +145,22 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector>& e1,
     }
     // for pass = 1: find thrust axis.
     // for pass = 2: find major axis.
-    for (Int_t pass = 1; pass < 3; pass++)
+    for (Int_t pass{1}; pass < 3; pass++)
     {
         if (pass == 2)
         {
             phi = ulAngle(m_dAxes(1, 1), m_dAxes(1, 2));
             ludbrb(&mom, 0, -phi, 0., 0., 0.);
-            for (Int_t i = 0; i < 3; i++)
+            for (Int_t i{0}; i < 3; i++)
             {
-                for (Int_t j = 1; j < 4; j++)
+                for (Int_t j{1}; j < 4; j++)
                 {
                     temp(i, j) = m_dAxes(i + 1, j);
                 }
                 temp(i, 4) = 0;
             }
             ludbrb(&temp, 0., -phi, 0., 0., 0.);
-            for (Int_t ib = 0; ib < 3; ib++)
+            for (Int_t ib{0}; ib < 3; ib++)
             {
                 for (Int_t j = 1; j < 4; j++)
                 {
@@ -193,42 +169,42 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector>& e1,
             }
             the = ulAngle(m_dAxes(1, 3), m_dAxes(1, 1));
             ludbrb(&mom, -the, 0., 0., 0., 0.);
-            for (Int_t ic = 0; ic < 3; ic++)
+            for (Int_t ic{0}; ic < 3; ic++)
             {
-                for (Int_t j = 1; j < 4; j++)
+                for (Int_t j{1}; j < 4; j++)
                 {
                     temp(ic, j) = m_dAxes(ic + 1, j);
                 }
                 temp(ic, 4) = 0;
             }
             ludbrb(&temp, -the, 0., 0., 0., 0.);
-            for (Int_t id = 0; id < 3; id++)
+            for (Int_t id{0}; id < 3; id++)
             {
-                for (Int_t j = 1; j < 4; j++)
+                for (Int_t j{1}; j < 4; j++)
                 {
                     m_dAxes(id + 1, j) = temp(id, j);
                 }
             }
         }
-        for (Int_t ifas = 0; ifas < m_iFast + 1; ifas++)
+        for (Int_t ifas{0}; ifas < m_iFast + 1; ifas++)
         {
             fast(ifas, 4) = 0.;
         }
         // Find the m_iFast highest momentum particles and
         // put the highest in fast[0], next in fast[1],....fast[m_iFast-1].
         // fast[m_iFast] is just a workspace.
-        for (Int_t i = 0; i < np; i++)
+        for (Int_t i{0}; i < np; i++)
         {
             if (pass == 2)
             {
                 mom(i, 4) =
                     TMath::Sqrt(mom(i, 1) * mom(i, 1) + mom(i, 2) * mom(i, 2));
             }
-            for (Int_t ifas = m_iFast - 1; ifas > -1; ifas--)
+            for (Int_t ifas{m_iFast - 1}; ifas > -1; ifas--)
             {
                 if (mom(i, 4) > fast(ifas, 4))
                 {
-                    for (Int_t j = 1; j < 6; j++)
+                    for (Int_t j{1}; j < 6; j++)
                     {
                         fast(ifas + 1, j) = fast(ifas, j);
                         if (ifas == 0)
@@ -248,21 +224,21 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector>& e1,
             }
         }
         // Find axis with highest thrust (case 1)/ highest major (case 2).
-        for (Int_t ie = 0; ie < work.GetNrows(); ie++)
+        for (Int_t ie{0}; ie < work.GetNrows(); ie++)
         {
             work(ie, 4) = 0.;
         }
-        Int_t p = TMath::Min(m_iFast, np) - 1;
+        Int_t p{TMath::Min(m_iFast, np) - 1};
         // Don't trust Math.pow to give right answer always.
         // Want nc = 2**p.
-        Int_t nc = iPow(2, p);
-        for (Int_t n = 0; n < nc; n++)
+        Int_t nc{iPow(2, p)};
+        for (Int_t n{0}; n < nc; n++)
         {
-            for (Int_t j = 1; j < 4; j++)
+            for (Int_t j{1}; j < 4; j++)
             {
                 tdi[j] = 0.;
             }
-            for (Int_t i = 0; i < TMath::Min(m_iFast, n); i++)
+            for (Int_t i{0}; i < TMath::Min(m_iFast, n); i++)
             {
                 sgn = fast(i, 5);
                 if (iPow(2, (i + 1)) * ((n + iPow(2, i)) / iPow(2, (i + 1)))
@@ -276,11 +252,11 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector>& e1,
                 }
             }
             tds = tdi[1] * tdi[1] + tdi[2] * tdi[2] + tdi[3] * tdi[3];
-            for (Int_t iw = TMath::Min(n, 9); iw > -1; iw--)
+            for (Int_t iw{TMath::Min(n, 9)}; iw > -1; iw--)
             {
                 if (tds > work(iw, 4))
                 {
-                    for (Int_t j = 1; j < 5; j++)
+                    for (Int_t j{1}; j < 5; j++)
                     {
                         work(iw + 1, j) = work(iw, j);
                         if (iw == 0)
@@ -298,7 +274,7 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector>& e1,
                 }
                 else
                 {
-                    for (Int_t j = 1; j < 4; j++)
+                    for (Int_t j{1}; j < 4; j++)
                     {
                         work(iw + 1, j) = tdi[j];
                     }
@@ -309,15 +285,15 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector>& e1,
         // Iterate direction of axis until stable maximum.
         m_dThrust[pass] = 0;
         thp = -99999.;
-        Int_t nagree = 0;
-        for (Int_t iw = 0; iw < TMath::Min(nc, 10) && nagree < m_iGood; iw++)
+        Int_t nagree{0};
+        for (Int_t iw{0}; iw < TMath::Min(nc, 10) && nagree < m_iGood; iw++)
         {
             thp = 0.;
             thps = -99999.;
             while (thp > thps + m_dConv)
             {
                 thps = thp;
-                for (Int_t j = 1; j < 4; j++)
+                for (Int_t j{1}; j < 4; j++)
                 {
                     if (thp <= 1E-10)
                     {
@@ -329,12 +305,12 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector>& e1,
                         tpr[j] = 0;
                     }
                 }
-                for (Int_t i = 0; i < np; i++)
+                for (Int_t i{0}; i < np; i++)
                 {
                     sgn = sign(mom(i, 5),
                                tdi[1] * mom(i, 1) + tdi[2] * mom(i, 2)
                                    + tdi[3] * mom(i, 3));
-                    for (Int_t j = 1; j < 5 - pass; j++)
+                    for (Int_t j{1}; j < 5 - pass; j++)
                     {
                         tpr[j] = tpr[j] + sgn * mom(i, j);
                     }
@@ -353,7 +329,7 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector>& e1,
             {
                 nagree = 0;
                 sgn = iPow(-1, TMath::Nint(m_random.Rndm()));
-                for (Int_t j = 1; j < 4; j++)
+                for (Int_t j{1}; j < 4; j++)
                 {
                     m_dAxes(pass, j) = sgn * tpr[j] / (tmax * thp);
                 }
@@ -368,7 +344,7 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector>& e1,
     m_dAxes(3, 2) = sgn * m_dAxes(2, 1);
     m_dAxes(3, 3) = 0.;
     thp = 0.;
-    for (Int_t i = 0; i < np; i++)
+    for (Int_t i{0}; i < np; i++)
     {
         thp +=
             mom(i, 5)
@@ -376,18 +352,18 @@ void TopologyWorker::setPartList(std::vector<TLorentzVector>& e1,
     }
     m_dThrust[3] = thp / tmax;
     // Rotate back to original coordinate system.
-    for (Int_t i6 = 0; i6 < 3; i6++)
+    for (Int_t i6{0}; i6 < 3; i6++)
     {
-        for (Int_t j = 1; j < 4; j++)
+        for (Int_t j{1}; j < 4; j++)
         {
             temp(i6, j) = m_dAxes(i6 + 1, j);
         }
         temp(i6, 4) = 0;
     }
     ludbrb(&temp, the, phi, 0., 0., 0.);
-    for (Int_t i7 = 0; i7 < 3; i7++)
+    for (Int_t i7{0}; i7 < 3; i7++)
     {
-        for (Int_t j = 1; j < 4; j++)
+        for (Int_t j{1}; j < 4; j++)
         {
             m_dAxes(i7 + 1, j) = temp(i7, j);
         }
@@ -441,28 +417,28 @@ Int_t TopologyWorker::getFast()
 
 TVector3 TopologyWorker::thrustAxis()
 {
-    TVector3 m_ThrustAxis(m_dAxes(1, 1), m_dAxes(1, 2), m_dAxes(1, 3));
+    TVector3 m_ThrustAxis{m_dAxes(1, 1), m_dAxes(1, 2), m_dAxes(1, 3)};
     return m_ThrustAxis;
 }
 //______________________________________________________________
 
 TVector3 TopologyWorker::majorAxis()
 {
-    TVector3 m_MajorAxis(m_dAxes(2, 1), m_dAxes(2, 2), m_dAxes(2, 3));
+    TVector3 m_MajorAxis{m_dAxes(2, 1), m_dAxes(2, 2), m_dAxes(2, 3)};
     return m_MajorAxis;
 }
 //______________________________________________________________
 
 TVector3 TopologyWorker::minorAxis()
 {
-    TVector3 m_MinorAxis(m_dAxes(3, 1), m_dAxes(3, 2), m_dAxes(3, 3));
+    TVector3 m_MinorAxis{m_dAxes(3, 1), m_dAxes(3, 2), m_dAxes(3, 3)};
     return m_MinorAxis;
 }
 //______________________________________________________________
 
 TVector3 TopologyWorker::thrust()
 {
-    TVector3 m_Thrust(m_dThrust[1], m_dThrust[2], m_dThrust[3]);
+    TVector3 m_Thrust{m_dThrust[1], m_dThrust[2], m_dThrust[3]};
     return m_Thrust;
 }
 //______________________________________________________________
@@ -476,8 +452,8 @@ double TopologyWorker::oblateness()
 // utilities(from Jetset):
 double TopologyWorker::ulAngle(double x, double y)
 {
-    double ulangl = 0;
-    double r = TMath::Sqrt(x * x + y * y);
+    double ulangl{0};
+    double r{TMath::Sqrt(x * x + y * y)};
     if (r < 1.0E-20)
     {
         return ulangl;
@@ -518,9 +494,9 @@ void TopologyWorker::ludbrb(
 {
     // Ignore "zeroth" elements in rot,pr,dp.
     // Trying to use physics-like notation.
-    TMatrix rot(4, 4);
-    double pr[4];
-    double dp[5];
+    TMatrix rot{4, 4};
+    double pr[4]{};
+    double dp[5]{};
     Int_t np = mom->GetNrows();
     if (the * the + phi * phi > 1.0E-20)
     {
@@ -533,16 +509,16 @@ void TopologyWorker::ludbrb(
         rot(3, 1) = -TMath::Sin(the);
         rot(3, 2) = 0.0;
         rot(3, 3) = TMath::Cos(the);
-        for (Int_t i = 0; i < np; i++)
+        for (Int_t i{0}; i < np; i++)
         {
-            for (Int_t j = 1; j < 4; j++)
+            for (Int_t j{1}; j < 4; j++)
             {
                 pr[j] = (*mom)(i, j);
                 (*mom)(i, j) = 0;
             }
-            for (Int_t jb = 1; jb < 4; jb++)
+            for (Int_t jb{1}; jb < 4; jb++)
             {
-                for (Int_t k = 1; k < 4; k++)
+                for (Int_t k{1}; k < 4; k++)
                 {
                     (*mom)(i, jb) = (*mom)(i, jb) + rot(jb, k) * pr[k];
                 }
@@ -559,15 +535,15 @@ void TopologyWorker::ludbrb(
                 bz = bz * (0.99999999 / beta);
                 beta = 0.99999999;
             }
-            double gamma = 1.0 / TMath::Sqrt(1.0 - beta * beta);
-            for (Int_t i = 0; i < np; i++)
+            double gamma{1.0 / TMath::Sqrt(1.0 - beta * beta)};
+            for (Int_t i{0}; i < np; i++)
             {
-                for (Int_t j = 1; j < 5; j++)
+                for (Int_t j{1}; j < 5; j++)
                 {
                     dp[j] = (*mom)(i, j);
                 }
-                double bp = bx * dp[1] + by * dp[2] + bz * dp[3];
-                double gbp = gamma * (gamma * bp / (1.0 + gamma) + dp[4]);
+                double bp{bx * dp[1] + by * dp[2] + bz * dp[3]};
+                double gbp{gamma * (gamma * bp / (1.0 + gamma) + dp[4])};
                 (*mom)(i, 1) = dp[1] + gbp * bx;
                 (*mom)(i, 2) = dp[2] + gbp * by;
                 (*mom)(i, 3) = dp[3] + gbp * bz;
@@ -581,8 +557,8 @@ void TopologyWorker::ludbrb(
 
 void TopologyWorker::sanda()
 {
-    float SPH = -1;
-    float APL = -1;
+    float SPH{-1};
+    float APL{-1};
     m_sanda_called = true;
     //=======================================================================
     // By M.Vreeswijk, (core was fortran, stolen from somewhere)
@@ -599,19 +575,35 @@ void TopologyWorker::sanda()
     // Output: Sphericity SPH and Aplanarity APL
     //=======================================================================
     // C...Calculate matrix to be diagonalized.
-    float P[1000][6];
-    double SM[4][4], SV[4][4];
-    double PA, PWT, PS, SQ, SR, SP, SMAX, SGN;
-    int NP;
-    int J, J1, J2, I, N, JA, JB, J3, JC, JB1, JB2;
-    JA = JB = JC = 0;
-    double RL;
-    float rlu, rlu1;
+    float P[1000][6]{};
+    double SM[4][4]{};
+    double SV[4][4]{};
+    double PA{};
+    double PWT{};
+    double PS{};
+    double SQ{};
+    double SR{};
+    double SP{};
+    double SMAX{};
+    double SGN{};
+    int NP{0};
+    int J{};
+    int J1{};
+    int J2{};
+    int I{};
+    int N{m_np};
+    int JA{0};
+    int JB{0};
+    int J3{};
+    int JC{0};
+    int JB1{};
+    int JB2;
+    double RL{};
+    float rlu{};
+    float rlu1{};
     //
     // --- get the input form GTRACK arrays
     //
-    N = m_np;
-    NP = 0;
     for (I = 1; I < N + 1; I++)
     {
         NP++; // start at one
@@ -737,7 +729,7 @@ void TopologyWorker::sanda()
             PA = TMath::Sqrt(pow(P[N + I][1], 2) + pow(P[N + I][2], 2)
                              + pow(P[N + I][3], 2));
             // make a random number
-            float pa = P[N - 1][I];
+            float pa{P[N - 1][I]};
             rlu = fabs(pa) - fabs(int(pa) * 1.);
             rlu1 = fabs(pa * pa) - fabs(int(pa * pa) * 1.);
             SGN = pow((-1.), 1. * int(rlu + 0.5));
@@ -773,20 +765,35 @@ void TopologyWorker::planes_sphe(double& pnorm, double& p2, double& p3)
     //        used. Bad practice. Commented out so if needed, can be
     //        reintroduced.
     // C...Calculate matrix to be diagonalized.
-    float P[1000][6];
-    double SM[4][4], SV[4][4];
-    double PA, PS, SQ, SR, SP, SMAX, SGN;
+    float P[1000][6]{};
+    double SM[4][4]{};
+    double SV[4][4]{};
+    double PA{};
+    double PS{};
+    double SQ{};
+    double SR{};
+    double SP{};
+    double SMAX{};
+    double SGN{};
     double PWT{};
-    int NP;
-    int J, J1, J2, I, N, JA, JB, J3, JC, JB1, JB2;
-    JA = JB = JC = 0;
-    double RL;
-    float rlu, rlu1;
+    int NP{0};
+    int J{};
+    int J1{};
+    int J2{};
+    int I{};
+    int N{m_np};
+    int JA{0};
+    int JB{0};
+    int J3{};
+    int JC{0};
+    int JB1{};
+    int JB2{};
+    double RL{};
+    float rlu{};
+    float rlu1;
     //
     // --- get the input form GTRACK arrays
     //
-    N = m_np;
-    NP = 0;
     for (I = 1; I < N + 1; I++)
     {
         NP++; // start at one
@@ -812,7 +819,8 @@ void TopologyWorker::planes_sphe(double& pnorm, double& p2, double& p3)
     for (I = 1; I < N + 1; I++)
     { // 140
         PA = sqrt(pow(P[I][1], 2) + pow(P[I][2], 2) + pow(P[I][3], 2));
-        double eta, phi;
+        double eta{};
+        double phi{};
         getetaphi(P[I][1], P[I][2], P[I][3], eta, phi);
         PWT = exp(-fabs(eta));
         PWT = 1.;
@@ -918,7 +926,7 @@ void TopologyWorker::planes_sphe(double& pnorm, double& p2, double& p3)
             PA = TMath::Sqrt(pow(P[N + I][1], 2) + pow(P[N + I][2], 2)
                              + pow(P[N + I][3], 2));
             // make a random number
-            float pa = P[N - 1][I];
+            float pa{P[N - 1][I]};
             rlu = fabs(pa) - fabs(int(pa) * 1.);
             rlu1 = fabs(pa * pa) - fabs(int(pa * pa) * 1.);
             SGN = pow((-1.), 1. * int(rlu + 0.5));
@@ -945,14 +953,16 @@ void TopologyWorker::planes_sphe(double& pnorm, double& p2, double& p3)
     } // check 1
 
     // so assume now we have Sphericity axis, which one give the minimal Pts
-    double etstot[4];
-    double eltot[4];
-    double sum23 = 0;
-    double sum22 = 0;
-    double sum33 = 0;
-    double pina[4];
-    double ax[4], ay[4], az[4];
-    for (int ia = 1; ia < 4; ia++)
+    double etstot[4]{};
+    double eltot[4]{};
+    double sum23{0};
+    double sum22{0};
+    double sum33{0};
+    double pina[4]{};
+    double ax[4]{};
+    double ay[4]{};
+    double az[4]{};
+    for (int ia{1}; ia < 4; ia++)
     {
         etstot[ia] = 0;
         eltot[ia] = 0;
@@ -965,26 +975,25 @@ void TopologyWorker::planes_sphe(double& pnorm, double& p2, double& p3)
         az[ia] /= sqrt(ax[ia] * ax[ia] + ay[ia] * ay[ia] + az[ia] * az[ia]);
     }
 
-    for (int k = 0; k < m_np; k++)
+    for (int k{0}; k < m_np; k++)
     {
         // double eta;
         // double phi;
         // getetaphi(m_mom(k, 1), m_mom(k, 2), m_mom(k, 3), eta, phi);
-        double W = 1.0;
-        for (int ia = 1; ia < 4; ia++)
+        double W{1.0};
+        for (int ia{1}; ia < 4; ia++)
         {
-            double e =
-                sqrt(m_mom(k, 1) * m_mom(k, 1) + m_mom(k, 2) * m_mom(k, 2)
-                     + m_mom(k, 3) * m_mom(k, 3));
-            double el = ax[ia] * m_mom(k, 1) + ay[ia] * m_mom(k, 2)
-                        + az[ia] * m_mom(k, 3);
+            double e{sqrt(m_mom(k, 1) * m_mom(k, 1) + m_mom(k, 2) * m_mom(k, 2)
+                          + m_mom(k, 3) * m_mom(k, 3))};
+            double el{ax[ia] * m_mom(k, 1) + ay[ia] * m_mom(k, 2)
+                      + az[ia] * m_mom(k, 3)};
             pina[ia] = el;
-            double ets = (e * e - el * el);
+            double ets{e * e - el * el};
             etstot[ia] += ets * W;
             eltot[ia] += el * el;
         }
-        double a2 = pina[2];
-        double a3 = pina[3];
+        double a2{pina[2]};
+        double a3{pina[3]};
         // double h = 0.4;
         // a2 = pina[2] * cos(h) + pina[3] * sin(h);
         // a3 = pina[3] * cos(h) - pina[2] * sin(h);
@@ -993,18 +1002,18 @@ void TopologyWorker::planes_sphe(double& pnorm, double& p2, double& p3)
         sum33 += a3 * a3 * W;
     }
 
-    double pi = 3.1415927;
-    double phi = pi / 2.0;
-    double phip = pi / 2.0;
-    double a = sum23;
-    double c = -a;
-    double b = sum22 - sum33;
-    double disc = b * b - 4 * a * c;
+    double pi{3.1415927};
+    double phi{pi / 2.0};
+    double phip{pi / 2.0};
+    double a{sum23};
+    double c{-a};
+    double b{sum22 - sum33};
+    double disc{b * b - 4 * a * c};
     // cout << " disc " << disc << endl;
     if (disc >= 0)
     {
-        double x1 = (sqrt(disc) - b) / 2 / a;
-        double x2 = (-sqrt(disc) - b) / 2 / a;
+        double x1{(sqrt(disc) - b) / 2 / a};
+        double x2{(-sqrt(disc) - b) / 2 / a};
         phi = atan(x1);
         phip = atan(x2);
         if (phi < 0)
@@ -1016,18 +1025,18 @@ void TopologyWorker::planes_sphe(double& pnorm, double& p2, double& p3)
             phip = 2. * pi + phip;
         }
     }
-    double p21 = sum22 * cos(phi) * cos(phi) + sum33 * sin(phi) * sin(phi)
-                 + 2 * sum23 * cos(phi) * sin(phi);
-    double p31 = sum22 * sin(phi) * sin(phi) + sum33 * cos(phi) * cos(phi)
-                 - 2 * sum23 * cos(phi) * sin(phi);
+    double p21{sum22 * cos(phi) * cos(phi) + sum33 * sin(phi) * sin(phi)
+               + 2 * sum23 * cos(phi) * sin(phi)};
+    double p31{sum22 * sin(phi) * sin(phi) + sum33 * cos(phi) * cos(phi)
+               - 2 * sum23 * cos(phi) * sin(phi)};
 
-    double p22 = sum22 * cos(phip) * cos(phip) + sum33 * sin(phip) * sin(phip)
-                 + 2 * sum23 * cos(phip) * sin(phip);
-    double p32 = sum22 * sin(phip) * sin(phip) + sum33 * cos(phip) * cos(phip)
-                 - 2 * sum23 * cos(phip) * sin(phip);
+    double p22{sum22 * cos(phip) * cos(phip) + sum33 * sin(phip) * sin(phip)
+               + 2 * sum23 * cos(phip) * sin(phip)};
+    double p32{sum22 * sin(phip) * sin(phip) + sum33 * cos(phip) * cos(phip)
+               - 2 * sum23 * cos(phip) * sin(phip)};
 
-    double d1 = fabs(p31 * p31 - p21 * p21);
-    double d2 = fabs(p32 * p32 - p22 * p22);
+    double d1{fabs(p31 * p31 - p21 * p21)};
+    double d2{fabs(p32 * p32 - p22 * p22)};
     // cout << " eltot " << eltot[2] << " " << eltot[3] << endl;
     // cout << " phi " << phi << " " << phip << endl;
     // cout << " d " << d1 << " " << d2 << endl;
@@ -1046,7 +1055,7 @@ void TopologyWorker::planes_sphe(double& pnorm, double& p2, double& p3)
     }
     else
     {
-        double p4 = p3;
+        double p4{p3};
         p3 = sqrt(p2);
         p2 = sqrt(p4);
     }
@@ -1061,20 +1070,35 @@ void TopologyWorker::planes_sphe_wei(double& pnorm, double& p2, double& p3)
     //      float SPH=-1; // This vairable is set but not used! Bad practice.
     //      float APL=-1; // This vairable is set but not used! Bad practice.
     // C...Calculate matrix to be diagonalized.
-    float P[1000][6];
-    double SM[4][4], SV[4][4];
-    double PA, PS, SQ, SR, SP, SMAX, SGN;
+    float P[1000][6]{};
+    double SM[4][4]{};
+    double SV[4][4]{};
+    double PA{};
+    double PS{};
+    double SQ{};
+    double SR{};
+    double SP{};
+    double SMAX{};
+    double SGN{};
     double PWT{};
-    int NP;
-    int J, J1, J2, I, N, JA, JB, J3, JC, JB1, JB2;
-    JA = JB = JC = 0;
-    double RL;
-    float rlu, rlu1;
+    int NP{0};
+    int J{};
+    int J1{};
+    int J2{};
+    int I{};
+    int N{m_np};
+    int JA{0};
+    int JB{0};
+    int J3{};
+    int JC{0};
+    int JB1{};
+    int JB2{};
+    double RL{};
+    float rlu{};
+    float rlu1{};
     //
     // --- get the input form GTRACK arrays
     //
-    N = m_np;
-    NP = 0;
     for (I = 1; I < N + 1; I++)
     {
         NP++; // start at one
@@ -1206,7 +1230,7 @@ void TopologyWorker::planes_sphe_wei(double& pnorm, double& p2, double& p3)
             PA = TMath::Sqrt(pow(P[N + I][1], 2) + pow(P[N + I][2], 2)
                              + pow(P[N + I][3], 2));
             // make a random number
-            float pa = P[N - 1][I];
+            float pa{P[N - 1][I]};
             rlu = fabs(pa) - fabs(int(pa) * 1.);
             rlu1 = fabs(pa * pa) - fabs(int(pa * pa) * 1.);
             SGN = pow((-1.), 1. * int(rlu + 0.5));
@@ -1233,14 +1257,16 @@ void TopologyWorker::planes_sphe_wei(double& pnorm, double& p2, double& p3)
     } // check 1
 
     // so assume now we have Sphericity axis, which one give the minimal Pts
-    double etstot[4];
-    double eltot[4];
-    double sum23 = 0;
-    double sum22 = 0;
-    double sum33 = 0;
-    double pina[4];
-    double ax[4], ay[4], az[4];
-    for (int ia = 1; ia < 4; ia++)
+    double etstot[4]{};
+    double eltot[4]{};
+    double sum23{0};
+    double sum22{0};
+    double sum33{0};
+    double pina[4]{};
+    double ax[4]{};
+    double ay[4]{};
+    double az[4]{};
+    for (int ia{1}; ia < 4; ia++)
     {
         etstot[ia] = 0;
         eltot[ia] = 0;
@@ -1253,25 +1279,25 @@ void TopologyWorker::planes_sphe_wei(double& pnorm, double& p2, double& p3)
         az[ia] /= sqrt(ax[ia] * ax[ia] + ay[ia] * ay[ia] + az[ia] * az[ia]);
     }
 
-    for (int k = 0; k < m_np; k++)
+    for (int k{0}; k < m_np; k++)
     {
-        double eta, phi;
+        double eta{};
+        double phi{};
         getetaphi(m_mom(k, 1), m_mom(k, 2), m_mom(k, 3), eta, phi);
-        double W = exp(-fabs(eta * 1.0));
-        for (int ia = 1; ia < 4; ia++)
+        double W{exp(-fabs(eta * 1.0))};
+        for (int ia{1}; ia < 4; ia++)
         {
-            double e =
-                sqrt(m_mom(k, 1) * m_mom(k, 1) + m_mom(k, 2) * m_mom(k, 2)
-                     + m_mom(k, 3) * m_mom(k, 3));
-            double el = ax[ia] * m_mom(k, 1) + ay[ia] * m_mom(k, 2)
-                        + az[ia] * m_mom(k, 3);
+            double e{sqrt(m_mom(k, 1) * m_mom(k, 1) + m_mom(k, 2) * m_mom(k, 2)
+                          + m_mom(k, 3) * m_mom(k, 3))};
+            double el{ax[ia] * m_mom(k, 1) + ay[ia] * m_mom(k, 2)
+                      + az[ia] * m_mom(k, 3)};
             pina[ia] = el;
-            double ets = (e * e - el * el);
+            double ets{e * e - el * el};
             etstot[ia] += ets * W;
             eltot[ia] += el * el * W;
         }
-        double a2 = pina[2];
-        double a3 = pina[3];
+        double a2{pina[2]};
+        double a3{pina[3]};
         // double h = 0.4;
         // a2 = pina[2] * cos(h) + pina[3] * sin(h);
         // a3 = pina[3] * cos(h) - pina[2] * sin(h);
@@ -1280,18 +1306,18 @@ void TopologyWorker::planes_sphe_wei(double& pnorm, double& p2, double& p3)
         sum33 += a3 * a3 * W;
     }
 
-    double pi = 3.1415927;
-    double phi = pi / 2.0;
-    double phip = pi / 2.0;
-    double a = sum23;
-    double c = -a;
-    double b = sum22 - sum33;
-    double disc = b * b - 4 * a * c;
+    double pi{3.1415927};
+    double phi{pi / 2.0};
+    double phip{pi / 2.0};
+    double a{sum23};
+    double c{-a};
+    double b{sum22 - sum33};
+    double disc{b * b - 4 * a * c};
     // cout << " disc " << disc << endl;
     if (disc >= 0)
     {
-        double x1 = (sqrt(disc) - b) / 2 / a;
-        double x2 = (-sqrt(disc) - b) / 2 / a;
+        double x1{(sqrt(disc) - b) / 2 / a};
+        double x2{(-sqrt(disc) - b) / 2 / a};
         phi = atan(x1);
         phip = atan(x2);
         if (phi < 0)
@@ -1303,18 +1329,18 @@ void TopologyWorker::planes_sphe_wei(double& pnorm, double& p2, double& p3)
             phip = 2. * pi + phip;
         }
     }
-    double p21 = sum22 * cos(phi) * cos(phi) + sum33 * sin(phi) * sin(phi)
-                 + 2 * sum23 * cos(phi) * sin(phi);
-    double p31 = sum22 * sin(phi) * sin(phi) + sum33 * cos(phi) * cos(phi)
-                 - 2 * sum23 * cos(phi) * sin(phi);
+    double p21{sum22 * cos(phi) * cos(phi) + sum33 * sin(phi) * sin(phi)
+               + 2 * sum23 * cos(phi) * sin(phi)};
+    double p31{sum22 * sin(phi) * sin(phi) + sum33 * cos(phi) * cos(phi)
+               - 2 * sum23 * cos(phi) * sin(phi)};
 
-    double p22 = sum22 * cos(phip) * cos(phip) + sum33 * sin(phip) * sin(phip)
-                 + 2 * sum23 * cos(phip) * sin(phip);
-    double p32 = sum22 * sin(phip) * sin(phip) + sum33 * cos(phip) * cos(phip)
-                 - 2 * sum23 * cos(phip) * sin(phip);
+    double p22{sum22 * cos(phip) * cos(phip) + sum33 * sin(phip) * sin(phip)
+               + 2 * sum23 * cos(phip) * sin(phip)};
+    double p32{sum22 * sin(phip) * sin(phip) + sum33 * cos(phip) * cos(phip)
+               - 2 * sum23 * cos(phip) * sin(phip)};
 
-    double d1 = fabs(p31 * p31 - p21 * p21);
-    double d2 = fabs(p32 * p32 - p22 * p22);
+    double d1{fabs(p31 * p31 - p21 * p21)};
+    double d2{fabs(p32 * p32 - p22 * p22)};
     // cout << " eltot " << eltot[2] << " " << eltot[3] << endl;
     // cout << " phi " << phi << " " << phip << endl;
     // cout << " d " << d1 << " " << d2 << endl;
@@ -1333,7 +1359,7 @@ void TopologyWorker::planes_sphe_wei(double& pnorm, double& p2, double& p3)
     }
     else
     {
-        double p4 = p3;
+        double p4{p3};
         p3 = sqrt(p2);
         p2 = sqrt(p4);
     }
@@ -1349,13 +1375,15 @@ void TopologyWorker::planes_thrust(double& pnorm, double& p2, double& p3)
     TVector3 majoraxis = majorAxis();
     TVector3 minoraxis = minorAxis();
     // so assume now we have Sphericity axis, which one give the minimal Pts
-    double etstot[4];
-    double eltot[4];
-    double sum23 = 0;
-    double sum22 = 0;
-    double sum33 = 0;
-    double pina[4];
-    double ax[4], ay[4], az[4];
+    double etstot[4]{};
+    double eltot[4]{};
+    double sum23{0};
+    double sum22{0};
+    double sum33{0};
+    double pina[4]{};
+    double ax[4]{};
+    double ay[4]{};
+    double az[4]{};
     ax[1] = thrustaxis(0);
     ay[1] = thrustaxis(1);
     az[1] = thrustaxis(2);
@@ -1365,7 +1393,7 @@ void TopologyWorker::planes_thrust(double& pnorm, double& p2, double& p3)
     ax[3] = majoraxis(0);
     ay[3] = majoraxis(1);
     az[3] = majoraxis(2);
-    for (int ia = 1; ia < 4; ia++)
+    for (int ia{1}; ia < 4; ia++)
     {
         etstot[ia] = 0;
         eltot[ia] = 0;
@@ -1375,22 +1403,21 @@ void TopologyWorker::planes_thrust(double& pnorm, double& p2, double& p3)
         az[ia] /= sqrt(ax[ia] * ax[ia] + ay[ia] * ay[ia] + az[ia] * az[ia]);
     }
 
-    for (int k = 0; k < m_np; k++)
+    for (int k{0}; k < m_np; k++)
     {
-        for (int ia = 1; ia < 4; ia++)
+        for (int ia{1}; ia < 4; ia++)
         {
-            double e =
-                sqrt(m_mom(k, 1) * m_mom(k, 1) + m_mom(k, 2) * m_mom(k, 2)
-                     + m_mom(k, 3) * m_mom(k, 3));
-            double el = ax[ia] * m_mom(k, 1) + ay[ia] * m_mom(k, 2)
-                        + az[ia] * m_mom(k, 3);
+            double e{sqrt(m_mom(k, 1) * m_mom(k, 1) + m_mom(k, 2) * m_mom(k, 2)
+                          + m_mom(k, 3) * m_mom(k, 3))};
+            double el{ax[ia] * m_mom(k, 1) + ay[ia] * m_mom(k, 2)
+                      + az[ia] * m_mom(k, 3)};
             pina[ia] = el;
-            double ets = (e * e - el * el);
+            double ets{e * e - el * el};
             etstot[ia] += ets;
             eltot[ia] += fabs(el);
         }
-        double a2 = pina[2];
-        double a3 = pina[3];
+        double a2{pina[2]};
+        double a3{pina[3]};
         // double h = 0.4;
         // a2 = pina[2] * cos(h) + pina[3] * sin(h);
         // a3 = pina[3] * cos(h) - pina[2] * sin(h);
@@ -1399,18 +1426,18 @@ void TopologyWorker::planes_thrust(double& pnorm, double& p2, double& p3)
         sum33 += a3 * a3;
     }
 
-    double pi = 3.1415927;
-    double phi = pi / 2.0;
-    double phip = pi / 2.0;
-    double a = sum23;
-    double c = -a;
-    double b = sum22 - sum33;
-    double disc = b * b - 4 * a * c;
+    double pi{3.1415927};
+    double phi{pi / 2.0};
+    double phip{pi / 2.0};
+    double a{sum23};
+    double c{-a};
+    double b{sum22 - sum33};
+    double disc{b * b - 4 * a * c};
     // cout << " disc " << disc << endl;
     if (disc >= 0)
     {
-        double x1 = (sqrt(disc) - b) / 2 / a;
-        double x2 = (-sqrt(disc) - b) / 2 / a;
+        double x1{(sqrt(disc) - b) / 2 / a};
+        double x2{(-sqrt(disc) - b) / 2 / a};
         phi = atan(x1);
         phip = atan(x2);
         if (phi < 0)
@@ -1422,18 +1449,18 @@ void TopologyWorker::planes_thrust(double& pnorm, double& p2, double& p3)
             phip = 2. * pi + phip;
         }
     }
-    double p21 = sum22 * cos(phi) * cos(phi) + sum33 * sin(phi) * sin(phi)
-                 + 2 * sum23 * cos(phi) * sin(phi);
-    double p31 = sum22 * sin(phi) * sin(phi) + sum33 * cos(phi) * cos(phi)
-                 - 2 * sum23 * cos(phi) * sin(phi);
+    double p21{sum22 * cos(phi) * cos(phi) + sum33 * sin(phi) * sin(phi)
+               + 2 * sum23 * cos(phi) * sin(phi)};
+    double p31{sum22 * sin(phi) * sin(phi) + sum33 * cos(phi) * cos(phi)
+               - 2 * sum23 * cos(phi) * sin(phi)};
 
-    double p22 = sum22 * cos(phip) * cos(phip) + sum33 * sin(phip) * sin(phip)
-                 + 2 * sum23 * cos(phip) * sin(phip);
-    double p32 = sum22 * sin(phip) * sin(phip) + sum33 * cos(phip) * cos(phip)
-                 - 2 * sum23 * cos(phip) * sin(phip);
+    double p22{sum22 * cos(phip) * cos(phip) + sum33 * sin(phip) * sin(phip)
+               + 2 * sum23 * cos(phip) * sin(phip)};
+    double p32{sum22 * sin(phip) * sin(phip) + sum33 * cos(phip) * cos(phip)
+               - 2 * sum23 * cos(phip) * sin(phip)};
 
-    double d1 = fabs(p31 * p31 - p21 * p21);
-    double d2 = fabs(p32 * p32 - p22 * p22);
+    double d1{fabs(p31 * p31 - p21 * p21)};
+    double d2{fabs(p32 * p32 - p22 * p22)};
     // cout << " eltot " << eltot[2] << " " << eltot[3] << endl;
     // cout << " phi " << phi << " " << phip << endl;
     // cout << " d " << d1 << " " << d2 << endl;
@@ -1452,7 +1479,7 @@ void TopologyWorker::planes_thrust(double& pnorm, double& p2, double& p3)
     }
     else
     {
-        double p4 = p3;
+        double p4{p3};
         p3 = sqrt(p2);
         p2 = sqrt(p4);
     }
@@ -1467,19 +1494,24 @@ void TopologyWorker::fowo()
     // 20020830 changed: from p/E to Et/Ettot and include H50 and H60
     m_fowo_called = true;
     // include fox wolframs
-    float H10 = -1;
-    float H20 = -1;
-    float H30 = -1;
-    float H40 = -1;
-    float H50 = -1;
-    float H60 = -1;
+    float H10{-1};
+    float H20{-1};
+    float H30{-1};
+    float H40{-1};
+    float H50{-1};
+    float H60{-1};
     if (1 == 1)
     {
-        float P[1000][6], H0, HD, CTHE;
-        int N, NP, I, J, I1, I2;
-        H0 = HD = 0.;
-        N = m_np;
-        NP = 0;
+        float P[1000][6]{};
+        float H0{0.};
+        float HD{0.};
+        float CTHE{};
+        int N{m_np};
+        int NP{0};
+        int I{};
+        int J{};
+        int I1{};
+        int I2;
         for (I = 1; I < N + 1; I++)
         {
             NP++; // start at one
@@ -1537,23 +1569,25 @@ void TopologyWorker::fowo()
                         + P[I1][3] * P[I2][3])
                        / (P[I1][4] * P[I2][4]);
                 H10 = H10 + P[I1][5] * P[I2][5] * CTHE;
-                double C2 = (1.5 * CTHE * CTHE - 0.5);
+                double C2{1.5 * CTHE * CTHE - 0.5};
                 H20 = H20 + P[I1][5] * P[I2][5] * C2;
-                double C3 = (2.5 * CTHE * CTHE * CTHE - 1.5 * CTHE);
+                double C3{2.5 * CTHE * CTHE * CTHE - 1.5 * CTHE};
                 H30 = H30 + P[I1][5] * P[I2][5] * C3;
                 // use recurrence
-                double C4 = (7 * CTHE * C3 - 3 * C2) / 4.;
-                double C5 = (9 * CTHE * C4 - 4 * C3) / 5.;
-                double C6 = (11 * CTHE * C5 - 5 * C4) / 6.;
+                double C4{(7 * CTHE * C3 - 3 * C2) / 4.};
+                double C5{(9 * CTHE * C4 - 4 * C3) / 5.};
+                double C6{(11 * CTHE * C5 - 5 * C4) / 6.};
                 // H40 =
                 //     H40
                 //     + P[I1][5] * P[I2][5]
-                //           * (4.375 * pow(CTHE, 4) - 3.75 * CTHE * CTHE + 0.375);
+                //           * (4.375 * pow(CTHE, 4) - 3.75 * CTHE * CTHE +
+                //           0.375);
                 // H50 =
                 //     H50
                 //     + P[I1][5] * P[I2][5]
                 //           * (63. / 8. * pow(CTHE, 5)
-                //              - 70. / 8. * CTHE * CTHE * CTHE + 15. / 8. * CTHE);
+                //              - 70. / 8. * CTHE * CTHE * CTHE + 15. / 8. *
+                //              CTHE);
                 // H60 = H60
                 //       + P[I1][5] * P[I2][5]
                 //             * (231 / 16. * pow(CTHE, 6)
@@ -1650,16 +1684,16 @@ double TopologyWorker::get_aplanarity()
 void TopologyWorker::getetaphi(
     double px, double py, double pz, double& eta, double& phi)
 {
-    double pi = 3.1415927;
+    double pi{3.1415927};
 
-    double p = sqrt(px * px + py * py + pz * pz);
+    double p{sqrt(px * px + py * py + pz * pz)};
     // get eta and phi
-    double th = pi / 2.;
+    double th{pi / 2.};
     if (p != 0)
     {
         th = acos(pz / p); // Theta
     }
-    float thg = th;
+    double thg{th};
     if (th <= 0)
     {
         thg = pi + th;
@@ -1678,13 +1712,19 @@ void TopologyWorker::getetaphi(
 
 void TopologyWorker::sumangles(float& sdeta, float& sdr)
 {
-    double eta1, eta2, phi1, phi2, deta, dphi, dr;
+    double eta1{};
+    double eta2{};
+    double phi1{};
+    double phi2{};
+    double deta{};
+    double dphi{};
+    double dr{};
     m_sumangles_called = true;
     sdeta = 0;
     sdr = 0;
-    for (int k = 0; k < m_np; k++)
+    for (int k{0}; k < m_np; k++)
     {
-        for (int kp = k; kp < m_np; kp++)
+        for (int kp{k}; kp < m_np; kp++)
         {
             getetaphi(m_mom(k, 1), m_mom(k, 2), m_mom(k, 3), eta1, phi1);
             getetaphi(m_mom(kp, 1), m_mom(kp, 2), m_mom(kp, 3), eta2, phi2);
@@ -1717,12 +1757,12 @@ Int_t TopologyWorker::iPow(Int_t man, Int_t exp)
 
 void TopologyWorker::CalcWmul()
 {
-    Int_t njets = m_np;
-    double result = 0;
+    Int_t njets{m_np};
+    double result{0};
     for (Int_t ijet = 0; ijet < njets - 1; ijet++)
     {
-        double emin = 55;
-        double emax = 55;
+        double emin{55};
+        double emax{55};
         if (CalcPt(ijet) < 55)
         {
             emax = CalcPt(ijet);
@@ -1733,7 +1773,7 @@ void TopologyWorker::CalcWmul()
         }
         result += 0.5 * (emax * emax - emin * emin) * (ijet + 1);
     }
-    double elo = 15;
+    double elo{15};
     if (CalcPt(njets - 1) > elo)
     {
         elo = CalcPt(njets - 1);
@@ -1748,12 +1788,12 @@ void TopologyWorker::CalcWmul()
 
 void TopologyWorker::CalcSqrts()
 {
-    TLorentzVector event(0, 0, 0, 0);
-    TLorentzVector worker(0, 0, 0, 0);
+    TLorentzVector event{0, 0, 0, 0};
+    TLorentzVector worker{0, 0, 0, 0};
 
-    for (int i = 0; i < m_np; i++)
+    for (int i{0}; i < m_np; i++)
     {
-        double energy = m_mom(i, 4);
+        double energy{m_mom(i, 4)};
         if (m_mom(i, 4) < 0.00001)
         {
             energy = sqrt(pow(m_mom(i, 1), 2) + pow(m_mom(i, 2), 2)
@@ -1773,9 +1813,9 @@ void TopologyWorker::CalcHTstuff()
     m_ht3 = 0;
     m_et56 = 0;
     m_et0 = 0;
-    double ptlead = 0;
-    double h = 0;
-    for (int i = 0; i < m_np; i++)
+    double ptlead{0};
+    double h{0};
+    for (int i{0}; i < m_np; i++)
     {
         // cout << i << "/" << m_np << ":" << CalcPt(i) << endl;
         m_ht += CalcPt(i);
@@ -1790,7 +1830,7 @@ void TopologyWorker::CalcHTstuff()
         }
     }
 
-    for (int j = 0; j < m_np2; j++)
+    for (int j{0}; j < m_np2; j++)
     {
         // cout << j << "/" << m_np2 << ":" << CalcPt2(j) << endl;
         if (ptlead < CalcPt2(j))

@@ -31,13 +31,13 @@ class GenInfoMiniAOD : public edm::EDAnalyzer
 
     // Generator level info
     edm::EDGetTokenT<LHEEventProduct> externalLHEToken_;
-    int pdfIdStart_;
-    int pdfIdEnd_;
-    int alphaIdStart_;
-    int alphaIdEnd_;
+    int pdfIdStart_{};
+    int pdfIdEnd_{};
+    int alphaIdStart_{};
+    int alphaIdEnd_{};
 
-    bool isLHEflag_;
-    bool hasAlphaWeightFlag_;
+    bool isLHEflag_{};
+    bool hasAlphaWeightFlag_{};
 
     // and an ntuple (filling in the methods)
     void fillMCInfo(const edm::Event&, const edm::EventSetup&);

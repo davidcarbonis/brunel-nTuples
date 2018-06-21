@@ -128,14 +128,14 @@ void lheInfo::beginRun(edm::Run const& iRun, edm::EventSetup const& /*iSetup*/)
         std::vector<LHERunInfoProduct::Header>::const_iterator;
 
     iRun.getByLabel("externalLHEProducer", run);
-    LHERunInfoProduct myLHERunInfoProduct = *(run.product());
+    LHERunInfoProduct myLHERunInfoProduct{*(run.product())};
 
-    for (auto iter = myLHERunInfoProduct.headers_begin();
+    for (auto iter{myLHERunInfoProduct.headers_begin()};
          iter != myLHERunInfoProduct.headers_end();
          iter++)
     {
         std::cout << iter->tag() << std::endl;
-        std::vector<std::string> lines = iter->lines();
+        std::vector<std::string> lines{iter->lines()};
         for (const auto& line : lines)
         {
             std::cout << line;

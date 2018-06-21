@@ -112,7 +112,7 @@ namespace cu_ejetmet
         }
 
         private:
-        bool m_verbose;
+        bool m_verbose{false};
         void getetaphi(
             double px, double py, double pz, double& eta, double& phi);
         double ulAngle(double x, double y);
@@ -126,19 +126,19 @@ namespace cu_ejetmet
 
         int iPow(int man, int exp);
 
-        double m_dSphMomPower;
+        double m_dSphMomPower{2.0};
         // PARU(41): Power of momentum dependence in sphericity finder.
 
-        double m_dDeltaThPower;
+        double m_dDeltaThPower{0};
         // PARU(42): Power of momentum dependence in thrust finder.
 
-        int m_iFast;
+        int m_iFast{4};
         // MSTU(44): # of initial fastest particles choosen to start search.
 
-        double m_dConv;
+        double m_dConv{0.0001};
         // PARU(48): Convergence criteria for axis maximization.
 
-        int m_iGood;
+        int m_iGood{2};
         // MSTU(45): # different starting configurations that must
         // converge before axis is accepted as correct.
 
@@ -160,26 +160,26 @@ namespace cu_ejetmet
 
         double m_dThrust[4]{};
         double m_dOblateness{};
-        int m_np;
-        int m_np2;
-        bool m_sanda_called;
-        bool m_fowo_called;
-        bool m_boost;
-        bool m_sumangles_called;
-        double m_sph;
-        double m_apl;
-        double m_h10;
-        double m_h20;
-        double m_h30;
-        double m_h40;
+        int m_np{-1};
+        int m_np2{-1};
+        bool m_sanda_called{false};
+        bool m_fowo_called{false};
+        bool m_boost{};
+        bool m_sumangles_called{false};
+        double m_sph{-1};
+        double m_apl{-1};
+        double m_h10{-1};
+        double m_h20{-1};
+        double m_h30{-1};
+        double m_h40{-1};
         double m_h50{};
         double m_h60{};
-        double m_ht;
-        double m_ht3;
-        double m_et0;
-        double m_sqrts;
-        double m_njetsweighed;
-        double m_et56;
+        double m_ht{0};
+        double m_ht3{0};
+        double m_et0{0};
+        double m_sqrts{0};
+        double m_njetsweighed{};
+        double m_et56{0};
         double m_centrality{};
 
         void sanda();

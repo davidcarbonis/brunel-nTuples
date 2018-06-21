@@ -85,19 +85,19 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     edm::EDGetTokenT<std::vector<PileupSummaryInfo>> pileupToken_;
 
     // Sets stuff for 2016 rereco, namely ele IDs
-    bool is2016rereco_;
+    bool is2016rereco_{};
 
     // Sets whether the sample is ttbar or not. Default is false. This affects
     // top pt reweighting of the sample.
-    bool isttbar_;
+    bool isttbar_{};
     edm::InputTag ttGenEvent_;
 
     // Generator level info
     edm::EDGetTokenT<LHEEventProduct> externalLHEToken_;
-    int pdfIdStart_;
-    int pdfIdEnd_;
-    int alphaIdStart_;
-    int alphaIdEnd_;
+    int pdfIdStart_{};
+    int pdfIdEnd_{};
+    int alphaIdStart_{};
+    int alphaIdEnd_{};
     edm::EDGetTokenT<GenEventInfoProduct> pdfInfoToken_;
     edm::EDGetTokenT<GenEventInfoProduct> generatorToken_;
 
@@ -109,30 +109,30 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     std::map<std::string, PerformanceResult::ResultType> btaggingparamtype_;
     std::vector<std::string> eleIDsToNtuple_;
 
-    bool filledBIDInfo_;
-    bool runMCInfo_;
-    bool runPUReWeight_;
-    bool doCuts_;
+    bool filledBIDInfo_{};
+    bool runMCInfo_{};
+    bool runPUReWeight_{};
+    bool doCuts_{};
     bool doSynch_{};
 
     // jet cuts
-    double jetPtCut_;
-    double jetEtaCut_;
+    double jetPtCut_{};
+    double jetEtaCut_{};
 
-    bool runPDFUncertainties_;
-    bool useResidualJEC_;
+    bool runPDFUncertainties_{};
+    bool useResidualJEC_{};
     std::string eleIDquality_;
     std::string eleIDqualityLoose_; // only used for Z rejection
-    bool ignore_emIDtight_; // possibility to completely ignore EM id
+    bool ignore_emIDtight_{}; // possibility to completely ignore EM id
 
-    int minLeptons_;
-    double elePtCut_;
-    double eleEtaCut_;
-    double eleIsoCut_;
-    double muoPtCut_;
-    double muoEtaCut_;
-    double muoIsoCut_;
-    double metCut_;
+    int minLeptons_{};
+    double elePtCut_{};
+    double eleEtaCut_{};
+    double eleIsoCut_{};
+    double muoPtCut_{};
+    double muoEtaCut_{};
+    double muoIsoCut_{};
+    double metCut_{};
     double rhoIso{};
 
     bool ran_jetloop_{};
@@ -146,16 +146,16 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     bool check_triggers_;
     std::string muoIDquality_;
     bool flavorHistoryTag_{};
-    double dREleGeneralTrackMatch_;
-    double magneticField_;
-    double correctFactor_;
-    double maxDist_;
-    double maxDcot_;
+    double dREleGeneralTrackMatch_{};
+    double magneticField_{};
+    double correctFactor_{};
+    double maxDist_{};
+    double maxDcot_{};
     edm::InputTag ebRecHits_;
     edm::InputTag eeRecHits_;
-    bool isMCatNLO_;
-    bool isLHEflag_;
-    bool hasAlphaWeightFlag_;
+    bool isMCatNLO_{};
+    bool isLHEflag_{};
+    bool hasAlphaWeightFlag_{};
 
     // and an ntuple (filling in the methods)
     void fillBeamSpot(const edm::Event&, const edm::EventSetup&);
@@ -302,9 +302,9 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
             : values_(values), decrease_(decreasing)
         {
         }
-        std::vector<int> operator()() const
+        std::vector<size_t> operator()() const
         {
-            std::vector<int> result;
+            std::vector<size_t> result;
             result.reserve(values_.size());
             for (size_t i = 0; i < values_.size(); ++i)
                 result.push_back(i);
@@ -359,7 +359,10 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     std::map<std::string, std::vector<float>>
         zcandidatesvector; // stores the Z candidates
 
-    size_t NELECTRONSMAX; // set to array size in constructor
+    // hardcoded, do NOT change unless you also change the size of the arrays
+    // that are saved in the root tree...
+    size_t NELECTRONSMAX{30};
+
     std::map<std::string, std::vector<float>> electronSortedE;
     std::map<std::string, std::vector<float>> electronSortedEt;
     std::map<std::string, std::vector<float>> electronSortedEta;
@@ -486,11 +489,13 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
 
     // MC Truth
     int nT{};
-    int nThadronic{}, nb{}, nWhadronic{};
+    int nThadronic{};
+    int nb{};
+    int nWhadronic{};
     int nTleptonic{}, nWleptonic{};
     int VQQBosonAbsId{};
 
-    int NTOPMCINFOSMAX;
+    int NTOPMCINFOSMAX{20};
     float T_hadronicMCTruthE[20]{};
     float T_hadronicMCTruthEt[20]{};
     float T_hadronicMCTruthPx[20]{};
@@ -572,7 +577,7 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     float mhtSumEt{};
     float mhtSignif{};
 
-    size_t NMUONSMAX; // max array size, set in constructor.
+    size_t NMUONSMAX{20};
     std::vector<float> muonEts;
     std::map<std::string, std::vector<float>> muonSortedE;
     std::map<std::string, std::vector<float>> muonSortedEt;
@@ -659,7 +664,7 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     std::map<std::string, std::vector<int>> genMuonSortedPromptFinalState;
     std::map<std::string, std::vector<int>> genMuonSortedHardProcess;
 
-    size_t NJETSMAX; // max number of jets, set in constructor;
+    size_t NJETSMAX{40};
 
     // JEC to be initialised once per collection.
     FactorizedJetCorrector* jecCalo{};
@@ -762,7 +767,7 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     std::map<std::string, std::vector<float>> genJetSortedClosestC;
 
     // generalTracks are used to subtract photon conversion background
-    size_t NTRACKSMAX;
+    size_t NTRACKSMAX{40};
     float generalTracksPt[1000]{};
     float generalTracksEta[1000]{};
     float generalTracksTheta[1000]{};
@@ -771,7 +776,7 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     int generalTracksCharge[1000]{};
 
     // gen particle vars
-    int NGENPARMAX;
+    int NGENPARMAX{50};
     int nGenPar{};
     int genParStatus[50]{}; // 150927 - ADM - Added as Pythia 8 uses different
                             // status codes - cannot just select events which
@@ -806,8 +811,8 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     float genMRST2006nnlo_Weight[31]{};
 
     // basic 4-vectors for photons,taus as we're not interested in them.
-    int NTAUSMAX; // set to array size in constructor
-    int NPHOTONSMAX; // set to array size in constructor
+    int NTAUSMAX{20};
+    int NPHOTONSMAX{20};
     std::map<std::string, int> ntaus;
     std::map<std::string, int> nphotons;
     std::map<std::string, std::vector<float>> photon_e;
@@ -840,10 +845,10 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     int evtRun{};
     int evtnum{};
     float evtlumiblock{};
-    int eventCount;
+    int eventCount{};
 
-    int bTags;
-    int softTags;
+    int bTags{};
+    int softTags{};
 };
 
 namespace LHAPDF

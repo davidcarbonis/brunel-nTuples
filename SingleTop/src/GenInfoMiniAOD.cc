@@ -45,19 +45,14 @@
 #include <vector>
 
 GenInfoMiniAOD::GenInfoMiniAOD(const edm::ParameterSet& iConfig)
-    :
-
-    externalLHEToken_(consumes<LHEEventProduct>(
-        iConfig.getParameter<edm::InputTag>("externalLHEToken")))
-    , pdfIdStart_(iConfig.getParameter<int>("pdfIdStart"))
-    , pdfIdEnd_(iConfig.getParameter<int>("pdfIdEnd"))
-    , alphaIdStart_(iConfig.getParameter<int>("alphaIdStart"))
-    , alphaIdEnd_(iConfig.getParameter<int>("alphaIdEnd"))
-    ,
-
-    isLHEflag_(iConfig.getParameter<bool>("isLHEflag"))
-    , hasAlphaWeightFlag_(iConfig.getParameter<bool>("hasAlphaWeightFlag"))
-
+    : externalLHEToken_{consumes<LHEEventProduct>(
+          iConfig.getParameter<edm::InputTag>("externalLHEToken"))}
+    , pdfIdStart_{iConfig.getParameter<int>("pdfIdStart")}
+    , pdfIdEnd_{iConfig.getParameter<int>("pdfIdEnd")}
+    , alphaIdStart_{iConfig.getParameter<int>("alphaIdStart")}
+    , alphaIdEnd_{iConfig.getParameter<int>("alphaIdEnd")}
+    , isLHEflag_{iConfig.getParameter<bool>("isLHEflag")}
+    , hasAlphaWeightFlag_{iConfig.getParameter<bool>("hasAlphaWeightFlag")}
 {
     // now do what ever initialization is needed
 
@@ -95,12 +90,14 @@ void GenInfoMiniAOD::fillMCInfo(const edm::Event& iEvent,
 
         origWeightForNorm_ = EventHandle->originalXWGTUP();
 
-        double pdfMax{1.0}, pdfMin{1.0};
+        double pdfMax{1.0};
+        double pdfMin{1.0};
 
-        int intialIndex{pdfIdStart_}, finalIndex{pdfIdEnd_ + 1};
-        for (int i = intialIndex; i != finalIndex; i++)
+        int intialIndex{pdfIdStart_};
+        int finalIndex{pdfIdEnd_ + 1};
+        for (int i{intialIndex}; i != finalIndex; i++)
         {
-            for (uint w = 0; w != EventHandle->weights().size(); ++w)
+            for (unsigned int w{0}; w != EventHandle->weights().size(); ++w)
             {
                 if (EventHandle->weights()[w].id == std::to_string(i))
                 {
@@ -131,8 +128,9 @@ void GenInfoMiniAOD::fillMCInfo(const edm::Event& iEvent,
 
         if (hasAlphaWeightFlag_)
         {
-            double alphaMax{1.0}, alphaMin{1.0};
-            for (uint w = 0; w != EventHandle->weights().size(); ++w)
+            double alphaMax{1.0};
+            double alphaMin{1.0};
+            for (unsigned int w{0}; w != EventHandle->weights().size(); ++w)
             {
                 if (EventHandle->weights()[w].id == alphaIdStart_)
                 {
