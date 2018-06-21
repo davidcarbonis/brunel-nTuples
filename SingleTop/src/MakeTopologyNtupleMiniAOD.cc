@@ -157,13 +157,13 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(
           iConfig.getParameter<edm::InputTag>("triggerToken"))}
     , metFilterToken_{consumes<edm::TriggerResults>(
           iConfig.getParameter<edm::InputTag>("metFilterToken"))}
-    , fakeTrigLabelList_{
-          iConfig.getParameter<std::vector<std::string>>("fakeTriggerList")}
+    , fakeTrigLabelList_{iConfig.getParameter<std::vector<std::string>>(
+          "fakeTriggerList")}
     , bTagList_{iConfig.getParameter<std::vector<std::string>>("bTagList")}
-    , triggerList_{
-          iConfig.getParameter<std::vector<std::string>>("triggerList")}
-    , metFilterList_{
-          iConfig.getParameter<std::vector<std::string>>("metFilterList")}
+    , triggerList_{iConfig.getParameter<std::vector<std::string>>(
+          "triggerList")}
+    , metFilterList_{iConfig.getParameter<std::vector<std::string>>(
+          "metFilterList")}
     , l1TrigLabel_{iConfig.getParameter<edm::InputTag>("l1TriggerTag")}
     , genParticlesToken_{consumes<reco::GenParticleCollection>(
           iConfig.getParameter<edm::InputTag>("genParticles"))}
@@ -171,11 +171,11 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(
           iConfig.getParameter<edm::InputTag>("genSimParticles"))}
     , pvLabel_{consumes<reco::VertexCollection>(
           iConfig.getParameter<edm::InputTag>("primaryVertexToken"))}
-    , rhoToken_{
-          consumes<double>(iConfig.getParameter<edm::InputTag>("rhoToken"))}
-    , effectiveAreaInfo_{
-          (iConfig.getParameter<edm::FileInPath>("effAreasConfigFile"))
-              .fullPath()}
+    , rhoToken_{consumes<double>(
+          iConfig.getParameter<edm::InputTag>("rhoToken"))}
+    , effectiveAreaInfo_{(iConfig.getParameter<edm::FileInPath>(
+                              "effAreasConfigFile"))
+                             .fullPath()}
     , pileupToken_{mayConsume<std::vector<PileupSummaryInfo>>(
           iConfig.getParameter<edm::InputTag>("pileupToken"))}
     , is2016rereco_{iConfig.getParameter<bool>("is2016rereco")}
@@ -214,8 +214,8 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(
     , muoIsoCut_{iConfig.getParameter<double>("muoRelIso")}
     , metCut_{iConfig.getParameter<double>("metCut")} // met cut
     , check_triggers_{iConfig.getParameter<bool>("checkTriggers")}
-    , dREleGeneralTrackMatch_{
-          iConfig.getParameter<double>("dREleGeneralTrackMatchForPhotonRej")}
+    , dREleGeneralTrackMatch_{iConfig.getParameter<double>(
+          "dREleGeneralTrackMatchForPhotonRej")}
     , magneticField_{iConfig.getParameter<double>("magneticFieldForPhotonRej")}
     , correctFactor_{iConfig.getParameter<double>("correctFactorForPhotonRej")}
     , maxDist_{iConfig.getParameter<double>("maxDistForPhotonRej")}
@@ -592,15 +592,22 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(
             }
         }
 
-        electronSortedE[ID][numEle[ID] - 1] = ele.energy();
-        electronSortedEt[ID][numEle[ID] - 1] = ele.et();
-        electronSortedEta[ID][numEle[ID] - 1] = ele.eta();
-        electronSortedPt[ID][numEle[ID] - 1] = ele.pt();
-        electronSortedTheta[ID][numEle[ID] - 1] = ele.theta();
-        electronSortedPhi[ID][numEle[ID] - 1] = ele.phi();
-        electronSortedPx[ID][numEle[ID] - 1] = ele.px();
-        electronSortedPy[ID][numEle[ID] - 1] = ele.py();
-        electronSortedPz[ID][numEle[ID] - 1] = ele.pz();
+        const double eleCorrScale{ele.userFloat("ecalTrkEnergyPostCorr")
+                                  / ele.p4().energy()};
+        const TLorentzVector eleCorr{ele.px() * eleCorrScale,
+                                     ele.py() * eleCorrScale,
+                                     ele.pz() * eleCorrScale,
+                                     ele.energy() * eleCorrScale};
+
+        electronSortedE[ID][numEle[ID] - 1] = eleCorr.E();
+        electronSortedEt[ID][numEle[ID] - 1] = eleCorr.Et();
+        electronSortedEta[ID][numEle[ID] - 1] = eleCorr.Eta();
+        electronSortedPt[ID][numEle[ID] - 1] = eleCorr.Pt();
+        electronSortedTheta[ID][numEle[ID] - 1] = eleCorr.Theta();
+        electronSortedPhi[ID][numEle[ID] - 1] = eleCorr.Phi();
+        electronSortedPx[ID][numEle[ID] - 1] = eleCorr.Px();
+        electronSortedPy[ID][numEle[ID] - 1] = eleCorr.Py();
+        electronSortedPz[ID][numEle[ID] - 1] = eleCorr.Pz();
         electronSortedCharge[ID][numEle[ID] - 1] = ele.charge();
 
         if (is2016rereco_)
@@ -1378,8 +1385,12 @@ void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent,
         //     continue;
         // }
 
-        math::XYZTLorentzVector elecand{
-            ele.px(), ele.py(), ele.pz(), ele.energy()};
+        const double eleCorrScale{ele.userFloat("ecalTrkEnergyPostCorr")
+                                  / ele.p4().energy()};
+        math::XYZTLorentzVector elecand{ele.px() * eleCorrScale,
+                                        ele.py() * eleCorrScale,
+                                        ele.pz() * eleCorrScale,
+                                        ele.energy() * eleCorrScale};
         // bool tightcand = tightElectronID(ele, true); // Old Electron Id
         candidatestoloopover.push_back(elecand);
 
