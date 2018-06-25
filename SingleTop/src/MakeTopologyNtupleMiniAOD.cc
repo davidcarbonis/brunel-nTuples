@@ -365,7 +365,7 @@ void MakeTopologyNtupleMiniAOD::fillEventInfo(const edm::Event& iEvent,
             pvDZ = pv[0].zError();
             pvRho = pv[0].position().Rho();
             pvNdof = pv[0].ndof();
-            pvIsFake = static_cast<int>(pv[0].isFake());
+            pvIsFake = numeric_cast<int>(pv[0].isFake());
             pvChi2 = pv[0].chi2();
             math::XYZPoint point(pvX, pvY, pvZ);
             vertexPoint_ = point;
@@ -872,8 +872,8 @@ void MakeTopologyNtupleMiniAOD::fillMuons(
 
     numMuo[ID] = 0;
     // muons:
-    for (size_t imuo{0};
-         imuo < etMuonSorted.size() && numMuo[ID] < static_cast<int>(NMUONSMAX);
+    for (size_t imuo{0}; imuo < etMuonSorted.size()
+                         && numMuo[ID] < numeric_cast<int>(NMUONSMAX);
          ++imuo)
     {
         size_t jmu{etMuonSorted[imuo]};
@@ -1374,7 +1374,7 @@ void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent,
         IndexSorter<std::vector<float>>(electronEts, true)()};
 
     for (size_t iele{0}; iele < etSortedIndex.size()
-                         && numEle[ID] < static_cast<int>(NELECTRONSMAX);
+                         && numEle[ID] < numeric_cast<int>(NELECTRONSMAX);
          ++iele)
     {
         size_t jele{etSortedIndex[iele]};
@@ -2005,8 +2005,8 @@ void MakeTopologyNtupleMiniAOD::fillJets(
         100,
         false); // index of jets in the gen jet collection - if it's true it
                 // means it's already matched and so shouldn't be used again
-    for (int ijet{0}; ijet < static_cast<int>(etJetSorted.size())
-                      && numJet[ID] < static_cast<int>(NJETSMAX);
+    for (size_t ijet{0}; ijet < etJetSorted.size()
+                      && numJet[ID] < numeric_cast<int>(NJETSMAX);
          ++ijet)
     {
         size_t jjet{etJetSorted[ijet]};
@@ -2120,7 +2120,7 @@ void MakeTopologyNtupleMiniAOD::fillGeneralTracks(
 
     for (auto trit{lostTracks->begin()};
          trit != lostTracks->end()
-         && numGeneralTracks < static_cast<int>(NTRACKSMAX);
+         && numGeneralTracks < numeric_cast<int>(NTRACKSMAX);
          trit++)
     {
         generalTracksPt[numGeneralTracks] = trit->pt();
