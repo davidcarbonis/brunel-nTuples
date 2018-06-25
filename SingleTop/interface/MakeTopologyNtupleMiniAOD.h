@@ -166,17 +166,6 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     void fillBTagInfo(const pat::Jet& jet,
                       const size_t jetindex,
                       const std::string& ID);
-    void fillCTagInfo(const pat::Jet& jet,
-                      const size_t jetindex,
-                      std::string ID);
-    void fillBIDParameters(const edm::EventSetup&, const std::string&);
-    void makeBIDInfoHistos(const edm::EventSetup&);
-    void fillBIDInfoHistos(const edm::EventSetup&,
-                           TH2D*,
-                           PerformanceResult::ResultType&,
-                           BinningVariables::BinningVariablesType,
-                           BinningVariables::BinningVariablesType,
-                           const BtagPerformance&);
     void fillOtherJetInfo(const pat::Jet& jet,
                           const size_t jetindex,
                           const std::string& ID,
@@ -189,22 +178,10 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
                        const size_t jetindex,
                        const std::string& ID,
                        bool fillMC);
-    void fillZVeto(const edm::Event&,
-                   const edm::EventSetup&,
-                   const edm::InputTag&,
-                   const std::string&);
     void fillMuons(const edm::Event&,
                    const edm::EventSetup&,
                    edm::EDGetTokenT<pat::MuonCollection>,
                    const std::string&);
-    void fillPhotons(const edm::Event&,
-                     const edm::EventSetup&,
-                     edm::EDGetTokenT<pat::PhotonCollection>,
-                     const std::string&);
-    void fillTaus(const edm::Event&,
-                  const edm::EventSetup&,
-                  const edm::InputTag&,
-                  const std::string&);
     void fillElectrons(const edm::Event&,
                        const edm::EventSetup&,
                        edm::EDGetTokenT<pat::ElectronCollection>,
@@ -220,11 +197,7 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     void fillSummaryVariables(
         void); // should only be called after all other functions.
     void fillGeneralTracks(const edm::Event&, const edm::EventSetup&);
-    void fillFlavorHistory(const edm::Event&, const edm::EventSetup&);
     // ID functions
-    bool jetIDLoose(const pat::Jet&, float);
-    bool eleID(const pat::Electron&);
-    bool muonID(const pat::Muon&);
     bool photonConversionVeto(const pat::Electron&, float&, float&);
 
     void bookBranches(void); // does all the branching.
@@ -234,15 +207,9 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     void bookBIDInfoBranches(const std::string&,
                              const std::string&); // called by bookJetBranches,
                                                   // makes branches for B-ID.
-    void bookCaloJetBranches(
-        const std::string& ID,
-        const std::string& name); // called by bookBranches, makes jet branches.
     void bookPFJetBranches(const std::string& ID,
                            const std::string& name); // called by bookBranches,
                                                      // makes jet branches.
-    void bookJPTJetBranches(const std::string& ID,
-                            const std::string& name); // called by bookBranches,
-                                                      // makes jet branches.
     void bookTauBranches(const std::string& ID, const std::string& name);
     void bookPhotonBranches(const std::string& ID, const std::string& name);
     void bookElectronBranches(

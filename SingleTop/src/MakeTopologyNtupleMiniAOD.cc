@@ -278,56 +278,6 @@ MakeTopologyNtupleMiniAOD::~MakeTopologyNtupleMiniAOD()
 //
 // member functions
 //
-void MakeTopologyNtupleMiniAOD::fillPhotons(
-    const edm::Event& iEvent,
-    const edm::EventSetup& /*iSetup*/,
-    edm::EDGetTokenT<pat::PhotonCollection> phoToken_,
-    const std::string& ID)
-{
-    edm::Handle<pat::PhotonCollection> phoHandle;
-    iEvent.getByToken(phoToken_, phoHandle);
-    const pat::PhotonCollection& photons = *phoHandle;
-    for (auto photon_iter{photons.begin()};
-         photon_iter != photons.end() && nphotons[ID] < NPHOTONSMAX;
-         ++photon_iter)
-    {
-        photon_e[ID][nphotons[ID]] = photon_iter->energy();
-        photon_phi[ID][nphotons[ID]] = photon_iter->phi();
-        photon_eta[ID][nphotons[ID]] = photon_iter->eta();
-        photon_pt[ID][nphotons[ID]] = photon_iter->pt();
-
-        nphotons[ID]++;
-    }
-}
-void MakeTopologyNtupleMiniAOD::fillTaus(const edm::Event& iEvent,
-                                         const edm::EventSetup& /*iSetup*/,
-                                         const edm::InputTag& tauIn_,
-                                         const std::string& ID)
-{
-    edm::Handle<edm::View<pat::Tau>> tauHandle;
-    iEvent.getByLabel(tauIn_, tauHandle);
-    const edm::View<pat::Tau>& taus{*tauHandle};
-    for (edm::View<pat::Tau>::const_iterator tau_iter = taus.begin();
-         tau_iter != taus.end() && ntaus[ID] < NTAUSMAX;
-         ++tau_iter)
-    {
-        tau_e[ID][ntaus[ID]] = tau_iter->energy();
-        tau_phi[ID][ntaus[ID]] = tau_iter->phi();
-        tau_eta[ID][ntaus[ID]] = tau_iter->eta();
-        tau_pt[ID][ntaus[ID]] = tau_iter->pt();
-        ntaus[ID]++;
-    }
-}
-
-void MakeTopologyNtupleMiniAOD::fillFlavorHistory(
-    const edm::Event& iEvent, const edm::EventSetup& /*iSetup*/)
-{
-    edm::Handle<unsigned int> path;
-    iEvent.getByLabel("flavorHistoryFilter", path);
-
-    flavorHistory = *path;
-}
-
 void MakeTopologyNtupleMiniAOD::fillSummaryVariables()
 {
     ran_postloop_ = true;
@@ -542,11 +492,6 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(
         size_t jele{etSortedIndex[iele]};
         // const pat::Electron& ele = electrons[jele];
         const pat::Electron& ele{(*electronHandle)[jele]};
-
-        // if (!eleID(ele))
-        // {
-        //     continue;
-        // }
 
         pat::ElectronRef refel{electronOrgHandle,
                                numeric_cast<unsigned int>(jele)};
@@ -879,11 +824,6 @@ void MakeTopologyNtupleMiniAOD::fillMuons(
         size_t jmu{etMuonSorted[imuo]};
         // std::cout << imuo << " " << jmu << std::endl;
         const pat::Muon& muo{muons[jmu]};
-
-        // if (!muonID(muo))
-        // {
-        //     continue;
-        // }
 
         numMuo[ID]++;
 
@@ -1340,80 +1280,6 @@ void MakeTopologyNtupleMiniAOD::fillBTagInfo(const pat::Jet& jet,
     }
 }
 
-/////////////////////////////
-void MakeTopologyNtupleMiniAOD::fillZVeto(const edm::Event& iEvent,
-                                          const edm::EventSetup& /*iSetup*/,
-                                          const edm::InputTag& eleIn_,
-                                          const std::string& ID)
-{
-    // requires electrons
-    // fillElectrons(iEvent, iSetup);
-
-    edm::Handle<edm::View<pat::Electron>> electronHandle;
-    iEvent.getByLabel(eleIn_, electronHandle);
-    const edm::View<pat::Electron>& electrons{*electronHandle};
-
-    // Get the electron ID data from the event stream.
-    // Note: this implies that the VID ID modules have been run upstream.
-    // If you need more info, check with the EGM group.
-
-    std::vector<math::XYZTLorentzVector> candidatestoloopover;
-
-    // use the sorted collection, it has no ID applied to it yet so that should
-    // be ok:
-    electronEts.clear();
-    for (edm::View<pat::Electron>::const_iterator electron_iter =
-             electrons.begin();
-         electron_iter != electrons.end();
-         ++electron_iter)
-    {
-        double et{electron_iter->et()};
-        electronEts.push_back(et);
-    }
-    std::vector<size_t> etSortedIndex{
-        IndexSorter<std::vector<float>>(electronEts, true)()};
-
-    for (size_t iele{0}; iele < etSortedIndex.size()
-                         && numEle[ID] < numeric_cast<int>(NELECTRONSMAX);
-         ++iele)
-    {
-        size_t jele{etSortedIndex[iele]};
-        const pat::Electron& ele{electrons[jele]};
-
-        // if (!eleID(ele))
-        // {
-        //     continue;
-        // }
-
-        const double eleCorrScale{ele.userFloat("ecalTrkEnergyPostCorr")
-                                  / ele.p4().energy()};
-        math::XYZTLorentzVector elecand{ele.px() * eleCorrScale,
-                                        ele.py() * eleCorrScale,
-                                        ele.pz() * eleCorrScale,
-                                        ele.energy() * eleCorrScale};
-        // bool tightcand = tightElectronID(ele, true); // Old Electron Id
-        candidatestoloopover.push_back(elecand);
-
-    } // end of electron loop
-    // now do a double loop over all candidates and fill the z candidates
-    nzcandidates[ID] = 0;
-    for (size_t iele{0}; iele < candidatestoloopover.size(); iele++)
-    {
-        for (size_t jele{0}; jele < candidatestoloopover.size(); jele++)
-        {
-            if (jele == iele)
-            {
-                continue;
-            }
-            zcandidatesvector[ID][nzcandidates[ID]] =
-                (candidatestoloopover[iele] + candidatestoloopover[jele]).M();
-            nzcandidates[ID]++;
-        }
-    }
-    // and clear the bookkeeping vectors:
-    candidatestoloopover.clear();
-}
-/////////////////////////////
 
 void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
                                            const edm::EventSetup& /*iSetup*/)
@@ -2084,11 +1950,6 @@ void MakeTopologyNtupleMiniAOD::fillJets(
             fillMCJetInfo(0, numJet[ID], ID, false);
         }
 
-        // if (jetIDLoose(jet, jetSortedPt[ID][numJet[ID]]))
-        // {
-        //     continue;
-        // }
-
         /////////////////////////////
         // no cuts that remove jets after this!
 
@@ -2737,7 +2598,6 @@ void MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent,
     // fillMissingET(iEvent, iSetup, metLabel_, "Calo");
     //
     // fillMissingET(iEvent, iSetup, metJPTTag_, "JPT");
-    // fillPhotons(iEvent, iSetup, phoLabel_, "Calo");
     // fillGeneralTracks(iEvent, iSetup);
 
     fillSummaryVariables();
@@ -2813,10 +2673,7 @@ void MakeTopologyNtupleMiniAOD::bookBranches()
     // bookElectronBranches("Calo", "Calo");
     // bookMuonBranches("Calo", "Calo");
     // bookJetBranches("Calo", "Calo");
-    // bookCaloJetBranches("Calo", "Calo");
     // bookMETBranches("Calo", "Calo");
-    // bookCaloMETBranches("Calo", "Calo");
-    // bookPhotonBranches("Calo", "Calo");
     // bookTauBranches("Calo", "Calo");
 
     bookElectronBranches("PF", "PF2PAT");
@@ -2829,7 +2686,6 @@ void MakeTopologyNtupleMiniAOD::bookBranches()
     // bookJetBranches("AK5PF", "AK5PF");
     // bookPFJetBranches("AK5PF", "AK5PF");
     // bookJetBranches("JPT", "JPT");
-    // bookJPTJetBranches("JPT", "JPT");
     // bookMETBranches("JPT", "TC");
 
     bookGeneralTracksBranches();
@@ -2984,35 +2840,6 @@ void MakeTopologyNtupleMiniAOD::bookTauBranches(const std::string& ID,
                     (prefix + "Eta[numTau" + name + "]/F").c_str());
 }
 
-void MakeTopologyNtupleMiniAOD::bookPhotonBranches(const std::string& ID,
-                                                   const std::string& name)
-{
-    nphotons[ID] = 0;
-
-    std::vector<float> tempVecF(NPHOTONSMAX);
-    photon_e[ID] = tempVecF;
-    photon_phi[ID] = tempVecF;
-    photon_eta[ID] = tempVecF;
-    photon_pt[ID] = tempVecF;
-
-    mytree_->Branch(("numPhoton" + name).c_str(),
-                    &nphotons[ID],
-                    ("numPhoton" + name + "/I").c_str());
-
-    std::string prefix{"photon" + name};
-    mytree_->Branch((prefix + "E").c_str(),
-                    &photon_e[ID][0],
-                    (prefix + "E[numPhoton" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "Pt").c_str(),
-                    &photon_pt[ID][0],
-                    (prefix + "Pt[numPhoton" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "Phi").c_str(),
-                    &photon_phi[ID][0],
-                    (prefix + "Phi[numPhoton" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "Eta").c_str(),
-                    &photon_eta[ID][0],
-                    (prefix + "Eta[numPhoton" + name + "]/F").c_str());
-}
 
 // book electron branches:
 void MakeTopologyNtupleMiniAOD::bookElectronBranches(const std::string& ID,
@@ -3832,61 +3659,8 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(const std::string& ID,
             (prefix + "HardProcess[numMuon" + name + "]/I").c_str());
     }
 }
-void MakeTopologyNtupleMiniAOD::bookCaloMETBranches(const std::string& ID,
-                                                    const std::string& name)
-{
-    // std::cout << "bookCaloMETBranches CHECK" << std::endl;
-    metMaxEtEM[ID] = -1.0;
-    metMaxEtHad[ID] = -1.0;
-    metEtFracHad[ID] = -1.0;
-    metEtFracEM[ID] = -1.0;
-    metHadEtHB[ID] = -1.0;
-    metHadEtHO[ID] = -1.0;
-    metHadEtHE[ID] = -1.0;
-    metEmEtEE[ID] = -1.0;
-    metEmEtEB[ID] = -1.0;
-    metEmEtHF[ID] = -1.0;
-    metHadEtHF[ID] = -1.0;
-    metSignificance[ID] = -1.0;
 
-    std::string prefix{"met" + name};
-    mytree_->Branch((prefix + "MaxEtEM").c_str(),
-                    &metMaxEtEM[ID],
-                    (prefix + "MaxEtEM/F").c_str());
-    mytree_->Branch((prefix + "MaxEtHad").c_str(),
-                    &metMaxEtHad[ID],
-                    (prefix + "MaxEtHad/F").c_str());
-    mytree_->Branch((prefix + "EtFracHad").c_str(),
-                    &metEtFracHad[ID],
-                    (prefix + "EtFracHad/F").c_str());
-    mytree_->Branch((prefix + "EtFracEM").c_str(),
-                    &metEtFracEM[ID],
-                    (prefix + "EtFracEM/F").c_str());
-    mytree_->Branch((prefix + "HadEtHB").c_str(),
-                    &metHadEtHB[ID],
-                    (prefix + "HadEtHB/F").c_str());
-    mytree_->Branch((prefix + "HadEtHO").c_str(),
-                    &metHadEtHO[ID],
-                    (prefix + "HadEtHO/F").c_str());
-    mytree_->Branch((prefix + "HadEtHF").c_str(),
-                    &metHadEtHF[ID],
-                    (prefix + "HadEtHF/F").c_str());
-    mytree_->Branch((prefix + "HadEtHE").c_str(),
-                    &metHadEtHE[ID],
-                    (prefix + "HadEtHE/F").c_str());
-    mytree_->Branch((prefix + "EmEtHF").c_str(),
-                    &metEmEtHF[ID],
-                    (prefix + "EmEtHF/F").c_str());
-    mytree_->Branch((prefix + "EmEtEE").c_str(),
-                    &metEmEtEE[ID],
-                    (prefix + "EmEtEE/F").c_str());
-    mytree_->Branch((prefix + "EmEtEB").c_str(),
-                    &metEmEtEB[ID],
-                    (prefix + "EmEtEB/F").c_str());
-    mytree_->Branch((prefix + "Significance").c_str(),
-                    &metSignificance[ID],
-                    (prefix + "Significance/F").c_str());
-}
+
 void MakeTopologyNtupleMiniAOD::bookMETBranches(const std::string& ID,
                                                 const std::string& name)
 {
@@ -4081,58 +3855,6 @@ void MakeTopologyNtupleMiniAOD::bookMCBranches()
 }
 
 // book jet branches:
-void MakeTopologyNtupleMiniAOD::bookCaloJetBranches(const std::string& ID,
-                                                    const std::string& name)
-{
-    // std::cout << "bookCaloJetBranches CHECK" << std::endl;
-    // Initialise the maps so ROOT wont panic
-    std::vector<float> tempVecF(NJETSMAX);
-    std::vector<int> tempVecI(NJETSMAX);
-
-    jetSortedEMEnergyInEB[ID] = tempVecF;
-    jetSortedEMEnergyInEE[ID] = tempVecF;
-    jetSortedEMEnergyFraction[ID] = tempVecF;
-    jetSortedEMEnergyInHF[ID] = tempVecF;
-    jetSortedHadEnergyInHB[ID] = tempVecF;
-    jetSortedHadEnergyInHE[ID] = tempVecF;
-    jetSortedHadEnergyInHF[ID] = tempVecF;
-    jetSortedHadEnergyInHO[ID] = tempVecF;
-    jetSortedN60[ID] = tempVecF;
-    jetSortedN90[ID] = tempVecF;
-
-    std::string prefix{"jet" + name};
-    mytree_->Branch((prefix + "EMEnergyInEB").c_str(),
-                    &jetSortedEMEnergyInEB[ID][0],
-                    (prefix + "EMEnergyInEB[numJet" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "EMEnergyInEE").c_str(),
-                    &jetSortedEMEnergyInEE[ID][0],
-                    (prefix + "EMEnergyInEE[numJet" + name + "]/F").c_str());
-    mytree_->Branch(
-        (prefix + "EMEnergyFraction").c_str(),
-        &jetSortedEMEnergyFraction[ID][0],
-        (prefix + "EMEnergyFraction[numJet" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "EMEnergyInHF").c_str(),
-                    &jetSortedEMEnergyInHF[ID][0],
-                    (prefix + "EMEnergyInHF[numJet" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "HadEnergyInHB").c_str(),
-                    &jetSortedHadEnergyInHB[ID][0],
-                    (prefix + "HadEnergyInHB[numJet" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "HadEnergyInHE").c_str(),
-                    &jetSortedHadEnergyInHE[ID][0],
-                    (prefix + "HadEnergyInHE[numJet" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "HadEnergyInHF").c_str(),
-                    &jetSortedHadEnergyInHF[ID][0],
-                    (prefix + "HadEnergyInHF[numJet" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "HadEnergyInHO").c_str(),
-                    &jetSortedHadEnergyInHO[ID][0],
-                    (prefix + "HadEnergyInHO[numJet" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "N60").c_str(),
-                    &jetSortedN60[ID][0],
-                    (prefix + "N60[numJet" + name + "]/F").c_str());
-    mytree_->Branch((prefix + "N90").c_str(),
-                    &jetSortedN90[ID][0],
-                    (prefix + "N90[numJet" + name + "]/F").c_str());
-}
 void MakeTopologyNtupleMiniAOD::bookPFJetBranches(const std::string& ID,
                                                   const std::string& name)
 {
@@ -4226,42 +3948,8 @@ void MakeTopologyNtupleMiniAOD::bookPFJetBranches(const std::string& ID,
         &jetSortedChargedMultiplicity[ID][0],
         (prefix + "ChargedMultiplicity[numJet" + name + "]/I").c_str());
 }
-void MakeTopologyNtupleMiniAOD::bookJPTJetBranches(const std::string& ID,
-                                                   const std::string& name)
-{
-    // std::cout << "bookJPTJetsBranches CHECK" << std::endl;
-    // Initialise the maps so ROOT wont panic
-    std::vector<float> tempVecF(NJETSMAX);
-    std::vector<int> tempVecI(NJETSMAX);
 
-    jetSortedChargedHadronEnergyFraction[ID] = tempVecF;
-    jetSortedNeutralHadronEnergyFraction[ID] = tempVecF;
-    jetSortedChargedEmEnergyFraction[ID] = tempVecF;
-    jetSortedNeutralEmEnergyFraction[ID] = tempVecF;
-    jetSortedEMEnergyFraction[ID] = tempVecF;
 
-    std::string prefix{"jet" + name};
-    mytree_->Branch(
-        (prefix + "ChargedHadronEnergyFraction").c_str(),
-        &jetSortedChargedHadronEnergyFraction[ID][0],
-        (prefix + "ChargedHadronEnergyFraction[numJet" + name + "]/F").c_str());
-    mytree_->Branch(
-        (prefix + "NeutralHadronEnergyFraction").c_str(),
-        &jetSortedNeutralHadronEnergyFraction[ID][0],
-        (prefix + "NeutralHadronEnergyFraction[numJet" + name + "]/F").c_str());
-    mytree_->Branch(
-        (prefix + "ChargedEmEnergyFraction").c_str(),
-        &jetSortedChargedEmEnergyFraction[ID][0],
-        (prefix + "ChargedEmEnergyFraction[numJet" + name + "]/F").c_str());
-    mytree_->Branch(
-        (prefix + "NeutralEmEnergyFraction").c_str(),
-        &jetSortedNeutralEmEnergyFraction[ID][0],
-        (prefix + "NeutralEmEnergyFraction[numJet" + name + "]/F").c_str());
-    mytree_->Branch(
-        (prefix + "EMEnergyFraction").c_str(),
-        &jetSortedEMEnergyFraction[ID][0],
-        (prefix + "EMEnergyFraction[numJet" + name + "]/F").c_str());
-}
 void MakeTopologyNtupleMiniAOD::bookJetBranches(const std::string& ID,
                                                 const std::string& name)
 {
@@ -4495,88 +4183,7 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(const std::string& ID,
     bookBIDInfoBranches(ID, name);
 }
 
-void MakeTopologyNtupleMiniAOD::makeBIDInfoHistos(const edm::EventSetup& iSetup)
-{
-    // std::cout << "makeBIDInfoHistos CHECK" << std::endl;
-    if (filledBIDInfo_)
-    {
-        return;
-    }
-    // Cuts in TH1
-    edm::ESHandle<BtagPerformance> perfH;
-    for (auto iAlgo{btaggingparamnames_.begin()};
-         iAlgo != btaggingparamnames_.end();
-         iAlgo++)
-    {
-        std::string name{"btagParamDiscCut_"};
-        name += *iAlgo;
 
-        // Check to see if it exists already
-        if (histocontainer_.count(name))
-        {
-            continue;
-        }
-        histocontainer_[name] =
-            fs->make<TH1D>(name.c_str(), name.c_str(), 1, 0, 1);
-
-        // May as well fill it now.
-        iSetup.get<BTagPerformanceRecord>().get(*iAlgo, perfH);
-        const BtagPerformance& pbeff = *(perfH.product());
-        histocontainer_[name]->SetBinContent(1, pbeff.workingPoint().cut());
-    }
-    for (size_t iAlgo{0}; iAlgo < btaggingparamnames_.size()
-                          && iAlgo < btaggingparaminputtypes_.size();
-         ++iAlgo)
-    {
-        std::string name{"btagParam_"};
-        name +=
-            btaggingparamnames_[iAlgo] + "_" + btaggingparaminputtypes_[iAlgo];
-        // Check to see if it exists already
-        if (histocontainer2D_.count(name))
-        {
-            continue;
-        }
-        // eta vs pt
-        histocontainer2D_[name] = fs->make<TH2D>(
-            name.c_str(), name.c_str(), 999, 1, 1000, 25, 0, 2.5);
-        // iSetup.get<BTagPerformanceRecord>().get(btaggingparamnames_[iAlgo],
-        //                                         perfH);
-        // const BtagPerformance& pbeff = *(perfH.product());
-        // fillBIDInfoHistos(iSetup,
-        //                   histocontainer2D_[name],
-        //                   btaggingparamtype_[btaggingparaminputtypes_[iAlgo]],
-        //                   BinningVariables::JetEt,
-        //                   BinningVariables::JetAbsEta,
-        //                   pbeff);
-    }
-    filledBIDInfo_ = true;
-}
-void MakeTopologyNtupleMiniAOD::fillBIDInfoHistos(
-    const edm::EventSetup& /*iSetup*/,
-    TH2D* inputHisto,
-    PerformanceResult::ResultType& measurement,
-    BinningVariables::BinningVariablesType xType,
-    BinningVariables::BinningVariablesType yType,
-    const BtagPerformance& pbeff)
-{
-    // std::cout << "fillBIDInfoHistos CHECK" << std::endl;
-    BinningPointByMap point;
-    for (int binX{1}; binX <= inputHisto->GetNbinsX(); binX++)
-    {
-        for (int binY{1}; binY <= inputHisto->GetNbinsY(); binY++)
-        {
-            double xPoint = inputHisto->GetXaxis()->GetBinCenter(binX);
-            double yPoint = inputHisto->GetYaxis()->GetBinCenter(binY);
-
-            point.reset();
-            point.insert(xType, xPoint);
-            point.insert(yType, yPoint);
-
-            inputHisto->SetBinContent(
-                binX, binY, pbeff.getResult(measurement, point));
-        }
-    }
-}
 void MakeTopologyNtupleMiniAOD::bookBIDInfoBranches(const std::string& /*ID*/,
                                                     const std::string& /*name*/)
 {
@@ -4931,126 +4538,6 @@ bool MakeTopologyNtupleMiniAOD::photonConversionVeto(
     return (!CONV);
 }
 
-void MakeTopologyNtupleMiniAOD::fillBIDParameters(
-    const edm::EventSetup& /*iSetup*/, const std::string& ID)
-{
-    // std::cout << "fillBIDParameters CHECK" << std::endl;
-    edm::ESHandle<BtagPerformance> perfH;
-    BinningPointByMap p;
-    for (size_t ii{0}; ii < btaggingparamnames_.size(); ii++)
-    {
-        // std::string beffstr = btaggingparamnames_[ii];
-        // std::cout << " Studying Beff with label " << beffstr << std::endl;
-        // iSetup.get<BTagPerformanceRecord>().get(beffstr, perfH);
-        // const BtagPerformance& pbeff = *(perfH.product());
-        // bidParamsDiscCut_[btaggingparamnames_[ii]] =
-        // pbeff.workingPoint().cut(); std::cout << " Beff cut value is : "
-        //           << bidParamsDiscCut_[btaggingparamnames_[ii]] << std::endl;
-
-        // now loop over the jets:
-        std::string lookupname{btaggingparamnames_[ii] + "-"
-                               + btaggingparaminputtypes_[ii]};
-        for (int ijet{0}; ijet < numJet[ID]; ijet++)
-        {
-            p.reset();
-            p.insert(BinningVariables::JetAbsEta,
-                     std::abs(jetSortedEta[ID][ijet]));
-            p.insert(BinningVariables::JetEt, jetSortedEt[ID][ijet]);
-            float eff{0};
-            // if (pbeff.isResultOk(btaggingparamtype_[jj].second, p))
-            // {
-            //     eff = pbeff.getResult(
-            //         btaggingparamtype_[btaggingparaminputtypes_[ii]], p);
-            // }
-            // std::cout << "value " << lookupname << "(PerformanceResult:"
-            //           << btaggingparamtype_[btaggingparaminputtypes_[ii]]
-            //           << ") for jet " << ijet << "(et,eta):("
-            //           << jetSortedEt[ijet] << "," << jetSortedEta[ijet]
-            //           << ")  is " << eff << std::endl;
-            jetSortedBIDParams_[lookupname + ID][ijet] = eff;
-        }
-    }
-}
-
-bool MakeTopologyNtupleMiniAOD::jetIDLoose(const pat::Jet& jet, float jetPt)
-{
-    // Very basic loose jet id criteria - basically to veto on other loose
-    // b-tagged jets in the event.
-    if (!doCuts_)
-    {
-        return true;
-    }
-    if (jetPt < jetPtCut_)
-    {
-        return false;
-    }
-    if (std::abs(jet.eta()) > jetEtaCut_)
-    {
-        return false;
-    }
-    return true;
-}
-
-bool MakeTopologyNtupleMiniAOD::eleID(const pat::Electron& ele)
-{
-    if (!doCuts_)
-    {
-        return true;
-    }
-    if (ele.pt() < elePtCut_)
-    {
-        return false;
-    }
-    if (std::abs(ele.eta()) > eleEtaCut_)
-    {
-        return false;
-    }
-
-    const reco::GsfElectron::PflowIsolationVariables& pfIso{
-        ele.pfIsolationVariables()};
-    const float AEff03{effectiveAreaInfo_.getEffectiveArea(
-        std::abs(ele.superCluster()->eta()))};
-    const double combrelisorho{
-        (pfIso.sumChargedHadronPt
-         + std::max(0.0,
-                    pfIso.sumNeutralHadronEt + pfIso.sumPhotonEt
-                        - rhoIso * AEff03))
-        / ele.pt()};
-    if (combrelisorho > eleIsoCut_)
-    {
-        return false;
-    }
-
-    return true;
-}
-
-bool MakeTopologyNtupleMiniAOD::muonID(const pat::Muon& muo)
-{
-    if (!doCuts_)
-    {
-        return true;
-    }
-    if (muo.pt() < muoPtCut_)
-    {
-        return false;
-    }
-    if (std::abs(muo.eta()) > muoEtaCut_)
-    {
-        return false;
-    }
-    const double combrelisodbeta{
-        (muo.pfIsolationR04().sumChargedHadronPt
-         + std::max(0.0,
-                    muo.pfIsolationR04().sumNeutralHadronEt
-                        + muo.pfIsolationR04().sumPhotonEt
-                        - 0.5 * muo.pfIsolationR04().sumPUPt))
-        / muo.pt()};
-    if (combrelisodbeta > muoIsoCut_)
-    {
-        return false;
-    }
-    return true;
-}
 
 // define this as a plug-in
 DEFINE_FWK_MODULE(MakeTopologyNtupleMiniAOD);
