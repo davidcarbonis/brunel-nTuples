@@ -467,7 +467,7 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(
     for (const auto& electron : electrons)
     {
         double et{electron.et()};
-        electronEts.push_back(et);
+        electronEts.emplace_back(et);
     }
 
     // if (ID == "PF")
@@ -798,7 +798,7 @@ void MakeTopologyNtupleMiniAOD::fillMuons(
     for (const auto& muon : muons)
     {
         double et{muon.et()}; // should already be corrected
-        muonEts.push_back(et);
+        muonEts.emplace_back(et);
     }
 
     // std::cout << __LINE__ << " : " << __FILE__ << " : nMuons = " <<
@@ -1838,25 +1838,25 @@ void MakeTopologyNtupleMiniAOD::fillJets(
             {
                 jecCalo->setJetEta(jet.eta());
                 jecCalo->setJetPt(jet.pt());
-                correctedJetEts.push_back(jet.et() * jecCalo->getCorrection());
+                correctedJetEts.emplace_back(jet.et() * jecCalo->getCorrection());
             }
             else if (jet.isPFJet())
             {
                 jecPF->setJetEta(jet.eta());
                 jecPF->setJetPt(jet.pt());
-                correctedJetEts.push_back(jet.et() * jecPF->getCorrection());
+                correctedJetEts.emplace_back(jet.et() * jecPF->getCorrection());
             }
             // else if (jet_iter->isJPTJet())
             else
             {
                 jecJPT->setJetEta(jet.eta());
                 jecJPT->setJetPt(jet.pt());
-                correctedJetEts.push_back(jet.et() * jecJPT->getCorrection());
+                correctedJetEts.emplace_back(jet.et() * jecJPT->getCorrection());
             }
         }
         else
         {
-            correctedJetEts.push_back(jet.et());
+            correctedJetEts.emplace_back(jet.et());
         }
     }
 
@@ -2742,7 +2742,7 @@ void MakeTopologyNtupleMiniAOD::bookBranches()
 
     while (HLT_fakeTriggerValues.size() < fakeTrigLabelList_.size())
     {
-        HLT_fakeTriggerValues.push_back(-99);
+        HLT_fakeTriggerValues.emplace_back(-99);
     }
     for (size_t ii{0}; ii < fakeTrigLabelList_.size(); ii++)
     {
@@ -2760,11 +2760,11 @@ void MakeTopologyNtupleMiniAOD::bookBranches()
     //      iTrig++)
     while (triggerRes.size() < triggerList_.size())
     {
-        triggerRes.push_back(-99);
+        triggerRes.emplace_back(-99);
     }
     while (metFilterRes.size() < metFilterList_.size())
     {
-        metFilterRes.push_back(-99);
+        metFilterRes.emplace_back(-99);
     }
     for (size_t iTrig{0}; iTrig < triggerList_.size(); iTrig++)
     {

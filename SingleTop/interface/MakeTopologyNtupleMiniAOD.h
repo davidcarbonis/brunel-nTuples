@@ -274,7 +274,7 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
             std::vector<size_t> result;
             result.reserve(values_.size());
             for (size_t i = 0; i < values_.size(); ++i)
-                result.push_back(i);
+                result.emplace_back(i);
             sort(result.begin(), result.end(), *this);
             return result;
         }
