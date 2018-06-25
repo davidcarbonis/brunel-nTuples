@@ -1030,7 +1030,7 @@ void MakeTopologyNtupleMiniAOD::fillOtherJetInfo(const pat::Jet& jet,
     }
     // Residuals as needed
     float resCor{1.0};
-    float L2L3ResErr{-1.0}; // Temp as uncertainty is missing.
+    constexpr float L2L3ResErr{-1.0}; // Temp as uncertainty is missing.
 
     if (!runMCInfo_)
     {
@@ -2271,7 +2271,7 @@ void MakeTopologyNtupleMiniAOD::clearMCarrays()
     nWleptonic = 0;
     VQQBosonAbsId = -999;
 
-    for (int i{0}; i < NTOPMCINFOSMAX; i++)
+    for (size_t i{0}; i < NTOPMCINFOSMAX; i++)
     {
         T_hadronicMCTruthE[i] = 0;
         T_hadronicMCTruthEt[i] = 0;

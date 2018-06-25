@@ -328,7 +328,7 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
 
     // hardcoded, do NOT change unless you also change the size of the arrays
     // that are saved in the root tree...
-    size_t NELECTRONSMAX{30};
+    static constexpr size_t NELECTRONSMAX{30};
 
     std::map<std::string, std::vector<float>> electronSortedE;
     std::map<std::string, std::vector<float>> electronSortedEt;
@@ -455,14 +455,15 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     std::map<std::string, std::vector<int>> genElectronSortedHardProcess;
 
     // MC Truth
-    int nT{};
-    int nThadronic{};
-    int nb{};
-    int nWhadronic{};
-    int nTleptonic{}, nWleptonic{};
+    size_t nT{};
+    size_t nThadronic{};
+    size_t nb{};
+    size_t nWhadronic{};
+    size_t nTleptonic{};
+    size_t nWleptonic{};
     int VQQBosonAbsId{};
 
-    int NTOPMCINFOSMAX{20};
+    static constexpr size_t NTOPMCINFOSMAX{20};
     float T_hadronicMCTruthE[20]{};
     float T_hadronicMCTruthEt[20]{};
     float T_hadronicMCTruthPx[20]{};
@@ -544,7 +545,7 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     float mhtSumEt{};
     float mhtSignif{};
 
-    size_t NMUONSMAX{20};
+    static constexpr size_t NMUONSMAX{20};
     std::vector<float> muonEts;
     std::map<std::string, std::vector<float>> muonSortedE;
     std::map<std::string, std::vector<float>> muonSortedEt;
@@ -631,7 +632,7 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     std::map<std::string, std::vector<int>> genMuonSortedPromptFinalState;
     std::map<std::string, std::vector<int>> genMuonSortedHardProcess;
 
-    size_t NJETSMAX{40};
+    static constexpr size_t NJETSMAX{40};
 
     // JEC to be initialised once per collection.
     FactorizedJetCorrector* jecCalo{};
@@ -734,7 +735,7 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     std::map<std::string, std::vector<float>> genJetSortedClosestC;
 
     // generalTracks are used to subtract photon conversion background
-    size_t NTRACKSMAX{40};
+    static constexpr size_t NTRACKSMAX{40};
     float generalTracksPt[1000]{};
     float generalTracksEta[1000]{};
     float generalTracksTheta[1000]{};
@@ -743,8 +744,8 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     int generalTracksCharge[1000]{};
 
     // gen particle vars
-    int NGENPARMAX{50};
-    int nGenPar{};
+    static constexpr size_t NGENPARMAX{50};
+    size_t nGenPar{};
     int genParStatus[50]{}; // 150927 - ADM - Added as Pythia 8 uses different
                             // status codes - cannot just select events which
                             // are used in the matrix element calculation!
@@ -778,8 +779,8 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     float genMRST2006nnlo_Weight[31]{};
 
     // basic 4-vectors for photons,taus as we're not interested in them.
-    int NTAUSMAX{20};
-    int NPHOTONSMAX{20};
+    static constexpr size_t NTAUSMAX{20};
+    static constexpr size_t NPHOTONSMAX{20};
     std::map<std::string, int> ntaus;
     std::map<std::string, int> nphotons;
     std::map<std::string, std::vector<float>> photon_e;
