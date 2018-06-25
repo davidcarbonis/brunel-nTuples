@@ -1165,19 +1165,19 @@ void MakeTopologyNtupleMiniAOD::fillOtherJetInfo(const pat::Jet& jet,
         for (size_t k{0}; k < genParticles->size(); k++)
         {
             const reco::Candidate& TCand{(*genParticles)[k]};
-            if (abs(TCand.pdgId()) == 5 || abs(TCand.pdgId()) == 4)
+            if (std::abs(TCand.pdgId()) == 5 || std::abs(TCand.pdgId()) == 4)
             {
                 double deltaR{reco::deltaR(jetSortedEta[ID][jetindex],
                                            jetSortedPhi[ID][jetindex],
                                            TCand.eta(),
                                            TCand.phi())};
-                if (abs(TCand.pdgId()) == 5
+                if (std::abs(TCand.pdgId()) == 5
                     && (deltaR < genJetSortedClosestB[ID][jetindex]
                         || genJetSortedClosestB[ID][jetindex] < 0))
                 {
                     genJetSortedClosestB[ID][jetindex] = deltaR;
                 }
-                else if (abs(TCand.pdgId()) == 4
+                else if (std::abs(TCand.pdgId()) == 4
                          && (deltaR < genJetSortedClosestC[ID][jetindex]
                              || genJetSortedClosestC[ID][jetindex] < 0))
                 {
@@ -1279,7 +1279,6 @@ void MakeTopologyNtupleMiniAOD::fillBTagInfo(const pat::Jet& jet,
         jetSortedSVDZ[ID][jetindex] = svTagInfo->secondaryVertex(0).zError();
     }
 }
-
 
 void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
                                            const edm::EventSetup& /*iSetup*/)
@@ -1478,8 +1477,8 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
 
         // if(TCand.status()==3) // Pythia 6 criteria - MC generators now
         // use Pythia 8 - will store status instead of cutting on it.
-        if (abs(TCand.pdgId()) <= 18 || abs(TCand.pdgId()) == 24
-            || abs(TCand.pdgId()) == 23)
+        if (std::abs(TCand.pdgId()) <= 18 || std::abs(TCand.pdgId()) == 24
+            || std::abs(TCand.pdgId()) == 23)
         {
             // only do this for particles with reasonable pT:
             if (nGenPar < NGENPARMAX)
@@ -1519,7 +1518,7 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
             }
         }
         //    }
-        if (abs(TCand.pdgId()) == 5 || abs(TCand.pdgId()) == 4)
+        if (std::abs(TCand.pdgId()) == 5 || std::abs(TCand.pdgId()) == 4)
         {
             // for (int ijet = 0; ijet < numJet; ijet++)
             // {
@@ -1527,13 +1526,13 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
             //                                 jetSortedPhi[ijet],
             //                                 TCand.eta(),
             //                                 TCand.phi());
-            //     if (abs(TCand.pdgId()) == 5
+            //     if (std::abs(TCand.pdgId()) == 5
             //         && (deltaR < genJetSortedClosestB[ijet]
             //             || genJetSortedClosestB[ijet] < 0))
             //     {
             //         genJetSortedClosestB[ijet] = deltaR;
             //     }
-            //     else if (abs(TCand.pdgId()) == 4
+            //     else if (std::abs(TCand.pdgId()) == 4
             //              && (deltaR < genJetSortedClosestC[ijet]
             //                  || genJetSortedClosestC[ijet] < 0))
             //     {
@@ -1542,7 +1541,8 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
             // }
         }
         if (TCand.status() == 3
-            && abs(TCand.pdgId()) == 6) // find t or tbar among the genParticles
+            && std::abs(TCand.pdgId())
+                   == 6) // find t or tbar among the genParticles
         {
             if (nT >= NTOPMCINFOSMAX)
             {
@@ -1563,7 +1563,7 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
                         *TCand.daughter(i_Tdaughter)};
 
                     if (TDaughter.status() == 3
-                        && abs(TDaughter.pdgId()) == 5) // find b
+                        && std::abs(TDaughter.pdgId()) == 5) // find b
                     {
                         // std::cout << "we found b" << std::endl;
                         found_b = true;
@@ -1583,7 +1583,7 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
                     }
                     W_leptonic = W_hadronic = 0;
                     if (TDaughter.status() == 3
-                        && abs(TDaughter.pdgId()) == 24) // find W
+                        && std::abs(TDaughter.pdgId()) == 24) // find W
                     {
                         if (TDaughter.numberOfDaughters() >= 2)
                         { // check W has at least 2 daughters
@@ -1595,20 +1595,20 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
                                 const reco::Candidate& WDaughter{
                                     *TDaughter.daughter(i_Wdaughter)};
                                 if (WDaughter.status() == 3
-                                    && abs(WDaughter.pdgId()) <= 6
-                                    && abs(WDaughter.pdgId())
+                                    && std::abs(WDaughter.pdgId()) <= 6
+                                    && std::abs(WDaughter.pdgId())
                                            > 0) // W decays in hadronic mode
                                 {
-                                    if (abs(WDaughter.pdgId())
-                                        > abs(W_hadronic))
+                                    if (std::abs(WDaughter.pdgId())
+                                        > std::abs(W_hadronic))
                                     {
                                         W_hadronic = WDaughter.pdgId();
                                     }
                                 }
                                 if (WDaughter.status() == 3
-                                    && abs(WDaughter.pdgId()) > 10
-                                    && abs(WDaughter.pdgId()) < 17
-                                    && abs(WDaughter.pdgId()) % 2
+                                    && std::abs(WDaughter.pdgId()) > 10
+                                    && std::abs(WDaughter.pdgId()) < 17
+                                    && std::abs(WDaughter.pdgId()) % 2
                                            == 1) // W decays in leptonic mode,
                                                  // ele=11, mu=13, tau=15,
                                                  // nuele=12, numu=14, nutau=16
@@ -1708,7 +1708,7 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
     }
     // now check if electron+jets:
     isElePlusJets = 0;
-    if (nWleptonic == 1 && abs(W_leptonicMCTruthPID[0]) == 11)
+    if (nWleptonic == 1 && std::abs(W_leptonicMCTruthPID[0]) == 11)
     {
         isElePlusJets = 1;
     }
@@ -1871,8 +1871,8 @@ void MakeTopologyNtupleMiniAOD::fillJets(
         100,
         false); // index of jets in the gen jet collection - if it's true it
                 // means it's already matched and so shouldn't be used again
-    for (size_t ijet{0}; ijet < etJetSorted.size()
-                      && numJet[ID] < numeric_cast<int>(NJETSMAX);
+    for (size_t ijet{0};
+         ijet < etJetSorted.size() && numJet[ID] < numeric_cast<int>(NJETSMAX);
          ++ijet)
     {
         size_t jjet{etJetSorted[ijet]};
@@ -2840,7 +2840,6 @@ void MakeTopologyNtupleMiniAOD::bookTauBranches(const std::string& ID,
                     (prefix + "Eta[numTau" + name + "]/F").c_str());
 }
 
-
 // book electron branches:
 void MakeTopologyNtupleMiniAOD::bookElectronBranches(const std::string& ID,
                                                      const std::string& name)
@@ -3660,7 +3659,6 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(const std::string& ID,
     }
 }
 
-
 void MakeTopologyNtupleMiniAOD::bookMETBranches(const std::string& ID,
                                                 const std::string& name)
 {
@@ -3949,7 +3947,6 @@ void MakeTopologyNtupleMiniAOD::bookPFJetBranches(const std::string& ID,
         (prefix + "ChargedMultiplicity[numJet" + name + "]/I").c_str());
 }
 
-
 void MakeTopologyNtupleMiniAOD::bookJetBranches(const std::string& ID,
                                                 const std::string& name)
 {
@@ -4182,7 +4179,6 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(const std::string& ID,
 
     bookBIDInfoBranches(ID, name);
 }
-
 
 void MakeTopologyNtupleMiniAOD::bookBIDInfoBranches(const std::string& /*ID*/,
                                                     const std::string& /*name*/)
@@ -4514,20 +4510,21 @@ bool MakeTopologyNtupleMiniAOD::photonConversionVeto(
                              * (TrackWithinConeRx[nTrack] - SecondTrackRx)
                          + (TrackWithinConeRy[nTrack] - SecondTrackRy)
                                * (TrackWithinConeRy[nTrack] - SecondTrackRy))
-                    - 1 / fabs(TrackWithinConeRho[nTrack])
-                    - 1 / fabs(SecondTrackRho);
+                    - 1 / std::abs(TrackWithinConeRho[nTrack])
+                    - 1 / std::abs(SecondTrackRho);
 
                 /*  Delta Cot(theta)=1/tan(theta1)-1/tan(theta2)     */
 
                 local_dcot = 1 / tan(TrackWithinConeTheta[nTrack])
                              - 1 / tan(SecondTrackTheta);
-                if (fabs(local_dist) < fabs(dist)
-                    && fabs(local_dcot) < fabs(Dcot))
+                if (std::abs(local_dist) < std::abs(dist)
+                    && std::abs(local_dcot) < std::abs(Dcot))
                 {
                     dist = local_dist;
                     Dcot = local_dcot;
                 }
-                if (fabs(local_dist) <= maxDist_ && fabs(local_dcot) < maxDcot_)
+                if (std::abs(local_dist) <= maxDist_
+                    && std::abs(local_dcot) < maxDcot_)
                 {
                     CONV = true;
                 } // tag electron from photon conversion, immediately leave loop
@@ -4537,7 +4534,6 @@ bool MakeTopologyNtupleMiniAOD::photonConversionVeto(
     }
     return (!CONV);
 }
-
 
 // define this as a plug-in
 DEFINE_FWK_MODULE(MakeTopologyNtupleMiniAOD);
