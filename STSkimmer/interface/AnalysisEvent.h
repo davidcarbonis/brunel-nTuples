@@ -1531,5 +1531,34 @@ Int_t AnalysisEvent::Cut(Long64_t entry)
 // returns -1 otherwise.
    return 1;
 }
-#endif // #ifdef AnalysisEvent_cxx
 
+void AnalysisEvent::Loop()
+{
+    if (fChain == nullptr)
+    {
+        return;
+    }
+
+    Long64_t nentries = fChain->GetEntriesFast();
+
+    Long64_t nbytes = 0;
+    Long64_t nb = 0;
+    for (Long64_t jentry = 0; jentry < nentries; jentry++)
+    {
+        Long64_t ientry = LoadTree(jentry);
+        if (ientry < 0)
+        {
+            break;
+        }
+        nb = fChain->GetEntry(jentry);
+        nbytes += nb;
+        // if (Cut(ientry) < 0) continue;
+    }
+}
+
+float AnalysisEvent::getEventWeight(Long64_t /*entry*/)
+{
+    return 1.;
+}
+
+#endif
