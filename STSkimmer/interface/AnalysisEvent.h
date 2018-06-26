@@ -136,7 +136,6 @@ public :
    Int_t           muonPF2PATCharge[20];   //[numMuonPF2PAT]
    Int_t           muonPF2PATLooseCutId[20];   //[numMuonPF2PAT]
    Int_t           muonPF2PATMediumCutId[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATMediumPromptCutId[20];   //[numMuonPF2PAT]
    Int_t           muonPF2PATTightCutId[20];   //[numMuonPF2PAT]
    Int_t           muonPF2PATPfIsoVeryLoose[20];   //[numMuonPF2PAT]
    Int_t           muonPF2PATPfIsoLoose[20];   //[numMuonPF2PAT]
@@ -595,7 +594,6 @@ public :
    TBranch        *b_muonPF2PATCharge;   //!
    TBranch        *b_muonPF2PATLooseCutId;   //!
    TBranch        *b_muonPF2PATMediumCutId;   //!
-   TBranch        *b_muonPF2PATMediumPromptCutId;   //!
    TBranch        *b_muonPF2PATTightCutId;   //!
    TBranch        *b_muonPF2PATPfIsoVeryLoose;   //!
    TBranch        *b_muonPF2PATPfIsoLoose;   //!
@@ -1154,7 +1152,6 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree)
    fChain->SetBranchAddress("muonPF2PATCharge", muonPF2PATCharge, &b_muonPF2PATCharge);
    fChain->SetBranchAddress("muonPF2PATLooseCutId", muonPF2PATLooseCutId, &b_muonPF2PATLooseCutId);
    fChain->SetBranchAddress("muonPF2PATMediumCutId", muonPF2PATMediumCutId, &b_muonPF2PATMediumCutId);
-   fChain->SetBranchAddress("muonPF2PATMediumPromptCutId", muonPF2PATMediumPromptCutId, &b_muonPF2PATMediumPromptCutId);
    fChain->SetBranchAddress("muonPF2PATTightCutId", muonPF2PATTightCutId, &b_muonPF2PATTightCutId);
    fChain->SetBranchAddress("muonPF2PATPfIsoVeryLoose", muonPF2PATPfIsoVeryLoose, &b_muonPF2PATPfIsoVeryLoose);
    fChain->SetBranchAddress("muonPF2PATPfIsoLoose", muonPF2PATPfIsoLoose, &b_muonPF2PATPfIsoLoose);
