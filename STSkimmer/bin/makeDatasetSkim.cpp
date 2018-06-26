@@ -18,6 +18,7 @@
 
 //#define NO_LHE
 
+using namespace std::string_literals;
 namespace fs = boost::filesystem;
 
 
@@ -27,6 +28,7 @@ int main(int argc, char* argv[])
     std::string datasetName;
     bool isMC;
     bool hasLHE;
+    bool is2016;
 
     // Define command-line flags
     namespace po = boost::program_options;
@@ -39,6 +41,7 @@ int main(int argc, char* argv[])
         ("datasetName,o", po::value<std::string>(&datasetName)->required(),
          "Output dataset name.")
         ("LHE", po::bool_switch(&hasLHE), "Set for data with LHE weights.")
+        ("2016", po::bool_switch(&is2016), "Set for 2016 data.")
         ("MC", po::bool_switch(&isMC), "Set for MC data.");
     po::variables_map vm;
 
@@ -80,10 +83,12 @@ int main(int argc, char* argv[])
 
             const std::string numName{std::to_string(fileNum)};
             const std::string numNamePlus{std::to_string(fileNum + 2)};
+            const std::string dataDir{"/scratch/data/tZqSkimsRun201"s
+                                      + (is2016 ? "6/" : "7/")};
+            const std::string outFilePath{dataDir + "/skimFile" + numName + ".root"};
 
-             if (fs::is_regular_file("/scratch/data/tZqSkimsRun2016/" +
-                         datasetName + "/skimFile" + numNamePlus + ".root"))
-             {  // don't overwrite existing skim files, except for the last two
+            if (fs::is_regular_file(outFilePath))
+            { // don't overwrite existing skim files, except for the last two
                 fileNum++;
                 continue;
              }
@@ -100,8 +105,6 @@ int main(int argc, char* argv[])
 
             TTree * const outTree = datasetChain.CloneTree(0);
 
-            std::string outFilePath{"/scratch/data/tZqSkimsRun2016/"
-                + datasetName + "/skimFile" + numName + ".root"};
             TFile outFile{outFilePath.c_str(), "RECREATE"};
 
             // std::cout << outFilePath << std::endl;
@@ -109,7 +112,7 @@ int main(int argc, char* argv[])
             const long long int numberOfEvents{datasetChain.GetEntries()};
             boost::progress_display progress(numberOfEvents, std::cout,
                 outFilePath + "\n");
-            AnalysisEvent event{isMC, "", &datasetChain};
+            AnalysisEvent event{isMC, "", &datasetChain, is2016};
 
             for (long long int i{0}; i < numberOfEvents; i++)
             {
