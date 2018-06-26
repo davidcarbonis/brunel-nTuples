@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
     }
 
 
-    const std::regex mask{".*\\.root"};
+    const std::regex mask{R"(.*\.root)"};
     int fileNum{0};
 
     for (const auto& inDir: inDirs)  // for each input directory
