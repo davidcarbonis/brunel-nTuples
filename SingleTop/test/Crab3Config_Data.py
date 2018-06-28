@@ -1,7 +1,12 @@
+from datetime import datetime
 from CRABClient.UserUtilities import config, getUsernameFromSiteDB
+
+
+time = datetime.now().strftime("%Y%m%d%H%M%S")
+
 config = config()
 
-config.General.requestName = 'SingleElectron_Run2016B-03Feb2017_ver2-v2_Golden38T_Data_170818'
+config.General.requestName = "2017_Golden38T_Data__{}".format(time)
 config.General.workArea = 'crab_projects'
 
 config.JobType.pluginName = 'Analysis'
@@ -26,6 +31,6 @@ config.Data.lumiMask = '/afs/cern.ch/user/j/jfernan/public/TOPtriggerJSONS2016/5
 config.Data.runRange = "294927-306462"
 config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB())
 config.Data.publication = False
-config.Data.outputDatasetTag = 'CRAB3_Data_nTupilisation_SingleElectron_Run2016B-03Feb2017_ver2-v2_Golden38T_170818'
+config.Data.outputDatasetTag = "CRAB3_Data_nTupilisation_2017_Golden38T_Data__{}"
 
 config.Site.storageSite = 'T2_UK_London_IC' #'T2_UK_London_Brunel','T2_UK_London_IC'
