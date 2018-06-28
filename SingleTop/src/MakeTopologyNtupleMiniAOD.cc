@@ -1304,10 +1304,10 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
         edm::Handle<LHEEventProduct> EventHandle;
         iEvent.getByToken(externalLHEToken_, EventHandle);
 
-        weight_muF0p5_ = EventHandle->weights()[2].wgt; // muF = 0.5 | muR = 1
-        weight_muF2_ = EventHandle->weights()[1].wgt; // muF = 2 | muR = 1
-        weight_muR0p5_ = EventHandle->weights()[6].wgt; // muF = 1 | muR = 0.5
-        weight_muR2_ = EventHandle->weights()[3].wgt; // muF = 1 | muR = 2
+        weight_muF0p5_ = EventHandle->weights()[6].wgt; // muF = 0.5 | muR = 1
+        weight_muF2_ = EventHandle->weights()[3].wgt; // muF = 2 | muR = 1
+        weight_muR0p5_ = EventHandle->weights()[2].wgt; // muF = 1 | muR = 0.5
+        weight_muR2_ = EventHandle->weights()[1].wgt; // muF = 1 | muR = 2
         weight_muF0p5muR0p5_ =
             EventHandle->weights()[8].wgt; // muF = 0.5 | muR = 0.5
         weight_muF2muR2_ = EventHandle->weights()[4].wgt; // muF = 2 | muR = 2
