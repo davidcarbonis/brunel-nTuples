@@ -4,10 +4,10 @@ GenInfoMiniAOD = cms.EDAnalyzer('GenInfoMiniAOD',
 					   isLHEflag = cms.bool(True),
 					   externalLHEToken = cms.InputTag("externalLHEProducer"), # "externalLHEProducer", "source" for THQ 
 
-					   pdfIdStart = cms.int32(2001),
-					   pdfIdEnd = cms.int32(2100),
+					   pdfIdStart = cms.int32(1779),
+					   pdfIdEnd = cms.int32(1879),
 					   hasAlphaWeightFlag = cms.bool(True),
-					   alphaIdStart = cms.int32(2101),
-					   alphaIdEnd = cms.int32(2102),
+					   alphaIdStart = cms.int32(1880),
+					   alphaIdEnd = cms.int32(1881),
 
                                            )# end of GenInfoMiniAOD
