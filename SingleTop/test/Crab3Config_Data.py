@@ -23,7 +23,7 @@ config.Data.lumiMask = '/afs/cern.ch/user/j/jfernan/public/TOPtriggerJSONS2016/5
 # NoL1T Unprescaled (for Single EG): /afs/cern.ch/user/j/jfernan/public/TOPtriggerJSONS2016/5Dic/ReducedJSONS_from_FullReRecoCertFile/LSforPath_HLT_Ele32_eta2p1_WPTight_Gsf_withLowestSeed_L1_SingleIsoEG22er_OR_L1_SingleIsoEG24er_OR_L1_SingleIsoEG26er_OR_L1_SingleIsoEG28er_OR_L1_SingleIsoEG30er.json
 # NoL1T Unprescaled + L1_SingleIsoEG32er (for Single EG): /afs/cern.ch/user/j/jfernan/public/TOPtriggerJSONS2016/5Dic/ReducedJSONS_from_FullReRecoCertFile/LSforPath_HLT_Ele32_eta2p1_WPTight_Gsf_withLowestSeed_L1_SingleIsoEG22er_OR_L1_SingleIsoEG24er_OR_L1_SingleIsoEG26er_OR_L1_SingleIsoEG28er_OR_L1_SingleIsoEG30er_OR_L1_SingleIsoEG32er.json
 
-config.Data.runRange = '272007-275376' #Run2016B 272007-275376; Run2016C 275657-276283; Run2016D 276315-276811; Run2016E 276831-277420; Run2016F 277772-278808; Run2016G 278820-280385; Run2016H 280919-284044;
+config.Data.runRange = "294927-306462"
 config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB())
 config.Data.publication = False
 config.Data.outputDatasetTag = 'CRAB3_Data_nTupilisation_SingleElectron_Run2016B-03Feb2017_ver2-v2_Golden38T_170818'
