@@ -1312,6 +1312,54 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
             EventHandle->weights()[8].wgt; // muF = 0.5 | muR = 0.5
         weight_muF2muR2_ = EventHandle->weights()[4].wgt; // muF = 2 | muR = 2
 
+        if (!is2016rereco_)
+        {
+            for (const auto w : EventHandle->weights())
+            {
+                switch (std::stoi(w.id))
+                {
+                    case 2:
+                        isrRedHi = w.wgt;
+                        break;
+                    case 3:
+                        fsrRedHi = w.wgt;
+                        break;
+                    case 4:
+                        isrRedLo = w.wgt;
+                        break;
+                    case 5:
+                        fsrRedLo = w.wgt;
+                        break;
+                    case 6:
+                        isrDefHi = w.wgt;
+                        break;
+                    case 7:
+                        fsrDefHi = w.wgt;
+                        break;
+                    case 8:
+                        isrDefLo = w.wgt;
+                        break;
+                    case 9:
+                        fsrDefLo = w.wgt;
+                        break;
+                    case 10:
+                        isrConHi = w.wgt;
+                        break;
+                    case 11:
+                        fsrConHi = w.wgt;
+                        break;
+                    case 12:
+                        isrConLo = w.wgt;
+                        break;
+                    case 13:
+                        fsrConLo = w.wgt;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         origWeightForNorm_ = EventHandle->originalXWGTUP();
 
         int initialIndex{pdfIdStart_};
@@ -2739,6 +2787,19 @@ void MakeTopologyNtupleMiniAOD::bookBranches()
     mytree_->Branch("weight_pdfMin", &weight_pdfMin_, "weight_pdfMin/D");
     mytree_->Branch("weight_alphaMax", &weight_alphaMax_, "weight_alphaMax/D");
     mytree_->Branch("weight_alphaMin", &weight_alphaMin_, "weight_alphaMin/D");
+
+    mytree_->Branch("isrRedHi", &isrRedHi, "isrRedHi/D");
+    mytree_->Branch("fsrRedHi", &fsrRedHi, "fsrRedHi/D");
+    mytree_->Branch("isrRedLo", &isrRedLo, "isrRedLo/D");
+    mytree_->Branch("fsrRedLo", &fsrRedLo, "fsrRedLo/D");
+    mytree_->Branch("isrDefHi", &isrDefHi, "isrDefHi/D");
+    mytree_->Branch("fsrDefHi", &fsrDefHi, "fsrDefHi/D");
+    mytree_->Branch("isrDefLo", &isrDefLo, "isrDefLo/D");
+    mytree_->Branch("fsrDefLo", &fsrDefLo, "fsrDefLo/D");
+    mytree_->Branch("isrConHi", &isrConHi, "isrConHi/D");
+    mytree_->Branch("fsrConHi", &fsrConHi, "fsrConHi/D");
+    mytree_->Branch("isrConLo", &isrConLo, "isrConLo/D");
+    mytree_->Branch("fsrConLo", &fsrConLo, "fsrConLo/D");
 
     while (HLT_fakeTriggerValues.size() < fakeTrigLabelList_.size())
     {

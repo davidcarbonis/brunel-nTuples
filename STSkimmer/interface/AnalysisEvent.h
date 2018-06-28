@@ -332,6 +332,18 @@ public :
    Double_t	   weight_pdfMin;
    Double_t	   weight_alphaMax;
    Double_t	   weight_alphaMin;
+   Double_t isrRedHi{};
+   Double_t fsrRedHi{};
+   Double_t isrRedLo{};
+   Double_t fsrRedLo{};
+   Double_t isrDefHi{};
+   Double_t fsrDefHi{};
+   Double_t isrDefLo{};
+   Double_t fsrDefLo{};
+   Double_t isrConHi{};
+   Double_t fsrConHi{};
+   Double_t isrConLo{};
+   Double_t fsrConLo{};
    //   Int_t           numVert;
 
    // 2016 lepton Triggers
@@ -1061,6 +1073,18 @@ public :
    TBranch	  *b_weight_pdfMin;   //!
    TBranch	  *b_weight_alphaMax;   //!
    TBranch	  *b_weight_alphaMin;   //!
+   TBranch* b_isrRedHi;
+   TBranch* b_fsrRedHi;
+   TBranch* b_isrRedLo;
+   TBranch* b_fsrRedLo;
+   TBranch* b_isrDefHi;
+   TBranch* b_fsrDefHi;
+   TBranch* b_isrDefLo;
+   TBranch* b_fsrDefLo;
+   TBranch* b_isrConHi;
+   TBranch* b_fsrConHi;
+   TBranch* b_isrConLo;
+   TBranch* b_fsrConLo;
    //   TBranch        *b_numVert;    //!
    TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v1;
    TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v2;
@@ -1888,6 +1912,21 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree, bool i
    	fChain->SetBranchAddress("weight_pdfMin", &weight_pdfMin, &b_weight_pdfMin);
    	fChain->SetBranchAddress("weight_alphaMax", &weight_alphaMax, &b_weight_alphaMax);
    	fChain->SetBranchAddress("weight_alphaMin", &weight_alphaMin, &b_weight_alphaMin);
+    if (!is2016)
+    {
+        fChain->SetBranchAddress("isrRedHi", &isrRedHi, &b_isrRedHi);
+        fChain->SetBranchAddress("fsrRedHi", &fsrRedHi, &b_fsrRedHi);
+        fChain->SetBranchAddress("isrRedLo", &isrRedLo, &b_isrRedLo);
+        fChain->SetBranchAddress("fsrRedLo", &fsrRedLo, &b_fsrRedLo);
+        fChain->SetBranchAddress("isrDefHi", &isrDefHi, &b_isrDefHi);
+        fChain->SetBranchAddress("fsrDefHi", &fsrDefHi, &b_fsrDefHi);
+        fChain->SetBranchAddress("isrDefLo", &isrDefLo, &b_isrDefLo);
+        fChain->SetBranchAddress("fsrDefLo", &fsrDefLo, &b_fsrDefLo);
+        fChain->SetBranchAddress("isrConHi", &isrConHi, &b_isrConHi);
+        fChain->SetBranchAddress("fsrConHi", &fsrConHi, &b_fsrConHi);
+        fChain->SetBranchAddress("isrConLo", &isrConLo, &b_isrConLo);
+        fChain->SetBranchAddress("fsrConLo", &fsrConLo, &b_fsrConLo);
+    }
    }
    //Trigger branches
    if (is2016)

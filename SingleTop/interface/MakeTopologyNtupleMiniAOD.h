@@ -238,6 +238,19 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     double weight_muF0p5muR0p5_{};
     double weight_muF2muR2_{};
 
+    double isrRedHi{};
+    double fsrRedHi{};
+    double isrRedLo{};
+    double fsrRedLo{};
+    double isrDefHi{};
+    double fsrDefHi{};
+    double isrDefLo{};
+    double fsrDefLo{};
+    double isrConHi{};
+    double fsrConHi{};
+    double isrConLo{};
+    double fsrConLo{};
+
     double origWeightForNorm_{};
 
     double weight_pdfMax_{};
