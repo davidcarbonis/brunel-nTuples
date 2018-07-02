@@ -1526,7 +1526,6 @@ public :
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
-   virtual void     Init(bool isMC, std::string triggerFlag, TTree *tree, bool is2016);
    virtual void     Loop();
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
@@ -1558,45 +1557,7 @@ AnalysisEvent::AnalysisEvent(bool isMC, std::string triggerFlag, TTree *tree, bo
 #endif // SINGLE_TREE
 
    }
-   Init(isMC,triggerFlag,tree,is2016);
-}
 
-AnalysisEvent::~AnalysisEvent()
-{
-   if (!fChain) return;
-   delete fChain->GetCurrentFile();
-}
-
-Int_t AnalysisEvent::GetEntry(Long64_t entry)
-{
-// Read contents of entry.
-   if (!fChain) return 0;
-   return fChain->GetEntry(entry);
-}
-Long64_t AnalysisEvent::LoadTree(Long64_t entry)
-{
-// Set the environment to read one entry
-   if (!fChain) return -5;
-   Long64_t centry = fChain->LoadTree(entry);
-   if (centry < 0) return centry;
-   if (fChain->GetTreeNumber() != fCurrent) {
-      fCurrent = fChain->GetTreeNumber();
-      Notify();
-   }
-   return centry;
-}
-
-void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree, bool is2016)
-{
-   // The Init() function is called when the selector needs to initialize
-   // a new tree or chain. Typically here the branch addresses and branch
-   // pointers of the tree will be set.
-   // It is normally not necessary to make changes to the generated
-   // code, but the routine can be extended by the user if needed.
-   // Init() will be called many times when running on PROOF
-   // (once per file to be processed).
-
-   // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
    fCurrent = -1;
@@ -2367,6 +2328,31 @@ void AnalysisEvent::Init(bool isMC, std::string triggerFlag, TTree *tree, bool i
    fChain->SetBranchAddress("eventLumiblock", &eventLumiblock, &b_eventLumiblock);
    fChain->SetBranchAddress("numVert", &numVert, &b_numVert);
    Notify();
+}
+
+AnalysisEvent::~AnalysisEvent()
+{
+   if (!fChain) return;
+   delete fChain->GetCurrentFile();
+}
+
+Int_t AnalysisEvent::GetEntry(Long64_t entry)
+{
+// Read contents of entry.
+   if (!fChain) return 0;
+   return fChain->GetEntry(entry);
+}
+Long64_t AnalysisEvent::LoadTree(Long64_t entry)
+{
+// Set the environment to read one entry
+   if (!fChain) return -5;
+   Long64_t centry = fChain->LoadTree(entry);
+   if (centry < 0) return centry;
+   if (fChain->GetTreeNumber() != fCurrent) {
+      fCurrent = fChain->GetTreeNumber();
+      Notify();
+   }
+   return centry;
 }
 
 Bool_t AnalysisEvent::Notify()
