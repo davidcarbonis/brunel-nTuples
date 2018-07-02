@@ -7,1555 +7,1568 @@
 #ifndef _AnalysisEvent_hpp_
 #define _AnalysisEvent_hpp_
 
-#include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
-#include <string>
 #include <TLorentzVector.h>
+#include <TROOT.h>
 #include <iostream>
+#include <string>
 
 // Header file for the classes stored in the TTree if any.
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-class AnalysisEvent {
-public :
-   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
-   Int_t           fCurrent; //!current Tree number in a TChain
+class AnalysisEvent
+{
+    public:
+    TTree* fChain; //! pointer to the analyzed TTree or TChain
+    Int_t fCurrent; //! current Tree number in a TChain
 
-   // Declaration of leaf types
-   Int_t           numElePF2PAT;
-   Float_t         elePF2PATE[20];   //[numElePF2PAT]
-   Float_t         elePF2PATET[20];   //[numElePF2PAT]
-   Float_t         elePF2PATPX[20];   //[numElePF2PAT]
-   Float_t         elePF2PATPY[20];   //[numElePF2PAT]
-   Float_t         elePF2PATPZ[20];   //[numElePF2PAT]
-   Float_t         elePF2PATPhi[20];   //[numElePF2PAT]
-   Float_t         elePF2PATTheta[20];   //[numElePF2PAT]
-   Float_t         elePF2PATEta[20];   //[numElePF2PAT]
-   Float_t         elePF2PATPT[20];   //[numElePF2PAT]
-   Int_t           elePF2PATCharge[20];   //[numElePF2PAT]
-   Float_t         elePF2PATCutIdVeto[20];   //[numElePF2PAT]
-   Int_t           elePF2PATCutIdLoose[20];   //[numElePF2PAT]
-   Int_t           elePF2PATCutIdMedium[20];   //[numElePF2PAT]
-   Int_t           elePF2PATCutIdTight[20];   //[numElePF2PAT]
-   Int_t           elePF2PATImpactTransDist[20];   //[numElePF2PAT]
-   Float_t         elePF2PATImpactTransError[20];   //[numElePF2PAT]
-   Float_t         elePF2PATImpactTransSignificance[20];   //[numElePF2PAT]
-   Float_t         elePF2PATImpact3DDist[20];   //[numElePF2PAT]
-   Float_t         elePF2PATImpact3DError[20];   //[numElePF2PAT]
-   Float_t         elePF2PATImpact3DSignificance[20];   //[numElePF2PAT]
-   Float_t         elePF2PATChargedHadronIso[20];   //[numElePF2PAT]
-   Float_t         elePF2PATNeutralHadronIso[20];   //[numElePF2PAT]
-   Float_t         elePF2PATPhotonIso[20];   //[numElePF2PAT]
-   Float_t         elePF2PATTrackPt[20];   //[numElePF2PAT]
-   Float_t         elePF2PATTrackPhi[20];   //[numElePF2PAT]
-   Float_t         elePF2PATTrackEta[20];   //[numElePF2PAT]
-   Float_t         elePF2PATTrackChi2[20];   //[numElePF2PAT]
-   Float_t         elePF2PATTrackNDOF[20];   //[numElePF2PAT]
-   Float_t         elePF2PATTrackD0[20];   //[numElePF2PAT]
-   Float_t         elePF2PATTrackDBD0[20];   //[numElePF2PAT]
-   Float_t         elePF2PATD0PV[20];   //[numElePF2PAT]
-   Float_t         elePF2PATDZPV[20];   //[numElePF2PAT]
-   Float_t         elePF2PATBeamSpotCorrectedTrackD0[20];   //[numElePF2PAT]
-   Float_t         elePF2PATTrackDz[20];   //[numElePF2PAT]
-   Float_t         elePF2PATVtxZ[20];   //[numElePF2PAT]
-   Int_t           elePF2PATIsGsf[20];   //[numElePF2PAT]
-   Float_t         elePF2PATGsfPx[20];   //[numElePF2PAT]
-   Float_t         elePF2PATGsfPy[20];   //[numElePF2PAT]
-   Float_t         elePF2PATGsfPz[20];   //[numElePF2PAT]
-   Float_t         elePF2PATGsfE[20];   //[numElePF2PAT]
-   Float_t	   elePF2PATEcalEnergy[20];   //[numElePF2PAT]
-   Float_t         elePF2PATSCEta[20];   //[numElePF2PAT]
-   Float_t         elePF2PATSCE[20];   //[numElePF2PAT]
-   Float_t         elePF2PATSCPhi[20];   //[numElePF2PAT]
-   Float_t	   elePF2PATSCEoverP[20];   //[numElePF2PAT]
-   Float_t         elePF2PATSCSigmaEtaEta[20];   //[numElePF2PAT]
-   Float_t         elePF2PATSCSigmaIEtaIEta[20];   //[numElePF2PAT]
-   Float_t         elePF2PATSCSigmaIEtaIEta5x5[20];   //[numElePF2PAT]
-   Float_t         elePF2PATSCE1x5[20];   //[numElePF2PAT]
-   Float_t         elePF2PATSCE5x5[20];   //[numElePF2PAT]
-   Float_t         elePF2PATSCE2x5max[20];   //[numElePF2PAT]
-   Float_t         elePF2PATTrackIso04[20];   //[numElePF2PAT]
-   Float_t         elePF2PATEcalIso04[20];   //[numElePF2PAT]
-   Float_t         elePF2PATHcalIso04[20];   //[numElePF2PAT]
-   Float_t         elePF2PATTrackIso03[20];   //[numElePF2PAT]
-   Float_t         elePF2PATEcalIso03[20];   //[numElePF2PAT]
-   Float_t         elePF2PATHcalIso03[20];   //[numElePF2PAT]
-   Float_t         elePF2PATdr04EcalRecHitSumEt[20];   //[numElePF2PAT]
-   Float_t         elePF2PATdr03EcalRecHitSumEt[20];   //[numElePF2PAT]
-   Float_t         elePF2PATEcalIsoDeposit[20];   //[numElePF2PAT]
-   Float_t         elePF2PATHcalIsoDeposit[20];   //[numElePF2PAT]
-   Float_t         elePF2PATComRelIso[20];   //[numElePF2PAT]
-   Float_t         elePF2PATComRelIsodBeta[20];   //[numElePF2PAT]
-   Float_t         elePF2PATComRelIsoRho[20];   //[numElePF2PAT]
-   Float_t         elePF2PATChHadIso[20];   //[numElePF2PAT]
-   Float_t         elePF2PATNtHadIso[20];   //[numElePF2PAT]
-   Float_t         elePF2PATGammaIso[20];   //[numElePF2PAT]
-   Float_t         elePF2PATRhoIso[20];   //[numElePF2PAT]
-   Float_t         elePF2PATAEff03[20];   //[numElePF2PAT]
-   Int_t           elePF2PATMissingInnerLayers[20];   //[numElePF2PAT]
-   Float_t         elePF2PATHoverE[20];   //[numElePF2PAT]
-   Float_t         elePF2PATDeltaPhiSC[20];   //[numElePF2PAT]
-   Float_t         elePF2PATDeltaEtaSC[20];   //[numElePF2PAT]
-   Float_t         elePF2PATDeltaEtaSeedSC[20];   //[numElePF2PAT]
-   Int_t           elePF2PATIsBarrel[20];   //[numElePF2PAT]
-   Int_t           elePF2PATPhotonConversionTag[20];   //[numElePF2PAT]
-   Float_t         elePF2PATPhotonConversionDist[20];   //[numElePF2PAT]
-   Float_t         elePF2PATPhotonConversionDcot[20];   //[numElePF2PAT]
-   Int_t           elePF2PATPhotonConversionVeto[20];   //[numElePF2PAT]
-   Int_t           elePF2PATPhotonConversionTagCustom[20];   //[numElePF2PAT]
-   Float_t         elePF2PATPhotonConversionDistCustom[20];   //[numElePF2PAT]
-   Float_t         elePF2PATPhotonConversionDcotCustom[20];   //[numElePF2PAT]
-   Float_t         elePF2PATTriggerMatch[20];   //[numElePF2PAT]
-   Float_t         elePF2PATJetOverlap[20];   //[numElePF2PAT]
-   Float_t         genElePF2PATPT[20];   //[numElePF2PAT]
-   Float_t         genElePF2PATET[20];   //[numElePF2PAT]
-   Float_t         genElePF2PATPX[20];   //[numElePF2PAT]
-   Float_t         genElePF2PATPY[20];   //[numElePF2PAT]
-   Float_t         genElePF2PATPZ[20];   //[numElePF2PAT]
-   Float_t         genElePF2PATPhi[20];   //[numElePF2PAT]
-   Float_t         genElePF2PATTheta[20];   //[numElePF2PAT]
-   Float_t         genElePF2PATEta[20];   //[numElePF2PAT]
-   Int_t           genElePF2PATCharge[20];   //[numElePF2PAT]
-   Int_t           genElePF2PATPdgId[20];   //[numElePF2PAT]
-   Int_t           genElePF2PATMotherId[20];   //[numElePF2PAT]
-   Int_t           genElePF2PATPromptDecayed[20];   //[numElePF2PAT]
-   Int_t           genElePF2PATPromptFinalState[20];   //[numElePF2PAT]
-   Int_t           genElePF2PATHardProcess[20];   //[numElePF2PAT]
-   Int_t           numMuonPF2PAT;
-   Float_t         muonPF2PATE[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATET[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATPt[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATPX[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATPY[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATPZ[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATPhi[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATTheta[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATEta[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATCharge[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATLooseCutId[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATMediumCutId[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATTightCutId[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATPfIsoVeryLoose[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATPfIsoLoose[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATPfIsoMedium[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATPfIsoTight[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATPfIsoVeryTight[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATTkIsoLoose[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATTkIsoTight[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATMvaLoose[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATMvaMedium[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATMvaTight[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATGlobalID[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATTrackID[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATChi2[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATD0[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATTrackDBD0[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATDBInnerTrackD0[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATBeamSpotCorrectedD0[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATTrackNHits[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATMuonNHits[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATNDOF[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATVertX[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATVertY[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATVertZ[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATChargedHadronIso[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATNeutralHadronIso[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATPhotonIso[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATTrackIso[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATEcalIso[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATHcalIso[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATComRelIso[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATComRelIsodBeta[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATIsPFMuon[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATNChambers[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATNMatches[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATTkLysWithMeasurements[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATVldPixHits[20];   //[numMuonPF2PAT]
-   Int_t           muonPF2PATMatchedStations[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATGlbTkNormChi2[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATValidFraction[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATChi2LocalPosition[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATTrkKick[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATSegmentCompatibility[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATDBPV[20];   //[numMuonPF2PAT]
-   Float_t         muonPF2PATDZPV[20];   //[numMuonPF2PAT]
-   Float_t         genMuonPF2PATPT[20];   //[numMuonPF2PAT]
-   Float_t         genMuonPF2PATET[20];   //[numMuonPF2PAT]
-   Float_t         genMuonPF2PATPX[20];   //[numMuonPF2PAT]
-   Float_t         genMuonPF2PATPY[20];   //[numMuonPF2PAT]
-   Float_t         genMuonPF2PATPZ[20];   //[numMuonPF2PAT]
-   Float_t         genMuonPF2PATPhi[20];   //[numMuonPF2PAT]
-   Float_t         genMuonPF2PATTheta[20];   //[numMuonPF2PAT]
-   Float_t         genMuonPF2PATEta[20];   //[numMuonPF2PAT]
-   Int_t           genMuonPF2PATCharge[20];   //[numMuonPF2PAT]
-   Int_t           genMuonPF2PATPdgId[20];   //[numMuonPF2PAT]
-   Int_t           genMuonPF2PATMotherId[20];   //[numMuonPF2PAT]
-   Int_t           genMuonPF2PATPromptDecayed[20];   //[numMuonPF2PAT]
-   Int_t           genMuonPF2PATPromptFinalState[20];   //[numMuonPF2PAT]
-   Int_t           genMuonPF2PATHardProcess[20];   //[numMuonPF2PAT]
-   Int_t           numJetPF2PAT;
-   Double_t        jetPF2PATE[40];   //[numJetPF2PAT]
-   Double_t        jetPF2PATEt[40];   //[numJetPF2PAT]
-   Double_t        jetPF2PATPt[40];   //[numJetPF2PAT]
-   Double_t        jetPF2PATPtRaw[40];   //[numJetPF2PAT]
-   Double_t        jetPF2PATUnCorEt[40];   //[numJetPF2PAT]
-   Double_t        jetPF2PATUnCorPt[40];   //[numJetPF2PAT]
-   Double_t        jetPF2PATEta[40];   //[numJetPF2PAT]
-   Double_t        jetPF2PATTheta[40];   //[numJetPF2PAT]
-   Double_t        jetPF2PATPhi[40];   //[numJetPF2PAT]
-   Double_t        jetPF2PATPx[40];   //[numJetPF2PAT]
-   Double_t        jetPF2PATPy[40];   //[numJetPF2PAT]
-   Double_t        jetPF2PATPz[40];   //[numJetPF2PAT]
-   Double_t        jetPF2PATdRClosestLepton[40];   //[numJetPF2PAT]
-   Int_t           jetPF2PATNtracksInJet[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATJetCharge[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATfHPD[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATBtagSoftMuonPtRel[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATBtagSoftMuonQuality[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATCorrFactor[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATCorrResidual[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATL2L3ResErr[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATCorrErrLow[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATCorrErrHi[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATN90Hits[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATTriggered[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATSVX[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATSVY[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATSVZ[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATSVDX[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATSVDY[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATSVDZ[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATpfCombinedInclusiveSecondaryVertexV2BJetTags[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATpfCombinedMVAV2BJetTags[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATpfCombinedCvsLJetTags[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATpfCombinedCvsBJetTags[40];   //[numJetPF2PAT]	
-   Int_t           jetPF2PATNConstituents[40];   //[numJetPF2PAT]
-   Int_t           jetPF2PATPID[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATClosestBPartonDeltaR[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATClosestCPartonDeltaR[40];   //[numJetPF2PAT]
-   Float_t         genJetPF2PATET[40];   //[numJetPF2PAT]
-   Float_t         genJetPF2PATPT[40];   //[numJetPF2PAT]
-   Float_t         genJetPF2PATPX[40];   //[numJetPF2PAT]
-   Float_t         genJetPF2PATPY[40];   //[numJetPF2PAT]
-   Float_t         genJetPF2PATPZ[40];   //[numJetPF2PAT]
-   Float_t         genJetPF2PATPhi[40];   //[numJetPF2PAT]
-   Float_t         genJetPF2PATTheta[40];   //[numJetPF2PAT]
-   Float_t         genJetPF2PATEta[40];   //[numJetPF2PAT]
-   Int_t           genJetPF2PATPID[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATMuEnergy[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATMuEnergyFraction[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATNeutralHadEnergy[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATNeutralEmEnergy[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATChargedHadronEnergyFraction[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATNeutralHadronEnergyFraction[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATChargedEmEnergyFraction[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATNeutralEmEnergyFraction[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATMuonFraction[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATChargedHadronEnergyFractionCorr[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATNeutralHadronEnergyFractionCorr[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATChargedEmEnergyFractionCorr[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATNeutralEmEnergyFractionCorr[40];   //[numJetPF2PAT]
-   Float_t         jetPF2PATMuonFractionCorr[40];   //[numJetPF2PAT]
-   Int_t           jetPF2PATNeutralMultiplicity[40];   //[numJetPF2PAT]
-   Int_t           jetPF2PATChargedMultiplicity[40];   //[numJetPF2PAT]
-   Double_t        metPF2PATE;
-   Double_t        metPF2PATEt;
-   Double_t        metPF2PATEtRaw;
-   Double_t        metPF2PATPhi;
-   Double_t        metPF2PATPt;
-   Double_t        metPF2PATPx;
-   Double_t        metPF2PATPy;
-   Double_t        metPF2PATPz;
-   Float_t         metPF2PATScalarEt;
-   Float_t         metPF2PATEtUncorrected;
-   Float_t         metPF2PATPhiUncorrected;
-   Float_t         genMetPF2PATE;
-   Float_t         genMetPF2PATEt;
-   Float_t         genMetPF2PATPhi;
-   Float_t         genMetPF2PATPt;
-   Float_t         genMetPF2PATPx;
-   Float_t         genMetPF2PATPy;
-   Float_t         genMetPF2PATPz;
-   Int_t           numTauPF2PAT;
-   Float_t         tauPF2PATE[1];   //[numTauPF2PAT]
-   Float_t         tauPF2PATPt[1];   //[numTauPF2PAT]
-   Float_t         tauPF2PATPhi[1];   //[numTauPF2PAT]
-   Float_t         tauPF2PATEta[1];   //[numTauPF2PAT]
-   Int_t           numGeneralTracks;
-   Float_t         generalTracksPt[1000];   //[numGeneralTracks]
-   Float_t         generalTracksEta[1000];   //[numGeneralTracks]
-   Float_t         generalTracksTheta[1000];   //[numGeneralTracks]
-   Float_t         generalTracksBeamSpotCorrectedD0[1000];   //[numGeneralTracks]
-   Float_t         generalTracksPhi[1000];   //[numGeneralTracks]
-   Int_t           generalTracksCharge[1000];   //[numGeneralTracks]
-   Int_t           isElePlusJets;
-   Float_t         genPDFScale;
-   Float_t         genPDFx1;
-   Float_t         genPDFx2;
-   Int_t           genPDFf1;
-   Int_t           genPDFf2;
-   Double_t        topPtReweight;
-   Int_t           processId;
-   Float_t         processPtHat;
-   Double_t        processMCWeight;
-   Float_t         beamSpotX;
-   Float_t         beamSpotY;
-   Float_t         beamSpotZ;
-   Float_t         pvX;
-   Float_t         pvY;
-   Float_t         pvZ;
-   Float_t         pvDX;
-   Float_t         pvDY;
-   Float_t         pvDZ;
-   Float_t         pvRho;
-   Int_t           pvIsFake;
-   Float_t         pvNdof;
-   Float_t         pvChi2;
-   Float_t         mhtPt;
-   Float_t         mhtPy;
-   Float_t         mhtPx;
-   Float_t         mhtPhi;
-   Float_t         mhtSumEt;
-   Float_t         mhtSignif;
-   Int_t           nTriggerBits;
-   Int_t           TriggerBits[1];   //[nTriggerBits]
-   Double_t	   weight_muF0p5;
-   Double_t	   weight_muF2;
-   Double_t	   weight_muR0p5;
-   Double_t	   weight_muR2;
-   Double_t	   weight_muF0p5muR0p5;
-   Double_t	   weight_muF2muR2;
-   Double_t	   origWeightForNorm;
-   Double_t	   weight_pdfMax;
-   Double_t	   weight_pdfMin;
-   Double_t	   weight_alphaMax;
-   Double_t	   weight_alphaMin;
-   Double_t isrRedHi{};
-   Double_t fsrRedHi{};
-   Double_t isrRedLo{};
-   Double_t fsrRedLo{};
-   Double_t isrDefHi{};
-   Double_t fsrDefHi{};
-   Double_t isrDefLo{};
-   Double_t fsrDefLo{};
-   Double_t isrConHi{};
-   Double_t fsrConHi{};
-   Double_t isrConLo{};
-   Double_t fsrConLo{};
-   //   Int_t           numVert;
+    // Declaration of leaf types
+    Int_t numElePF2PAT;
+    Float_t elePF2PATE[20]; //[numElePF2PAT]
+    Float_t elePF2PATET[20]; //[numElePF2PAT]
+    Float_t elePF2PATPX[20]; //[numElePF2PAT]
+    Float_t elePF2PATPY[20]; //[numElePF2PAT]
+    Float_t elePF2PATPZ[20]; //[numElePF2PAT]
+    Float_t elePF2PATPhi[20]; //[numElePF2PAT]
+    Float_t elePF2PATTheta[20]; //[numElePF2PAT]
+    Float_t elePF2PATEta[20]; //[numElePF2PAT]
+    Float_t elePF2PATPT[20]; //[numElePF2PAT]
+    Int_t elePF2PATCharge[20]; //[numElePF2PAT]
+    Float_t elePF2PATCutIdVeto[20]; //[numElePF2PAT]
+    Int_t elePF2PATCutIdLoose[20]; //[numElePF2PAT]
+    Int_t elePF2PATCutIdMedium[20]; //[numElePF2PAT]
+    Int_t elePF2PATCutIdTight[20]; //[numElePF2PAT]
+    Int_t elePF2PATImpactTransDist[20]; //[numElePF2PAT]
+    Float_t elePF2PATImpactTransError[20]; //[numElePF2PAT]
+    Float_t elePF2PATImpactTransSignificance[20]; //[numElePF2PAT]
+    Float_t elePF2PATImpact3DDist[20]; //[numElePF2PAT]
+    Float_t elePF2PATImpact3DError[20]; //[numElePF2PAT]
+    Float_t elePF2PATImpact3DSignificance[20]; //[numElePF2PAT]
+    Float_t elePF2PATChargedHadronIso[20]; //[numElePF2PAT]
+    Float_t elePF2PATNeutralHadronIso[20]; //[numElePF2PAT]
+    Float_t elePF2PATPhotonIso[20]; //[numElePF2PAT]
+    Float_t elePF2PATTrackPt[20]; //[numElePF2PAT]
+    Float_t elePF2PATTrackPhi[20]; //[numElePF2PAT]
+    Float_t elePF2PATTrackEta[20]; //[numElePF2PAT]
+    Float_t elePF2PATTrackChi2[20]; //[numElePF2PAT]
+    Float_t elePF2PATTrackNDOF[20]; //[numElePF2PAT]
+    Float_t elePF2PATTrackD0[20]; //[numElePF2PAT]
+    Float_t elePF2PATTrackDBD0[20]; //[numElePF2PAT]
+    Float_t elePF2PATD0PV[20]; //[numElePF2PAT]
+    Float_t elePF2PATDZPV[20]; //[numElePF2PAT]
+    Float_t elePF2PATBeamSpotCorrectedTrackD0[20]; //[numElePF2PAT]
+    Float_t elePF2PATTrackDz[20]; //[numElePF2PAT]
+    Float_t elePF2PATVtxZ[20]; //[numElePF2PAT]
+    Int_t elePF2PATIsGsf[20]; //[numElePF2PAT]
+    Float_t elePF2PATGsfPx[20]; //[numElePF2PAT]
+    Float_t elePF2PATGsfPy[20]; //[numElePF2PAT]
+    Float_t elePF2PATGsfPz[20]; //[numElePF2PAT]
+    Float_t elePF2PATGsfE[20]; //[numElePF2PAT]
+    Float_t elePF2PATEcalEnergy[20]; //[numElePF2PAT]
+    Float_t elePF2PATSCEta[20]; //[numElePF2PAT]
+    Float_t elePF2PATSCE[20]; //[numElePF2PAT]
+    Float_t elePF2PATSCPhi[20]; //[numElePF2PAT]
+    Float_t elePF2PATSCEoverP[20]; //[numElePF2PAT]
+    Float_t elePF2PATSCSigmaEtaEta[20]; //[numElePF2PAT]
+    Float_t elePF2PATSCSigmaIEtaIEta[20]; //[numElePF2PAT]
+    Float_t elePF2PATSCSigmaIEtaIEta5x5[20]; //[numElePF2PAT]
+    Float_t elePF2PATSCE1x5[20]; //[numElePF2PAT]
+    Float_t elePF2PATSCE5x5[20]; //[numElePF2PAT]
+    Float_t elePF2PATSCE2x5max[20]; //[numElePF2PAT]
+    Float_t elePF2PATTrackIso04[20]; //[numElePF2PAT]
+    Float_t elePF2PATEcalIso04[20]; //[numElePF2PAT]
+    Float_t elePF2PATHcalIso04[20]; //[numElePF2PAT]
+    Float_t elePF2PATTrackIso03[20]; //[numElePF2PAT]
+    Float_t elePF2PATEcalIso03[20]; //[numElePF2PAT]
+    Float_t elePF2PATHcalIso03[20]; //[numElePF2PAT]
+    Float_t elePF2PATdr04EcalRecHitSumEt[20]; //[numElePF2PAT]
+    Float_t elePF2PATdr03EcalRecHitSumEt[20]; //[numElePF2PAT]
+    Float_t elePF2PATEcalIsoDeposit[20]; //[numElePF2PAT]
+    Float_t elePF2PATHcalIsoDeposit[20]; //[numElePF2PAT]
+    Float_t elePF2PATComRelIso[20]; //[numElePF2PAT]
+    Float_t elePF2PATComRelIsodBeta[20]; //[numElePF2PAT]
+    Float_t elePF2PATComRelIsoRho[20]; //[numElePF2PAT]
+    Float_t elePF2PATChHadIso[20]; //[numElePF2PAT]
+    Float_t elePF2PATNtHadIso[20]; //[numElePF2PAT]
+    Float_t elePF2PATGammaIso[20]; //[numElePF2PAT]
+    Float_t elePF2PATRhoIso[20]; //[numElePF2PAT]
+    Float_t elePF2PATAEff03[20]; //[numElePF2PAT]
+    Int_t elePF2PATMissingInnerLayers[20]; //[numElePF2PAT]
+    Float_t elePF2PATHoverE[20]; //[numElePF2PAT]
+    Float_t elePF2PATDeltaPhiSC[20]; //[numElePF2PAT]
+    Float_t elePF2PATDeltaEtaSC[20]; //[numElePF2PAT]
+    Float_t elePF2PATDeltaEtaSeedSC[20]; //[numElePF2PAT]
+    Int_t elePF2PATIsBarrel[20]; //[numElePF2PAT]
+    Int_t elePF2PATPhotonConversionTag[20]; //[numElePF2PAT]
+    Float_t elePF2PATPhotonConversionDist[20]; //[numElePF2PAT]
+    Float_t elePF2PATPhotonConversionDcot[20]; //[numElePF2PAT]
+    Int_t elePF2PATPhotonConversionVeto[20]; //[numElePF2PAT]
+    Int_t elePF2PATPhotonConversionTagCustom[20]; //[numElePF2PAT]
+    Float_t elePF2PATPhotonConversionDistCustom[20]; //[numElePF2PAT]
+    Float_t elePF2PATPhotonConversionDcotCustom[20]; //[numElePF2PAT]
+    Float_t elePF2PATTriggerMatch[20]; //[numElePF2PAT]
+    Float_t elePF2PATJetOverlap[20]; //[numElePF2PAT]
+    Float_t genElePF2PATPT[20]; //[numElePF2PAT]
+    Float_t genElePF2PATET[20]; //[numElePF2PAT]
+    Float_t genElePF2PATPX[20]; //[numElePF2PAT]
+    Float_t genElePF2PATPY[20]; //[numElePF2PAT]
+    Float_t genElePF2PATPZ[20]; //[numElePF2PAT]
+    Float_t genElePF2PATPhi[20]; //[numElePF2PAT]
+    Float_t genElePF2PATTheta[20]; //[numElePF2PAT]
+    Float_t genElePF2PATEta[20]; //[numElePF2PAT]
+    Int_t genElePF2PATCharge[20]; //[numElePF2PAT]
+    Int_t genElePF2PATPdgId[20]; //[numElePF2PAT]
+    Int_t genElePF2PATMotherId[20]; //[numElePF2PAT]
+    Int_t genElePF2PATPromptDecayed[20]; //[numElePF2PAT]
+    Int_t genElePF2PATPromptFinalState[20]; //[numElePF2PAT]
+    Int_t genElePF2PATHardProcess[20]; //[numElePF2PAT]
+    Int_t numMuonPF2PAT;
+    Float_t muonPF2PATE[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATET[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATPt[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATPX[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATPY[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATPZ[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATPhi[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATTheta[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATEta[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATCharge[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATLooseCutId[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATMediumCutId[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATTightCutId[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATPfIsoVeryLoose[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATPfIsoLoose[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATPfIsoMedium[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATPfIsoTight[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATPfIsoVeryTight[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATTkIsoLoose[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATTkIsoTight[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATMvaLoose[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATMvaMedium[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATMvaTight[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATGlobalID[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATTrackID[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATChi2[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATD0[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATTrackDBD0[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATDBInnerTrackD0[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATBeamSpotCorrectedD0[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATTrackNHits[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATMuonNHits[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATNDOF[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATVertX[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATVertY[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATVertZ[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATChargedHadronIso[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATNeutralHadronIso[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATPhotonIso[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATTrackIso[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATEcalIso[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATHcalIso[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATComRelIso[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATComRelIsodBeta[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATIsPFMuon[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATNChambers[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATNMatches[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATTkLysWithMeasurements[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATVldPixHits[20]; //[numMuonPF2PAT]
+    Int_t muonPF2PATMatchedStations[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATGlbTkNormChi2[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATValidFraction[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATChi2LocalPosition[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATTrkKick[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATSegmentCompatibility[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATDBPV[20]; //[numMuonPF2PAT]
+    Float_t muonPF2PATDZPV[20]; //[numMuonPF2PAT]
+    Float_t genMuonPF2PATPT[20]; //[numMuonPF2PAT]
+    Float_t genMuonPF2PATET[20]; //[numMuonPF2PAT]
+    Float_t genMuonPF2PATPX[20]; //[numMuonPF2PAT]
+    Float_t genMuonPF2PATPY[20]; //[numMuonPF2PAT]
+    Float_t genMuonPF2PATPZ[20]; //[numMuonPF2PAT]
+    Float_t genMuonPF2PATPhi[20]; //[numMuonPF2PAT]
+    Float_t genMuonPF2PATTheta[20]; //[numMuonPF2PAT]
+    Float_t genMuonPF2PATEta[20]; //[numMuonPF2PAT]
+    Int_t genMuonPF2PATCharge[20]; //[numMuonPF2PAT]
+    Int_t genMuonPF2PATPdgId[20]; //[numMuonPF2PAT]
+    Int_t genMuonPF2PATMotherId[20]; //[numMuonPF2PAT]
+    Int_t genMuonPF2PATPromptDecayed[20]; //[numMuonPF2PAT]
+    Int_t genMuonPF2PATPromptFinalState[20]; //[numMuonPF2PAT]
+    Int_t genMuonPF2PATHardProcess[20]; //[numMuonPF2PAT]
+    Int_t numJetPF2PAT;
+    Double_t jetPF2PATE[40]; //[numJetPF2PAT]
+    Double_t jetPF2PATEt[40]; //[numJetPF2PAT]
+    Double_t jetPF2PATPt[40]; //[numJetPF2PAT]
+    Double_t jetPF2PATPtRaw[40]; //[numJetPF2PAT]
+    Double_t jetPF2PATUnCorEt[40]; //[numJetPF2PAT]
+    Double_t jetPF2PATUnCorPt[40]; //[numJetPF2PAT]
+    Double_t jetPF2PATEta[40]; //[numJetPF2PAT]
+    Double_t jetPF2PATTheta[40]; //[numJetPF2PAT]
+    Double_t jetPF2PATPhi[40]; //[numJetPF2PAT]
+    Double_t jetPF2PATPx[40]; //[numJetPF2PAT]
+    Double_t jetPF2PATPy[40]; //[numJetPF2PAT]
+    Double_t jetPF2PATPz[40]; //[numJetPF2PAT]
+    Double_t jetPF2PATdRClosestLepton[40]; //[numJetPF2PAT]
+    Int_t jetPF2PATNtracksInJet[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATJetCharge[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATfHPD[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATBtagSoftMuonPtRel[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATBtagSoftMuonQuality[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATCorrFactor[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATCorrResidual[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATL2L3ResErr[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATCorrErrLow[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATCorrErrHi[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATN90Hits[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATTriggered[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATSVX[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATSVY[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATSVZ[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATSVDX[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATSVDY[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATSVDZ[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATpfCombinedInclusiveSecondaryVertexV2BJetTags
+        [40]; //[numJetPF2PAT]
+    Float_t jetPF2PATpfCombinedMVAV2BJetTags[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATpfCombinedCvsLJetTags[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATpfCombinedCvsBJetTags[40]; //[numJetPF2PAT]
+    Int_t jetPF2PATNConstituents[40]; //[numJetPF2PAT]
+    Int_t jetPF2PATPID[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATClosestBPartonDeltaR[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATClosestCPartonDeltaR[40]; //[numJetPF2PAT]
+    Float_t genJetPF2PATET[40]; //[numJetPF2PAT]
+    Float_t genJetPF2PATPT[40]; //[numJetPF2PAT]
+    Float_t genJetPF2PATPX[40]; //[numJetPF2PAT]
+    Float_t genJetPF2PATPY[40]; //[numJetPF2PAT]
+    Float_t genJetPF2PATPZ[40]; //[numJetPF2PAT]
+    Float_t genJetPF2PATPhi[40]; //[numJetPF2PAT]
+    Float_t genJetPF2PATTheta[40]; //[numJetPF2PAT]
+    Float_t genJetPF2PATEta[40]; //[numJetPF2PAT]
+    Int_t genJetPF2PATPID[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATMuEnergy[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATMuEnergyFraction[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATNeutralHadEnergy[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATNeutralEmEnergy[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATChargedHadronEnergyFraction[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATNeutralHadronEnergyFraction[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATChargedEmEnergyFraction[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATNeutralEmEnergyFraction[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATMuonFraction[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATChargedHadronEnergyFractionCorr[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATNeutralHadronEnergyFractionCorr[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATChargedEmEnergyFractionCorr[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATNeutralEmEnergyFractionCorr[40]; //[numJetPF2PAT]
+    Float_t jetPF2PATMuonFractionCorr[40]; //[numJetPF2PAT]
+    Int_t jetPF2PATNeutralMultiplicity[40]; //[numJetPF2PAT]
+    Int_t jetPF2PATChargedMultiplicity[40]; //[numJetPF2PAT]
+    Double_t metPF2PATE;
+    Double_t metPF2PATEt;
+    Double_t metPF2PATEtRaw;
+    Double_t metPF2PATPhi;
+    Double_t metPF2PATPt;
+    Double_t metPF2PATPx;
+    Double_t metPF2PATPy;
+    Double_t metPF2PATPz;
+    Float_t metPF2PATScalarEt;
+    Float_t metPF2PATEtUncorrected;
+    Float_t metPF2PATPhiUncorrected;
+    Float_t genMetPF2PATE;
+    Float_t genMetPF2PATEt;
+    Float_t genMetPF2PATPhi;
+    Float_t genMetPF2PATPt;
+    Float_t genMetPF2PATPx;
+    Float_t genMetPF2PATPy;
+    Float_t genMetPF2PATPz;
+    Int_t numTauPF2PAT;
+    Float_t tauPF2PATE[1]; //[numTauPF2PAT]
+    Float_t tauPF2PATPt[1]; //[numTauPF2PAT]
+    Float_t tauPF2PATPhi[1]; //[numTauPF2PAT]
+    Float_t tauPF2PATEta[1]; //[numTauPF2PAT]
+    Int_t numGeneralTracks;
+    Float_t generalTracksPt[1000]; //[numGeneralTracks]
+    Float_t generalTracksEta[1000]; //[numGeneralTracks]
+    Float_t generalTracksTheta[1000]; //[numGeneralTracks]
+    Float_t generalTracksBeamSpotCorrectedD0[1000]; //[numGeneralTracks]
+    Float_t generalTracksPhi[1000]; //[numGeneralTracks]
+    Int_t generalTracksCharge[1000]; //[numGeneralTracks]
+    Int_t isElePlusJets;
+    Float_t genPDFScale;
+    Float_t genPDFx1;
+    Float_t genPDFx2;
+    Int_t genPDFf1;
+    Int_t genPDFf2;
+    Double_t topPtReweight;
+    Int_t processId;
+    Float_t processPtHat;
+    Double_t processMCWeight;
+    Float_t beamSpotX;
+    Float_t beamSpotY;
+    Float_t beamSpotZ;
+    Float_t pvX;
+    Float_t pvY;
+    Float_t pvZ;
+    Float_t pvDX;
+    Float_t pvDY;
+    Float_t pvDZ;
+    Float_t pvRho;
+    Int_t pvIsFake;
+    Float_t pvNdof;
+    Float_t pvChi2;
+    Float_t mhtPt;
+    Float_t mhtPy;
+    Float_t mhtPx;
+    Float_t mhtPhi;
+    Float_t mhtSumEt;
+    Float_t mhtSignif;
+    Int_t nTriggerBits;
+    Int_t TriggerBits[1]; //[nTriggerBits]
+    Double_t weight_muF0p5;
+    Double_t weight_muF2;
+    Double_t weight_muR0p5;
+    Double_t weight_muR2;
+    Double_t weight_muF0p5muR0p5;
+    Double_t weight_muF2muR2;
+    Double_t origWeightForNorm;
+    Double_t weight_pdfMax;
+    Double_t weight_pdfMin;
+    Double_t weight_alphaMax;
+    Double_t weight_alphaMin;
+    Double_t isrRedHi{};
+    Double_t fsrRedHi{};
+    Double_t isrRedLo{};
+    Double_t fsrRedLo{};
+    Double_t isrDefHi{};
+    Double_t fsrDefHi{};
+    Double_t isrDefLo{};
+    Double_t fsrDefLo{};
+    Double_t isrConHi{};
+    Double_t fsrConHi{};
+    Double_t isrConLo{};
+    Double_t fsrConLo{};
+    //   Int_t           numVert;
 
-   // 2016 lepton Triggers
-   Int_t           HLT_Ele25_eta2p1_WPTight_Gsf_v1;
-   Int_t           HLT_Ele25_eta2p1_WPTight_Gsf_v2;
-   Int_t           HLT_Ele25_eta2p1_WPTight_Gsf_v3;
-   Int_t           HLT_Ele25_eta2p1_WPTight_Gsf_v4;
-   Int_t           HLT_Ele25_eta2p1_WPTight_Gsf_v5;
-   Int_t           HLT_Ele25_eta2p1_WPTight_Gsf_v6;
-   Int_t           HLT_Ele25_eta2p1_WPTight_Gsf_v7;
-   Int_t           HLT_Ele27_WPTight_Gsf_v1;
-   Int_t           HLT_Ele27_WPTight_Gsf_v2;
-   Int_t           HLT_Ele27_WPTight_Gsf_v3;
-   Int_t           HLT_Ele27_WPTight_Gsf_v4;
-   Int_t           HLT_Ele27_WPTight_Gsf_v5;
-   Int_t           HLT_Ele27_WPTight_Gsf_v6;
-   Int_t           HLT_Ele27_WPTight_Gsf_v7;
-   Int_t	   HLT_Ele32_eta2p1_WPTight_Gsf_v2;
-   Int_t	   HLT_Ele32_eta2p1_WPTight_Gsf_v3;
-   Int_t	   HLT_Ele32_eta2p1_WPTight_Gsf_v4;
-   Int_t	   HLT_Ele32_eta2p1_WPTight_Gsf_v5;
-   Int_t	   HLT_Ele32_eta2p1_WPTight_Gsf_v6;
-   Int_t	   HLT_Ele32_eta2p1_WPTight_Gsf_v7;
-   Int_t	   HLT_Ele32_eta2p1_WPTight_Gsf_v8;
-   Int_t           HLT_IsoMu24_v1;
-   Int_t           HLT_IsoMu24_v2;
-   Int_t           HLT_IsoMu24_v3;
-   Int_t           HLT_IsoMu24_v4;
-   Int_t           HLT_IsoTkMu24_v1;
-   Int_t           HLT_IsoTkMu24_v2;
-   Int_t           HLT_IsoTkMu24_v3;
-   Int_t           HLT_IsoTkMu24_v4;
+    // 2016 lepton Triggers
+    Int_t HLT_Ele25_eta2p1_WPTight_Gsf_v1;
+    Int_t HLT_Ele25_eta2p1_WPTight_Gsf_v2;
+    Int_t HLT_Ele25_eta2p1_WPTight_Gsf_v3;
+    Int_t HLT_Ele25_eta2p1_WPTight_Gsf_v4;
+    Int_t HLT_Ele25_eta2p1_WPTight_Gsf_v5;
+    Int_t HLT_Ele25_eta2p1_WPTight_Gsf_v6;
+    Int_t HLT_Ele25_eta2p1_WPTight_Gsf_v7;
+    Int_t HLT_Ele27_WPTight_Gsf_v1;
+    Int_t HLT_Ele27_WPTight_Gsf_v2;
+    Int_t HLT_Ele27_WPTight_Gsf_v3;
+    Int_t HLT_Ele27_WPTight_Gsf_v4;
+    Int_t HLT_Ele27_WPTight_Gsf_v5;
+    Int_t HLT_Ele27_WPTight_Gsf_v6;
+    Int_t HLT_Ele27_WPTight_Gsf_v7;
+    Int_t HLT_Ele32_eta2p1_WPTight_Gsf_v2;
+    Int_t HLT_Ele32_eta2p1_WPTight_Gsf_v3;
+    Int_t HLT_Ele32_eta2p1_WPTight_Gsf_v4;
+    Int_t HLT_Ele32_eta2p1_WPTight_Gsf_v5;
+    Int_t HLT_Ele32_eta2p1_WPTight_Gsf_v6;
+    Int_t HLT_Ele32_eta2p1_WPTight_Gsf_v7;
+    Int_t HLT_Ele32_eta2p1_WPTight_Gsf_v8;
+    Int_t HLT_IsoMu24_v1;
+    Int_t HLT_IsoMu24_v2;
+    Int_t HLT_IsoMu24_v3;
+    Int_t HLT_IsoMu24_v4;
+    Int_t HLT_IsoTkMu24_v1;
+    Int_t HLT_IsoTkMu24_v2;
+    Int_t HLT_IsoTkMu24_v3;
+    Int_t HLT_IsoTkMu24_v4;
 
-   Int_t	   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3;
-   Int_t	   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4;
-   Int_t	   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5;
-   Int_t	   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6;
-   Int_t	   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7;
-   Int_t	   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8;
-   Int_t	   HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9;
-   Int_t	   HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2;
-   Int_t	   HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3;
-   Int_t	   HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4;
-   Int_t	   HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5;
-   Int_t	   HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6;
-   Int_t	   HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v7;
-   Int_t	   HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2;
-   Int_t	   HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3;
-   Int_t	   HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4;
-   Int_t	   HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5;
-   Int_t	   HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6;
-   Int_t	   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6;
-   Int_t	   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v7;
-   Int_t	   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v8;
-   Int_t	   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v9;
-   Int_t	   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3;
-   Int_t	   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4;
-   Int_t	   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5;
-   Int_t	   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v6;
-   Int_t	   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v7;
-   Int_t	   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v8;
-   Int_t	   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v9;
-   Int_t	   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1;
-   Int_t	   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2;
-   Int_t	   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3;
-   Int_t	   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4;
-   Int_t	   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v1;
-   Int_t	   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v2;
-   Int_t	   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v3;
-   Int_t	   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v7;
+    Int_t HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2;
+    Int_t HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3;
+    Int_t HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4;
+    Int_t HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5;
+    Int_t HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v7;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v8;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v9;
+    Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3;
+    Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4;
+    Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5;
+    Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v6;
+    Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v7;
+    Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v8;
+    Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v9;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4;
+    Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v1;
+    Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v2;
+    Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v3;
+    Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4;
 
-   // 2017 lepton triggers
-   Int_t HLT_Ele32_WPTight_Gsf_L1DoubleEG_v1;
-   Int_t HLT_Ele32_WPTight_Gsf_L1DoubleEG_v2;
-   Int_t HLT_Ele32_WPTight_Gsf_L1DoubleEG_v3;
-   Int_t HLT_Ele32_WPTight_Gsf_L1DoubleEG_v4;
-   Int_t HLT_Ele32_WPTight_Gsf_L1DoubleEG_v5;
-   Int_t HLT_Ele32_WPTight_Gsf_L1DoubleEG_v6;
-   Int_t HLT_Ele32_WPTight_Gsf_L1DoubleEG_v7;
-   Int_t HLT_Ele35_WPTight_Gsf_v1;
-   Int_t HLT_Ele35_WPTight_Gsf_v2;
-   Int_t HLT_Ele35_WPTight_Gsf_v3;
-   Int_t HLT_Ele35_WPTight_Gsf_v4;
-   Int_t HLT_Ele35_WPTight_Gsf_v5;
-   Int_t HLT_Ele35_WPTight_Gsf_v6;
-   Int_t HLT_Ele35_WPTight_Gsf_v7;
+    // 2017 lepton triggers
+    Int_t HLT_Ele32_WPTight_Gsf_L1DoubleEG_v1;
+    Int_t HLT_Ele32_WPTight_Gsf_L1DoubleEG_v2;
+    Int_t HLT_Ele32_WPTight_Gsf_L1DoubleEG_v3;
+    Int_t HLT_Ele32_WPTight_Gsf_L1DoubleEG_v4;
+    Int_t HLT_Ele32_WPTight_Gsf_L1DoubleEG_v5;
+    Int_t HLT_Ele32_WPTight_Gsf_L1DoubleEG_v6;
+    Int_t HLT_Ele32_WPTight_Gsf_L1DoubleEG_v7;
+    Int_t HLT_Ele35_WPTight_Gsf_v1;
+    Int_t HLT_Ele35_WPTight_Gsf_v2;
+    Int_t HLT_Ele35_WPTight_Gsf_v3;
+    Int_t HLT_Ele35_WPTight_Gsf_v4;
+    Int_t HLT_Ele35_WPTight_Gsf_v5;
+    Int_t HLT_Ele35_WPTight_Gsf_v6;
+    Int_t HLT_Ele35_WPTight_Gsf_v7;
 
-   Int_t HLT_IsoMu27_v8;
-   Int_t HLT_IsoMu27_v9;
-   Int_t HLT_IsoMu27_v10;
-   Int_t HLT_IsoMu27_v11;
-   Int_t HLT_IsoMu27_v12;
-   Int_t HLT_IsoMu27_v13;
-   Int_t HLT_IsoMu27_v14;
+    Int_t HLT_IsoMu27_v8;
+    Int_t HLT_IsoMu27_v9;
+    Int_t HLT_IsoMu27_v10;
+    Int_t HLT_IsoMu27_v11;
+    Int_t HLT_IsoMu27_v12;
+    Int_t HLT_IsoMu27_v13;
+    Int_t HLT_IsoMu27_v14;
 
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v10;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v11;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v12;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v13;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v14;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v15;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v16;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v17;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v14;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v15;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v16;
-   Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v17;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v10;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v11;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v12;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v13;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v14;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v15;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v16;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v17;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v14;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v15;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v16;
+    Int_t HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v17;
 
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v8;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v9;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v10;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v11;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v12;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v13;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v14;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v1;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v2;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v3;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v4;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v7;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v8;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v1;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v2;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v3;
-   Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v4;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v8;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v9;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v10;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v11;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v12;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v13;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v14;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v1;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v2;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v3;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v4;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v7;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v8;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v1;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v2;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v3;
+    Int_t HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v4;
 
-   Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1;
-   Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2;
-   Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5;
-   Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6;
-   Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8;
-   Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9;
-   Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10;
-   Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11;
-   Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12;
-   Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13;
-   Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v5;
-   Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6;
-   Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8;
-   Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9;
-   Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10;
-   Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11;
-   Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v12;
-   Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v13;
-   Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4;
-   Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6;
-   Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v7;
-   Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8;
-   Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9;
-   Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10;
-   Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13;
+    Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v5;
+    Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6;
+    Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8;
+    Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9;
+    Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10;
+    Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11;
+    Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v12;
+    Int_t HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v13;
+    Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4;
+    Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6;
+    Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v7;
+    Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8;
+    Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9;
+    Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10;
+    Int_t HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11;
 
-   // 2016 + 2017 triggers
-   Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3;
-   Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4;
-   Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5;
+    // 2016 + 2017 triggers
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4;
+    Int_t HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5;
 
-   // 2016 MET Triggers
-   Int_t	   HLT_MET200_v1;
-   Int_t	   HLT_MET200_v2;
-   Int_t	   HLT_MET200_v3;
-   Int_t	   HLT_MET200_v4;
-   Int_t	   HLT_MET200_v5;
-   Int_t	   HLT_MET250_v1;
-   Int_t	   HLT_MET250_v2;
-   Int_t	   HLT_MET250_v3;
-   Int_t	   HLT_MET250_v4;
-   Int_t	   HLT_MET250_v5;
-   Int_t	   HLT_PFMET120_PFMHT120_IDTight_v2;
-   Int_t	   HLT_PFMET120_PFMHT120_IDTight_v3;
-   Int_t	   HLT_PFMET120_PFMHT120_IDTight_v4;
-   Int_t	   HLT_PFMET120_PFMHT120_IDTight_v5;
-   Int_t	   HLT_PFMET120_PFMHT120_IDTight_v6;
-   Int_t	   HLT_PFMET120_PFMHT120_IDTight_v7;
-   Int_t	   HLT_PFMET120_PFMHT120_IDTight_v8;
-   Int_t	   HLT_PFMET170_HBHECleaned_v2;
-   Int_t	   HLT_PFMET170_HBHECleaned_v3;
-   Int_t	   HLT_PFMET170_HBHECleaned_v4;
-   Int_t	   HLT_PFMET170_HBHECleaned_v5;
-   Int_t	   HLT_PFMET170_HBHECleaned_v6;
-   Int_t	   HLT_PFMET170_HBHECleaned_v7;
-   Int_t	   HLT_PFMET170_HBHECleaned_v8;
-   Int_t	   HLT_PFMET170_HBHECleaned_v9;
-   Int_t	   HLT_PFHT800_v2;
-   Int_t	   HLT_PFHT800_v3;
-   Int_t	   HLT_PFHT800_v4;
-   Int_t	   HLT_PFHT800_v5;
-   Int_t	   HLT_PFHT900_v4;
-   Int_t	   HLT_PFHT900_v5;
-   Int_t	   HLT_PFHT900_v6;
-   Int_t	   HLT_PFHT750_4JetPt50_v3;
-   Int_t	   HLT_PFHT750_4JetPt50_v4;
-   Int_t	   HLT_PFHT750_4JetPt50_v5;
-   Int_t	   HLT_PFHT750_4JetPt50_v6;
-   Int_t	   HLT_PFHT750_4JetPt70_v1;
-   Int_t	   HLT_PFHT750_4JetPt70_v2;
-   Int_t	   HLT_PFHT750_4JetPt80_v2;
-   Int_t	   HLT_PFHT300_PFMET100_v1;
-   Int_t	   HLT_PFHT300_PFMET100_v2;
-   Int_t	   HLT_PFHT300_PFMET100_v3;
-   Int_t	   HLT_PFHT300_PFMET100_v4;
-   Int_t	   HLT_PFHT300_PFMET110_v4;
-   Int_t	   HLT_PFHT300_PFMET110_v5;
-   Int_t	   HLT_PFHT300_PFMET110_v6;
+    // 2016 MET Triggers
+    Int_t HLT_MET200_v1;
+    Int_t HLT_MET200_v2;
+    Int_t HLT_MET200_v3;
+    Int_t HLT_MET200_v4;
+    Int_t HLT_MET200_v5;
+    Int_t HLT_MET250_v1;
+    Int_t HLT_MET250_v2;
+    Int_t HLT_MET250_v3;
+    Int_t HLT_MET250_v4;
+    Int_t HLT_MET250_v5;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_v2;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_v3;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_v4;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_v5;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_v6;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_v7;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_v8;
+    Int_t HLT_PFMET170_HBHECleaned_v2;
+    Int_t HLT_PFMET170_HBHECleaned_v3;
+    Int_t HLT_PFMET170_HBHECleaned_v4;
+    Int_t HLT_PFMET170_HBHECleaned_v5;
+    Int_t HLT_PFMET170_HBHECleaned_v6;
+    Int_t HLT_PFMET170_HBHECleaned_v7;
+    Int_t HLT_PFMET170_HBHECleaned_v8;
+    Int_t HLT_PFMET170_HBHECleaned_v9;
+    Int_t HLT_PFHT800_v2;
+    Int_t HLT_PFHT800_v3;
+    Int_t HLT_PFHT800_v4;
+    Int_t HLT_PFHT800_v5;
+    Int_t HLT_PFHT900_v4;
+    Int_t HLT_PFHT900_v5;
+    Int_t HLT_PFHT900_v6;
+    Int_t HLT_PFHT750_4JetPt50_v3;
+    Int_t HLT_PFHT750_4JetPt50_v4;
+    Int_t HLT_PFHT750_4JetPt50_v5;
+    Int_t HLT_PFHT750_4JetPt50_v6;
+    Int_t HLT_PFHT750_4JetPt70_v1;
+    Int_t HLT_PFHT750_4JetPt70_v2;
+    Int_t HLT_PFHT750_4JetPt80_v2;
+    Int_t HLT_PFHT300_PFMET100_v1;
+    Int_t HLT_PFHT300_PFMET100_v2;
+    Int_t HLT_PFHT300_PFMET100_v3;
+    Int_t HLT_PFHT300_PFMET100_v4;
+    Int_t HLT_PFHT300_PFMET110_v4;
+    Int_t HLT_PFHT300_PFMET110_v5;
+    Int_t HLT_PFHT300_PFMET110_v6;
 
-   // 2017 MET triggers
-   Int_t HLT_MET105_IsoTrk50_v1;
-   Int_t HLT_MET105_IsoTrk50_v3;
-   Int_t HLT_MET105_IsoTrk50_v4;
-   Int_t HLT_MET105_IsoTrk50_v5;
-   Int_t HLT_MET105_IsoTrk50_v6;
-   Int_t HLT_MET105_IsoTrk50_v7;
-   Int_t HLT_MET105_IsoTrk50_v8;
-   Int_t HLT_MET120_IsoTrk50_v1;
-   Int_t HLT_MET120_IsoTrk50_v3;
-   Int_t HLT_MET120_IsoTrk50_v4;
-   Int_t HLT_MET120_IsoTrk50_v5;
-   Int_t HLT_MET120_IsoTrk50_v6;
-   Int_t HLT_MET120_IsoTrk50_v7;
-   Int_t HLT_MET120_IsoTrk50_v8;
-   Int_t HLT_HT430_DisplacedDijet40_DisplacedTrack_v10;
-   Int_t HLT_HT430_DisplacedDijet40_DisplacedTrack_v11;
-   Int_t HLT_HT430_DisplacedDijet40_DisplacedTrack_v5;
-   Int_t HLT_HT430_DisplacedDijet40_DisplacedTrack_v6;
-   Int_t HLT_HT430_DisplacedDijet40_DisplacedTrack_v8;
-   Int_t HLT_HT430_DisplacedDijet40_DisplacedTrack_v9;
-   Int_t HLT_HT430_DisplacedDijet60_DisplacedTrack_v10;
-   Int_t HLT_HT430_DisplacedDijet60_DisplacedTrack_v11;
-   Int_t HLT_HT430_DisplacedDijet60_DisplacedTrack_v5;
-   Int_t HLT_HT430_DisplacedDijet60_DisplacedTrack_v6;
-   Int_t HLT_HT430_DisplacedDijet60_DisplacedTrack_v8;
-   Int_t HLT_HT430_DisplacedDijet60_DisplacedTrack_v9;
-   Int_t HLT_HT430_DisplacedDijet80_DisplacedTrack_v10;
-   Int_t HLT_HT430_DisplacedDijet80_DisplacedTrack_v11;
-   Int_t HLT_HT430_DisplacedDijet80_DisplacedTrack_v5;
-   Int_t HLT_HT430_DisplacedDijet80_DisplacedTrack_v6;
-   Int_t HLT_HT430_DisplacedDijet80_DisplacedTrack_v8;
-   Int_t HLT_HT430_DisplacedDijet80_DisplacedTrack_v9;
-   Int_t HLT_HT650_DisplacedDijet60_Inclusive_v10;
-   Int_t HLT_HT650_DisplacedDijet60_Inclusive_v11;
-   Int_t HLT_HT650_DisplacedDijet60_Inclusive_v5;
-   Int_t HLT_HT650_DisplacedDijet60_Inclusive_v6;
-   Int_t HLT_HT650_DisplacedDijet60_Inclusive_v8;
-   Int_t HLT_HT650_DisplacedDijet60_Inclusive_v9;
-   Int_t HLT_HT650_DisplacedDijet80_Inclusive_v10;
-   Int_t HLT_HT650_DisplacedDijet80_Inclusive_v11;
-   Int_t HLT_HT650_DisplacedDijet80_Inclusive_v12;
-   Int_t HLT_HT650_DisplacedDijet80_Inclusive_v6;
-   Int_t HLT_HT650_DisplacedDijet80_Inclusive_v7;
-   Int_t HLT_HT650_DisplacedDijet80_Inclusive_v9;
-   Int_t HLT_HT750_DisplacedDijet80_Inclusive_v10;
-   Int_t HLT_HT750_DisplacedDijet80_Inclusive_v11;
-   Int_t HLT_HT750_DisplacedDijet80_Inclusive_v12;
-   Int_t HLT_HT750_DisplacedDijet80_Inclusive_v6;
-   Int_t HLT_HT750_DisplacedDijet80_Inclusive_v7;
-   Int_t HLT_HT750_DisplacedDijet80_Inclusive_v9;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v1;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v2;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF_v10;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v1;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v2;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_v2;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_v3;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_v4;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_v5;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_v6;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_v7;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_v11;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_v13;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_v14;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_v15;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_v16;
-   Int_t HLT_PFMET120_PFMHT120_IDTight_v9;
-   Int_t HLT_PFMET130_PFMHT130_IDTight_v11;
-   Int_t HLT_PFMET130_PFMHT130_IDTight_v13;
-   Int_t HLT_PFMET130_PFMHT130_IDTight_v14;
-   Int_t HLT_PFMET130_PFMHT130_IDTight_v15;
-   Int_t HLT_PFMET130_PFMHT130_IDTight_v16;
-   Int_t HLT_PFMET130_PFMHT130_IDTight_v9;
-   Int_t HLT_PFMET140_PFMHT140_IDTight_v11;
-   Int_t HLT_PFMET140_PFMHT140_IDTight_v13;
-   Int_t HLT_PFMET140_PFMHT140_IDTight_v14;
-   Int_t HLT_PFMET140_PFMHT140_IDTight_v15;
-   Int_t HLT_PFMET140_PFMHT140_IDTight_v16;
-   Int_t HLT_PFMET140_PFMHT140_IDTight_v17;
-   Int_t HLT_PFMET140_PFMHT140_IDTight_v18;
-   Int_t HLT_PFMET140_PFMHT140_IDTight_v9;
-   Int_t HLT_PFMET200_HBHE_BeamHaloCleaned_v5;
-   Int_t HLT_PFMET200_HBHE_BeamHaloCleaned_v6;
-   Int_t HLT_PFMET200_HBHE_BeamHaloCleaned_v7;
-   Int_t HLT_PFMET250_HBHECleaned_v2;
-   Int_t HLT_PFMET250_HBHECleaned_v3;
-   Int_t HLT_PFMET250_HBHECleaned_v4;
-   Int_t HLT_PFMET250_HBHECleaned_v5;
-   Int_t HLT_PFMET250_HBHECleaned_v6;
-   Int_t HLT_PFMET250_HBHECleaned_v7;
-   Int_t HLT_PFMET300_HBHECleaned_v2;
-   Int_t HLT_PFMET300_HBHECleaned_v3;
-   Int_t HLT_PFMET300_HBHECleaned_v4;
-   Int_t HLT_PFMET300_HBHECleaned_v5;
-   Int_t HLT_PFMET300_HBHECleaned_v6;
-   Int_t HLT_PFMET300_HBHECleaned_v7;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v1;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v2;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF_v10;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v2;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v3;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v4;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v5;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v6;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v7;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v11;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v13;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v14;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v15;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v16;
-   Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v9;
-   Int_t HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v10;
-   Int_t HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v12;
-   Int_t HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v13;
-   Int_t HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v14;
-   Int_t HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v15;
-   Int_t HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v9;
-   Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v10;
-   Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v12;
-   Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v13;
-   Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v14;
-   Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v15;
-   Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v16;
-   Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v17;
-   Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v9;
-   Int_t HLT_PFHT1050_v11;
-   Int_t HLT_PFHT1050_v12;
-   Int_t HLT_PFHT1050_v13;
-   Int_t HLT_PFHT1050_v14;
-   Int_t HLT_PFHT1050_v15;
-   Int_t HLT_PFHT1050_v16;
-   Int_t HLT_PFHT1050_v7;
-   Int_t HLT_PFHT1050_v9;
-   Int_t HLT_PFHT180_v7;
-   Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v1;
-   Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v10;
-   Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v3;
-   Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v5;
-   Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v6;
-   Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v7;
-   Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v8;
-   Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v9;
-   Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v1;
-   Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v10;
-   Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v3;
-   Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v5;
-   Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v6;
-   Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v7;
-   Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v8;
-   Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v9;
-   Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v1;
-   Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v10;
-   Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v3;
-   Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v5;
-   Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v6;
-   Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v7;
-   Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v8;
-   Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v9;
-   Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v1;
-   Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v10;
-   Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v3;
-   Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v5;
-   Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v6;
-   Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v7;
-   Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v8;
-   Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v9;
-   Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v1;
-   Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v10;
-   Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v3;
-   Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v5;
-   Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v6;
-   Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v7;
-   Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v8;
-   Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v9;
-   Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v1;
-   Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v10;
-   Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v3;
-   Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v5;
-   Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v6;
-   Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v7;
-   Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v8;
-   Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v9;
+    // 2017 MET triggers
+    Int_t HLT_MET105_IsoTrk50_v1;
+    Int_t HLT_MET105_IsoTrk50_v3;
+    Int_t HLT_MET105_IsoTrk50_v4;
+    Int_t HLT_MET105_IsoTrk50_v5;
+    Int_t HLT_MET105_IsoTrk50_v6;
+    Int_t HLT_MET105_IsoTrk50_v7;
+    Int_t HLT_MET105_IsoTrk50_v8;
+    Int_t HLT_MET120_IsoTrk50_v1;
+    Int_t HLT_MET120_IsoTrk50_v3;
+    Int_t HLT_MET120_IsoTrk50_v4;
+    Int_t HLT_MET120_IsoTrk50_v5;
+    Int_t HLT_MET120_IsoTrk50_v6;
+    Int_t HLT_MET120_IsoTrk50_v7;
+    Int_t HLT_MET120_IsoTrk50_v8;
+    Int_t HLT_HT430_DisplacedDijet40_DisplacedTrack_v10;
+    Int_t HLT_HT430_DisplacedDijet40_DisplacedTrack_v11;
+    Int_t HLT_HT430_DisplacedDijet40_DisplacedTrack_v5;
+    Int_t HLT_HT430_DisplacedDijet40_DisplacedTrack_v6;
+    Int_t HLT_HT430_DisplacedDijet40_DisplacedTrack_v8;
+    Int_t HLT_HT430_DisplacedDijet40_DisplacedTrack_v9;
+    Int_t HLT_HT430_DisplacedDijet60_DisplacedTrack_v10;
+    Int_t HLT_HT430_DisplacedDijet60_DisplacedTrack_v11;
+    Int_t HLT_HT430_DisplacedDijet60_DisplacedTrack_v5;
+    Int_t HLT_HT430_DisplacedDijet60_DisplacedTrack_v6;
+    Int_t HLT_HT430_DisplacedDijet60_DisplacedTrack_v8;
+    Int_t HLT_HT430_DisplacedDijet60_DisplacedTrack_v9;
+    Int_t HLT_HT430_DisplacedDijet80_DisplacedTrack_v10;
+    Int_t HLT_HT430_DisplacedDijet80_DisplacedTrack_v11;
+    Int_t HLT_HT430_DisplacedDijet80_DisplacedTrack_v5;
+    Int_t HLT_HT430_DisplacedDijet80_DisplacedTrack_v6;
+    Int_t HLT_HT430_DisplacedDijet80_DisplacedTrack_v8;
+    Int_t HLT_HT430_DisplacedDijet80_DisplacedTrack_v9;
+    Int_t HLT_HT650_DisplacedDijet60_Inclusive_v10;
+    Int_t HLT_HT650_DisplacedDijet60_Inclusive_v11;
+    Int_t HLT_HT650_DisplacedDijet60_Inclusive_v5;
+    Int_t HLT_HT650_DisplacedDijet60_Inclusive_v6;
+    Int_t HLT_HT650_DisplacedDijet60_Inclusive_v8;
+    Int_t HLT_HT650_DisplacedDijet60_Inclusive_v9;
+    Int_t HLT_HT650_DisplacedDijet80_Inclusive_v10;
+    Int_t HLT_HT650_DisplacedDijet80_Inclusive_v11;
+    Int_t HLT_HT650_DisplacedDijet80_Inclusive_v12;
+    Int_t HLT_HT650_DisplacedDijet80_Inclusive_v6;
+    Int_t HLT_HT650_DisplacedDijet80_Inclusive_v7;
+    Int_t HLT_HT650_DisplacedDijet80_Inclusive_v9;
+    Int_t HLT_HT750_DisplacedDijet80_Inclusive_v10;
+    Int_t HLT_HT750_DisplacedDijet80_Inclusive_v11;
+    Int_t HLT_HT750_DisplacedDijet80_Inclusive_v12;
+    Int_t HLT_HT750_DisplacedDijet80_Inclusive_v6;
+    Int_t HLT_HT750_DisplacedDijet80_Inclusive_v7;
+    Int_t HLT_HT750_DisplacedDijet80_Inclusive_v9;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v1;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v2;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF_v10;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v1;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v2;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_v2;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_v3;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_v4;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_v5;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_v6;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_PFHT60_v7;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_v11;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_v13;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_v14;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_v15;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_v16;
+    Int_t HLT_PFMET120_PFMHT120_IDTight_v9;
+    Int_t HLT_PFMET130_PFMHT130_IDTight_v11;
+    Int_t HLT_PFMET130_PFMHT130_IDTight_v13;
+    Int_t HLT_PFMET130_PFMHT130_IDTight_v14;
+    Int_t HLT_PFMET130_PFMHT130_IDTight_v15;
+    Int_t HLT_PFMET130_PFMHT130_IDTight_v16;
+    Int_t HLT_PFMET130_PFMHT130_IDTight_v9;
+    Int_t HLT_PFMET140_PFMHT140_IDTight_v11;
+    Int_t HLT_PFMET140_PFMHT140_IDTight_v13;
+    Int_t HLT_PFMET140_PFMHT140_IDTight_v14;
+    Int_t HLT_PFMET140_PFMHT140_IDTight_v15;
+    Int_t HLT_PFMET140_PFMHT140_IDTight_v16;
+    Int_t HLT_PFMET140_PFMHT140_IDTight_v17;
+    Int_t HLT_PFMET140_PFMHT140_IDTight_v18;
+    Int_t HLT_PFMET140_PFMHT140_IDTight_v9;
+    Int_t HLT_PFMET200_HBHE_BeamHaloCleaned_v5;
+    Int_t HLT_PFMET200_HBHE_BeamHaloCleaned_v6;
+    Int_t HLT_PFMET200_HBHE_BeamHaloCleaned_v7;
+    Int_t HLT_PFMET250_HBHECleaned_v2;
+    Int_t HLT_PFMET250_HBHECleaned_v3;
+    Int_t HLT_PFMET250_HBHECleaned_v4;
+    Int_t HLT_PFMET250_HBHECleaned_v5;
+    Int_t HLT_PFMET250_HBHECleaned_v6;
+    Int_t HLT_PFMET250_HBHECleaned_v7;
+    Int_t HLT_PFMET300_HBHECleaned_v2;
+    Int_t HLT_PFMET300_HBHECleaned_v3;
+    Int_t HLT_PFMET300_HBHECleaned_v4;
+    Int_t HLT_PFMET300_HBHECleaned_v5;
+    Int_t HLT_PFMET300_HBHECleaned_v6;
+    Int_t HLT_PFMET300_HBHECleaned_v7;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v1;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v2;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF_v10;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v2;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v3;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v4;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v5;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v6;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v7;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v11;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v13;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v14;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v15;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v16;
+    Int_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v9;
+    Int_t HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v10;
+    Int_t HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v12;
+    Int_t HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v13;
+    Int_t HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v14;
+    Int_t HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v15;
+    Int_t HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v9;
+    Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v10;
+    Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v12;
+    Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v13;
+    Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v14;
+    Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v15;
+    Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v16;
+    Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v17;
+    Int_t HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v9;
+    Int_t HLT_PFHT1050_v11;
+    Int_t HLT_PFHT1050_v12;
+    Int_t HLT_PFHT1050_v13;
+    Int_t HLT_PFHT1050_v14;
+    Int_t HLT_PFHT1050_v15;
+    Int_t HLT_PFHT1050_v16;
+    Int_t HLT_PFHT1050_v7;
+    Int_t HLT_PFHT1050_v9;
+    Int_t HLT_PFHT180_v7;
+    Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v1;
+    Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v10;
+    Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v3;
+    Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v5;
+    Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v6;
+    Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v7;
+    Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v8;
+    Int_t HLT_PFHT500_PFMET100_PFMHT100_IDTight_v9;
+    Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v1;
+    Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v10;
+    Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v3;
+    Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v5;
+    Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v6;
+    Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v7;
+    Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v8;
+    Int_t HLT_PFHT500_PFMET110_PFMHT110_IDTight_v9;
+    Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v1;
+    Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v10;
+    Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v3;
+    Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v5;
+    Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v6;
+    Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v7;
+    Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v8;
+    Int_t HLT_PFHT700_PFMET85_PFMHT85_IDTight_v9;
+    Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v1;
+    Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v10;
+    Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v3;
+    Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v5;
+    Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v6;
+    Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v7;
+    Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v8;
+    Int_t HLT_PFHT700_PFMET95_PFMHT95_IDTight_v9;
+    Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v1;
+    Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v10;
+    Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v3;
+    Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v5;
+    Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v6;
+    Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v7;
+    Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v8;
+    Int_t HLT_PFHT800_PFMET75_PFMHT75_IDTight_v9;
+    Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v1;
+    Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v10;
+    Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v3;
+    Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v5;
+    Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v6;
+    Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v7;
+    Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v8;
+    Int_t HLT_PFHT800_PFMET85_PFMHT85_IDTight_v9;
 
-   // MET Filters
-   // 2016
-   Int_t           Flag_ecalLaserCorrFilter;
-   Int_t           Flag_chargedHadronTrackResolutionFilter;
-   Int_t           Flag_muonBadTrackFilter;
-   Int_t	   Flag_badMuons;
-   Int_t	   Flag_duplicateMuons;
-   Int_t	   Flag_noBadMuons;
-   // 2017
-   Int_t Flag_BadPFMuonFilter;
-   Int_t Flag_BadChargedCandidateFilter;
-   Int_t Flag_ecalBadCalibFilter;
-   // 2016 + 2017
-   Int_t	   Flag_HBHENoiseFilter;
-   Int_t	   Flag_HBHENoiseIsoFilter;
-   Int_t	   Flag_globalTightHalo2016Filter;
-   Int_t	   Flag_EcalDeadCellTriggerPrimitiveFilter;
-   Int_t	   Flag_goodVertices;
-   Int_t	   Flag_eeBadScFilter;
+    // MET Filters
+    // 2016
+    Int_t Flag_ecalLaserCorrFilter;
+    Int_t Flag_chargedHadronTrackResolutionFilter;
+    Int_t Flag_muonBadTrackFilter;
+    Int_t Flag_badMuons;
+    Int_t Flag_duplicateMuons;
+    Int_t Flag_noBadMuons;
+    // 2017
+    Int_t Flag_BadPFMuonFilter;
+    Int_t Flag_BadChargedCandidateFilter;
+    Int_t Flag_ecalBadCalibFilter;
+    // 2016 + 2017
+    Int_t Flag_HBHENoiseFilter;
+    Int_t Flag_HBHENoiseIsoFilter;
+    Int_t Flag_globalTightHalo2016Filter;
+    Int_t Flag_EcalDeadCellTriggerPrimitiveFilter;
+    Int_t Flag_goodVertices;
+    Int_t Flag_eeBadScFilter;
 
-   //Gen info
-   Int_t           nGenPar;
-   Float_t         genParEta[50];   //[nGenPar]
-   Float_t         genParPhi[50];   //[nGenPar]
-   Float_t         genParE[50];   //[nGenPar]
-   Float_t         genParPt[50];   //[nGenPar]
-   Int_t           genParId[50];   //[nGenPar]
-   Int_t           genParMotherId[50];   //[nGenPar]
-   Int_t           genParCharge[50];   //[nGenPar]
-   Int_t           eventRun;
-   Int_t           eventNum;
-   Float_t         eventLumiblock;
+    // Gen info
+    Int_t nGenPar;
+    Float_t genParEta[50]; //[nGenPar]
+    Float_t genParPhi[50]; //[nGenPar]
+    Float_t genParE[50]; //[nGenPar]
+    Float_t genParPt[50]; //[nGenPar]
+    Int_t genParId[50]; //[nGenPar]
+    Int_t genParMotherId[50]; //[nGenPar]
+    Int_t genParCharge[50]; //[nGenPar]
+    Int_t eventRun;
+    Int_t eventNum;
+    Float_t eventLumiblock;
 
-   // List of branches
-   TBranch        *b_numElePF2PAT;   //!
-   TBranch        *b_elePF2PATE;   //!
-   TBranch        *b_elePF2PATET;   //!
-   TBranch        *b_elePF2PATPX;   //!
-   TBranch        *b_elePF2PATPY;   //!
-   TBranch        *b_elePF2PATPZ;   //!
-   TBranch        *b_elePF2PATPhi;   //!
-   TBranch        *b_elePF2PATTheta;   //!
-   TBranch        *b_elePF2PATEta;   //!
-   TBranch        *b_elePF2PATPT;   //!
-   TBranch        *b_elePF2PATCharge;   //!
-   TBranch        *b_elePF2PATCutIdVeto;   //!
-   TBranch        *b_elePF2PATCutIdLoose;   //!
-   TBranch        *b_elePF2PATCutIdMedium;   //!
-   TBranch        *b_elePF2PATCutIdTight;   //!
-   TBranch        *b_elePF2PATImpactTransDist;   //!
-   TBranch        *b_elePF2PATImpactTransError;   //!
-   TBranch        *b_elePF2PATImpactTransSignificance;   //!
-   TBranch        *b_elePF2PATImpact3DDist;   //!
-   TBranch        *b_elePF2PATImpact3DError;   //!
-   TBranch        *b_elePF2PATImpact3DSignificance;   //!
-   TBranch        *b_elePF2PATChargedHadronIso;   //!
-   TBranch        *b_elePF2PATNeutralHadronIso;   //!
-   TBranch        *b_elePF2PATPhotonIso;   //!
-   TBranch        *b_elePF2PATTrackPt;   //!
-   TBranch        *b_elePF2PATTrackPhi;   //!
-   TBranch        *b_elePF2PATTrackEta;   //!
-   TBranch        *b_elePF2PATTrackChi2;   //!
-   TBranch        *b_elePF2PATTrackNDOF;   //!
-   TBranch        *b_elePF2PATTrackD0;   //!
-   TBranch        *b_elePF2PATTrackDBD0;   //!
-   TBranch        *b_elePF2PATD0PV;   //!
-   TBranch        *b_elePF2PATDZPV;   //!
-   TBranch        *b_elePF2PATBeamSpotCorrectedTrackD0;   //!
-   TBranch        *b_elePF2PATTrackDz;   //!
-   TBranch        *b_elePF2PATVtxZ;   //!
-   TBranch        *b_elePF2PATIsGsf;   //!
-   TBranch        *b_elePF2PATGsfPx;   //!
-   TBranch        *b_elePF2PATGsfPy;   //!
-   TBranch        *b_elePF2PATGsfPz;   //!
-   TBranch        *b_elePF2PATGsfE;   //!
-   TBranch	  *b_elePF2PATEcalEnergy;
-   TBranch        *b_elePF2PATSCEta;   //!
-   TBranch        *b_elePF2PATSCE;   //!
-   TBranch        *b_elePF2PATSCPhi;   //!
-   TBranch	  *b_elePF2PATSCEoverP;
-   TBranch        *b_elePF2PATSCSigmaEtaEta;   //!
-   TBranch        *b_elePF2PATSCSigmaIEtaIEta;   //!
-   TBranch        *b_elePF2PATSCSigmaIEtaIEta5x5;   //!
-   TBranch        *b_elePF2PATSCE1x5;   //!
-   TBranch        *b_elePF2PATSCE5x5;   //!
-   TBranch        *b_elePF2PATSCE2x5max;   //!
-   TBranch        *b_elePF2PATTrackIso04;   //!
-   TBranch        *b_elePF2PATEcalIso04;   //!
-   TBranch        *b_elePF2PATHcalIso04;   //!
-   TBranch        *b_elePF2PATTrackIso03;   //!
-   TBranch        *b_elePF2PATEcalIso03;   //!
-   TBranch        *b_elePF2PATHcalIso03;   //!
-   TBranch        *b_elePF2PATdr04EcalRecHitSumEt;   //!
-   TBranch        *b_elePF2PATdr03EcalRecHitSumEt;   //!
-   TBranch        *b_elePF2PATEcalIsoDeposit;   //!
-   TBranch        *b_elePF2PATHcalIsoDeposit;   //!
-   TBranch        *b_elePF2PATComRelIso;   //!
-   TBranch        *b_elePF2PATComRelIsodBeta;   //!
-   TBranch        *b_elePF2PATComRelIsoRho;   //!
-   TBranch        *b_elePF2PATChHadIso;   //!
-   TBranch        *b_elePF2PATNtHadIso;   //!
-   TBranch        *b_elePF2PATGammaIso;   //!
-   TBranch        *b_elePF2PATRhoIso;   //!
-   TBranch        *b_elePF2PATAEff03;   //!
-   TBranch        *b_elePF2PATMissingInnerLayers;   //!
-   TBranch        *b_elePF2PATHoverE;   //!
-   TBranch        *b_elePF2PATDeltaPhiSC;   //!
-   TBranch        *b_elePF2PATDeltaEtaSC;   //!
-   TBranch        *b_elePF2PATDeltaEtaSeedSC;   //!
-   TBranch        *b_elePF2PATIsBarrel;   //!
-   TBranch        *b_elePF2PATPhotonConversionTag;   //!
-   TBranch        *b_elePF2PATPhotonConversionDist;   //!
-   TBranch        *b_elePF2PATPhotonConversionDcot;   //!
-   TBranch        *b_elePF2PATPhotonConversionVeto;   //!
-   TBranch        *b_elePF2PATPhotonConversionTagCustom;   //!
-   TBranch        *b_elePF2PATPhotonConversionDistCustom;   //!
-   TBranch        *b_elePF2PATPhotonConversionDcotCustom;   //!
-   TBranch        *b_elePF2PATTriggerMatch;   //!
-   TBranch        *b_elePF2PATJetOverlap;   //!
-   TBranch        *b_genElePF2PATPT;   //!
-   TBranch        *b_genElePF2PATET;   //!
-   TBranch        *b_genElePF2PATPX;   //!
-   TBranch        *b_genElePF2PATPY;   //!
-   TBranch        *b_genElePF2PATPZ;   //!
-   TBranch        *b_genElePF2PATPhi;   //!
-   TBranch        *b_genElePF2PATTheta;   //!
-   TBranch        *b_genElePF2PATEta;   //!
-   TBranch        *b_genElePF2PATCharge;   //!
-   TBranch        *b_genElePF2PATPdgId;   //!
-   TBranch        *b_genElePF2PATMotherId;   //!
-   TBranch        *b_genElePF2PATPromptDecayed;   //!
-   TBranch        *b_genElePF2PATPromptFinalState;   //!
-   TBranch        *b_genElePF2PATHardProcess;   //!
-   TBranch        *b_numMuonPF2PAT;   //!
-   TBranch        *b_muonPF2PATE;   //!
-   TBranch        *b_muonPF2PATET;   //!
-   TBranch        *b_muonPF2PATPt;   //!
-   TBranch        *b_muonPF2PATPX;   //!
-   TBranch        *b_muonPF2PATPY;   //!
-   TBranch        *b_muonPF2PATPZ;   //!
-   TBranch        *b_muonPF2PATPhi;   //!
-   TBranch        *b_muonPF2PATTheta;   //!
-   TBranch        *b_muonPF2PATEta;   //!
-   TBranch        *b_muonPF2PATCharge;   //!
-   TBranch        *b_muonPF2PATLooseCutId;   //!
-   TBranch        *b_muonPF2PATMediumCutId;   //!
-   TBranch        *b_muonPF2PATTightCutId;   //!
-   TBranch        *b_muonPF2PATPfIsoVeryLoose;   //!
-   TBranch        *b_muonPF2PATPfIsoLoose;   //!
-   TBranch        *b_muonPF2PATPfIsoMedium;   //!
-   TBranch        *b_muonPF2PATPfIsoTight;   //!
-   TBranch        *b_muonPF2PATPfIsoVeryTight;   //!
-   TBranch        *b_muonPF2PATTkIsoLoose;   //!
-   TBranch        *b_muonPF2PATTkIsoTight;   //!
-   TBranch        *b_muonPF2PATMvaLoose;   //!
-   TBranch        *b_muonPF2PATMvaMedium;   //!
-   TBranch        *b_muonPF2PATMvaTight;   //!
-   TBranch        *b_muonPF2PATGlobalID;   //!
-   TBranch        *b_muonPF2PATTrackID;   //!
-   TBranch        *b_muonPF2PATChi2;   //!
-   TBranch        *b_muonPF2PATD0;   //!
-   TBranch        *b_muonPF2PATTrackDBD0;   //!
-   TBranch        *b_muonPF2PATDBInnerTrackD0;   //!
-   TBranch        *b_muonPF2PATBeamSpotCorrectedD0;   //!
-   TBranch        *b_muonPF2PATTrackNHits;   //!
-   TBranch        *b_muonPF2PATMuonNHits;   //!
-   TBranch        *b_muonPF2PATNDOF;   //!
-   TBranch        *b_muonPF2PATVertX;   //!
-   TBranch        *b_muonPF2PATVertY;   //!
-   TBranch        *b_muonPF2PATVertZ;   //!
-   TBranch        *b_muonPF2PATChargedHadronIso;   //!
-   TBranch        *b_muonPF2PATNeutralHadronIso;   //!
-   TBranch        *b_muonPF2PATPhotonIso;   //!
-   TBranch        *b_muonPF2PATTrackIso;   //!
-   TBranch        *b_muonPF2PATEcalIso;   //!
-   TBranch        *b_muonPF2PATHcalIso;   //!
-   TBranch        *b_muonPF2PATComRelIso;   //!
-   TBranch        *b_muonPF2PATComRelIsodBeta;   //!
-   TBranch        *b_muonPF2PATIsPFMuon;   //!
-   TBranch        *b_muonPF2PATNChambers;   //!
-   TBranch        *b_muonPF2PATNMatches;   //!
-   TBranch        *b_muonPF2PATTkLysWithMeasurements;   //!
-   TBranch        *b_muonPF2PATVldPixHits;   //!
-   TBranch        *b_muonPF2PATMatchedStations;   //!
-   TBranch        *b_muonPF2PATGlbTkNormChi2;   //!
-   TBranch        *b_muonPF2PATValidFraction;   //!
-   TBranch        *b_muonPF2PATChi2LocalPosition;   //!
-   TBranch        *b_muonPF2PATTrkKick;   //!
-   TBranch        *b_muonPF2PATSegmentCompatibility;   //!
-   TBranch        *b_muonPF2PATDBPV;   //!
-   TBranch        *b_muonPF2PATDZPV;   //!
-   TBranch        *b_genMuonPF2PATPT;   //!
-   TBranch        *b_genMuonPF2PATET;   //!
-   TBranch        *b_genMuonPF2PATPX;   //!
-   TBranch        *b_genMuonPF2PATPY;   //!
-   TBranch        *b_genMuonPF2PATPZ;   //!
-   TBranch        *b_genMuonPF2PATPhi;   //!
-   TBranch        *b_genMuonPF2PATTheta;   //!
-   TBranch        *b_genMuonPF2PATEta;   //!
-   TBranch        *b_genMuonPF2PATCharge;   //!
-   TBranch        *b_genMuonPF2PATPdgId;   //!
-   TBranch        *b_genMuonPF2PATMotherId;   //!
-   TBranch        *b_genMuonPF2PATPromptDecayed;   //!
-   TBranch        *b_genMuonPF2PATPromptFinalState;   //!
-   TBranch        *b_genMuonPF2PATHardProcess;   //!
-   TBranch        *b_numJetPF2PAT;   //!
-   TBranch        *b_jetPF2PATE;   //!
-   TBranch        *b_jetPF2PATEt;   //!
-   TBranch        *b_jetPF2PATPt;   //!
-   TBranch        *b_jetPF2PATPtRaw;   //!
-   TBranch        *b_jetPF2PATUnCorEt;   //!
-   TBranch        *b_jetPF2PATUnCorPt;   //!
-   TBranch        *b_jetPF2PATEta;   //!
-   TBranch        *b_jetPF2PATTheta;   //!
-   TBranch        *b_jetPF2PATPhi;   //!
-   TBranch        *b_jetPF2PATPx;   //!
-   TBranch        *b_jetPF2PATPy;   //!
-   TBranch        *b_jetPF2PATPz;   //!
-   TBranch        *b_jetPF2PATdRClosestLepton;   //!
-   TBranch        *b_jetPF2PATNtracksInJet;   //!
-   TBranch        *b_jetPF2PATJetCharge;   //!
-   TBranch        *b_jetPF2PATfHPD;   //!
-   TBranch        *b_jetPF2PATBtagSoftMuonPtRel;   //!
-   TBranch        *b_jetPF2PATBtagSoftMuonQuality;   //!
-   TBranch        *b_jetPF2PATCorrFactor;   //!
-   TBranch        *b_jetPF2PATCorrResidual;   //!
-   TBranch        *b_jetPF2PATL2L3ResErr;   //!
-   TBranch        *b_jetPF2PATCorrErrLow;   //!
-   TBranch        *b_jetPF2PATCorrErrHi;   //!
-   TBranch        *b_jetPF2PATN90Hits;   //!
-   TBranch        *b_jetPF2PATTriggered;   //!
-   TBranch        *b_jetPF2PATSVX;   //!
-   TBranch        *b_jetPF2PATSVY;   //!
-   TBranch        *b_jetPF2PATSVZ;   //!
-   TBranch        *b_jetPF2PATSVDX;   //!
-   TBranch        *b_jetPF2PATSVDY;   //!
-   TBranch        *b_jetPF2PATSVDZ;   //!
-   TBranch        *b_jetPF2PATpfCombinedInclusiveSecondaryVertexV2BJetTags;   //!
-   TBranch        *b_jetPF2PATpfCombinedMVAV2BJetTags;   //!
-   TBranch        *b_jetPF2PATpfCombinedCvsLJetTags;   //!
-   TBranch        *b_jetPF2PATpfCombinedCvsBJetTags;   //!
-   TBranch        *b_jetPF2PATNConstituents;   //!
-   TBranch        *b_jetPF2PATPID;   //!
-   TBranch        *b_jetPF2PATClosestBPartonDeltaR;   //!
-   TBranch        *b_jetPF2PATClosestCPartonDeltaR;   //!
-   TBranch        *b_genJetPF2PATET;   //!
-   TBranch        *b_genJetPF2PATPT;   //!
-   TBranch        *b_genJetPF2PATPX;   //!
-   TBranch        *b_genJetPF2PATPY;   //!
-   TBranch        *b_genJetPF2PATPZ;   //!
-   TBranch        *b_genJetPF2PATPhi;   //!
-   TBranch        *b_genJetPF2PATTheta;   //!
-   TBranch        *b_genJetPF2PATEta;   //!
-   TBranch        *b_genJetPF2PATPID;   //!
-   TBranch        *b_jetPF2PATMuEnergy;   //!
-   TBranch        *b_jetPF2PATMuEnergyFraction;   //!
-   TBranch        *b_jetPF2PATNeutralHadEnergy;   //!
-   TBranch        *b_jetPF2PATNeutralEmEnergy;   //!
-   TBranch        *b_jetPF2PATChargedHadronEnergyFraction;   //!
-   TBranch        *b_jetPF2PATNeutralHadronEnergyFraction;   //!
-   TBranch        *b_jetPF2PATChargedEmEnergyFraction;   //!
-   TBranch        *b_jetPF2PATNeutralEmEnergyFraction;   //!
-   TBranch        *b_jetPF2PATMuonFraction;   //!
-   TBranch        *b_jetPF2PATChargedHadronEnergyFractionCorr;   //!
-   TBranch        *b_jetPF2PATNeutralHadronEnergyFractionCorr;   //!
-   TBranch        *b_jetPF2PATChargedEmEnergyFractionCorr;   //!
-   TBranch        *b_jetPF2PATNeutralEmEnergyFractionCorr;   //!
-   TBranch        *b_jetPF2PATMuonFractionCorr;   //!
-   TBranch        *b_jetPF2PATNeutralMultiplicity;   //!
-   TBranch        *b_jetPF2PATChargedMultiplicity;   //!
-   TBranch        *b_metPF2PATE;   //!
-   TBranch        *b_metPF2PATEt;   //!
-   TBranch        *b_metPF2PATEtRaw;   //!
-   TBranch        *b_metPF2PATPhi;   //!
-   TBranch        *b_metPF2PATPt;   //!
-   TBranch        *b_metPF2PATPx;   //!
-   TBranch        *b_metPF2PATPy;   //!
-   TBranch        *b_metPF2PATPz;   //!
-   TBranch        *b_metPF2PATScalarEt;   //!
-   TBranch        *b_metPF2PATEtUncorrected;   //!
-   TBranch        *b_metPF2PATPhiUncorrected;   //!
-   TBranch        *b_genMetPF2PATE;   //!
-   TBranch        *b_genMetPF2PATEt;   //!
-   TBranch        *b_genMetPF2PATPhi;   //!
-   TBranch        *b_genMetPF2PATPt;   //!
-   TBranch        *b_genMetPF2PATPx;   //!
-   TBranch        *b_genMetPF2PATPy;   //!
-   TBranch        *b_genMetPF2PATPz;   //!
-   TBranch        *b_numTauPF2PAT;   //!
-   TBranch        *b_tauPF2PATE;   //!
-   TBranch        *b_tauPF2PATPt;   //!
-   TBranch        *b_tauPF2PATPhi;   //!
-   TBranch        *b_tauPF2PATEta;   //!
-   TBranch        *b_numGeneralTracks;   //!
-   TBranch        *b_generalTracksPt;   //!
-   TBranch        *b_generalTracksEta;   //!
-   TBranch        *b_generalTracksTheta;   //!
-   TBranch        *b_generalTracksBeamSpotCorrectedD0;   //!
-   TBranch        *b_generalTracksPhi;   //!
-   TBranch        *b_generalTracksCharge;   //!
-   TBranch        *b_isElePlusJets;   //!
-   TBranch        *b_genPDFScale;   //!
-   TBranch        *b_genPDFx1;   //!
-   TBranch        *b_genPDFx2;   //!
-   TBranch        *b_genPDFf1;   //!
-   TBranch        *b_genPDFf2;   //!
-   TBranch        *b_topPtReweight;   //!
-   TBranch        *b_processId;   //!
-   TBranch        *b_processPtHat;   //!
-   TBranch        *b_processMCWeight;   //!
-   TBranch        *b_beamSpotX;   //!
-   TBranch        *b_beamSpotY;   //!
-   TBranch        *b_beamSpotZ;   //!
-   TBranch        *b_pvX;   //!
-   TBranch        *b_pvY;   //!
-   TBranch        *b_pvZ;   //!
-   TBranch        *b_pvDX;   //!
-   TBranch        *b_pvDY;   //!
-   TBranch        *b_pvDZ;   //!
-   TBranch        *b_pvRho;   //!
-   TBranch        *b_pvIsFake;   //!
-   TBranch        *b_pvNdof;   //!
-   TBranch        *b_pvChi2;   //!
-   TBranch        *b_mhtPt;   //!
-   TBranch        *b_mhtPy;   //!
-   TBranch        *b_mhtPx;   //!
-   TBranch        *b_mhtPhi;   //!
-   TBranch        *b_mhtSumEt;   //!
-   TBranch        *b_mhtSignif;   //!
-   TBranch        *b_nTriggerBits;   //!
-   TBranch        *b_TriggerBits;   //!
-   TBranch	  *b_weight_muF0p5;   //!
-   TBranch	  *b_weight_muF2;   //!
-   TBranch	  *b_weight_muR0p5;   //!
-   TBranch	  *b_weight_muR2;   //!
-   TBranch	  *b_weight_muF0p5muR0p5;   //!
-   TBranch	  *b_weight_muF2muR2;   //!
-   TBranch	  *b_origWeightForNorm;   //!
-   TBranch	  *b_weight_pdfMax;   //!
-   TBranch	  *b_weight_pdfMin;   //!
-   TBranch	  *b_weight_alphaMax;   //!
-   TBranch	  *b_weight_alphaMin;   //!
-   TBranch* b_isrRedHi;
-   TBranch* b_fsrRedHi;
-   TBranch* b_isrRedLo;
-   TBranch* b_fsrRedLo;
-   TBranch* b_isrDefHi;
-   TBranch* b_fsrDefHi;
-   TBranch* b_isrDefLo;
-   TBranch* b_fsrDefLo;
-   TBranch* b_isrConHi;
-   TBranch* b_fsrConHi;
-   TBranch* b_isrConLo;
-   TBranch* b_fsrConLo;
-   //   TBranch        *b_numVert;    //!
-   TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v1;
-   TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v2;
-   TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v3;
-   TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v4;
-   TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v5;
-   TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v6;
-   TBranch	  *b_HLT_Ele25_eta2p1_WPTight_Gsf_v7;
-   TBranch        *b_HLT_Ele27_WPTight_Gsf_v1;
-   TBranch        *b_HLT_Ele27_WPTight_Gsf_v2;
-   TBranch        *b_HLT_Ele27_WPTight_Gsf_v3;
-   TBranch        *b_HLT_Ele27_WPTight_Gsf_v4;
-   TBranch        *b_HLT_Ele27_WPTight_Gsf_v5;
-   TBranch        *b_HLT_Ele27_WPTight_Gsf_v6;
-   TBranch        *b_HLT_Ele27_WPTight_Gsf_v7;
-   TBranch        *b_HLT_Ele32_eta2p1_WPTight_Gsf_v2;
-   TBranch        *b_HLT_Ele32_eta2p1_WPTight_Gsf_v3;
-   TBranch        *b_HLT_Ele32_eta2p1_WPTight_Gsf_v4;
-   TBranch        *b_HLT_Ele32_eta2p1_WPTight_Gsf_v5;
-   TBranch        *b_HLT_Ele32_eta2p1_WPTight_Gsf_v6;
-   TBranch        *b_HLT_Ele32_eta2p1_WPTight_Gsf_v7;
-   TBranch        *b_HLT_Ele32_eta2p1_WPTight_Gsf_v8;
-   TBranch        *b_HLT_IsoMu24_v1;
-   TBranch        *b_HLT_IsoMu24_v2;
-   TBranch        *b_HLT_IsoMu24_v3;
-   TBranch        *b_HLT_IsoMu24_v4;
-   TBranch        *b_HLT_IsoTkMu24_v1;
-   TBranch        *b_HLT_IsoTkMu24_v2;
-   TBranch        *b_HLT_IsoTkMu24_v3;
-   TBranch        *b_HLT_IsoTkMu24_v4;
-   TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3;
-   TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4;
-   TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5;
-   TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6;
-   TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7;
-   TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8;
-   TBranch        *b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v7;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5;
-   TBranch        *b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6;
-   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3;
-   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4;
-   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5;
-   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6;
-   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v7;
-   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v8;
-   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v9;
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3;
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4;
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5;
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v6;
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v7;
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v8;
-   TBranch        *b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v9;
-   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1;
-   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2;
-   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3;
-   TBranch        *b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4;
-   TBranch        *b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v1;
-   TBranch        *b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v2;
-   TBranch        *b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v3;
-   TBranch        *b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4;
+    // List of branches
+    TBranch* b_numElePF2PAT; //!
+    TBranch* b_elePF2PATE; //!
+    TBranch* b_elePF2PATET; //!
+    TBranch* b_elePF2PATPX; //!
+    TBranch* b_elePF2PATPY; //!
+    TBranch* b_elePF2PATPZ; //!
+    TBranch* b_elePF2PATPhi; //!
+    TBranch* b_elePF2PATTheta; //!
+    TBranch* b_elePF2PATEta; //!
+    TBranch* b_elePF2PATPT; //!
+    TBranch* b_elePF2PATCharge; //!
+    TBranch* b_elePF2PATCutIdVeto; //!
+    TBranch* b_elePF2PATCutIdLoose; //!
+    TBranch* b_elePF2PATCutIdMedium; //!
+    TBranch* b_elePF2PATCutIdTight; //!
+    TBranch* b_elePF2PATImpactTransDist; //!
+    TBranch* b_elePF2PATImpactTransError; //!
+    TBranch* b_elePF2PATImpactTransSignificance; //!
+    TBranch* b_elePF2PATImpact3DDist; //!
+    TBranch* b_elePF2PATImpact3DError; //!
+    TBranch* b_elePF2PATImpact3DSignificance; //!
+    TBranch* b_elePF2PATChargedHadronIso; //!
+    TBranch* b_elePF2PATNeutralHadronIso; //!
+    TBranch* b_elePF2PATPhotonIso; //!
+    TBranch* b_elePF2PATTrackPt; //!
+    TBranch* b_elePF2PATTrackPhi; //!
+    TBranch* b_elePF2PATTrackEta; //!
+    TBranch* b_elePF2PATTrackChi2; //!
+    TBranch* b_elePF2PATTrackNDOF; //!
+    TBranch* b_elePF2PATTrackD0; //!
+    TBranch* b_elePF2PATTrackDBD0; //!
+    TBranch* b_elePF2PATD0PV; //!
+    TBranch* b_elePF2PATDZPV; //!
+    TBranch* b_elePF2PATBeamSpotCorrectedTrackD0; //!
+    TBranch* b_elePF2PATTrackDz; //!
+    TBranch* b_elePF2PATVtxZ; //!
+    TBranch* b_elePF2PATIsGsf; //!
+    TBranch* b_elePF2PATGsfPx; //!
+    TBranch* b_elePF2PATGsfPy; //!
+    TBranch* b_elePF2PATGsfPz; //!
+    TBranch* b_elePF2PATGsfE; //!
+    TBranch* b_elePF2PATEcalEnergy;
+    TBranch* b_elePF2PATSCEta; //!
+    TBranch* b_elePF2PATSCE; //!
+    TBranch* b_elePF2PATSCPhi; //!
+    TBranch* b_elePF2PATSCEoverP;
+    TBranch* b_elePF2PATSCSigmaEtaEta; //!
+    TBranch* b_elePF2PATSCSigmaIEtaIEta; //!
+    TBranch* b_elePF2PATSCSigmaIEtaIEta5x5; //!
+    TBranch* b_elePF2PATSCE1x5; //!
+    TBranch* b_elePF2PATSCE5x5; //!
+    TBranch* b_elePF2PATSCE2x5max; //!
+    TBranch* b_elePF2PATTrackIso04; //!
+    TBranch* b_elePF2PATEcalIso04; //!
+    TBranch* b_elePF2PATHcalIso04; //!
+    TBranch* b_elePF2PATTrackIso03; //!
+    TBranch* b_elePF2PATEcalIso03; //!
+    TBranch* b_elePF2PATHcalIso03; //!
+    TBranch* b_elePF2PATdr04EcalRecHitSumEt; //!
+    TBranch* b_elePF2PATdr03EcalRecHitSumEt; //!
+    TBranch* b_elePF2PATEcalIsoDeposit; //!
+    TBranch* b_elePF2PATHcalIsoDeposit; //!
+    TBranch* b_elePF2PATComRelIso; //!
+    TBranch* b_elePF2PATComRelIsodBeta; //!
+    TBranch* b_elePF2PATComRelIsoRho; //!
+    TBranch* b_elePF2PATChHadIso; //!
+    TBranch* b_elePF2PATNtHadIso; //!
+    TBranch* b_elePF2PATGammaIso; //!
+    TBranch* b_elePF2PATRhoIso; //!
+    TBranch* b_elePF2PATAEff03; //!
+    TBranch* b_elePF2PATMissingInnerLayers; //!
+    TBranch* b_elePF2PATHoverE; //!
+    TBranch* b_elePF2PATDeltaPhiSC; //!
+    TBranch* b_elePF2PATDeltaEtaSC; //!
+    TBranch* b_elePF2PATDeltaEtaSeedSC; //!
+    TBranch* b_elePF2PATIsBarrel; //!
+    TBranch* b_elePF2PATPhotonConversionTag; //!
+    TBranch* b_elePF2PATPhotonConversionDist; //!
+    TBranch* b_elePF2PATPhotonConversionDcot; //!
+    TBranch* b_elePF2PATPhotonConversionVeto; //!
+    TBranch* b_elePF2PATPhotonConversionTagCustom; //!
+    TBranch* b_elePF2PATPhotonConversionDistCustom; //!
+    TBranch* b_elePF2PATPhotonConversionDcotCustom; //!
+    TBranch* b_elePF2PATTriggerMatch; //!
+    TBranch* b_elePF2PATJetOverlap; //!
+    TBranch* b_genElePF2PATPT; //!
+    TBranch* b_genElePF2PATET; //!
+    TBranch* b_genElePF2PATPX; //!
+    TBranch* b_genElePF2PATPY; //!
+    TBranch* b_genElePF2PATPZ; //!
+    TBranch* b_genElePF2PATPhi; //!
+    TBranch* b_genElePF2PATTheta; //!
+    TBranch* b_genElePF2PATEta; //!
+    TBranch* b_genElePF2PATCharge; //!
+    TBranch* b_genElePF2PATPdgId; //!
+    TBranch* b_genElePF2PATMotherId; //!
+    TBranch* b_genElePF2PATPromptDecayed; //!
+    TBranch* b_genElePF2PATPromptFinalState; //!
+    TBranch* b_genElePF2PATHardProcess; //!
+    TBranch* b_numMuonPF2PAT; //!
+    TBranch* b_muonPF2PATE; //!
+    TBranch* b_muonPF2PATET; //!
+    TBranch* b_muonPF2PATPt; //!
+    TBranch* b_muonPF2PATPX; //!
+    TBranch* b_muonPF2PATPY; //!
+    TBranch* b_muonPF2PATPZ; //!
+    TBranch* b_muonPF2PATPhi; //!
+    TBranch* b_muonPF2PATTheta; //!
+    TBranch* b_muonPF2PATEta; //!
+    TBranch* b_muonPF2PATCharge; //!
+    TBranch* b_muonPF2PATLooseCutId; //!
+    TBranch* b_muonPF2PATMediumCutId; //!
+    TBranch* b_muonPF2PATTightCutId; //!
+    TBranch* b_muonPF2PATPfIsoVeryLoose; //!
+    TBranch* b_muonPF2PATPfIsoLoose; //!
+    TBranch* b_muonPF2PATPfIsoMedium; //!
+    TBranch* b_muonPF2PATPfIsoTight; //!
+    TBranch* b_muonPF2PATPfIsoVeryTight; //!
+    TBranch* b_muonPF2PATTkIsoLoose; //!
+    TBranch* b_muonPF2PATTkIsoTight; //!
+    TBranch* b_muonPF2PATMvaLoose; //!
+    TBranch* b_muonPF2PATMvaMedium; //!
+    TBranch* b_muonPF2PATMvaTight; //!
+    TBranch* b_muonPF2PATGlobalID; //!
+    TBranch* b_muonPF2PATTrackID; //!
+    TBranch* b_muonPF2PATChi2; //!
+    TBranch* b_muonPF2PATD0; //!
+    TBranch* b_muonPF2PATTrackDBD0; //!
+    TBranch* b_muonPF2PATDBInnerTrackD0; //!
+    TBranch* b_muonPF2PATBeamSpotCorrectedD0; //!
+    TBranch* b_muonPF2PATTrackNHits; //!
+    TBranch* b_muonPF2PATMuonNHits; //!
+    TBranch* b_muonPF2PATNDOF; //!
+    TBranch* b_muonPF2PATVertX; //!
+    TBranch* b_muonPF2PATVertY; //!
+    TBranch* b_muonPF2PATVertZ; //!
+    TBranch* b_muonPF2PATChargedHadronIso; //!
+    TBranch* b_muonPF2PATNeutralHadronIso; //!
+    TBranch* b_muonPF2PATPhotonIso; //!
+    TBranch* b_muonPF2PATTrackIso; //!
+    TBranch* b_muonPF2PATEcalIso; //!
+    TBranch* b_muonPF2PATHcalIso; //!
+    TBranch* b_muonPF2PATComRelIso; //!
+    TBranch* b_muonPF2PATComRelIsodBeta; //!
+    TBranch* b_muonPF2PATIsPFMuon; //!
+    TBranch* b_muonPF2PATNChambers; //!
+    TBranch* b_muonPF2PATNMatches; //!
+    TBranch* b_muonPF2PATTkLysWithMeasurements; //!
+    TBranch* b_muonPF2PATVldPixHits; //!
+    TBranch* b_muonPF2PATMatchedStations; //!
+    TBranch* b_muonPF2PATGlbTkNormChi2; //!
+    TBranch* b_muonPF2PATValidFraction; //!
+    TBranch* b_muonPF2PATChi2LocalPosition; //!
+    TBranch* b_muonPF2PATTrkKick; //!
+    TBranch* b_muonPF2PATSegmentCompatibility; //!
+    TBranch* b_muonPF2PATDBPV; //!
+    TBranch* b_muonPF2PATDZPV; //!
+    TBranch* b_genMuonPF2PATPT; //!
+    TBranch* b_genMuonPF2PATET; //!
+    TBranch* b_genMuonPF2PATPX; //!
+    TBranch* b_genMuonPF2PATPY; //!
+    TBranch* b_genMuonPF2PATPZ; //!
+    TBranch* b_genMuonPF2PATPhi; //!
+    TBranch* b_genMuonPF2PATTheta; //!
+    TBranch* b_genMuonPF2PATEta; //!
+    TBranch* b_genMuonPF2PATCharge; //!
+    TBranch* b_genMuonPF2PATPdgId; //!
+    TBranch* b_genMuonPF2PATMotherId; //!
+    TBranch* b_genMuonPF2PATPromptDecayed; //!
+    TBranch* b_genMuonPF2PATPromptFinalState; //!
+    TBranch* b_genMuonPF2PATHardProcess; //!
+    TBranch* b_numJetPF2PAT; //!
+    TBranch* b_jetPF2PATE; //!
+    TBranch* b_jetPF2PATEt; //!
+    TBranch* b_jetPF2PATPt; //!
+    TBranch* b_jetPF2PATPtRaw; //!
+    TBranch* b_jetPF2PATUnCorEt; //!
+    TBranch* b_jetPF2PATUnCorPt; //!
+    TBranch* b_jetPF2PATEta; //!
+    TBranch* b_jetPF2PATTheta; //!
+    TBranch* b_jetPF2PATPhi; //!
+    TBranch* b_jetPF2PATPx; //!
+    TBranch* b_jetPF2PATPy; //!
+    TBranch* b_jetPF2PATPz; //!
+    TBranch* b_jetPF2PATdRClosestLepton; //!
+    TBranch* b_jetPF2PATNtracksInJet; //!
+    TBranch* b_jetPF2PATJetCharge; //!
+    TBranch* b_jetPF2PATfHPD; //!
+    TBranch* b_jetPF2PATBtagSoftMuonPtRel; //!
+    TBranch* b_jetPF2PATBtagSoftMuonQuality; //!
+    TBranch* b_jetPF2PATCorrFactor; //!
+    TBranch* b_jetPF2PATCorrResidual; //!
+    TBranch* b_jetPF2PATL2L3ResErr; //!
+    TBranch* b_jetPF2PATCorrErrLow; //!
+    TBranch* b_jetPF2PATCorrErrHi; //!
+    TBranch* b_jetPF2PATN90Hits; //!
+    TBranch* b_jetPF2PATTriggered; //!
+    TBranch* b_jetPF2PATSVX; //!
+    TBranch* b_jetPF2PATSVY; //!
+    TBranch* b_jetPF2PATSVZ; //!
+    TBranch* b_jetPF2PATSVDX; //!
+    TBranch* b_jetPF2PATSVDY; //!
+    TBranch* b_jetPF2PATSVDZ; //!
+    TBranch* b_jetPF2PATpfCombinedInclusiveSecondaryVertexV2BJetTags; //!
+    TBranch* b_jetPF2PATpfCombinedMVAV2BJetTags; //!
+    TBranch* b_jetPF2PATpfCombinedCvsLJetTags; //!
+    TBranch* b_jetPF2PATpfCombinedCvsBJetTags; //!
+    TBranch* b_jetPF2PATNConstituents; //!
+    TBranch* b_jetPF2PATPID; //!
+    TBranch* b_jetPF2PATClosestBPartonDeltaR; //!
+    TBranch* b_jetPF2PATClosestCPartonDeltaR; //!
+    TBranch* b_genJetPF2PATET; //!
+    TBranch* b_genJetPF2PATPT; //!
+    TBranch* b_genJetPF2PATPX; //!
+    TBranch* b_genJetPF2PATPY; //!
+    TBranch* b_genJetPF2PATPZ; //!
+    TBranch* b_genJetPF2PATPhi; //!
+    TBranch* b_genJetPF2PATTheta; //!
+    TBranch* b_genJetPF2PATEta; //!
+    TBranch* b_genJetPF2PATPID; //!
+    TBranch* b_jetPF2PATMuEnergy; //!
+    TBranch* b_jetPF2PATMuEnergyFraction; //!
+    TBranch* b_jetPF2PATNeutralHadEnergy; //!
+    TBranch* b_jetPF2PATNeutralEmEnergy; //!
+    TBranch* b_jetPF2PATChargedHadronEnergyFraction; //!
+    TBranch* b_jetPF2PATNeutralHadronEnergyFraction; //!
+    TBranch* b_jetPF2PATChargedEmEnergyFraction; //!
+    TBranch* b_jetPF2PATNeutralEmEnergyFraction; //!
+    TBranch* b_jetPF2PATMuonFraction; //!
+    TBranch* b_jetPF2PATChargedHadronEnergyFractionCorr; //!
+    TBranch* b_jetPF2PATNeutralHadronEnergyFractionCorr; //!
+    TBranch* b_jetPF2PATChargedEmEnergyFractionCorr; //!
+    TBranch* b_jetPF2PATNeutralEmEnergyFractionCorr; //!
+    TBranch* b_jetPF2PATMuonFractionCorr; //!
+    TBranch* b_jetPF2PATNeutralMultiplicity; //!
+    TBranch* b_jetPF2PATChargedMultiplicity; //!
+    TBranch* b_metPF2PATE; //!
+    TBranch* b_metPF2PATEt; //!
+    TBranch* b_metPF2PATEtRaw; //!
+    TBranch* b_metPF2PATPhi; //!
+    TBranch* b_metPF2PATPt; //!
+    TBranch* b_metPF2PATPx; //!
+    TBranch* b_metPF2PATPy; //!
+    TBranch* b_metPF2PATPz; //!
+    TBranch* b_metPF2PATScalarEt; //!
+    TBranch* b_metPF2PATEtUncorrected; //!
+    TBranch* b_metPF2PATPhiUncorrected; //!
+    TBranch* b_genMetPF2PATE; //!
+    TBranch* b_genMetPF2PATEt; //!
+    TBranch* b_genMetPF2PATPhi; //!
+    TBranch* b_genMetPF2PATPt; //!
+    TBranch* b_genMetPF2PATPx; //!
+    TBranch* b_genMetPF2PATPy; //!
+    TBranch* b_genMetPF2PATPz; //!
+    TBranch* b_numTauPF2PAT; //!
+    TBranch* b_tauPF2PATE; //!
+    TBranch* b_tauPF2PATPt; //!
+    TBranch* b_tauPF2PATPhi; //!
+    TBranch* b_tauPF2PATEta; //!
+    TBranch* b_numGeneralTracks; //!
+    TBranch* b_generalTracksPt; //!
+    TBranch* b_generalTracksEta; //!
+    TBranch* b_generalTracksTheta; //!
+    TBranch* b_generalTracksBeamSpotCorrectedD0; //!
+    TBranch* b_generalTracksPhi; //!
+    TBranch* b_generalTracksCharge; //!
+    TBranch* b_isElePlusJets; //!
+    TBranch* b_genPDFScale; //!
+    TBranch* b_genPDFx1; //!
+    TBranch* b_genPDFx2; //!
+    TBranch* b_genPDFf1; //!
+    TBranch* b_genPDFf2; //!
+    TBranch* b_topPtReweight; //!
+    TBranch* b_processId; //!
+    TBranch* b_processPtHat; //!
+    TBranch* b_processMCWeight; //!
+    TBranch* b_beamSpotX; //!
+    TBranch* b_beamSpotY; //!
+    TBranch* b_beamSpotZ; //!
+    TBranch* b_pvX; //!
+    TBranch* b_pvY; //!
+    TBranch* b_pvZ; //!
+    TBranch* b_pvDX; //!
+    TBranch* b_pvDY; //!
+    TBranch* b_pvDZ; //!
+    TBranch* b_pvRho; //!
+    TBranch* b_pvIsFake; //!
+    TBranch* b_pvNdof; //!
+    TBranch* b_pvChi2; //!
+    TBranch* b_mhtPt; //!
+    TBranch* b_mhtPy; //!
+    TBranch* b_mhtPx; //!
+    TBranch* b_mhtPhi; //!
+    TBranch* b_mhtSumEt; //!
+    TBranch* b_mhtSignif; //!
+    TBranch* b_nTriggerBits; //!
+    TBranch* b_TriggerBits; //!
+    TBranch* b_weight_muF0p5; //!
+    TBranch* b_weight_muF2; //!
+    TBranch* b_weight_muR0p5; //!
+    TBranch* b_weight_muR2; //!
+    TBranch* b_weight_muF0p5muR0p5; //!
+    TBranch* b_weight_muF2muR2; //!
+    TBranch* b_origWeightForNorm; //!
+    TBranch* b_weight_pdfMax; //!
+    TBranch* b_weight_pdfMin; //!
+    TBranch* b_weight_alphaMax; //!
+    TBranch* b_weight_alphaMin; //!
+    TBranch* b_isrRedHi;
+    TBranch* b_fsrRedHi;
+    TBranch* b_isrRedLo;
+    TBranch* b_fsrRedLo;
+    TBranch* b_isrDefHi;
+    TBranch* b_fsrDefHi;
+    TBranch* b_isrDefLo;
+    TBranch* b_fsrDefLo;
+    TBranch* b_isrConHi;
+    TBranch* b_fsrConHi;
+    TBranch* b_isrConLo;
+    TBranch* b_fsrConLo;
+    //   TBranch        *b_numVert;    //!
+    TBranch* b_HLT_Ele25_eta2p1_WPTight_Gsf_v1;
+    TBranch* b_HLT_Ele25_eta2p1_WPTight_Gsf_v2;
+    TBranch* b_HLT_Ele25_eta2p1_WPTight_Gsf_v3;
+    TBranch* b_HLT_Ele25_eta2p1_WPTight_Gsf_v4;
+    TBranch* b_HLT_Ele25_eta2p1_WPTight_Gsf_v5;
+    TBranch* b_HLT_Ele25_eta2p1_WPTight_Gsf_v6;
+    TBranch* b_HLT_Ele25_eta2p1_WPTight_Gsf_v7;
+    TBranch* b_HLT_Ele27_WPTight_Gsf_v1;
+    TBranch* b_HLT_Ele27_WPTight_Gsf_v2;
+    TBranch* b_HLT_Ele27_WPTight_Gsf_v3;
+    TBranch* b_HLT_Ele27_WPTight_Gsf_v4;
+    TBranch* b_HLT_Ele27_WPTight_Gsf_v5;
+    TBranch* b_HLT_Ele27_WPTight_Gsf_v6;
+    TBranch* b_HLT_Ele27_WPTight_Gsf_v7;
+    TBranch* b_HLT_Ele32_eta2p1_WPTight_Gsf_v2;
+    TBranch* b_HLT_Ele32_eta2p1_WPTight_Gsf_v3;
+    TBranch* b_HLT_Ele32_eta2p1_WPTight_Gsf_v4;
+    TBranch* b_HLT_Ele32_eta2p1_WPTight_Gsf_v5;
+    TBranch* b_HLT_Ele32_eta2p1_WPTight_Gsf_v6;
+    TBranch* b_HLT_Ele32_eta2p1_WPTight_Gsf_v7;
+    TBranch* b_HLT_Ele32_eta2p1_WPTight_Gsf_v8;
+    TBranch* b_HLT_IsoMu24_v1;
+    TBranch* b_HLT_IsoMu24_v2;
+    TBranch* b_HLT_IsoMu24_v3;
+    TBranch* b_HLT_IsoMu24_v4;
+    TBranch* b_HLT_IsoTkMu24_v1;
+    TBranch* b_HLT_IsoTkMu24_v2;
+    TBranch* b_HLT_IsoTkMu24_v3;
+    TBranch* b_HLT_IsoTkMu24_v4;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v7;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v5;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v7;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v8;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v9;
+    TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3;
+    TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4;
+    TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5;
+    TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v6;
+    TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v7;
+    TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v8;
+    TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v9;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4;
+    TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v1;
+    TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v2;
+    TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v3;
+    TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4;
 
-   TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v1;
-   TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v2;
-   TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v3;
-   TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v4;
-   TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v5;
-   TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v6;
-   TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v7;
-   TBranch* b_HLT_Ele35_WPTight_Gsf_v1;
-   TBranch* b_HLT_Ele35_WPTight_Gsf_v2;
-   TBranch* b_HLT_Ele35_WPTight_Gsf_v3;
-   TBranch* b_HLT_Ele35_WPTight_Gsf_v4;
-   TBranch* b_HLT_Ele35_WPTight_Gsf_v5;
-   TBranch* b_HLT_Ele35_WPTight_Gsf_v6;
-   TBranch* b_HLT_Ele35_WPTight_Gsf_v7;
-   TBranch* b_HLT_IsoMu27_v8;
-   TBranch* b_HLT_IsoMu27_v9;
-   TBranch* b_HLT_IsoMu27_v10;
-   TBranch* b_HLT_IsoMu27_v11;
-   TBranch* b_HLT_IsoMu27_v12;
-   TBranch* b_HLT_IsoMu27_v13;
-   TBranch* b_HLT_IsoMu27_v14;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v10;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v11;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v12;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v13;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v14;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v15;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v16;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v17;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v14;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v15;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v16;
-   TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v17;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v8;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v9;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v10;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v11;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v12;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v13;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v14;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v1;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v2;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v3;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v4;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v7;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v8;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v1;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v2;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v3;
-   TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v4;
-   TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1;
-   TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2;
-   TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5;
-   TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6;
-   TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8;
-   TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9;
-   TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10;
-   TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11;
-   TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12;
-   TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13;
-   TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v5;
-   TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6;
-   TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8;
-   TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9;
-   TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10;
-   TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11;
-   TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v12;
-   TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v13;
-   TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4;
-   TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6;
-   TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v7;
-   TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8;
-   TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9;
-   TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10;
-   TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11;
+    TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v1;
+    TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v2;
+    TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v3;
+    TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v4;
+    TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v5;
+    TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v6;
+    TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v7;
+    TBranch* b_HLT_Ele35_WPTight_Gsf_v1;
+    TBranch* b_HLT_Ele35_WPTight_Gsf_v2;
+    TBranch* b_HLT_Ele35_WPTight_Gsf_v3;
+    TBranch* b_HLT_Ele35_WPTight_Gsf_v4;
+    TBranch* b_HLT_Ele35_WPTight_Gsf_v5;
+    TBranch* b_HLT_Ele35_WPTight_Gsf_v6;
+    TBranch* b_HLT_Ele35_WPTight_Gsf_v7;
+    TBranch* b_HLT_IsoMu27_v8;
+    TBranch* b_HLT_IsoMu27_v9;
+    TBranch* b_HLT_IsoMu27_v10;
+    TBranch* b_HLT_IsoMu27_v11;
+    TBranch* b_HLT_IsoMu27_v12;
+    TBranch* b_HLT_IsoMu27_v13;
+    TBranch* b_HLT_IsoMu27_v14;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v10;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v11;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v12;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v13;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v14;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v15;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v16;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v17;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v14;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v15;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v16;
+    TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v17;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v8;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v9;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v10;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v11;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v12;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v13;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v14;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v1;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v2;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v3;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v4;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v7;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v8;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v1;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v2;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v3;
+    TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v4;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12;
+    TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13;
+    TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v5;
+    TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6;
+    TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8;
+    TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9;
+    TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10;
+    TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11;
+    TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v12;
+    TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v13;
+    TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4;
+    TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6;
+    TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v7;
+    TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8;
+    TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9;
+    TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10;
+    TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11;
 
-   TBranch	  *b_HLT_MET200_v1;
-   TBranch	  *b_HLT_MET200_v2;
-   TBranch	  *b_HLT_MET200_v3;
-   TBranch	  *b_HLT_MET200_v4;
-   TBranch	  *b_HLT_MET200_v5;
-   TBranch	  *b_HLT_MET250_v1;
-   TBranch	  *b_HLT_MET250_v2;
-   TBranch	  *b_HLT_MET250_v3;
-   TBranch	  *b_HLT_MET250_v4;
-   TBranch	  *b_HLT_MET250_v5;
-   TBranch	  *b_HLT_PFMET120_PFMHT120_IDTight_v2;
-   TBranch	  *b_HLT_PFMET120_PFMHT120_IDTight_v3;
-   TBranch	  *b_HLT_PFMET120_PFMHT120_IDTight_v4;
-   TBranch	  *b_HLT_PFMET120_PFMHT120_IDTight_v5;
-   TBranch	  *b_HLT_PFMET120_PFMHT120_IDTight_v6;
-   TBranch	  *b_HLT_PFMET120_PFMHT120_IDTight_v7;
-   TBranch	  *b_HLT_PFMET120_PFMHT120_IDTight_v8;
-   TBranch	  *b_HLT_PFMET170_HBHECleaned_v2;
-   TBranch	  *b_HLT_PFMET170_HBHECleaned_v3;
-   TBranch	  *b_HLT_PFMET170_HBHECleaned_v4;
-   TBranch	  *b_HLT_PFMET170_HBHECleaned_v5;
-   TBranch	  *b_HLT_PFMET170_HBHECleaned_v6;
-   TBranch	  *b_HLT_PFMET170_HBHECleaned_v7;
-   TBranch	  *b_HLT_PFMET170_HBHECleaned_v8;
-   TBranch	  *b_HLT_PFMET170_HBHECleaned_v9;
-   TBranch	  *b_HLT_PFHT800_v2;
-   TBranch	  *b_HLT_PFHT800_v3;
-   TBranch	  *b_HLT_PFHT800_v4;
-   TBranch 	  *b_HLT_PFHT800_v5;
-   TBranch 	  *b_HLT_PFHT900_v4;
-   TBranch 	  *b_HLT_PFHT900_v5;
-   TBranch 	  *b_HLT_PFHT900_v6;
-   TBranch	  *b_HLT_PFHT750_4JetPt50_v3;
-   TBranch	  *b_HLT_PFHT750_4JetPt50_v4;
-   TBranch	  *b_HLT_PFHT750_4JetPt50_v5;
-   TBranch	  *b_HLT_PFHT750_4JetPt50_v6;
-   TBranch	  *b_HLT_PFHT750_4JetPt70_v1;
-   TBranch	  *b_HLT_PFHT750_4JetPt70_v2;
-   TBranch	  *b_HLT_PFHT750_4JetPt80_v2;
-   TBranch	  *b_HLT_PFHT300_PFMET100_v1;
-   TBranch	  *b_HLT_PFHT300_PFMET100_v2;
-   TBranch	  *b_HLT_PFHT300_PFMET100_v3;
-   TBranch	  *b_HLT_PFHT300_PFMET100_v4;
-   TBranch	  *b_HLT_PFHT300_PFMET110_v4;
-   TBranch	  *b_HLT_PFHT300_PFMET110_v5;
-   TBranch	  *b_HLT_PFHT300_PFMET110_v6;
+    TBranch* b_HLT_MET200_v1;
+    TBranch* b_HLT_MET200_v2;
+    TBranch* b_HLT_MET200_v3;
+    TBranch* b_HLT_MET200_v4;
+    TBranch* b_HLT_MET200_v5;
+    TBranch* b_HLT_MET250_v1;
+    TBranch* b_HLT_MET250_v2;
+    TBranch* b_HLT_MET250_v3;
+    TBranch* b_HLT_MET250_v4;
+    TBranch* b_HLT_MET250_v5;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v2;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v3;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v4;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v5;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v6;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v7;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v8;
+    TBranch* b_HLT_PFMET170_HBHECleaned_v2;
+    TBranch* b_HLT_PFMET170_HBHECleaned_v3;
+    TBranch* b_HLT_PFMET170_HBHECleaned_v4;
+    TBranch* b_HLT_PFMET170_HBHECleaned_v5;
+    TBranch* b_HLT_PFMET170_HBHECleaned_v6;
+    TBranch* b_HLT_PFMET170_HBHECleaned_v7;
+    TBranch* b_HLT_PFMET170_HBHECleaned_v8;
+    TBranch* b_HLT_PFMET170_HBHECleaned_v9;
+    TBranch* b_HLT_PFHT800_v2;
+    TBranch* b_HLT_PFHT800_v3;
+    TBranch* b_HLT_PFHT800_v4;
+    TBranch* b_HLT_PFHT800_v5;
+    TBranch* b_HLT_PFHT900_v4;
+    TBranch* b_HLT_PFHT900_v5;
+    TBranch* b_HLT_PFHT900_v6;
+    TBranch* b_HLT_PFHT750_4JetPt50_v3;
+    TBranch* b_HLT_PFHT750_4JetPt50_v4;
+    TBranch* b_HLT_PFHT750_4JetPt50_v5;
+    TBranch* b_HLT_PFHT750_4JetPt50_v6;
+    TBranch* b_HLT_PFHT750_4JetPt70_v1;
+    TBranch* b_HLT_PFHT750_4JetPt70_v2;
+    TBranch* b_HLT_PFHT750_4JetPt80_v2;
+    TBranch* b_HLT_PFHT300_PFMET100_v1;
+    TBranch* b_HLT_PFHT300_PFMET100_v2;
+    TBranch* b_HLT_PFHT300_PFMET100_v3;
+    TBranch* b_HLT_PFHT300_PFMET100_v4;
+    TBranch* b_HLT_PFHT300_PFMET110_v4;
+    TBranch* b_HLT_PFHT300_PFMET110_v5;
+    TBranch* b_HLT_PFHT300_PFMET110_v6;
 
-   TBranch* b_HLT_MET105_IsoTrk50_v1;
-   TBranch* b_HLT_MET105_IsoTrk50_v3;
-   TBranch* b_HLT_MET105_IsoTrk50_v4;
-   TBranch* b_HLT_MET105_IsoTrk50_v5;
-   TBranch* b_HLT_MET105_IsoTrk50_v6;
-   TBranch* b_HLT_MET105_IsoTrk50_v7;
-   TBranch* b_HLT_MET105_IsoTrk50_v8;
-   TBranch* b_HLT_MET120_IsoTrk50_v1;
-   TBranch* b_HLT_MET120_IsoTrk50_v3;
-   TBranch* b_HLT_MET120_IsoTrk50_v4;
-   TBranch* b_HLT_MET120_IsoTrk50_v5;
-   TBranch* b_HLT_MET120_IsoTrk50_v6;
-   TBranch* b_HLT_MET120_IsoTrk50_v7;
-   TBranch* b_HLT_MET120_IsoTrk50_v8;
-   TBranch* b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v10;
-   TBranch* b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v11;
-   TBranch* b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v5;
-   TBranch* b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v6;
-   TBranch* b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v8;
-   TBranch* b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v9;
-   TBranch* b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v10;
-   TBranch* b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v11;
-   TBranch* b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v5;
-   TBranch* b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v6;
-   TBranch* b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v8;
-   TBranch* b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v9;
-   TBranch* b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v10;
-   TBranch* b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v11;
-   TBranch* b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v5;
-   TBranch* b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v6;
-   TBranch* b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v8;
-   TBranch* b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v9;
-   TBranch* b_HLT_HT650_DisplacedDijet60_Inclusive_v10;
-   TBranch* b_HLT_HT650_DisplacedDijet60_Inclusive_v11;
-   TBranch* b_HLT_HT650_DisplacedDijet60_Inclusive_v5;
-   TBranch* b_HLT_HT650_DisplacedDijet60_Inclusive_v6;
-   TBranch* b_HLT_HT650_DisplacedDijet60_Inclusive_v8;
-   TBranch* b_HLT_HT650_DisplacedDijet60_Inclusive_v9;
-   TBranch* b_HLT_HT650_DisplacedDijet80_Inclusive_v10;
-   TBranch* b_HLT_HT650_DisplacedDijet80_Inclusive_v11;
-   TBranch* b_HLT_HT650_DisplacedDijet80_Inclusive_v12;
-   TBranch* b_HLT_HT650_DisplacedDijet80_Inclusive_v6;
-   TBranch* b_HLT_HT650_DisplacedDijet80_Inclusive_v7;
-   TBranch* b_HLT_HT650_DisplacedDijet80_Inclusive_v9;
-   TBranch* b_HLT_HT750_DisplacedDijet80_Inclusive_v10;
-   TBranch* b_HLT_HT750_DisplacedDijet80_Inclusive_v11;
-   TBranch* b_HLT_HT750_DisplacedDijet80_Inclusive_v12;
-   TBranch* b_HLT_HT750_DisplacedDijet80_Inclusive_v6;
-   TBranch* b_HLT_HT750_DisplacedDijet80_Inclusive_v7;
-   TBranch* b_HLT_HT750_DisplacedDijet80_Inclusive_v9;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v1;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v2;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF_v10;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v1;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v2;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v2;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v3;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v4;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v5;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v6;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v7;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v11;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v13;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v14;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v15;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v16;
-   TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v9;
-   TBranch* b_HLT_PFMET130_PFMHT130_IDTight_v11;
-   TBranch* b_HLT_PFMET130_PFMHT130_IDTight_v13;
-   TBranch* b_HLT_PFMET130_PFMHT130_IDTight_v14;
-   TBranch* b_HLT_PFMET130_PFMHT130_IDTight_v15;
-   TBranch* b_HLT_PFMET130_PFMHT130_IDTight_v16;
-   TBranch* b_HLT_PFMET130_PFMHT130_IDTight_v9;
-   TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v11;
-   TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v13;
-   TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v14;
-   TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v15;
-   TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v16;
-   TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v17;
-   TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v18;
-   TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v9;
-   TBranch* b_HLT_PFMET200_HBHE_BeamHaloCleaned_v5;
-   TBranch* b_HLT_PFMET200_HBHE_BeamHaloCleaned_v6;
-   TBranch* b_HLT_PFMET200_HBHE_BeamHaloCleaned_v7;
-   TBranch* b_HLT_PFMET250_HBHECleaned_v2;
-   TBranch* b_HLT_PFMET250_HBHECleaned_v3;
-   TBranch* b_HLT_PFMET250_HBHECleaned_v4;
-   TBranch* b_HLT_PFMET250_HBHECleaned_v5;
-   TBranch* b_HLT_PFMET250_HBHECleaned_v6;
-   TBranch* b_HLT_PFMET250_HBHECleaned_v7;
-   TBranch* b_HLT_PFMET300_HBHECleaned_v2;
-   TBranch* b_HLT_PFMET300_HBHECleaned_v3;
-   TBranch* b_HLT_PFMET300_HBHECleaned_v4;
-   TBranch* b_HLT_PFMET300_HBHECleaned_v5;
-   TBranch* b_HLT_PFMET300_HBHECleaned_v6;
-   TBranch* b_HLT_PFMET300_HBHECleaned_v7;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v1;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v2;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF_v10;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v2;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v3;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v4;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v5;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v6;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v7;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v11;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v13;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v14;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v15;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v16;
-   TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v9;
-   TBranch* b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v10;
-   TBranch* b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v12;
-   TBranch* b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v13;
-   TBranch* b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v14;
-   TBranch* b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v15;
-   TBranch* b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v9;
-   TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v10;
-   TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v12;
-   TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v13;
-   TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v14;
-   TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v15;
-   TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v16;
-   TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v17;
-   TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v9;
-   TBranch* b_HLT_PFHT1050_v11;
-   TBranch* b_HLT_PFHT1050_v12;
-   TBranch* b_HLT_PFHT1050_v13;
-   TBranch* b_HLT_PFHT1050_v14;
-   TBranch* b_HLT_PFHT1050_v15;
-   TBranch* b_HLT_PFHT1050_v16;
-   TBranch* b_HLT_PFHT1050_v7;
-   TBranch* b_HLT_PFHT1050_v9;
-   TBranch* b_HLT_PFHT180_v7;
-   TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v1;
-   TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v10;
-   TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v3;
-   TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v5;
-   TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v6;
-   TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v7;
-   TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v8;
-   TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v9;
-   TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v1;
-   TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v10;
-   TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v3;
-   TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v5;
-   TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v6;
-   TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v7;
-   TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v8;
-   TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v9;
-   TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v1;
-   TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v10;
-   TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v3;
-   TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v5;
-   TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v6;
-   TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v7;
-   TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v8;
-   TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v9;
-   TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v1;
-   TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v10;
-   TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v3;
-   TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v5;
-   TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v6;
-   TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v7;
-   TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v8;
-   TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v9;
-   TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v1;
-   TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v10;
-   TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v3;
-   TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v5;
-   TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v6;
-   TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v7;
-   TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v8;
-   TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v9;
-   TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v1;
-   TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v10;
-   TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v3;
-   TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v5;
-   TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v6;
-   TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v7;
-   TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v8;
-   TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v9;
+    TBranch* b_HLT_MET105_IsoTrk50_v1;
+    TBranch* b_HLT_MET105_IsoTrk50_v3;
+    TBranch* b_HLT_MET105_IsoTrk50_v4;
+    TBranch* b_HLT_MET105_IsoTrk50_v5;
+    TBranch* b_HLT_MET105_IsoTrk50_v6;
+    TBranch* b_HLT_MET105_IsoTrk50_v7;
+    TBranch* b_HLT_MET105_IsoTrk50_v8;
+    TBranch* b_HLT_MET120_IsoTrk50_v1;
+    TBranch* b_HLT_MET120_IsoTrk50_v3;
+    TBranch* b_HLT_MET120_IsoTrk50_v4;
+    TBranch* b_HLT_MET120_IsoTrk50_v5;
+    TBranch* b_HLT_MET120_IsoTrk50_v6;
+    TBranch* b_HLT_MET120_IsoTrk50_v7;
+    TBranch* b_HLT_MET120_IsoTrk50_v8;
+    TBranch* b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v10;
+    TBranch* b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v11;
+    TBranch* b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v5;
+    TBranch* b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v6;
+    TBranch* b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v8;
+    TBranch* b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v9;
+    TBranch* b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v10;
+    TBranch* b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v11;
+    TBranch* b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v5;
+    TBranch* b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v6;
+    TBranch* b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v8;
+    TBranch* b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v9;
+    TBranch* b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v10;
+    TBranch* b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v11;
+    TBranch* b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v5;
+    TBranch* b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v6;
+    TBranch* b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v8;
+    TBranch* b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v9;
+    TBranch* b_HLT_HT650_DisplacedDijet60_Inclusive_v10;
+    TBranch* b_HLT_HT650_DisplacedDijet60_Inclusive_v11;
+    TBranch* b_HLT_HT650_DisplacedDijet60_Inclusive_v5;
+    TBranch* b_HLT_HT650_DisplacedDijet60_Inclusive_v6;
+    TBranch* b_HLT_HT650_DisplacedDijet60_Inclusive_v8;
+    TBranch* b_HLT_HT650_DisplacedDijet60_Inclusive_v9;
+    TBranch* b_HLT_HT650_DisplacedDijet80_Inclusive_v10;
+    TBranch* b_HLT_HT650_DisplacedDijet80_Inclusive_v11;
+    TBranch* b_HLT_HT650_DisplacedDijet80_Inclusive_v12;
+    TBranch* b_HLT_HT650_DisplacedDijet80_Inclusive_v6;
+    TBranch* b_HLT_HT650_DisplacedDijet80_Inclusive_v7;
+    TBranch* b_HLT_HT650_DisplacedDijet80_Inclusive_v9;
+    TBranch* b_HLT_HT750_DisplacedDijet80_Inclusive_v10;
+    TBranch* b_HLT_HT750_DisplacedDijet80_Inclusive_v11;
+    TBranch* b_HLT_HT750_DisplacedDijet80_Inclusive_v12;
+    TBranch* b_HLT_HT750_DisplacedDijet80_Inclusive_v6;
+    TBranch* b_HLT_HT750_DisplacedDijet80_Inclusive_v7;
+    TBranch* b_HLT_HT750_DisplacedDijet80_Inclusive_v9;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v1;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v2;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF_v10;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v1;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v2;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v2;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v3;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v4;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v5;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v6;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v7;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v11;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v13;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v14;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v15;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v16;
+    TBranch* b_HLT_PFMET120_PFMHT120_IDTight_v9;
+    TBranch* b_HLT_PFMET130_PFMHT130_IDTight_v11;
+    TBranch* b_HLT_PFMET130_PFMHT130_IDTight_v13;
+    TBranch* b_HLT_PFMET130_PFMHT130_IDTight_v14;
+    TBranch* b_HLT_PFMET130_PFMHT130_IDTight_v15;
+    TBranch* b_HLT_PFMET130_PFMHT130_IDTight_v16;
+    TBranch* b_HLT_PFMET130_PFMHT130_IDTight_v9;
+    TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v11;
+    TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v13;
+    TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v14;
+    TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v15;
+    TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v16;
+    TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v17;
+    TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v18;
+    TBranch* b_HLT_PFMET140_PFMHT140_IDTight_v9;
+    TBranch* b_HLT_PFMET200_HBHE_BeamHaloCleaned_v5;
+    TBranch* b_HLT_PFMET200_HBHE_BeamHaloCleaned_v6;
+    TBranch* b_HLT_PFMET200_HBHE_BeamHaloCleaned_v7;
+    TBranch* b_HLT_PFMET250_HBHECleaned_v2;
+    TBranch* b_HLT_PFMET250_HBHECleaned_v3;
+    TBranch* b_HLT_PFMET250_HBHECleaned_v4;
+    TBranch* b_HLT_PFMET250_HBHECleaned_v5;
+    TBranch* b_HLT_PFMET250_HBHECleaned_v6;
+    TBranch* b_HLT_PFMET250_HBHECleaned_v7;
+    TBranch* b_HLT_PFMET300_HBHECleaned_v2;
+    TBranch* b_HLT_PFMET300_HBHECleaned_v3;
+    TBranch* b_HLT_PFMET300_HBHECleaned_v4;
+    TBranch* b_HLT_PFMET300_HBHECleaned_v5;
+    TBranch* b_HLT_PFMET300_HBHECleaned_v6;
+    TBranch* b_HLT_PFMET300_HBHECleaned_v7;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v1;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v2;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF_v10;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v2;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v3;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v4;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v5;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v6;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v7;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v11;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v13;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v14;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v15;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v16;
+    TBranch* b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v9;
+    TBranch* b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v10;
+    TBranch* b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v12;
+    TBranch* b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v13;
+    TBranch* b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v14;
+    TBranch* b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v15;
+    TBranch* b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v9;
+    TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v10;
+    TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v12;
+    TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v13;
+    TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v14;
+    TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v15;
+    TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v16;
+    TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v17;
+    TBranch* b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v9;
+    TBranch* b_HLT_PFHT1050_v11;
+    TBranch* b_HLT_PFHT1050_v12;
+    TBranch* b_HLT_PFHT1050_v13;
+    TBranch* b_HLT_PFHT1050_v14;
+    TBranch* b_HLT_PFHT1050_v15;
+    TBranch* b_HLT_PFHT1050_v16;
+    TBranch* b_HLT_PFHT1050_v7;
+    TBranch* b_HLT_PFHT1050_v9;
+    TBranch* b_HLT_PFHT180_v7;
+    TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v1;
+    TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v10;
+    TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v3;
+    TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v5;
+    TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v6;
+    TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v7;
+    TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v8;
+    TBranch* b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v9;
+    TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v1;
+    TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v10;
+    TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v3;
+    TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v5;
+    TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v6;
+    TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v7;
+    TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v8;
+    TBranch* b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v9;
+    TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v1;
+    TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v10;
+    TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v3;
+    TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v5;
+    TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v6;
+    TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v7;
+    TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v8;
+    TBranch* b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v9;
+    TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v1;
+    TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v10;
+    TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v3;
+    TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v5;
+    TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v6;
+    TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v7;
+    TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v8;
+    TBranch* b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v9;
+    TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v1;
+    TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v10;
+    TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v3;
+    TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v5;
+    TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v6;
+    TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v7;
+    TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v8;
+    TBranch* b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v9;
+    TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v1;
+    TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v10;
+    TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v3;
+    TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v5;
+    TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v6;
+    TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v7;
+    TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v8;
+    TBranch* b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v9;
 
-   TBranch	  *b_Flag_HBHENoiseFilter;
-   TBranch	  *b_Flag_HBHENoiseIsoFilter;
-   TBranch	  *b_Flag_globalTightHalo2016Filter;
-   TBranch	  *b_Flag_EcalDeadCellTriggerPrimitiveFilter;
-   TBranch	  *b_Flag_goodVertices;
-   TBranch	  *b_Flag_eeBadScFilter;
-   TBranch	  *b_Flag_ecalLaserCorrFilter;
-   TBranch	  *b_Flag_chargedHadronTrackResolutionFilter;
-   TBranch	  *b_Flag_muonBadTrackFilter;
-   TBranch	  *b_Flag_badMuons;
-   TBranch	  *b_Flag_duplicateMuons;
-   TBranch	  *b_Flag_noBadMuons;
-   TBranch* b_Flag_BadPFMuonFilter;
-   TBranch* b_Flag_BadChargedCandidateFilter;
-   TBranch* b_Flag_ecalBadCalibFilter;
+    TBranch* b_Flag_HBHENoiseFilter;
+    TBranch* b_Flag_HBHENoiseIsoFilter;
+    TBranch* b_Flag_globalTightHalo2016Filter;
+    TBranch* b_Flag_EcalDeadCellTriggerPrimitiveFilter;
+    TBranch* b_Flag_goodVertices;
+    TBranch* b_Flag_eeBadScFilter;
+    TBranch* b_Flag_ecalLaserCorrFilter;
+    TBranch* b_Flag_chargedHadronTrackResolutionFilter;
+    TBranch* b_Flag_muonBadTrackFilter;
+    TBranch* b_Flag_badMuons;
+    TBranch* b_Flag_duplicateMuons;
+    TBranch* b_Flag_noBadMuons;
+    TBranch* b_Flag_BadPFMuonFilter;
+    TBranch* b_Flag_BadChargedCandidateFilter;
+    TBranch* b_Flag_ecalBadCalibFilter;
 
-   TBranch        *b_nGenPar;   //!
-   TBranch        *b_genParEta;   //!
-   TBranch        *b_genParPhi;   //!
-   TBranch        *b_genParE;   //!
-   TBranch        *b_genParPt;   //!
-   TBranch        *b_genParId;   //!
-   TBranch        *b_genParMotherId;   //!
-   TBranch        *b_genParCharge;   //!
-   TBranch        *b_eventRun;   //!
-   TBranch        *b_eventNum;   //!
-   TBranch        *b_eventLumiblock;   //!
+    TBranch* b_nGenPar; //!
+    TBranch* b_genParEta; //!
+    TBranch* b_genParPhi; //!
+    TBranch* b_genParE; //!
+    TBranch* b_genParPt; //!
+    TBranch* b_genParId; //!
+    TBranch* b_genParMotherId; //!
+    TBranch* b_genParCharge; //!
+    TBranch* b_eventRun; //!
+    TBranch* b_eventNum; //!
+    TBranch* b_eventLumiblock; //!
 
-   std::vector<int> electronIndexTight;
-   std::vector<int> electronIndexLoose;
-   std::vector<int> muonIndexTight;
-   std::vector<int> muonIndexLoose;
-   std::vector<int> jetIndex;
-   std::vector<int> bTagIndex; 
+    std::vector<int> electronIndexTight;
+    std::vector<int> electronIndexLoose;
+    std::vector<int> muonIndexTight;
+    std::vector<int> muonIndexLoose;
+    std::vector<int> jetIndex;
+    std::vector<int> bTagIndex;
 
-   std::pair<TLorentzVector,TLorentzVector> zPairLeptons;
-   std::pair<float,float> zPairRelIso;
-   std::pair<int,int> zPairIndex; 
+    std::pair<TLorentzVector, TLorentzVector> zPairLeptons;
+    std::pair<float, float> zPairRelIso;
+    std::pair<int, int> zPairIndex;
 
-   std::pair<TLorentzVector,TLorentzVector> wPairQuarks;
-   std::pair<int,int> wPairIndex;
+    std::pair<TLorentzVector, TLorentzVector> wPairQuarks;
+    std::pair<int, int> wPairIndex;
 
-   TLorentzVector wLepton;
-   int wLepIndex;
-   float wLeptonRelIso;
+    TLorentzVector wLepton;
+    int wLepIndex;
+    float wLeptonRelIso;
 
-   Int_t numVert;
-   TBranch * b_numVert;
+    Int_t numVert;
+    TBranch* b_numVert;
 
-   AnalysisEvent(bool isMC, std::string triggerFlag, TTree *tree, bool is2016);
-   virtual ~AnalysisEvent();
-   virtual Int_t    GetEntry(Long64_t entry);
-   virtual Long64_t LoadTree(Long64_t entry);
-   virtual void     Loop();
-   virtual void     Show(Long64_t entry = -1);
+    AnalysisEvent(bool isMC, std::string triggerFlag, TTree* tree, bool is2016);
+    virtual ~AnalysisEvent();
+    virtual Int_t GetEntry(Long64_t entry);
+    virtual Long64_t LoadTree(Long64_t entry);
+    virtual void Loop();
+    virtual void Show(Long64_t entry = -1);
 };
 
-AnalysisEvent::AnalysisEvent(bool isMC, std::string triggerFlag, TTree *tree, bool is2016) : fChain(0) 
+AnalysisEvent::AnalysisEvent(bool isMC,
+                             std::string triggerFlag,
+                             TTree* tree,
+                             bool is2016)
+    : fChain{nullptr}
 {
-// if parameter tree is not specified (or zero), connect the file
-// used to generate this class and read the Tree.
-   if (tree == 0) {
-
+    // if parameter tree is not specified (or zero), connect the file
+    // used to generate this class and read the Tree.
+    if (tree == nullptr)
+    {
 #ifdef SINGLE_TREE
-      // The following code should be used if you want this class to access
-      // a single tree instead of a chain
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data1/tW2012/mc/ttbarInclusive/MC_Ntuple_out_9_0_MJP_skim.root");
-      if (!f || !f->IsOpen()) {
-         f = new TFile("/data1/tW2012/mc/ttbarInclusive/MC_Ntuple_out_9_0_MJP_skim.root");
-      }
-      f->GetObject("tree",tree);
+        // The following code should be used if you want this class to access
+        // a single tree instead of a chain
+        TFile* f = (TFile*)gROOT->GetListOfFiles()->FindObject(
+            "/data1/tW2012/mc/ttbarInclusive/MC_Ntuple_out_9_0_MJP_skim.root");
+        if (!f || !f->IsOpen())
+        {
+            f = new TFile("/data1/tW2012/mc/ttbarInclusive/"
+                          "MC_Ntuple_out_9_0_MJP_skim.root");
+        }
+        f->GetObject("tree", tree);
 
 #else // SINGLE_TREE
 
-      // The following code should be used if you want this class to access a chain
-      // of trees.
-      TChain * chain = new TChain("tree","");
-      chain->Add("/data1/tW2012/mc/ttbarInclusive/MC_Ntuple_out_100_0_Gu6_skim.root/tree");
-      tree = chain;
+        // The following code should be used if you want this class to access a
+        // chain of trees.
+        TChain* chain = new TChain("tree", "");
+        chain->Add("/data1/tW2012/mc/ttbarInclusive/"
+                   "MC_Ntuple_out_100_0_Gu6_skim.root/tree");
+        tree = chain;
 #endif // SINGLE_TREE
+    }
 
+    // clang-format off
+   if (!tree) 
+   {
+       return;
    }
-
-   if (!tree) return;
    fChain = tree;
    fCurrent = -1;
    fChain->SetMakeClass(1);
@@ -1645,21 +1658,22 @@ AnalysisEvent::AnalysisEvent(bool isMC, std::string triggerFlag, TTree *tree, bo
    fChain->SetBranchAddress("elePF2PATPhotonConversionDcotCustom", elePF2PATPhotonConversionDcotCustom, &b_elePF2PATPhotonConversionDcotCustom);
    fChain->SetBranchAddress("elePF2PATTriggerMatch", elePF2PATTriggerMatch, &b_elePF2PATTriggerMatch);
    fChain->SetBranchAddress("elePF2PATJetOverlap", elePF2PATJetOverlap, &b_elePF2PATJetOverlap);
-   if (isMC) { 
-     fChain->SetBranchAddress("genElePF2PATPT", genElePF2PATPT, &b_genElePF2PATPT);
-     fChain->SetBranchAddress("genElePF2PATET", genElePF2PATET, &b_genElePF2PATET);
-     fChain->SetBranchAddress("genElePF2PATPX", genElePF2PATPX, &b_genElePF2PATPX);
-     fChain->SetBranchAddress("genElePF2PATPY", genElePF2PATPY, &b_genElePF2PATPY);
-     fChain->SetBranchAddress("genElePF2PATPZ", genElePF2PATPZ, &b_genElePF2PATPZ);
-     fChain->SetBranchAddress("genElePF2PATPhi", genElePF2PATPhi, &b_genElePF2PATPhi);
-     fChain->SetBranchAddress("genElePF2PATTheta", genElePF2PATTheta, &b_genElePF2PATTheta);
-     fChain->SetBranchAddress("genElePF2PATEta", genElePF2PATEta, &b_genElePF2PATEta);
-     fChain->SetBranchAddress("genElePF2PATCharge", genElePF2PATCharge, &b_genElePF2PATCharge);
-     fChain->SetBranchAddress("genElePF2PATPdgId", genElePF2PATPdgId, &b_genElePF2PATPdgId);
-     fChain->SetBranchAddress("genElePF2PATMotherId", genElePF2PATMotherId, &b_genElePF2PATMotherId);
-     fChain->SetBranchAddress("genElePF2PATPromptDecayed", genElePF2PATPromptDecayed, &b_genElePF2PATPromptDecayed);
-     fChain->SetBranchAddress("genElePF2PATPromptFinalState", genElePF2PATPromptFinalState, &b_genElePF2PATPromptFinalState);
-     fChain->SetBranchAddress("genElePF2PATHardProcess", genElePF2PATHardProcess, &b_genElePF2PATHardProcess);
+   if (isMC)
+   { 
+       fChain->SetBranchAddress("genElePF2PATPT", genElePF2PATPT, &b_genElePF2PATPT);
+       fChain->SetBranchAddress("genElePF2PATET", genElePF2PATET, &b_genElePF2PATET);
+       fChain->SetBranchAddress("genElePF2PATPX", genElePF2PATPX, &b_genElePF2PATPX);
+       fChain->SetBranchAddress("genElePF2PATPY", genElePF2PATPY, &b_genElePF2PATPY);
+       fChain->SetBranchAddress("genElePF2PATPZ", genElePF2PATPZ, &b_genElePF2PATPZ);
+       fChain->SetBranchAddress("genElePF2PATPhi", genElePF2PATPhi, &b_genElePF2PATPhi);
+       fChain->SetBranchAddress("genElePF2PATTheta", genElePF2PATTheta, &b_genElePF2PATTheta);
+       fChain->SetBranchAddress("genElePF2PATEta", genElePF2PATEta, &b_genElePF2PATEta);
+       fChain->SetBranchAddress("genElePF2PATCharge", genElePF2PATCharge, &b_genElePF2PATCharge);
+       fChain->SetBranchAddress("genElePF2PATPdgId", genElePF2PATPdgId, &b_genElePF2PATPdgId);
+       fChain->SetBranchAddress("genElePF2PATMotherId", genElePF2PATMotherId, &b_genElePF2PATMotherId);
+       fChain->SetBranchAddress("genElePF2PATPromptDecayed", genElePF2PATPromptDecayed, &b_genElePF2PATPromptDecayed);
+       fChain->SetBranchAddress("genElePF2PATPromptFinalState", genElePF2PATPromptFinalState, &b_genElePF2PATPromptFinalState);
+       fChain->SetBranchAddress("genElePF2PATHardProcess", genElePF2PATHardProcess, &b_genElePF2PATHardProcess);
    }
    fChain->SetBranchAddress("numMuonPF2PAT", &numMuonPF2PAT, &b_numMuonPF2PAT);
    fChain->SetBranchAddress("muonPF2PATE", muonPF2PATE, &b_muonPF2PATE);
@@ -1719,21 +1733,22 @@ AnalysisEvent::AnalysisEvent(bool isMC, std::string triggerFlag, TTree *tree, bo
    fChain->SetBranchAddress("muonPF2PATDZPV", muonPF2PATDZPV, &b_muonPF2PATDZPV);
    fChain->SetBranchAddress("muonPF2PATVldPixHits", muonPF2PATVldPixHits, &b_muonPF2PATVldPixHits);
    fChain->SetBranchAddress("muonPF2PATMatchedStations", muonPF2PATMatchedStations, &b_muonPF2PATMatchedStations);
-   if (isMC) {
-     fChain->SetBranchAddress("genMuonPF2PATPT", genMuonPF2PATPT, &b_genMuonPF2PATPT);
-     fChain->SetBranchAddress("genMuonPF2PATET", genMuonPF2PATET, &b_genMuonPF2PATET);
-     fChain->SetBranchAddress("genMuonPF2PATPX", genMuonPF2PATPX, &b_genMuonPF2PATPX);
-     fChain->SetBranchAddress("genMuonPF2PATPY", genMuonPF2PATPY, &b_genMuonPF2PATPY);
-     fChain->SetBranchAddress("genMuonPF2PATPZ", genMuonPF2PATPZ, &b_genMuonPF2PATPZ);
-     fChain->SetBranchAddress("genMuonPF2PATPhi", genMuonPF2PATPhi, &b_genMuonPF2PATPhi);
-     fChain->SetBranchAddress("genMuonPF2PATTheta", genMuonPF2PATTheta, &b_genMuonPF2PATTheta);
-     fChain->SetBranchAddress("genMuonPF2PATEta", genMuonPF2PATEta, &b_genMuonPF2PATEta);
-     fChain->SetBranchAddress("genMuonPF2PATCharge", genMuonPF2PATCharge, &b_genMuonPF2PATCharge);
-     fChain->SetBranchAddress("genMuonPF2PATPdgId", genMuonPF2PATPdgId, &b_genMuonPF2PATPdgId);
-     fChain->SetBranchAddress("genMuonPF2PATMotherId", genMuonPF2PATMotherId, &b_genMuonPF2PATMotherId);
-     fChain->SetBranchAddress("genMuonPF2PATPromptDecayed", genMuonPF2PATPromptDecayed, &b_genMuonPF2PATPromptDecayed);
-     fChain->SetBranchAddress("genMuonPF2PATPromptFinalState", genMuonPF2PATPromptFinalState, &b_genMuonPF2PATPromptFinalState);
-     fChain->SetBranchAddress("genMuonPF2PATHardProcess", genMuonPF2PATHardProcess, &b_genMuonPF2PATHardProcess);
+   if (isMC)
+   {
+       fChain->SetBranchAddress("genMuonPF2PATPT", genMuonPF2PATPT, &b_genMuonPF2PATPT);
+       fChain->SetBranchAddress("genMuonPF2PATET", genMuonPF2PATET, &b_genMuonPF2PATET);
+       fChain->SetBranchAddress("genMuonPF2PATPX", genMuonPF2PATPX, &b_genMuonPF2PATPX);
+       fChain->SetBranchAddress("genMuonPF2PATPY", genMuonPF2PATPY, &b_genMuonPF2PATPY);
+       fChain->SetBranchAddress("genMuonPF2PATPZ", genMuonPF2PATPZ, &b_genMuonPF2PATPZ);
+       fChain->SetBranchAddress("genMuonPF2PATPhi", genMuonPF2PATPhi, &b_genMuonPF2PATPhi);
+       fChain->SetBranchAddress("genMuonPF2PATTheta", genMuonPF2PATTheta, &b_genMuonPF2PATTheta);
+       fChain->SetBranchAddress("genMuonPF2PATEta", genMuonPF2PATEta, &b_genMuonPF2PATEta);
+       fChain->SetBranchAddress("genMuonPF2PATCharge", genMuonPF2PATCharge, &b_genMuonPF2PATCharge);
+       fChain->SetBranchAddress("genMuonPF2PATPdgId", genMuonPF2PATPdgId, &b_genMuonPF2PATPdgId);
+       fChain->SetBranchAddress("genMuonPF2PATMotherId", genMuonPF2PATMotherId, &b_genMuonPF2PATMotherId);
+       fChain->SetBranchAddress("genMuonPF2PATPromptDecayed", genMuonPF2PATPromptDecayed, &b_genMuonPF2PATPromptDecayed);
+       fChain->SetBranchAddress("genMuonPF2PATPromptFinalState", genMuonPF2PATPromptFinalState, &b_genMuonPF2PATPromptFinalState);
+       fChain->SetBranchAddress("genMuonPF2PATHardProcess", genMuonPF2PATHardProcess, &b_genMuonPF2PATHardProcess);
    }
    fChain->SetBranchAddress("numJetPF2PAT", &numJetPF2PAT, &b_numJetPF2PAT);
    fChain->SetBranchAddress("jetPF2PATE", jetPF2PATE, &b_jetPF2PATE);
@@ -1778,16 +1793,17 @@ AnalysisEvent::AnalysisEvent(bool isMC, std::string triggerFlag, TTree *tree, bo
    fChain->SetBranchAddress("jetPF2PATPID", jetPF2PATPID, &b_jetPF2PATPID);
    fChain->SetBranchAddress("jetPF2PATClosestBPartonDeltaR", jetPF2PATClosestBPartonDeltaR, &b_jetPF2PATClosestBPartonDeltaR);
    fChain->SetBranchAddress("jetPF2PATClosestCPartonDeltaR", jetPF2PATClosestCPartonDeltaR, &b_jetPF2PATClosestCPartonDeltaR);
-   if (isMC) {
-     fChain->SetBranchAddress("genJetPF2PATET", genJetPF2PATET, &b_genJetPF2PATET);
-     fChain->SetBranchAddress("genJetPF2PATPT", genJetPF2PATPT, &b_genJetPF2PATPT);
-     fChain->SetBranchAddress("genJetPF2PATPX", genJetPF2PATPX, &b_genJetPF2PATPX);
-     fChain->SetBranchAddress("genJetPF2PATPY", genJetPF2PATPY, &b_genJetPF2PATPY);
-     fChain->SetBranchAddress("genJetPF2PATPZ", genJetPF2PATPZ, &b_genJetPF2PATPZ);
-     fChain->SetBranchAddress("genJetPF2PATPhi", genJetPF2PATPhi, &b_genJetPF2PATPhi);
-     fChain->SetBranchAddress("genJetPF2PATTheta", genJetPF2PATTheta, &b_genJetPF2PATTheta);
-     fChain->SetBranchAddress("genJetPF2PATEta", genJetPF2PATEta, &b_genJetPF2PATEta);
-     fChain->SetBranchAddress("genJetPF2PATPID", genJetPF2PATPID, &b_genJetPF2PATPID);
+   if (isMC)
+   {
+       fChain->SetBranchAddress("genJetPF2PATET", genJetPF2PATET, &b_genJetPF2PATET);
+       fChain->SetBranchAddress("genJetPF2PATPT", genJetPF2PATPT, &b_genJetPF2PATPT);
+       fChain->SetBranchAddress("genJetPF2PATPX", genJetPF2PATPX, &b_genJetPF2PATPX);
+       fChain->SetBranchAddress("genJetPF2PATPY", genJetPF2PATPY, &b_genJetPF2PATPY);
+       fChain->SetBranchAddress("genJetPF2PATPZ", genJetPF2PATPZ, &b_genJetPF2PATPZ);
+       fChain->SetBranchAddress("genJetPF2PATPhi", genJetPF2PATPhi, &b_genJetPF2PATPhi);
+       fChain->SetBranchAddress("genJetPF2PATTheta", genJetPF2PATTheta, &b_genJetPF2PATTheta);
+       fChain->SetBranchAddress("genJetPF2PATEta", genJetPF2PATEta, &b_genJetPF2PATEta);
+       fChain->SetBranchAddress("genJetPF2PATPID", genJetPF2PATPID, &b_genJetPF2PATPID);
    }
    fChain->SetBranchAddress("jetPF2PATMuEnergy", jetPF2PATMuEnergy, &b_jetPF2PATMuEnergy);
    fChain->SetBranchAddress("jetPF2PATMuEnergyFraction", jetPF2PATMuEnergyFraction, &b_jetPF2PATMuEnergyFraction);
@@ -1816,14 +1832,15 @@ AnalysisEvent::AnalysisEvent(bool isMC, std::string triggerFlag, TTree *tree, bo
    fChain->SetBranchAddress("metPF2PATScalarEt", &metPF2PATScalarEt, &b_metPF2PATScalarEt);
    fChain->SetBranchAddress("metPF2PATEtUncorrected", &metPF2PATEtUncorrected, &b_metPF2PATEtUncorrected);
    fChain->SetBranchAddress("metPF2PATPhiUncorrected", &metPF2PATPhiUncorrected, &b_metPF2PATPhiUncorrected);
-   if (isMC) {
-     fChain->SetBranchAddress("genMetPF2PATE", &genMetPF2PATE, &b_genMetPF2PATE);
-     fChain->SetBranchAddress("genMetPF2PATEt", &genMetPF2PATEt, &b_genMetPF2PATEt);
-     fChain->SetBranchAddress("genMetPF2PATPhi", &genMetPF2PATPhi, &b_genMetPF2PATPhi);
-     fChain->SetBranchAddress("genMetPF2PATPt", &genMetPF2PATPt, &b_genMetPF2PATPt);
-     fChain->SetBranchAddress("genMetPF2PATPx", &genMetPF2PATPx, &b_genMetPF2PATPx);
-     fChain->SetBranchAddress("genMetPF2PATPy", &genMetPF2PATPy, &b_genMetPF2PATPy);
-     fChain->SetBranchAddress("genMetPF2PATPz", &genMetPF2PATPz, &b_genMetPF2PATPz);
+   if (isMC)
+   {
+       fChain->SetBranchAddress("genMetPF2PATE", &genMetPF2PATE, &b_genMetPF2PATE);
+       fChain->SetBranchAddress("genMetPF2PATEt", &genMetPF2PATEt, &b_genMetPF2PATEt);
+       fChain->SetBranchAddress("genMetPF2PATPhi", &genMetPF2PATPhi, &b_genMetPF2PATPhi);
+       fChain->SetBranchAddress("genMetPF2PATPt", &genMetPF2PATPt, &b_genMetPF2PATPt);
+       fChain->SetBranchAddress("genMetPF2PATPx", &genMetPF2PATPx, &b_genMetPF2PATPx);
+       fChain->SetBranchAddress("genMetPF2PATPy", &genMetPF2PATPy, &b_genMetPF2PATPy);
+       fChain->SetBranchAddress("genMetPF2PATPz", &genMetPF2PATPz, &b_genMetPF2PATPz);
    }
    fChain->SetBranchAddress("numTauPF2PAT", &numTauPF2PAT, &b_numTauPF2PAT);
    fChain->SetBranchAddress("tauPF2PATE", &tauPF2PATE, &b_tauPF2PATE);
@@ -1837,14 +1854,15 @@ AnalysisEvent::AnalysisEvent(bool isMC, std::string triggerFlag, TTree *tree, bo
    fChain->SetBranchAddress("generalTracksBeamSpotCorrectedD0", generalTracksBeamSpotCorrectedD0, &b_generalTracksBeamSpotCorrectedD0);
    fChain->SetBranchAddress("generalTracksPhi", generalTracksPhi, &b_generalTracksPhi);
    fChain->SetBranchAddress("generalTracksCharge", generalTracksCharge, &b_generalTracksCharge);
-   if (isMC) {
-     fChain->SetBranchAddress("isElePlusJets", &isElePlusJets, &b_isElePlusJets);
-     fChain->SetBranchAddress("genPDFScale", &genPDFScale, &b_genPDFScale);
-     fChain->SetBranchAddress("genPDFx1", &genPDFx1, &b_genPDFx1);
-     fChain->SetBranchAddress("genPDFx2", &genPDFx2, &b_genPDFx2);
-     fChain->SetBranchAddress("genPDFf1", &genPDFf1, &b_genPDFf1);
-     fChain->SetBranchAddress("genPDFf2", &genPDFf2, &b_genPDFf2);
-     fChain->SetBranchAddress("topPtReweight", &topPtReweight, &b_topPtReweight);
+   if (isMC)
+   {
+       fChain->SetBranchAddress("isElePlusJets", &isElePlusJets, &b_isElePlusJets);
+       fChain->SetBranchAddress("genPDFScale", &genPDFScale, &b_genPDFScale);
+       fChain->SetBranchAddress("genPDFx1", &genPDFx1, &b_genPDFx1);
+       fChain->SetBranchAddress("genPDFx2", &genPDFx2, &b_genPDFx2);
+       fChain->SetBranchAddress("genPDFf1", &genPDFf1, &b_genPDFf1);
+       fChain->SetBranchAddress("genPDFf2", &genPDFf2, &b_genPDFf2);
+       fChain->SetBranchAddress("topPtReweight", &topPtReweight, &b_topPtReweight);
    }
    fChain->SetBranchAddress("processId", &processId, &b_processId);
    fChain->SetBranchAddress("processPtHat", &processPtHat, &b_processPtHat);
@@ -1870,185 +1888,186 @@ AnalysisEvent::AnalysisEvent(bool isMC, std::string triggerFlag, TTree *tree, bo
    fChain->SetBranchAddress("mhtSignif", &mhtSignif, &b_mhtSignif);
    fChain->SetBranchAddress("nTriggerBits", &nTriggerBits, &b_nTriggerBits);
    fChain->SetBranchAddress("TriggerBits", &TriggerBits, &b_TriggerBits);
-   if (isMC) { 
-   	fChain->SetBranchAddress("weight_muF0p5", &weight_muF0p5, &b_weight_muF0p5);
-  	fChain->SetBranchAddress("weight_muF2", &weight_muF2, &b_weight_muF2);
-   	fChain->SetBranchAddress("weight_muR0p5", &weight_muR0p5, &b_weight_muR0p5);
-   	fChain->SetBranchAddress("weight_muR2", &weight_muR2, &b_weight_muR2);
-   	fChain->SetBranchAddress("weight_muF0p5muR0p5", &weight_muF0p5muR0p5, &b_weight_muF0p5muR0p5);
-   	fChain->SetBranchAddress("weight_muF2muR2", &weight_muF2muR2, &b_weight_muF2muR2);
-   	fChain->SetBranchAddress("origWeightForNorm", &origWeightForNorm, &b_origWeightForNorm);
-   	fChain->SetBranchAddress("weight_pdfMax", &weight_pdfMax, &b_weight_pdfMax);
-   	fChain->SetBranchAddress("weight_pdfMin", &weight_pdfMin, &b_weight_pdfMin);
-   	fChain->SetBranchAddress("weight_alphaMax", &weight_alphaMax, &b_weight_alphaMax);
-   	fChain->SetBranchAddress("weight_alphaMin", &weight_alphaMin, &b_weight_alphaMin);
-    if (!is2016)
-    {
-        fChain->SetBranchAddress("isrRedHi", &isrRedHi, &b_isrRedHi);
-        fChain->SetBranchAddress("fsrRedHi", &fsrRedHi, &b_fsrRedHi);
-        fChain->SetBranchAddress("isrRedLo", &isrRedLo, &b_isrRedLo);
-        fChain->SetBranchAddress("fsrRedLo", &fsrRedLo, &b_fsrRedLo);
-        fChain->SetBranchAddress("isrDefHi", &isrDefHi, &b_isrDefHi);
-        fChain->SetBranchAddress("fsrDefHi", &fsrDefHi, &b_fsrDefHi);
-        fChain->SetBranchAddress("isrDefLo", &isrDefLo, &b_isrDefLo);
-        fChain->SetBranchAddress("fsrDefLo", &fsrDefLo, &b_fsrDefLo);
-        fChain->SetBranchAddress("isrConHi", &isrConHi, &b_isrConHi);
-        fChain->SetBranchAddress("fsrConHi", &fsrConHi, &b_fsrConHi);
-        fChain->SetBranchAddress("isrConLo", &isrConLo, &b_isrConLo);
-        fChain->SetBranchAddress("fsrConLo", &fsrConLo, &b_fsrConLo);
-    }
+   if (isMC)
+   { 
+       fChain->SetBranchAddress("weight_muF0p5", &weight_muF0p5, &b_weight_muF0p5);
+       fChain->SetBranchAddress("weight_muF2", &weight_muF2, &b_weight_muF2);
+       fChain->SetBranchAddress("weight_muR0p5", &weight_muR0p5, &b_weight_muR0p5);
+       fChain->SetBranchAddress("weight_muR2", &weight_muR2, &b_weight_muR2);
+       fChain->SetBranchAddress("weight_muF0p5muR0p5", &weight_muF0p5muR0p5, &b_weight_muF0p5muR0p5);
+       fChain->SetBranchAddress("weight_muF2muR2", &weight_muF2muR2, &b_weight_muF2muR2);
+       fChain->SetBranchAddress("origWeightForNorm", &origWeightForNorm, &b_origWeightForNorm);
+       fChain->SetBranchAddress("weight_pdfMax", &weight_pdfMax, &b_weight_pdfMax);
+       fChain->SetBranchAddress("weight_pdfMin", &weight_pdfMin, &b_weight_pdfMin);
+       fChain->SetBranchAddress("weight_alphaMax", &weight_alphaMax, &b_weight_alphaMax);
+       fChain->SetBranchAddress("weight_alphaMin", &weight_alphaMin, &b_weight_alphaMin);
+       if (!is2016)
+       {
+           fChain->SetBranchAddress("isrRedHi", &isrRedHi, &b_isrRedHi);
+           fChain->SetBranchAddress("fsrRedHi", &fsrRedHi, &b_fsrRedHi);
+           fChain->SetBranchAddress("isrRedLo", &isrRedLo, &b_isrRedLo);
+           fChain->SetBranchAddress("fsrRedLo", &fsrRedLo, &b_fsrRedLo);
+           fChain->SetBranchAddress("isrDefHi", &isrDefHi, &b_isrDefHi);
+           fChain->SetBranchAddress("fsrDefHi", &fsrDefHi, &b_fsrDefHi);
+           fChain->SetBranchAddress("isrDefLo", &isrDefLo, &b_isrDefLo);
+           fChain->SetBranchAddress("fsrDefLo", &fsrDefLo, &b_fsrDefLo);
+           fChain->SetBranchAddress("isrConHi", &isrConHi, &b_isrConHi);
+           fChain->SetBranchAddress("fsrConHi", &fsrConHi, &b_fsrConHi);
+           fChain->SetBranchAddress("isrConLo", &isrConLo, &b_isrConLo);
+           fChain->SetBranchAddress("fsrConLo", &fsrConLo, &b_fsrConLo);
+       }
    }
    //Trigger branches
    if (is2016)
    {
-   fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v1", &HLT_Ele25_eta2p1_WPTight_Gsf_v1, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v1);
-   fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v2", &HLT_Ele25_eta2p1_WPTight_Gsf_v2, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v2);
-   fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v3", &HLT_Ele25_eta2p1_WPTight_Gsf_v3, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v3);
-   fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v4", &HLT_Ele25_eta2p1_WPTight_Gsf_v4, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v4);
-   fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v5", &HLT_Ele25_eta2p1_WPTight_Gsf_v5, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v5);
-   fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v6", &HLT_Ele25_eta2p1_WPTight_Gsf_v6, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v6);
-   fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v7", &HLT_Ele25_eta2p1_WPTight_Gsf_v7, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v7);
-   fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v1", &HLT_Ele27_WPTight_Gsf_v1, &b_HLT_Ele27_WPTight_Gsf_v1);
-   fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v2", &HLT_Ele27_WPTight_Gsf_v2, &b_HLT_Ele27_WPTight_Gsf_v2);
-   fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v3", &HLT_Ele27_WPTight_Gsf_v3, &b_HLT_Ele27_WPTight_Gsf_v3);
-   fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v4", &HLT_Ele27_WPTight_Gsf_v4, &b_HLT_Ele27_WPTight_Gsf_v4);
-   fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v5", &HLT_Ele27_WPTight_Gsf_v5, &b_HLT_Ele27_WPTight_Gsf_v5);
-   fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v6", &HLT_Ele27_WPTight_Gsf_v6, &b_HLT_Ele27_WPTight_Gsf_v6);
-   fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v7", &HLT_Ele27_WPTight_Gsf_v7, &b_HLT_Ele27_WPTight_Gsf_v7);
-   fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v2", &HLT_Ele32_eta2p1_WPTight_Gsf_v2, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v2);
-   fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v3", &HLT_Ele32_eta2p1_WPTight_Gsf_v3, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v3);
-   fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v4", &HLT_Ele32_eta2p1_WPTight_Gsf_v4, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v4);
-   fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v5", &HLT_Ele32_eta2p1_WPTight_Gsf_v5, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v5);
-   fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v6", &HLT_Ele32_eta2p1_WPTight_Gsf_v6, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v6);
-   fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v7", &HLT_Ele32_eta2p1_WPTight_Gsf_v7, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v7);
-   fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v8", &HLT_Ele32_eta2p1_WPTight_Gsf_v8, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v8);
-   fChain->SetBranchAddress("HLT_IsoMu24_v1", &HLT_IsoMu24_v1, &b_HLT_IsoMu24_v1);
-   fChain->SetBranchAddress("HLT_IsoMu24_v2", &HLT_IsoMu24_v2, &b_HLT_IsoMu24_v2);
-   fChain->SetBranchAddress("HLT_IsoMu24_v3", &HLT_IsoMu24_v3, &b_HLT_IsoMu24_v3);
-   fChain->SetBranchAddress("HLT_IsoMu24_v4", &HLT_IsoMu24_v4, &b_HLT_IsoMu24_v4);
-   fChain->SetBranchAddress("HLT_IsoTkMu24_v1", &HLT_IsoTkMu24_v1, &b_HLT_IsoTkMu24_v1);
-   fChain->SetBranchAddress("HLT_IsoTkMu24_v2", &HLT_IsoTkMu24_v2, &b_HLT_IsoTkMu24_v2);
-   fChain->SetBranchAddress("HLT_IsoTkMu24_v3", &HLT_IsoTkMu24_v3, &b_HLT_IsoTkMu24_v3);
-   fChain->SetBranchAddress("HLT_IsoTkMu24_v4", &HLT_IsoTkMu24_v4, &b_HLT_IsoTkMu24_v4);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v7", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v7, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v7);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2", &HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2, &b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3", &HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3, &b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4", &HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4, &b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5", &HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5, &b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6", &HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6, &b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v7", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v7, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v7);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v8", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v8, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v8);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v9", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v9, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v9);
-   fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3);
-   fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4);
-   fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5);
-   fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v6", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v6, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v6);
-   fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v7", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v7, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v7);
-   fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v8", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v8, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v8);
-   fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v9", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v9, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v9);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4);
-   fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v1", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v1, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v1);
-   fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v2", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v2, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v2);
-   fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v3", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v3, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v3);
-   fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4);
+       fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v1", &HLT_Ele25_eta2p1_WPTight_Gsf_v1, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v1);
+       fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v2", &HLT_Ele25_eta2p1_WPTight_Gsf_v2, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v2);
+       fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v3", &HLT_Ele25_eta2p1_WPTight_Gsf_v3, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v3);
+       fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v4", &HLT_Ele25_eta2p1_WPTight_Gsf_v4, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v4);
+       fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v5", &HLT_Ele25_eta2p1_WPTight_Gsf_v5, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v5);
+       fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v6", &HLT_Ele25_eta2p1_WPTight_Gsf_v6, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v6);
+       fChain->SetBranchAddress("HLT_Ele25_eta2p1_WPTight_Gsf_v7", &HLT_Ele25_eta2p1_WPTight_Gsf_v7, &b_HLT_Ele25_eta2p1_WPTight_Gsf_v7);
+       fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v1", &HLT_Ele27_WPTight_Gsf_v1, &b_HLT_Ele27_WPTight_Gsf_v1);
+       fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v2", &HLT_Ele27_WPTight_Gsf_v2, &b_HLT_Ele27_WPTight_Gsf_v2);
+       fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v3", &HLT_Ele27_WPTight_Gsf_v3, &b_HLT_Ele27_WPTight_Gsf_v3);
+       fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v4", &HLT_Ele27_WPTight_Gsf_v4, &b_HLT_Ele27_WPTight_Gsf_v4);
+       fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v5", &HLT_Ele27_WPTight_Gsf_v5, &b_HLT_Ele27_WPTight_Gsf_v5);
+       fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v6", &HLT_Ele27_WPTight_Gsf_v6, &b_HLT_Ele27_WPTight_Gsf_v6);
+       fChain->SetBranchAddress("HLT_Ele27_WPTight_Gsf_v7", &HLT_Ele27_WPTight_Gsf_v7, &b_HLT_Ele27_WPTight_Gsf_v7);
+       fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v2", &HLT_Ele32_eta2p1_WPTight_Gsf_v2, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v2);
+       fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v3", &HLT_Ele32_eta2p1_WPTight_Gsf_v3, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v3);
+       fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v4", &HLT_Ele32_eta2p1_WPTight_Gsf_v4, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v4);
+       fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v5", &HLT_Ele32_eta2p1_WPTight_Gsf_v5, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v5);
+       fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v6", &HLT_Ele32_eta2p1_WPTight_Gsf_v6, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v6);
+       fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v7", &HLT_Ele32_eta2p1_WPTight_Gsf_v7, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v7);
+       fChain->SetBranchAddress("HLT_Ele32_eta2p1_WPTight_Gsf_v8", &HLT_Ele32_eta2p1_WPTight_Gsf_v8, &b_HLT_Ele32_eta2p1_WPTight_Gsf_v8);
+       fChain->SetBranchAddress("HLT_IsoMu24_v1", &HLT_IsoMu24_v1, &b_HLT_IsoMu24_v1);
+       fChain->SetBranchAddress("HLT_IsoMu24_v2", &HLT_IsoMu24_v2, &b_HLT_IsoMu24_v2);
+       fChain->SetBranchAddress("HLT_IsoMu24_v3", &HLT_IsoMu24_v3, &b_HLT_IsoMu24_v3);
+       fChain->SetBranchAddress("HLT_IsoMu24_v4", &HLT_IsoMu24_v4, &b_HLT_IsoMu24_v4);
+       fChain->SetBranchAddress("HLT_IsoTkMu24_v1", &HLT_IsoTkMu24_v1, &b_HLT_IsoTkMu24_v1);
+       fChain->SetBranchAddress("HLT_IsoTkMu24_v2", &HLT_IsoTkMu24_v2, &b_HLT_IsoTkMu24_v2);
+       fChain->SetBranchAddress("HLT_IsoTkMu24_v3", &HLT_IsoTkMu24_v3, &b_HLT_IsoTkMu24_v3);
+       fChain->SetBranchAddress("HLT_IsoTkMu24_v4", &HLT_IsoTkMu24_v4, &b_HLT_IsoTkMu24_v4);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v7", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v7, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v7);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2", &HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2, &b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3", &HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3, &b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4", &HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4, &b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5", &HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5, &b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6", &HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6, &b_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v6);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v7", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v7, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v7);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v8", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v8, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v8);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v9", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v9, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v9);
+       fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v3);
+       fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v4);
+       fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v5);
+       fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v6", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v6, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v6);
+       fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v7", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v7, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v7);
+       fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v8", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v8, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v8);
+       fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v9", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v9, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v9);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4);
+       fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v1", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v1, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v1);
+       fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v2", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v2, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v2);
+       fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v3", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v3, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v3);
+       fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4);
    }
    else
    {
-   fChain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v1", &HLT_Ele32_WPTight_Gsf_L1DoubleEG_v1, &b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v1);
-   fChain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v2", &HLT_Ele32_WPTight_Gsf_L1DoubleEG_v2, &b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v2);
-   fChain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v3", &HLT_Ele32_WPTight_Gsf_L1DoubleEG_v3, &b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v3);
-   fChain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v4", &HLT_Ele32_WPTight_Gsf_L1DoubleEG_v4, &b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v4);
-   fChain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v5", &HLT_Ele32_WPTight_Gsf_L1DoubleEG_v5, &b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v5);
-   fChain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v6", &HLT_Ele32_WPTight_Gsf_L1DoubleEG_v6, &b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v6);
-   fChain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v7", &HLT_Ele32_WPTight_Gsf_L1DoubleEG_v7, &b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v7);
-   fChain->SetBranchAddress("HLT_Ele35_WPTight_Gsf_v1", &HLT_Ele35_WPTight_Gsf_v1, &b_HLT_Ele35_WPTight_Gsf_v1);
-   fChain->SetBranchAddress("HLT_Ele35_WPTight_Gsf_v2", &HLT_Ele35_WPTight_Gsf_v2, &b_HLT_Ele35_WPTight_Gsf_v2);
-   fChain->SetBranchAddress("HLT_Ele35_WPTight_Gsf_v3", &HLT_Ele35_WPTight_Gsf_v3, &b_HLT_Ele35_WPTight_Gsf_v3);
-   fChain->SetBranchAddress("HLT_Ele35_WPTight_Gsf_v4", &HLT_Ele35_WPTight_Gsf_v4, &b_HLT_Ele35_WPTight_Gsf_v4);
-   fChain->SetBranchAddress("HLT_Ele35_WPTight_Gsf_v5", &HLT_Ele35_WPTight_Gsf_v5, &b_HLT_Ele35_WPTight_Gsf_v5);
-   fChain->SetBranchAddress("HLT_Ele35_WPTight_Gsf_v6", &HLT_Ele35_WPTight_Gsf_v6, &b_HLT_Ele35_WPTight_Gsf_v6);
-   fChain->SetBranchAddress("HLT_Ele35_WPTight_Gsf_v7", &HLT_Ele35_WPTight_Gsf_v7, &b_HLT_Ele35_WPTight_Gsf_v7);
-   fChain->SetBranchAddress("HLT_IsoMu27_v8", &HLT_IsoMu27_v8, &b_HLT_IsoMu27_v8);
-   fChain->SetBranchAddress("HLT_IsoMu27_v9", &HLT_IsoMu27_v9, &b_HLT_IsoMu27_v9);
-   fChain->SetBranchAddress("HLT_IsoMu27_v10", &HLT_IsoMu27_v10, &b_HLT_IsoMu27_v10);
-   fChain->SetBranchAddress("HLT_IsoMu27_v11", &HLT_IsoMu27_v11, &b_HLT_IsoMu27_v11);
-   fChain->SetBranchAddress("HLT_IsoMu27_v12", &HLT_IsoMu27_v12, &b_HLT_IsoMu27_v12);
-   fChain->SetBranchAddress("HLT_IsoMu27_v13", &HLT_IsoMu27_v13, &b_HLT_IsoMu27_v13);
-   fChain->SetBranchAddress("HLT_IsoMu27_v14", &HLT_IsoMu27_v14, &b_HLT_IsoMu27_v14);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v10", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v10, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v10);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v11", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v11, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v11);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v12", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v12, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v12);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v13", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v13, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v13);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v14", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v14, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v14);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v15", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v15, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v15);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v16", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v16, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v16);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v17", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v17, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v17);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v14", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v14, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v14);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v15", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v15, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v15);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v16", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v16, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v16);
-   fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v17", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v17, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v17);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v8", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v8, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v8);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v9", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v9, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v9);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v10", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v10, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v10);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v11", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v11, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v11);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v12", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v12, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v12);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v13", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v13, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v13);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v14", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v14, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v14);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v1", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v1, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v1);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v2", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v2, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v2);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v3", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v3, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v3);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v4", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v4, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v4);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v7", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v7, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v7);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v8", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v8, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v8);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v1", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v1, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v1);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v2", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v2, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v2);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v3", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v3, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v3);
-   fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v4", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v4, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v4);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12);
-   fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13);
-   fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v5", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v5, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v5);
-   fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6);
-   fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8);
-   fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9);
-   fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10);
-   fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11);
-   fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v12", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v12, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v12);
-   fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v13", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v13, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v13);
-   fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4);
-   fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6);
-   fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v7", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v7, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v7);
-   fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8);
-   fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9);
-   fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10);
-   fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11);
+       fChain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v1", &HLT_Ele32_WPTight_Gsf_L1DoubleEG_v1, &b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v1);
+       fChain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v2", &HLT_Ele32_WPTight_Gsf_L1DoubleEG_v2, &b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v2);
+       fChain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v3", &HLT_Ele32_WPTight_Gsf_L1DoubleEG_v3, &b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v3);
+       fChain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v4", &HLT_Ele32_WPTight_Gsf_L1DoubleEG_v4, &b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v4);
+       fChain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v5", &HLT_Ele32_WPTight_Gsf_L1DoubleEG_v5, &b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v5);
+       fChain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v6", &HLT_Ele32_WPTight_Gsf_L1DoubleEG_v6, &b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v6);
+       fChain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v7", &HLT_Ele32_WPTight_Gsf_L1DoubleEG_v7, &b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v7);
+       fChain->SetBranchAddress("HLT_Ele35_WPTight_Gsf_v1", &HLT_Ele35_WPTight_Gsf_v1, &b_HLT_Ele35_WPTight_Gsf_v1);
+       fChain->SetBranchAddress("HLT_Ele35_WPTight_Gsf_v2", &HLT_Ele35_WPTight_Gsf_v2, &b_HLT_Ele35_WPTight_Gsf_v2);
+       fChain->SetBranchAddress("HLT_Ele35_WPTight_Gsf_v3", &HLT_Ele35_WPTight_Gsf_v3, &b_HLT_Ele35_WPTight_Gsf_v3);
+       fChain->SetBranchAddress("HLT_Ele35_WPTight_Gsf_v4", &HLT_Ele35_WPTight_Gsf_v4, &b_HLT_Ele35_WPTight_Gsf_v4);
+       fChain->SetBranchAddress("HLT_Ele35_WPTight_Gsf_v5", &HLT_Ele35_WPTight_Gsf_v5, &b_HLT_Ele35_WPTight_Gsf_v5);
+       fChain->SetBranchAddress("HLT_Ele35_WPTight_Gsf_v6", &HLT_Ele35_WPTight_Gsf_v6, &b_HLT_Ele35_WPTight_Gsf_v6);
+       fChain->SetBranchAddress("HLT_Ele35_WPTight_Gsf_v7", &HLT_Ele35_WPTight_Gsf_v7, &b_HLT_Ele35_WPTight_Gsf_v7);
+       fChain->SetBranchAddress("HLT_IsoMu27_v8", &HLT_IsoMu27_v8, &b_HLT_IsoMu27_v8);
+       fChain->SetBranchAddress("HLT_IsoMu27_v9", &HLT_IsoMu27_v9, &b_HLT_IsoMu27_v9);
+       fChain->SetBranchAddress("HLT_IsoMu27_v10", &HLT_IsoMu27_v10, &b_HLT_IsoMu27_v10);
+       fChain->SetBranchAddress("HLT_IsoMu27_v11", &HLT_IsoMu27_v11, &b_HLT_IsoMu27_v11);
+       fChain->SetBranchAddress("HLT_IsoMu27_v12", &HLT_IsoMu27_v12, &b_HLT_IsoMu27_v12);
+       fChain->SetBranchAddress("HLT_IsoMu27_v13", &HLT_IsoMu27_v13, &b_HLT_IsoMu27_v13);
+       fChain->SetBranchAddress("HLT_IsoMu27_v14", &HLT_IsoMu27_v14, &b_HLT_IsoMu27_v14);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v10", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v10, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v10);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v11", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v11, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v11);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v12", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v12, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v12);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v13", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v13, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v13);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v14", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v14, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v14);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v15", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v15, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v15);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v16", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v16, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v16);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v17", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v17, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v17);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v14", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v14, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v14);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v15", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v15, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v15);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v16", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v16, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v16);
+       fChain->SetBranchAddress("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v17", &HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v17, &b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v17);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v8", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v8, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v8);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v9", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v9, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v9);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v10", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v10, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v10);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v11", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v11, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v11);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v12", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v12, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v12);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v13", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v13, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v13);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v14", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v14, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v14);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v1", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v1, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v1);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v2", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v2, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v2);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v3", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v3, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v3);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v4", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v4, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v4);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v7", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v7, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v7);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v8", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v8, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v8);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v1", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v1, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v1);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v2", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v2, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v2);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v3", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v3, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v3);
+       fChain->SetBranchAddress("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v4", &HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v4, &b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v4);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v1);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v2);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v11);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12);
+       fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v13);
+       fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v5", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v5, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v5);
+       fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6);
+       fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8);
+       fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9);
+       fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10);
+       fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11);
+       fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v12", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v12, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v12);
+       fChain->SetBranchAddress("HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v13", &HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v13, &b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v13);
+       fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v4);
+       fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v6);
+       fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v7", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v7, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v7);
+       fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v8);
+       fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v9);
+       fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10);
+       fChain->SetBranchAddress("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11", &HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11, &b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v11);
    }
    fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3);
    fChain->SetBranchAddress("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4", &HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4, &b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v4);
@@ -2056,237 +2075,237 @@ AnalysisEvent::AnalysisEvent(bool isMC, std::string triggerFlag, TTree *tree, bo
    //MET trigger branches
    if (is2016)
    {
-   fChain->SetBranchAddress("HLT_MET200_v1", &HLT_MET200_v1, &b_HLT_MET200_v1);
-   fChain->SetBranchAddress("HLT_MET200_v2", &HLT_MET200_v2, &b_HLT_MET200_v2);
-   fChain->SetBranchAddress("HLT_MET200_v3", &HLT_MET200_v3, &b_HLT_MET200_v3);
-   fChain->SetBranchAddress("HLT_MET200_v4", &HLT_MET200_v4, &b_HLT_MET200_v4);
-   fChain->SetBranchAddress("HLT_MET200_v5", &HLT_MET200_v5, &b_HLT_MET200_v5);
-   fChain->SetBranchAddress("HLT_MET250_v1", &HLT_MET250_v1, &b_HLT_MET250_v1);
-   fChain->SetBranchAddress("HLT_MET250_v2", &HLT_MET250_v2, &b_HLT_MET250_v2);
-   fChain->SetBranchAddress("HLT_MET250_v3", &HLT_MET250_v3, &b_HLT_MET250_v3);
-   fChain->SetBranchAddress("HLT_MET250_v4", &HLT_MET250_v4, &b_HLT_MET250_v4);
-   fChain->SetBranchAddress("HLT_MET250_v5", &HLT_MET250_v5, &b_HLT_MET250_v5);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v2", &HLT_PFMET120_PFMHT120_IDTight_v2, &b_HLT_PFMET120_PFMHT120_IDTight_v2);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v3", &HLT_PFMET120_PFMHT120_IDTight_v3, &b_HLT_PFMET120_PFMHT120_IDTight_v3);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v4", &HLT_PFMET120_PFMHT120_IDTight_v4, &b_HLT_PFMET120_PFMHT120_IDTight_v4);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v5", &HLT_PFMET120_PFMHT120_IDTight_v5, &b_HLT_PFMET120_PFMHT120_IDTight_v5);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v6", &HLT_PFMET120_PFMHT120_IDTight_v6, &b_HLT_PFMET120_PFMHT120_IDTight_v6);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v7", &HLT_PFMET120_PFMHT120_IDTight_v7, &b_HLT_PFMET120_PFMHT120_IDTight_v7);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v8", &HLT_PFMET120_PFMHT120_IDTight_v8, &b_HLT_PFMET120_PFMHT120_IDTight_v8);
-   fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v2", &HLT_PFMET170_HBHECleaned_v2, &b_HLT_PFMET170_HBHECleaned_v2);
-   fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v3", &HLT_PFMET170_HBHECleaned_v3, &b_HLT_PFMET170_HBHECleaned_v3);
-   fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v4", &HLT_PFMET170_HBHECleaned_v4, &b_HLT_PFMET170_HBHECleaned_v4);
-   fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v5", &HLT_PFMET170_HBHECleaned_v5, &b_HLT_PFMET170_HBHECleaned_v5);
-   fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v6", &HLT_PFMET170_HBHECleaned_v6, &b_HLT_PFMET170_HBHECleaned_v6);
-   fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v7", &HLT_PFMET170_HBHECleaned_v7, &b_HLT_PFMET170_HBHECleaned_v7);
-   fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v8", &HLT_PFMET170_HBHECleaned_v8, &b_HLT_PFMET170_HBHECleaned_v8);
-   fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v9", &HLT_PFMET170_HBHECleaned_v9, &b_HLT_PFMET170_HBHECleaned_v9);
-   fChain->SetBranchAddress("HLT_PFHT800_v2", &HLT_PFHT800_v2, &b_HLT_PFHT800_v2);
-   fChain->SetBranchAddress("HLT_PFHT800_v3", &HLT_PFHT800_v3, &b_HLT_PFHT800_v3);
-   fChain->SetBranchAddress("HLT_PFHT800_v4", &HLT_PFHT800_v4, &b_HLT_PFHT800_v4);
-   fChain->SetBranchAddress("HLT_PFHT800_v5", &HLT_PFHT800_v5, &b_HLT_PFHT800_v5);
-   fChain->SetBranchAddress("HLT_PFHT900_v4", &HLT_PFHT900_v4, &b_HLT_PFHT900_v4);
-   fChain->SetBranchAddress("HLT_PFHT900_v5", &HLT_PFHT900_v5, &b_HLT_PFHT900_v5);
-   fChain->SetBranchAddress("HLT_PFHT900_v6", &HLT_PFHT900_v6, &b_HLT_PFHT900_v6);
-   fChain->SetBranchAddress("HLT_PFHT750_4JetPt50_v3", &HLT_PFHT750_4JetPt50_v3, &b_HLT_PFHT750_4JetPt50_v3);
-   fChain->SetBranchAddress("HLT_PFHT750_4JetPt50_v4", &HLT_PFHT750_4JetPt50_v4, &b_HLT_PFHT750_4JetPt50_v4);
-   fChain->SetBranchAddress("HLT_PFHT750_4JetPt50_v5", &HLT_PFHT750_4JetPt50_v5, &b_HLT_PFHT750_4JetPt50_v5);
-   fChain->SetBranchAddress("HLT_PFHT750_4JetPt50_v6", &HLT_PFHT750_4JetPt50_v6, &b_HLT_PFHT750_4JetPt50_v6);
-   fChain->SetBranchAddress("HLT_PFHT750_4JetPt70_v1", &HLT_PFHT750_4JetPt70_v1, &b_HLT_PFHT750_4JetPt70_v1);
-   fChain->SetBranchAddress("HLT_PFHT750_4JetPt70_v2", &HLT_PFHT750_4JetPt70_v2, &b_HLT_PFHT750_4JetPt70_v2);
-   fChain->SetBranchAddress("HLT_PFHT750_4JetPt80_v2", &HLT_PFHT750_4JetPt80_v2, &b_HLT_PFHT750_4JetPt80_v2);
-   fChain->SetBranchAddress("HLT_PFHT300_PFMET100_v1", &HLT_PFHT300_PFMET100_v1, &b_HLT_PFHT300_PFMET100_v1);
-   fChain->SetBranchAddress("HLT_PFHT300_PFMET100_v2", &HLT_PFHT300_PFMET100_v2, &b_HLT_PFHT300_PFMET100_v2);
-   fChain->SetBranchAddress("HLT_PFHT300_PFMET100_v3", &HLT_PFHT300_PFMET100_v3, &b_HLT_PFHT300_PFMET100_v3);
-   fChain->SetBranchAddress("HLT_PFHT300_PFMET100_v4", &HLT_PFHT300_PFMET100_v4, &b_HLT_PFHT300_PFMET100_v4);
-   fChain->SetBranchAddress("HLT_PFHT300_PFMET110_v4", &HLT_PFHT300_PFMET110_v4, &b_HLT_PFHT300_PFMET110_v4);
-   fChain->SetBranchAddress("HLT_PFHT300_PFMET110_v5", &HLT_PFHT300_PFMET110_v5, &b_HLT_PFHT300_PFMET110_v5);
-   fChain->SetBranchAddress("HLT_PFHT300_PFMET110_v6", &HLT_PFHT300_PFMET110_v6, &b_HLT_PFHT300_PFMET110_v6);
+       fChain->SetBranchAddress("HLT_MET200_v1", &HLT_MET200_v1, &b_HLT_MET200_v1);
+       fChain->SetBranchAddress("HLT_MET200_v2", &HLT_MET200_v2, &b_HLT_MET200_v2);
+       fChain->SetBranchAddress("HLT_MET200_v3", &HLT_MET200_v3, &b_HLT_MET200_v3);
+       fChain->SetBranchAddress("HLT_MET200_v4", &HLT_MET200_v4, &b_HLT_MET200_v4);
+       fChain->SetBranchAddress("HLT_MET200_v5", &HLT_MET200_v5, &b_HLT_MET200_v5);
+       fChain->SetBranchAddress("HLT_MET250_v1", &HLT_MET250_v1, &b_HLT_MET250_v1);
+       fChain->SetBranchAddress("HLT_MET250_v2", &HLT_MET250_v2, &b_HLT_MET250_v2);
+       fChain->SetBranchAddress("HLT_MET250_v3", &HLT_MET250_v3, &b_HLT_MET250_v3);
+       fChain->SetBranchAddress("HLT_MET250_v4", &HLT_MET250_v4, &b_HLT_MET250_v4);
+       fChain->SetBranchAddress("HLT_MET250_v5", &HLT_MET250_v5, &b_HLT_MET250_v5);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v2", &HLT_PFMET120_PFMHT120_IDTight_v2, &b_HLT_PFMET120_PFMHT120_IDTight_v2);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v3", &HLT_PFMET120_PFMHT120_IDTight_v3, &b_HLT_PFMET120_PFMHT120_IDTight_v3);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v4", &HLT_PFMET120_PFMHT120_IDTight_v4, &b_HLT_PFMET120_PFMHT120_IDTight_v4);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v5", &HLT_PFMET120_PFMHT120_IDTight_v5, &b_HLT_PFMET120_PFMHT120_IDTight_v5);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v6", &HLT_PFMET120_PFMHT120_IDTight_v6, &b_HLT_PFMET120_PFMHT120_IDTight_v6);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v7", &HLT_PFMET120_PFMHT120_IDTight_v7, &b_HLT_PFMET120_PFMHT120_IDTight_v7);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v8", &HLT_PFMET120_PFMHT120_IDTight_v8, &b_HLT_PFMET120_PFMHT120_IDTight_v8);
+       fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v2", &HLT_PFMET170_HBHECleaned_v2, &b_HLT_PFMET170_HBHECleaned_v2);
+       fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v3", &HLT_PFMET170_HBHECleaned_v3, &b_HLT_PFMET170_HBHECleaned_v3);
+       fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v4", &HLT_PFMET170_HBHECleaned_v4, &b_HLT_PFMET170_HBHECleaned_v4);
+       fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v5", &HLT_PFMET170_HBHECleaned_v5, &b_HLT_PFMET170_HBHECleaned_v5);
+       fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v6", &HLT_PFMET170_HBHECleaned_v6, &b_HLT_PFMET170_HBHECleaned_v6);
+       fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v7", &HLT_PFMET170_HBHECleaned_v7, &b_HLT_PFMET170_HBHECleaned_v7);
+       fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v8", &HLT_PFMET170_HBHECleaned_v8, &b_HLT_PFMET170_HBHECleaned_v8);
+       fChain->SetBranchAddress("HLT_PFMET170_HBHECleaned_v9", &HLT_PFMET170_HBHECleaned_v9, &b_HLT_PFMET170_HBHECleaned_v9);
+       fChain->SetBranchAddress("HLT_PFHT800_v2", &HLT_PFHT800_v2, &b_HLT_PFHT800_v2);
+       fChain->SetBranchAddress("HLT_PFHT800_v3", &HLT_PFHT800_v3, &b_HLT_PFHT800_v3);
+       fChain->SetBranchAddress("HLT_PFHT800_v4", &HLT_PFHT800_v4, &b_HLT_PFHT800_v4);
+       fChain->SetBranchAddress("HLT_PFHT800_v5", &HLT_PFHT800_v5, &b_HLT_PFHT800_v5);
+       fChain->SetBranchAddress("HLT_PFHT900_v4", &HLT_PFHT900_v4, &b_HLT_PFHT900_v4);
+       fChain->SetBranchAddress("HLT_PFHT900_v5", &HLT_PFHT900_v5, &b_HLT_PFHT900_v5);
+       fChain->SetBranchAddress("HLT_PFHT900_v6", &HLT_PFHT900_v6, &b_HLT_PFHT900_v6);
+       fChain->SetBranchAddress("HLT_PFHT750_4JetPt50_v3", &HLT_PFHT750_4JetPt50_v3, &b_HLT_PFHT750_4JetPt50_v3);
+       fChain->SetBranchAddress("HLT_PFHT750_4JetPt50_v4", &HLT_PFHT750_4JetPt50_v4, &b_HLT_PFHT750_4JetPt50_v4);
+       fChain->SetBranchAddress("HLT_PFHT750_4JetPt50_v5", &HLT_PFHT750_4JetPt50_v5, &b_HLT_PFHT750_4JetPt50_v5);
+       fChain->SetBranchAddress("HLT_PFHT750_4JetPt50_v6", &HLT_PFHT750_4JetPt50_v6, &b_HLT_PFHT750_4JetPt50_v6);
+       fChain->SetBranchAddress("HLT_PFHT750_4JetPt70_v1", &HLT_PFHT750_4JetPt70_v1, &b_HLT_PFHT750_4JetPt70_v1);
+       fChain->SetBranchAddress("HLT_PFHT750_4JetPt70_v2", &HLT_PFHT750_4JetPt70_v2, &b_HLT_PFHT750_4JetPt70_v2);
+       fChain->SetBranchAddress("HLT_PFHT750_4JetPt80_v2", &HLT_PFHT750_4JetPt80_v2, &b_HLT_PFHT750_4JetPt80_v2);
+       fChain->SetBranchAddress("HLT_PFHT300_PFMET100_v1", &HLT_PFHT300_PFMET100_v1, &b_HLT_PFHT300_PFMET100_v1);
+       fChain->SetBranchAddress("HLT_PFHT300_PFMET100_v2", &HLT_PFHT300_PFMET100_v2, &b_HLT_PFHT300_PFMET100_v2);
+       fChain->SetBranchAddress("HLT_PFHT300_PFMET100_v3", &HLT_PFHT300_PFMET100_v3, &b_HLT_PFHT300_PFMET100_v3);
+       fChain->SetBranchAddress("HLT_PFHT300_PFMET100_v4", &HLT_PFHT300_PFMET100_v4, &b_HLT_PFHT300_PFMET100_v4);
+       fChain->SetBranchAddress("HLT_PFHT300_PFMET110_v4", &HLT_PFHT300_PFMET110_v4, &b_HLT_PFHT300_PFMET110_v4);
+       fChain->SetBranchAddress("HLT_PFHT300_PFMET110_v5", &HLT_PFHT300_PFMET110_v5, &b_HLT_PFHT300_PFMET110_v5);
+       fChain->SetBranchAddress("HLT_PFHT300_PFMET110_v6", &HLT_PFHT300_PFMET110_v6, &b_HLT_PFHT300_PFMET110_v6);
    }
    else
    { // 2017
-   fChain->SetBranchAddress("HLT_MET105_IsoTrk50_v1", &HLT_MET105_IsoTrk50_v1, &b_HLT_MET105_IsoTrk50_v1);
-   fChain->SetBranchAddress("HLT_MET105_IsoTrk50_v3", &HLT_MET105_IsoTrk50_v3, &b_HLT_MET105_IsoTrk50_v3);
-   fChain->SetBranchAddress("HLT_MET105_IsoTrk50_v4", &HLT_MET105_IsoTrk50_v4, &b_HLT_MET105_IsoTrk50_v4);
-   fChain->SetBranchAddress("HLT_MET105_IsoTrk50_v5", &HLT_MET105_IsoTrk50_v5, &b_HLT_MET105_IsoTrk50_v5);
-   fChain->SetBranchAddress("HLT_MET105_IsoTrk50_v6", &HLT_MET105_IsoTrk50_v6, &b_HLT_MET105_IsoTrk50_v6);
-   fChain->SetBranchAddress("HLT_MET105_IsoTrk50_v7", &HLT_MET105_IsoTrk50_v7, &b_HLT_MET105_IsoTrk50_v7);
-   fChain->SetBranchAddress("HLT_MET105_IsoTrk50_v8", &HLT_MET105_IsoTrk50_v8, &b_HLT_MET105_IsoTrk50_v8);
-   fChain->SetBranchAddress("HLT_MET120_IsoTrk50_v1", &HLT_MET120_IsoTrk50_v1, &b_HLT_MET120_IsoTrk50_v1);
-   fChain->SetBranchAddress("HLT_MET120_IsoTrk50_v3", &HLT_MET120_IsoTrk50_v3, &b_HLT_MET120_IsoTrk50_v3);
-   fChain->SetBranchAddress("HLT_MET120_IsoTrk50_v4", &HLT_MET120_IsoTrk50_v4, &b_HLT_MET120_IsoTrk50_v4);
-   fChain->SetBranchAddress("HLT_MET120_IsoTrk50_v5", &HLT_MET120_IsoTrk50_v5, &b_HLT_MET120_IsoTrk50_v5);
-   fChain->SetBranchAddress("HLT_MET120_IsoTrk50_v6", &HLT_MET120_IsoTrk50_v6, &b_HLT_MET120_IsoTrk50_v6);
-   fChain->SetBranchAddress("HLT_MET120_IsoTrk50_v7", &HLT_MET120_IsoTrk50_v7, &b_HLT_MET120_IsoTrk50_v7);
-   fChain->SetBranchAddress("HLT_MET120_IsoTrk50_v8", &HLT_MET120_IsoTrk50_v8, &b_HLT_MET120_IsoTrk50_v8);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet40_DisplacedTrack_v10", &HLT_HT430_DisplacedDijet40_DisplacedTrack_v10, &b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v10);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet40_DisplacedTrack_v11", &HLT_HT430_DisplacedDijet40_DisplacedTrack_v11, &b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v11);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet40_DisplacedTrack_v5", &HLT_HT430_DisplacedDijet40_DisplacedTrack_v5, &b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v5);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet40_DisplacedTrack_v6", &HLT_HT430_DisplacedDijet40_DisplacedTrack_v6, &b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v6);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet40_DisplacedTrack_v8", &HLT_HT430_DisplacedDijet40_DisplacedTrack_v8, &b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v8);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet40_DisplacedTrack_v9", &HLT_HT430_DisplacedDijet40_DisplacedTrack_v9, &b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v9);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet60_DisplacedTrack_v10", &HLT_HT430_DisplacedDijet60_DisplacedTrack_v10, &b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v10);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet60_DisplacedTrack_v11", &HLT_HT430_DisplacedDijet60_DisplacedTrack_v11, &b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v11);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet60_DisplacedTrack_v5", &HLT_HT430_DisplacedDijet60_DisplacedTrack_v5, &b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v5);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet60_DisplacedTrack_v6", &HLT_HT430_DisplacedDijet60_DisplacedTrack_v6, &b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v6);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet60_DisplacedTrack_v8", &HLT_HT430_DisplacedDijet60_DisplacedTrack_v8, &b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v8);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet60_DisplacedTrack_v9", &HLT_HT430_DisplacedDijet60_DisplacedTrack_v9, &b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v9);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet80_DisplacedTrack_v10", &HLT_HT430_DisplacedDijet80_DisplacedTrack_v10, &b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v10);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet80_DisplacedTrack_v11", &HLT_HT430_DisplacedDijet80_DisplacedTrack_v11, &b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v11);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet80_DisplacedTrack_v5", &HLT_HT430_DisplacedDijet80_DisplacedTrack_v5, &b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v5);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet80_DisplacedTrack_v6", &HLT_HT430_DisplacedDijet80_DisplacedTrack_v6, &b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v6);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet80_DisplacedTrack_v8", &HLT_HT430_DisplacedDijet80_DisplacedTrack_v8, &b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v8);
-   fChain->SetBranchAddress("HLT_HT430_DisplacedDijet80_DisplacedTrack_v9", &HLT_HT430_DisplacedDijet80_DisplacedTrack_v9, &b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v9);
-   fChain->SetBranchAddress("HLT_HT650_DisplacedDijet60_Inclusive_v10", &HLT_HT650_DisplacedDijet60_Inclusive_v10, &b_HLT_HT650_DisplacedDijet60_Inclusive_v10);
-   fChain->SetBranchAddress("HLT_HT650_DisplacedDijet60_Inclusive_v11", &HLT_HT650_DisplacedDijet60_Inclusive_v11, &b_HLT_HT650_DisplacedDijet60_Inclusive_v11);
-   fChain->SetBranchAddress("HLT_HT650_DisplacedDijet60_Inclusive_v5", &HLT_HT650_DisplacedDijet60_Inclusive_v5, &b_HLT_HT650_DisplacedDijet60_Inclusive_v5);
-   fChain->SetBranchAddress("HLT_HT650_DisplacedDijet60_Inclusive_v6", &HLT_HT650_DisplacedDijet60_Inclusive_v6, &b_HLT_HT650_DisplacedDijet60_Inclusive_v6);
-   fChain->SetBranchAddress("HLT_HT650_DisplacedDijet60_Inclusive_v8", &HLT_HT650_DisplacedDijet60_Inclusive_v8, &b_HLT_HT650_DisplacedDijet60_Inclusive_v8);
-   fChain->SetBranchAddress("HLT_HT650_DisplacedDijet60_Inclusive_v9", &HLT_HT650_DisplacedDijet60_Inclusive_v9, &b_HLT_HT650_DisplacedDijet60_Inclusive_v9);
-   fChain->SetBranchAddress("HLT_HT650_DisplacedDijet80_Inclusive_v10", &HLT_HT650_DisplacedDijet80_Inclusive_v10, &b_HLT_HT650_DisplacedDijet80_Inclusive_v10);
-   fChain->SetBranchAddress("HLT_HT650_DisplacedDijet80_Inclusive_v11", &HLT_HT650_DisplacedDijet80_Inclusive_v11, &b_HLT_HT650_DisplacedDijet80_Inclusive_v11);
-   fChain->SetBranchAddress("HLT_HT650_DisplacedDijet80_Inclusive_v12", &HLT_HT650_DisplacedDijet80_Inclusive_v12, &b_HLT_HT650_DisplacedDijet80_Inclusive_v12);
-   fChain->SetBranchAddress("HLT_HT650_DisplacedDijet80_Inclusive_v6", &HLT_HT650_DisplacedDijet80_Inclusive_v6, &b_HLT_HT650_DisplacedDijet80_Inclusive_v6);
-   fChain->SetBranchAddress("HLT_HT650_DisplacedDijet80_Inclusive_v7", &HLT_HT650_DisplacedDijet80_Inclusive_v7, &b_HLT_HT650_DisplacedDijet80_Inclusive_v7);
-   fChain->SetBranchAddress("HLT_HT650_DisplacedDijet80_Inclusive_v9", &HLT_HT650_DisplacedDijet80_Inclusive_v9, &b_HLT_HT650_DisplacedDijet80_Inclusive_v9);
-   fChain->SetBranchAddress("HLT_HT750_DisplacedDijet80_Inclusive_v10", &HLT_HT750_DisplacedDijet80_Inclusive_v10, &b_HLT_HT750_DisplacedDijet80_Inclusive_v10);
-   fChain->SetBranchAddress("HLT_HT750_DisplacedDijet80_Inclusive_v11", &HLT_HT750_DisplacedDijet80_Inclusive_v11, &b_HLT_HT750_DisplacedDijet80_Inclusive_v11);
-   fChain->SetBranchAddress("HLT_HT750_DisplacedDijet80_Inclusive_v12", &HLT_HT750_DisplacedDijet80_Inclusive_v12, &b_HLT_HT750_DisplacedDijet80_Inclusive_v12);
-   fChain->SetBranchAddress("HLT_HT750_DisplacedDijet80_Inclusive_v6", &HLT_HT750_DisplacedDijet80_Inclusive_v6, &b_HLT_HT750_DisplacedDijet80_Inclusive_v6);
-   fChain->SetBranchAddress("HLT_HT750_DisplacedDijet80_Inclusive_v7", &HLT_HT750_DisplacedDijet80_Inclusive_v7, &b_HLT_HT750_DisplacedDijet80_Inclusive_v7);
-   fChain->SetBranchAddress("HLT_HT750_DisplacedDijet80_Inclusive_v9", &HLT_HT750_DisplacedDijet80_Inclusive_v9, &b_HLT_HT750_DisplacedDijet80_Inclusive_v9);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v1", &HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v1, &b_HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v1);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v2", &HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v2, &b_HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v2);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF_v10", &HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF_v10, &b_HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF_v10);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v1", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v1, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v1);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v2", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v2, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v2);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_v2", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_v2, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v2);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_v3", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_v3, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v3);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_v4", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_v4, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v4);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_v5", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_v5, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v5);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_v6", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_v6, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v6);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_v7", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_v7, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v7);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v11", &HLT_PFMET120_PFMHT120_IDTight_v11, &b_HLT_PFMET120_PFMHT120_IDTight_v11);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v13", &HLT_PFMET120_PFMHT120_IDTight_v13, &b_HLT_PFMET120_PFMHT120_IDTight_v13);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v14", &HLT_PFMET120_PFMHT120_IDTight_v14, &b_HLT_PFMET120_PFMHT120_IDTight_v14);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v15", &HLT_PFMET120_PFMHT120_IDTight_v15, &b_HLT_PFMET120_PFMHT120_IDTight_v15);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v16", &HLT_PFMET120_PFMHT120_IDTight_v16, &b_HLT_PFMET120_PFMHT120_IDTight_v16);
-   fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v9", &HLT_PFMET120_PFMHT120_IDTight_v9, &b_HLT_PFMET120_PFMHT120_IDTight_v9);
-   fChain->SetBranchAddress("HLT_PFMET130_PFMHT130_IDTight_v11", &HLT_PFMET130_PFMHT130_IDTight_v11, &b_HLT_PFMET130_PFMHT130_IDTight_v11);
-   fChain->SetBranchAddress("HLT_PFMET130_PFMHT130_IDTight_v13", &HLT_PFMET130_PFMHT130_IDTight_v13, &b_HLT_PFMET130_PFMHT130_IDTight_v13);
-   fChain->SetBranchAddress("HLT_PFMET130_PFMHT130_IDTight_v14", &HLT_PFMET130_PFMHT130_IDTight_v14, &b_HLT_PFMET130_PFMHT130_IDTight_v14);
-   fChain->SetBranchAddress("HLT_PFMET130_PFMHT130_IDTight_v15", &HLT_PFMET130_PFMHT130_IDTight_v15, &b_HLT_PFMET130_PFMHT130_IDTight_v15);
-   fChain->SetBranchAddress("HLT_PFMET130_PFMHT130_IDTight_v16", &HLT_PFMET130_PFMHT130_IDTight_v16, &b_HLT_PFMET130_PFMHT130_IDTight_v16);
-   fChain->SetBranchAddress("HLT_PFMET130_PFMHT130_IDTight_v9", &HLT_PFMET130_PFMHT130_IDTight_v9, &b_HLT_PFMET130_PFMHT130_IDTight_v9);
-   fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v11", &HLT_PFMET140_PFMHT140_IDTight_v11, &b_HLT_PFMET140_PFMHT140_IDTight_v11);
-   fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v13", &HLT_PFMET140_PFMHT140_IDTight_v13, &b_HLT_PFMET140_PFMHT140_IDTight_v13);
-   fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v14", &HLT_PFMET140_PFMHT140_IDTight_v14, &b_HLT_PFMET140_PFMHT140_IDTight_v14);
-   fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v15", &HLT_PFMET140_PFMHT140_IDTight_v15, &b_HLT_PFMET140_PFMHT140_IDTight_v15);
-   fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v16", &HLT_PFMET140_PFMHT140_IDTight_v16, &b_HLT_PFMET140_PFMHT140_IDTight_v16);
-   fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v17", &HLT_PFMET140_PFMHT140_IDTight_v17, &b_HLT_PFMET140_PFMHT140_IDTight_v17);
-   fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v18", &HLT_PFMET140_PFMHT140_IDTight_v18, &b_HLT_PFMET140_PFMHT140_IDTight_v18);
-   fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v9", &HLT_PFMET140_PFMHT140_IDTight_v9, &b_HLT_PFMET140_PFMHT140_IDTight_v9);
-   fChain->SetBranchAddress("HLT_PFMET200_HBHE_BeamHaloCleaned_v5", &HLT_PFMET200_HBHE_BeamHaloCleaned_v5, &b_HLT_PFMET200_HBHE_BeamHaloCleaned_v5);
-   fChain->SetBranchAddress("HLT_PFMET200_HBHE_BeamHaloCleaned_v6", &HLT_PFMET200_HBHE_BeamHaloCleaned_v6, &b_HLT_PFMET200_HBHE_BeamHaloCleaned_v6);
-   fChain->SetBranchAddress("HLT_PFMET200_HBHE_BeamHaloCleaned_v7", &HLT_PFMET200_HBHE_BeamHaloCleaned_v7, &b_HLT_PFMET200_HBHE_BeamHaloCleaned_v7);
-   fChain->SetBranchAddress("HLT_PFMET250_HBHECleaned_v2", &HLT_PFMET250_HBHECleaned_v2, &b_HLT_PFMET250_HBHECleaned_v2);
-   fChain->SetBranchAddress("HLT_PFMET250_HBHECleaned_v3", &HLT_PFMET250_HBHECleaned_v3, &b_HLT_PFMET250_HBHECleaned_v3);
-   fChain->SetBranchAddress("HLT_PFMET250_HBHECleaned_v4", &HLT_PFMET250_HBHECleaned_v4, &b_HLT_PFMET250_HBHECleaned_v4);
-   fChain->SetBranchAddress("HLT_PFMET250_HBHECleaned_v5", &HLT_PFMET250_HBHECleaned_v5, &b_HLT_PFMET250_HBHECleaned_v5);
-   fChain->SetBranchAddress("HLT_PFMET250_HBHECleaned_v6", &HLT_PFMET250_HBHECleaned_v6, &b_HLT_PFMET250_HBHECleaned_v6);
-   fChain->SetBranchAddress("HLT_PFMET250_HBHECleaned_v7", &HLT_PFMET250_HBHECleaned_v7, &b_HLT_PFMET250_HBHECleaned_v7);
-   fChain->SetBranchAddress("HLT_PFMET300_HBHECleaned_v2", &HLT_PFMET300_HBHECleaned_v2, &b_HLT_PFMET300_HBHECleaned_v2);
-   fChain->SetBranchAddress("HLT_PFMET300_HBHECleaned_v3", &HLT_PFMET300_HBHECleaned_v3, &b_HLT_PFMET300_HBHECleaned_v3);
-   fChain->SetBranchAddress("HLT_PFMET300_HBHECleaned_v4", &HLT_PFMET300_HBHECleaned_v4, &b_HLT_PFMET300_HBHECleaned_v4);
-   fChain->SetBranchAddress("HLT_PFMET300_HBHECleaned_v5", &HLT_PFMET300_HBHECleaned_v5, &b_HLT_PFMET300_HBHECleaned_v5);
-   fChain->SetBranchAddress("HLT_PFMET300_HBHECleaned_v6", &HLT_PFMET300_HBHECleaned_v6, &b_HLT_PFMET300_HBHECleaned_v6);
-   fChain->SetBranchAddress("HLT_PFMET300_HBHECleaned_v7", &HLT_PFMET300_HBHECleaned_v7, &b_HLT_PFMET300_HBHECleaned_v7);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v1", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v1, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v1);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v2", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v2, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v2);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF_v10", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF_v10, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF_v10);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v2", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v2, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v2);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v3", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v3, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v3);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v4", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v4, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v4);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v5", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v5, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v5);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v6", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v6, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v6);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v7", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v7, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v7);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v11", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v11, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v11);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v13", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v13, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v13);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v14", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v14, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v14);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v15", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v15, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v15);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v16", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v16, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v16);
-   fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v9", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v9, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v9);
-   fChain->SetBranchAddress("HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v10", &HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v10, &b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v10);
-   fChain->SetBranchAddress("HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v12", &HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v12, &b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v12);
-   fChain->SetBranchAddress("HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v13", &HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v13, &b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v13);
-   fChain->SetBranchAddress("HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v14", &HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v14, &b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v14);
-   fChain->SetBranchAddress("HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v15", &HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v15, &b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v15);
-   fChain->SetBranchAddress("HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v9", &HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v9, &b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v9);
-   fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v10", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v10, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v10);
-   fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v12", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v12, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v12);
-   fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v13", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v13, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v13);
-   fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v14", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v14, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v14);
-   fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v15", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v15, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v15);
-   fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v16", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v16, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v16);
-   fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v17", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v17, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v17);
-   fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v9", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v9, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v9);
-   fChain->SetBranchAddress("HLT_PFHT1050_v11", &HLT_PFHT1050_v11, &b_HLT_PFHT1050_v11);
-   fChain->SetBranchAddress("HLT_PFHT1050_v12", &HLT_PFHT1050_v12, &b_HLT_PFHT1050_v12);
-   fChain->SetBranchAddress("HLT_PFHT1050_v13", &HLT_PFHT1050_v13, &b_HLT_PFHT1050_v13);
-   fChain->SetBranchAddress("HLT_PFHT1050_v14", &HLT_PFHT1050_v14, &b_HLT_PFHT1050_v14);
-   fChain->SetBranchAddress("HLT_PFHT1050_v15", &HLT_PFHT1050_v15, &b_HLT_PFHT1050_v15);
-   fChain->SetBranchAddress("HLT_PFHT1050_v16", &HLT_PFHT1050_v16, &b_HLT_PFHT1050_v16);
-   fChain->SetBranchAddress("HLT_PFHT1050_v7", &HLT_PFHT1050_v7, &b_HLT_PFHT1050_v7);
-   fChain->SetBranchAddress("HLT_PFHT1050_v9", &HLT_PFHT1050_v9, &b_HLT_PFHT1050_v9);
-   fChain->SetBranchAddress("HLT_PFHT180_v7", &HLT_PFHT180_v7, &b_HLT_PFHT180_v7);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v1", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v1, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v1);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v10", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v10, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v10);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v3", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v3, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v3);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v5", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v5, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v5);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v6", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v6, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v6);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v7", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v7, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v7);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v8", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v8, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v8);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v9", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v9, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v9);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v1", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v1, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v1);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v10", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v10, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v10);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v3", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v3, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v3);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v5", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v5, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v5);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v6", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v6, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v6);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v7", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v7, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v7);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v8", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v8, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v8);
-   fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v9", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v9, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v9);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v1", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v1, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v1);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v10", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v10, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v10);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v3", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v3, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v3);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v5", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v5, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v5);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v6", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v6, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v6);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v7", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v7, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v7);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v8", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v8, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v8);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v9", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v9, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v9);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v1", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v1, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v1);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v10", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v10, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v10);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v3", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v3, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v3);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v5", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v5, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v5);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v6", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v6, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v6);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v7", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v7, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v7);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v8", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v8, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v8);
-   fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v9", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v9, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v9);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v1", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v1, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v1);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v10", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v10, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v10);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v3", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v3, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v3);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v5", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v5, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v5);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v6", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v6, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v6);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v7", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v7, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v7);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v8", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v8, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v8);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v9", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v9, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v9);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v1", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v1, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v1);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v10", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v10, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v10);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v3", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v3, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v3);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v5", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v5, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v5);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v6", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v6, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v6);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v7", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v7, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v7);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v8", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v8, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v8);
-   fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v9", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v9, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v9);
+       fChain->SetBranchAddress("HLT_MET105_IsoTrk50_v1", &HLT_MET105_IsoTrk50_v1, &b_HLT_MET105_IsoTrk50_v1);
+       fChain->SetBranchAddress("HLT_MET105_IsoTrk50_v3", &HLT_MET105_IsoTrk50_v3, &b_HLT_MET105_IsoTrk50_v3);
+       fChain->SetBranchAddress("HLT_MET105_IsoTrk50_v4", &HLT_MET105_IsoTrk50_v4, &b_HLT_MET105_IsoTrk50_v4);
+       fChain->SetBranchAddress("HLT_MET105_IsoTrk50_v5", &HLT_MET105_IsoTrk50_v5, &b_HLT_MET105_IsoTrk50_v5);
+       fChain->SetBranchAddress("HLT_MET105_IsoTrk50_v6", &HLT_MET105_IsoTrk50_v6, &b_HLT_MET105_IsoTrk50_v6);
+       fChain->SetBranchAddress("HLT_MET105_IsoTrk50_v7", &HLT_MET105_IsoTrk50_v7, &b_HLT_MET105_IsoTrk50_v7);
+       fChain->SetBranchAddress("HLT_MET105_IsoTrk50_v8", &HLT_MET105_IsoTrk50_v8, &b_HLT_MET105_IsoTrk50_v8);
+       fChain->SetBranchAddress("HLT_MET120_IsoTrk50_v1", &HLT_MET120_IsoTrk50_v1, &b_HLT_MET120_IsoTrk50_v1);
+       fChain->SetBranchAddress("HLT_MET120_IsoTrk50_v3", &HLT_MET120_IsoTrk50_v3, &b_HLT_MET120_IsoTrk50_v3);
+       fChain->SetBranchAddress("HLT_MET120_IsoTrk50_v4", &HLT_MET120_IsoTrk50_v4, &b_HLT_MET120_IsoTrk50_v4);
+       fChain->SetBranchAddress("HLT_MET120_IsoTrk50_v5", &HLT_MET120_IsoTrk50_v5, &b_HLT_MET120_IsoTrk50_v5);
+       fChain->SetBranchAddress("HLT_MET120_IsoTrk50_v6", &HLT_MET120_IsoTrk50_v6, &b_HLT_MET120_IsoTrk50_v6);
+       fChain->SetBranchAddress("HLT_MET120_IsoTrk50_v7", &HLT_MET120_IsoTrk50_v7, &b_HLT_MET120_IsoTrk50_v7);
+       fChain->SetBranchAddress("HLT_MET120_IsoTrk50_v8", &HLT_MET120_IsoTrk50_v8, &b_HLT_MET120_IsoTrk50_v8);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet40_DisplacedTrack_v10", &HLT_HT430_DisplacedDijet40_DisplacedTrack_v10, &b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v10);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet40_DisplacedTrack_v11", &HLT_HT430_DisplacedDijet40_DisplacedTrack_v11, &b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v11);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet40_DisplacedTrack_v5", &HLT_HT430_DisplacedDijet40_DisplacedTrack_v5, &b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v5);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet40_DisplacedTrack_v6", &HLT_HT430_DisplacedDijet40_DisplacedTrack_v6, &b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v6);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet40_DisplacedTrack_v8", &HLT_HT430_DisplacedDijet40_DisplacedTrack_v8, &b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v8);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet40_DisplacedTrack_v9", &HLT_HT430_DisplacedDijet40_DisplacedTrack_v9, &b_HLT_HT430_DisplacedDijet40_DisplacedTrack_v9);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet60_DisplacedTrack_v10", &HLT_HT430_DisplacedDijet60_DisplacedTrack_v10, &b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v10);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet60_DisplacedTrack_v11", &HLT_HT430_DisplacedDijet60_DisplacedTrack_v11, &b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v11);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet60_DisplacedTrack_v5", &HLT_HT430_DisplacedDijet60_DisplacedTrack_v5, &b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v5);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet60_DisplacedTrack_v6", &HLT_HT430_DisplacedDijet60_DisplacedTrack_v6, &b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v6);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet60_DisplacedTrack_v8", &HLT_HT430_DisplacedDijet60_DisplacedTrack_v8, &b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v8);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet60_DisplacedTrack_v9", &HLT_HT430_DisplacedDijet60_DisplacedTrack_v9, &b_HLT_HT430_DisplacedDijet60_DisplacedTrack_v9);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet80_DisplacedTrack_v10", &HLT_HT430_DisplacedDijet80_DisplacedTrack_v10, &b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v10);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet80_DisplacedTrack_v11", &HLT_HT430_DisplacedDijet80_DisplacedTrack_v11, &b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v11);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet80_DisplacedTrack_v5", &HLT_HT430_DisplacedDijet80_DisplacedTrack_v5, &b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v5);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet80_DisplacedTrack_v6", &HLT_HT430_DisplacedDijet80_DisplacedTrack_v6, &b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v6);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet80_DisplacedTrack_v8", &HLT_HT430_DisplacedDijet80_DisplacedTrack_v8, &b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v8);
+       fChain->SetBranchAddress("HLT_HT430_DisplacedDijet80_DisplacedTrack_v9", &HLT_HT430_DisplacedDijet80_DisplacedTrack_v9, &b_HLT_HT430_DisplacedDijet80_DisplacedTrack_v9);
+       fChain->SetBranchAddress("HLT_HT650_DisplacedDijet60_Inclusive_v10", &HLT_HT650_DisplacedDijet60_Inclusive_v10, &b_HLT_HT650_DisplacedDijet60_Inclusive_v10);
+       fChain->SetBranchAddress("HLT_HT650_DisplacedDijet60_Inclusive_v11", &HLT_HT650_DisplacedDijet60_Inclusive_v11, &b_HLT_HT650_DisplacedDijet60_Inclusive_v11);
+       fChain->SetBranchAddress("HLT_HT650_DisplacedDijet60_Inclusive_v5", &HLT_HT650_DisplacedDijet60_Inclusive_v5, &b_HLT_HT650_DisplacedDijet60_Inclusive_v5);
+       fChain->SetBranchAddress("HLT_HT650_DisplacedDijet60_Inclusive_v6", &HLT_HT650_DisplacedDijet60_Inclusive_v6, &b_HLT_HT650_DisplacedDijet60_Inclusive_v6);
+       fChain->SetBranchAddress("HLT_HT650_DisplacedDijet60_Inclusive_v8", &HLT_HT650_DisplacedDijet60_Inclusive_v8, &b_HLT_HT650_DisplacedDijet60_Inclusive_v8);
+       fChain->SetBranchAddress("HLT_HT650_DisplacedDijet60_Inclusive_v9", &HLT_HT650_DisplacedDijet60_Inclusive_v9, &b_HLT_HT650_DisplacedDijet60_Inclusive_v9);
+       fChain->SetBranchAddress("HLT_HT650_DisplacedDijet80_Inclusive_v10", &HLT_HT650_DisplacedDijet80_Inclusive_v10, &b_HLT_HT650_DisplacedDijet80_Inclusive_v10);
+       fChain->SetBranchAddress("HLT_HT650_DisplacedDijet80_Inclusive_v11", &HLT_HT650_DisplacedDijet80_Inclusive_v11, &b_HLT_HT650_DisplacedDijet80_Inclusive_v11);
+       fChain->SetBranchAddress("HLT_HT650_DisplacedDijet80_Inclusive_v12", &HLT_HT650_DisplacedDijet80_Inclusive_v12, &b_HLT_HT650_DisplacedDijet80_Inclusive_v12);
+       fChain->SetBranchAddress("HLT_HT650_DisplacedDijet80_Inclusive_v6", &HLT_HT650_DisplacedDijet80_Inclusive_v6, &b_HLT_HT650_DisplacedDijet80_Inclusive_v6);
+       fChain->SetBranchAddress("HLT_HT650_DisplacedDijet80_Inclusive_v7", &HLT_HT650_DisplacedDijet80_Inclusive_v7, &b_HLT_HT650_DisplacedDijet80_Inclusive_v7);
+       fChain->SetBranchAddress("HLT_HT650_DisplacedDijet80_Inclusive_v9", &HLT_HT650_DisplacedDijet80_Inclusive_v9, &b_HLT_HT650_DisplacedDijet80_Inclusive_v9);
+       fChain->SetBranchAddress("HLT_HT750_DisplacedDijet80_Inclusive_v10", &HLT_HT750_DisplacedDijet80_Inclusive_v10, &b_HLT_HT750_DisplacedDijet80_Inclusive_v10);
+       fChain->SetBranchAddress("HLT_HT750_DisplacedDijet80_Inclusive_v11", &HLT_HT750_DisplacedDijet80_Inclusive_v11, &b_HLT_HT750_DisplacedDijet80_Inclusive_v11);
+       fChain->SetBranchAddress("HLT_HT750_DisplacedDijet80_Inclusive_v12", &HLT_HT750_DisplacedDijet80_Inclusive_v12, &b_HLT_HT750_DisplacedDijet80_Inclusive_v12);
+       fChain->SetBranchAddress("HLT_HT750_DisplacedDijet80_Inclusive_v6", &HLT_HT750_DisplacedDijet80_Inclusive_v6, &b_HLT_HT750_DisplacedDijet80_Inclusive_v6);
+       fChain->SetBranchAddress("HLT_HT750_DisplacedDijet80_Inclusive_v7", &HLT_HT750_DisplacedDijet80_Inclusive_v7, &b_HLT_HT750_DisplacedDijet80_Inclusive_v7);
+       fChain->SetBranchAddress("HLT_HT750_DisplacedDijet80_Inclusive_v9", &HLT_HT750_DisplacedDijet80_Inclusive_v9, &b_HLT_HT750_DisplacedDijet80_Inclusive_v9);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v1", &HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v1, &b_HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v1);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v2", &HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v2, &b_HLT_PFMET120_PFMHT120_IDTight_HFCleaned_v2);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF_v10", &HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF_v10, &b_HLT_PFMET120_PFMHT120_IDTight_L1ETMnoHF_v10);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v1", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v1, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v1);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v2", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v2, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_HFCleaned_v2);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_v2", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_v2, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v2);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_v3", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_v3, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v3);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_v4", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_v4, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v4);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_v5", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_v5, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v5);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_v6", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_v6, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v6);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60_v7", &HLT_PFMET120_PFMHT120_IDTight_PFHT60_v7, &b_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v7);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v11", &HLT_PFMET120_PFMHT120_IDTight_v11, &b_HLT_PFMET120_PFMHT120_IDTight_v11);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v13", &HLT_PFMET120_PFMHT120_IDTight_v13, &b_HLT_PFMET120_PFMHT120_IDTight_v13);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v14", &HLT_PFMET120_PFMHT120_IDTight_v14, &b_HLT_PFMET120_PFMHT120_IDTight_v14);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v15", &HLT_PFMET120_PFMHT120_IDTight_v15, &b_HLT_PFMET120_PFMHT120_IDTight_v15);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v16", &HLT_PFMET120_PFMHT120_IDTight_v16, &b_HLT_PFMET120_PFMHT120_IDTight_v16);
+       fChain->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_v9", &HLT_PFMET120_PFMHT120_IDTight_v9, &b_HLT_PFMET120_PFMHT120_IDTight_v9);
+       fChain->SetBranchAddress("HLT_PFMET130_PFMHT130_IDTight_v11", &HLT_PFMET130_PFMHT130_IDTight_v11, &b_HLT_PFMET130_PFMHT130_IDTight_v11);
+       fChain->SetBranchAddress("HLT_PFMET130_PFMHT130_IDTight_v13", &HLT_PFMET130_PFMHT130_IDTight_v13, &b_HLT_PFMET130_PFMHT130_IDTight_v13);
+       fChain->SetBranchAddress("HLT_PFMET130_PFMHT130_IDTight_v14", &HLT_PFMET130_PFMHT130_IDTight_v14, &b_HLT_PFMET130_PFMHT130_IDTight_v14);
+       fChain->SetBranchAddress("HLT_PFMET130_PFMHT130_IDTight_v15", &HLT_PFMET130_PFMHT130_IDTight_v15, &b_HLT_PFMET130_PFMHT130_IDTight_v15);
+       fChain->SetBranchAddress("HLT_PFMET130_PFMHT130_IDTight_v16", &HLT_PFMET130_PFMHT130_IDTight_v16, &b_HLT_PFMET130_PFMHT130_IDTight_v16);
+       fChain->SetBranchAddress("HLT_PFMET130_PFMHT130_IDTight_v9", &HLT_PFMET130_PFMHT130_IDTight_v9, &b_HLT_PFMET130_PFMHT130_IDTight_v9);
+       fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v11", &HLT_PFMET140_PFMHT140_IDTight_v11, &b_HLT_PFMET140_PFMHT140_IDTight_v11);
+       fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v13", &HLT_PFMET140_PFMHT140_IDTight_v13, &b_HLT_PFMET140_PFMHT140_IDTight_v13);
+       fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v14", &HLT_PFMET140_PFMHT140_IDTight_v14, &b_HLT_PFMET140_PFMHT140_IDTight_v14);
+       fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v15", &HLT_PFMET140_PFMHT140_IDTight_v15, &b_HLT_PFMET140_PFMHT140_IDTight_v15);
+       fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v16", &HLT_PFMET140_PFMHT140_IDTight_v16, &b_HLT_PFMET140_PFMHT140_IDTight_v16);
+       fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v17", &HLT_PFMET140_PFMHT140_IDTight_v17, &b_HLT_PFMET140_PFMHT140_IDTight_v17);
+       fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v18", &HLT_PFMET140_PFMHT140_IDTight_v18, &b_HLT_PFMET140_PFMHT140_IDTight_v18);
+       fChain->SetBranchAddress("HLT_PFMET140_PFMHT140_IDTight_v9", &HLT_PFMET140_PFMHT140_IDTight_v9, &b_HLT_PFMET140_PFMHT140_IDTight_v9);
+       fChain->SetBranchAddress("HLT_PFMET200_HBHE_BeamHaloCleaned_v5", &HLT_PFMET200_HBHE_BeamHaloCleaned_v5, &b_HLT_PFMET200_HBHE_BeamHaloCleaned_v5);
+       fChain->SetBranchAddress("HLT_PFMET200_HBHE_BeamHaloCleaned_v6", &HLT_PFMET200_HBHE_BeamHaloCleaned_v6, &b_HLT_PFMET200_HBHE_BeamHaloCleaned_v6);
+       fChain->SetBranchAddress("HLT_PFMET200_HBHE_BeamHaloCleaned_v7", &HLT_PFMET200_HBHE_BeamHaloCleaned_v7, &b_HLT_PFMET200_HBHE_BeamHaloCleaned_v7);
+       fChain->SetBranchAddress("HLT_PFMET250_HBHECleaned_v2", &HLT_PFMET250_HBHECleaned_v2, &b_HLT_PFMET250_HBHECleaned_v2);
+       fChain->SetBranchAddress("HLT_PFMET250_HBHECleaned_v3", &HLT_PFMET250_HBHECleaned_v3, &b_HLT_PFMET250_HBHECleaned_v3);
+       fChain->SetBranchAddress("HLT_PFMET250_HBHECleaned_v4", &HLT_PFMET250_HBHECleaned_v4, &b_HLT_PFMET250_HBHECleaned_v4);
+       fChain->SetBranchAddress("HLT_PFMET250_HBHECleaned_v5", &HLT_PFMET250_HBHECleaned_v5, &b_HLT_PFMET250_HBHECleaned_v5);
+       fChain->SetBranchAddress("HLT_PFMET250_HBHECleaned_v6", &HLT_PFMET250_HBHECleaned_v6, &b_HLT_PFMET250_HBHECleaned_v6);
+       fChain->SetBranchAddress("HLT_PFMET250_HBHECleaned_v7", &HLT_PFMET250_HBHECleaned_v7, &b_HLT_PFMET250_HBHECleaned_v7);
+       fChain->SetBranchAddress("HLT_PFMET300_HBHECleaned_v2", &HLT_PFMET300_HBHECleaned_v2, &b_HLT_PFMET300_HBHECleaned_v2);
+       fChain->SetBranchAddress("HLT_PFMET300_HBHECleaned_v3", &HLT_PFMET300_HBHECleaned_v3, &b_HLT_PFMET300_HBHECleaned_v3);
+       fChain->SetBranchAddress("HLT_PFMET300_HBHECleaned_v4", &HLT_PFMET300_HBHECleaned_v4, &b_HLT_PFMET300_HBHECleaned_v4);
+       fChain->SetBranchAddress("HLT_PFMET300_HBHECleaned_v5", &HLT_PFMET300_HBHECleaned_v5, &b_HLT_PFMET300_HBHECleaned_v5);
+       fChain->SetBranchAddress("HLT_PFMET300_HBHECleaned_v6", &HLT_PFMET300_HBHECleaned_v6, &b_HLT_PFMET300_HBHECleaned_v6);
+       fChain->SetBranchAddress("HLT_PFMET300_HBHECleaned_v7", &HLT_PFMET300_HBHECleaned_v7, &b_HLT_PFMET300_HBHECleaned_v7);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v1", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v1, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v1);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v2", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v2, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_HFCleaned_v2);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF_v10", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF_v10, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_L1ETMnoHF_v10);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v2", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v2, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v2);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v3", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v3, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v3);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v4", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v4, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v4);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v5", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v5, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v5);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v6", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v6, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v6);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v7", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v7, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v7);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v11", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v11, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v11);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v13", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v13, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v13);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v14", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v14, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v14);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v15", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v15, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v15);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v16", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v16, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v16);
+       fChain->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v9", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v9, &b_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v9);
+       fChain->SetBranchAddress("HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v10", &HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v10, &b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v10);
+       fChain->SetBranchAddress("HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v12", &HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v12, &b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v12);
+       fChain->SetBranchAddress("HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v13", &HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v13, &b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v13);
+       fChain->SetBranchAddress("HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v14", &HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v14, &b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v14);
+       fChain->SetBranchAddress("HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v15", &HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v15, &b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v15);
+       fChain->SetBranchAddress("HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v9", &HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v9, &b_HLT_PFMETNoMu130_PFMHTNoMu130_IDTight_v9);
+       fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v10", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v10, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v10);
+       fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v12", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v12, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v12);
+       fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v13", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v13, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v13);
+       fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v14", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v14, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v14);
+       fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v15", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v15, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v15);
+       fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v16", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v16, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v16);
+       fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v17", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v17, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v17);
+       fChain->SetBranchAddress("HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v9", &HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v9, &b_HLT_PFMETNoMu140_PFMHTNoMu140_IDTight_v9);
+       fChain->SetBranchAddress("HLT_PFHT1050_v11", &HLT_PFHT1050_v11, &b_HLT_PFHT1050_v11);
+       fChain->SetBranchAddress("HLT_PFHT1050_v12", &HLT_PFHT1050_v12, &b_HLT_PFHT1050_v12);
+       fChain->SetBranchAddress("HLT_PFHT1050_v13", &HLT_PFHT1050_v13, &b_HLT_PFHT1050_v13);
+       fChain->SetBranchAddress("HLT_PFHT1050_v14", &HLT_PFHT1050_v14, &b_HLT_PFHT1050_v14);
+       fChain->SetBranchAddress("HLT_PFHT1050_v15", &HLT_PFHT1050_v15, &b_HLT_PFHT1050_v15);
+       fChain->SetBranchAddress("HLT_PFHT1050_v16", &HLT_PFHT1050_v16, &b_HLT_PFHT1050_v16);
+       fChain->SetBranchAddress("HLT_PFHT1050_v7", &HLT_PFHT1050_v7, &b_HLT_PFHT1050_v7);
+       fChain->SetBranchAddress("HLT_PFHT1050_v9", &HLT_PFHT1050_v9, &b_HLT_PFHT1050_v9);
+       fChain->SetBranchAddress("HLT_PFHT180_v7", &HLT_PFHT180_v7, &b_HLT_PFHT180_v7);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v1", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v1, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v1);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v10", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v10, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v10);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v3", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v3, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v3);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v5", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v5, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v5);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v6", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v6, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v6);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v7", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v7, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v7);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v8", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v8, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v8);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET100_PFMHT100_IDTight_v9", &HLT_PFHT500_PFMET100_PFMHT100_IDTight_v9, &b_HLT_PFHT500_PFMET100_PFMHT100_IDTight_v9);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v1", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v1, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v1);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v10", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v10, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v10);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v3", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v3, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v3);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v5", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v5, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v5);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v6", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v6, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v6);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v7", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v7, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v7);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v8", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v8, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v8);
+       fChain->SetBranchAddress("HLT_PFHT500_PFMET110_PFMHT110_IDTight_v9", &HLT_PFHT500_PFMET110_PFMHT110_IDTight_v9, &b_HLT_PFHT500_PFMET110_PFMHT110_IDTight_v9);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v1", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v1, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v1);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v10", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v10, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v10);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v3", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v3, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v3);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v5", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v5, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v5);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v6", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v6, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v6);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v7", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v7, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v7);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v8", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v8, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v8);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET85_PFMHT85_IDTight_v9", &HLT_PFHT700_PFMET85_PFMHT85_IDTight_v9, &b_HLT_PFHT700_PFMET85_PFMHT85_IDTight_v9);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v1", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v1, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v1);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v10", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v10, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v10);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v3", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v3, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v3);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v5", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v5, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v5);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v6", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v6, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v6);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v7", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v7, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v7);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v8", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v8, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v8);
+       fChain->SetBranchAddress("HLT_PFHT700_PFMET95_PFMHT95_IDTight_v9", &HLT_PFHT700_PFMET95_PFMHT95_IDTight_v9, &b_HLT_PFHT700_PFMET95_PFMHT95_IDTight_v9);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v1", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v1, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v1);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v10", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v10, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v10);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v3", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v3, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v3);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v5", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v5, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v5);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v6", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v6, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v6);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v7", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v7, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v7);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v8", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v8, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v8);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET75_PFMHT75_IDTight_v9", &HLT_PFHT800_PFMET75_PFMHT75_IDTight_v9, &b_HLT_PFHT800_PFMET75_PFMHT75_IDTight_v9);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v1", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v1, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v1);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v10", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v10, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v10);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v3", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v3, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v3);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v5", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v5, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v5);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v6", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v6, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v6);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v7", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v7, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v7);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v8", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v8, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v8);
+       fChain->SetBranchAddress("HLT_PFHT800_PFMET85_PFMHT85_IDTight_v9", &HLT_PFHT800_PFMET85_PFMHT85_IDTight_v9, &b_HLT_PFHT800_PFMET85_PFMHT85_IDTight_v9);
    }
    //MET filter branches
    if (is2016)
@@ -2310,53 +2329,71 @@ AnalysisEvent::AnalysisEvent(bool isMC, std::string triggerFlag, TTree *tree, bo
    fChain->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter, &b_Flag_HBHENoiseIsoFilter);
    fChain->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter, &b_Flag_EcalDeadCellTriggerPrimitiveFilter);
    fChain->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter, &b_Flag_eeBadScFilter);
-   if (isMC) {
-     fChain->SetBranchAddress("nGenPar", &nGenPar, &b_nGenPar);
-     fChain->SetBranchAddress("genParEta", genParEta, &b_genParEta);
-     fChain->SetBranchAddress("genParPhi", genParPhi, &b_genParPhi);
-     fChain->SetBranchAddress("genParE", genParE, &b_genParE);
-     fChain->SetBranchAddress("genParPt", genParPt, &b_genParPt);
-     fChain->SetBranchAddress("genParId", genParId, &b_genParId);
-     fChain->SetBranchAddress("genParMotherId", genParMotherId, &b_genParMotherId);
-     fChain->SetBranchAddress("genParCharge", genParCharge, &b_genParCharge);
+   if (isMC)
+   {
+       fChain->SetBranchAddress("nGenPar", &nGenPar, &b_nGenPar);
+       fChain->SetBranchAddress("genParEta", genParEta, &b_genParEta);
+       fChain->SetBranchAddress("genParPhi", genParPhi, &b_genParPhi);
+       fChain->SetBranchAddress("genParE", genParE, &b_genParE);
+       fChain->SetBranchAddress("genParPt", genParPt, &b_genParPt);
+       fChain->SetBranchAddress("genParId", genParId, &b_genParId);
+       fChain->SetBranchAddress("genParMotherId", genParMotherId, &b_genParMotherId);
+       fChain->SetBranchAddress("genParCharge", genParCharge, &b_genParCharge);
    }
    fChain->SetBranchAddress("eventRun", &eventRun, &b_eventRun);
    fChain->SetBranchAddress("eventNum", &eventNum, &b_eventNum);
    fChain->SetBranchAddress("eventLumiblock", &eventLumiblock, &b_eventLumiblock);
    fChain->SetBranchAddress("numVert", &numVert, &b_numVert);
 }
+// clang-format on
 
 AnalysisEvent::~AnalysisEvent()
 {
-   if (!fChain) return;
-   delete fChain->GetCurrentFile();
+    if (!fChain)
+    {
+        return;
+    }
+    delete fChain->GetCurrentFile();
 }
 
 Int_t AnalysisEvent::GetEntry(Long64_t entry)
 {
-// Read contents of entry.
-   if (!fChain) return 0;
-   return fChain->GetEntry(entry);
+    // Read contents of entry.
+    if (!fChain)
+    {
+        return 0;
+    }
+    return fChain->GetEntry(entry);
 }
 
 Long64_t AnalysisEvent::LoadTree(Long64_t entry)
 {
-// Set the environment to read one entry
-   if (!fChain) return -5;
-   Long64_t centry = fChain->LoadTree(entry);
-   if (centry < 0) return centry;
-   if (fChain->GetTreeNumber() != fCurrent) {
-      fCurrent = fChain->GetTreeNumber();
-   }
-   return centry;
+    // Set the environment to read one entry
+    if (!fChain)
+    {
+        return -5;
+    }
+    Long64_t centry = fChain->LoadTree(entry);
+    if (centry < 0)
+    {
+        return centry;
+    }
+    if (fChain->GetTreeNumber() != fCurrent)
+    {
+        fCurrent = fChain->GetTreeNumber();
+    }
+    return centry;
 }
 
 void AnalysisEvent::Show(Long64_t entry)
 {
-// Print contents of entry.
-// If entry is not specified, print current entry
-   if (!fChain) return;
-   fChain->Show(entry);
+    // Print contents of entry.
+    // If entry is not specified, print current entry
+    if (!fChain)
+    {
+        return;
+    }
+    fChain->Show(entry);
 }
 
 void AnalysisEvent::Loop()

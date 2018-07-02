@@ -1,26 +1,23 @@
-#include <array>
-#include <iostream>
-#include <regex>
-#include <string>
-#include <vector>
-
-#include <boost/filesystem.hpp>
-#include <boost/program_options.hpp>
-#include <boost/progress.hpp>
-#include <boost/range/iterator_range.hpp>
+#include "../interface/AnalysisEvent.h"
 
 #include <TChain.h>
 #include <TFile.h>
 #include <TH1I.h>
 #include <TTree.h>
-
-#include "../interface/AnalysisEvent.h"
+#include <array>
+#include <boost/filesystem.hpp>
+#include <boost/program_options.hpp>
+#include <boost/progress.hpp>
+#include <boost/range/iterator_range.hpp>
+#include <iostream>
+#include <regex>
+#include <string>
+#include <vector>
 
 //#define NO_LHE
 
 using namespace std::string_literals;
 namespace fs = boost::filesystem;
-
 
 int main(int argc, char* argv[])
 {
@@ -33,16 +30,16 @@ int main(int argc, char* argv[])
     // Define command-line flags
     namespace po = boost::program_options;
     po::options_description desc("Options");
-    desc.add_options()
-        ("help,h", "Print this message.")
-        ("inDirs,i", po::value<std::vector<std::string>>
-         (&inDirs)->multitoken()->required(),
-         "Directories in which to look for crab output.")
-        ("datasetName,o", po::value<std::string>(&datasetName)->required(),
-         "Output dataset name.")
-        ("LHE", po::bool_switch(&hasLHE), "Set for data with LHE weights.")
-        ("2016", po::bool_switch(&is2016), "Set for 2016 data.")
-        ("MC", po::bool_switch(&isMC), "Set for MC data.");
+    desc.add_options()("help,h", "Print this message.")(
+        "inDirs,i",
+        po::value<std::vector<std::string>>(&inDirs)->multitoken()->required(),
+        "Directories in which to look for crab output.")(
+        "datasetName,o",
+        po::value<std::string>(&datasetName)->required(),
+        "Output dataset name.")(
+        "LHE", po::bool_switch(&hasLHE), "Set for data with LHE weights.")(
+        "2016", po::bool_switch(&is2016), "Set for 2016 data.")(
+        "MC", po::bool_switch(&isMC), "Set for MC data.");
     po::variables_map vm;
 
     // Parse arguments
@@ -64,21 +61,20 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-
     const std::regex mask{R"(.*\.root)"};
     int fileNum{0};
 
-    for (const auto& inDir: inDirs)  // for each input directory
+    for (const auto& inDir : inDirs) // for each input directory
     {
-        for (const auto& file:
-                boost::make_iterator_range(fs::directory_iterator{inDir}, {}))
-        {  // for each file in directory
-            const std::string path {file.path().string()};
+        for (const auto& file :
+             boost::make_iterator_range(fs::directory_iterator{inDir}, {}))
+        { // for each file in directory
+            const std::string path{file.path().string()};
 
             if (!fs::is_regular_file(file.status())
-                    || !std::regex_match(path, mask))
+                || !std::regex_match(path, mask))
             {
-                continue;  // skip if not a root file
+                continue; // skip if not a root file
             }
 
             const std::string numName{std::to_string(fileNum)};
@@ -93,11 +89,14 @@ int main(int argc, char* argv[])
             { // don't overwrite existing skim files, except for the last two
                 fileNum++;
                 continue;
-             }
+            }
 
             std::array<unsigned int, 14> summedWeights{};
             TH1I weightHisto{"sumNumPosMinusNegWeights",
-                "sumNumPosMinusNegWeights", 7, -3.5, 3.5};
+                             "sumNumPosMinusNegWeights",
+                             7,
+                             -3.5,
+                             3.5};
 
             TChain datasetChain{"makeTopologyNtupleMiniAOD/tree"};
             datasetChain.Add(path.c_str());
@@ -105,24 +104,25 @@ int main(int argc, char* argv[])
             // std::cout << path;
             // TFile inFile(path.c_str());
 
-            TTree * const outTree = datasetChain.CloneTree(0);
+            TTree* const outTree = datasetChain.CloneTree(0);
 
             TFile outFile{outFilePath.c_str(), "RECREATE"};
 
             // std::cout << outFilePath << std::endl;
 
             const long long int numberOfEvents{datasetChain.GetEntries()};
-            boost::progress_display progress(numberOfEvents, std::cout,
-                outFilePath + "\n");
+            boost::progress_display progress(
+                numberOfEvents, std::cout, outFilePath + "\n");
             AnalysisEvent event{isMC, "", &datasetChain, is2016};
 
             for (long long int i{0}; i < numberOfEvents; i++)
             {
-                ++progress;  // update progress bar (++ must be prefix)
+                ++progress; // update progress bar (++ must be prefix)
 
                 event.GetEntry(i);
 
                 // Get number of positive and negative amc@nlo weights
+                // clang-format off
                 if (isMC && hasLHE)
                 {
                     event.origWeightForNorm >= 0.0   ? summedWeights[0]++
@@ -140,24 +140,25 @@ int main(int argc, char* argv[])
                     event.weight_muF2muR2 >= 0.0     ? summedWeights[12]++
                                                      : summedWeights[13]++;
                 }
+                // clang-format on
 
                 // Lepton cuts
                 int numLeps{0};
-                for (int j = 0; j < event.numElePF2PAT; j++)
+                for (int j{0}; j < event.numElePF2PAT; j++)
                 {
                     if (event.elePF2PATPT[j] < 9
-                            || std::abs(event.elePF2PATEta[j]) > 2.7
-                            || event.elePF2PATComRelIsoRho[j] > 0.5)
+                        || std::abs(event.elePF2PATEta[j]) > 2.7
+                        || event.elePF2PATComRelIsoRho[j] > 0.5)
                     {
                         continue;
                     }
                     numLeps++;
                 }
-                for (int j = 0; j < event.numMuonPF2PAT; j++)
+                for (int j{0}; j < event.numMuonPF2PAT; j++)
                 {
                     if (event.muonPF2PATPt[j] < 9
-                            || std::abs(event.muonPF2PATEta[j]) > 2.8
-                            || event.muonPF2PATComRelIsodBeta[j] > 0.5)
+                        || std::abs(event.muonPF2PATEta[j]) > 2.8
+                        || event.muonPF2PATComRelIsodBeta[j] > 0.5)
                     {
                         continue;
                     }
@@ -171,7 +172,6 @@ int main(int argc, char* argv[])
 
             if (isMC)
             {
-
                 if (hasLHE)
                 {
                     weightHisto.Fill(0., summedWeights[0] - summedWeights[1]);
