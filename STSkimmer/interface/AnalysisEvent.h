@@ -1523,13 +1523,10 @@ public :
 
    AnalysisEvent(bool isMC, std::string triggerFlag, TTree *tree, bool is2016);
    virtual ~AnalysisEvent();
-   virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Loop();
-   virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
-   float getEventWeight(Long64_t entry);
 };
 
 AnalysisEvent::AnalysisEvent(bool isMC, std::string triggerFlag, TTree *tree, bool is2016) : fChain(0) 
@@ -2327,7 +2324,6 @@ AnalysisEvent::AnalysisEvent(bool isMC, std::string triggerFlag, TTree *tree, bo
    fChain->SetBranchAddress("eventNum", &eventNum, &b_eventNum);
    fChain->SetBranchAddress("eventLumiblock", &eventLumiblock, &b_eventLumiblock);
    fChain->SetBranchAddress("numVert", &numVert, &b_numVert);
-   Notify();
 }
 
 AnalysisEvent::~AnalysisEvent()
@@ -2342,6 +2338,7 @@ Int_t AnalysisEvent::GetEntry(Long64_t entry)
    if (!fChain) return 0;
    return fChain->GetEntry(entry);
 }
+
 Long64_t AnalysisEvent::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry
@@ -2350,21 +2347,8 @@ Long64_t AnalysisEvent::LoadTree(Long64_t entry)
    if (centry < 0) return centry;
    if (fChain->GetTreeNumber() != fCurrent) {
       fCurrent = fChain->GetTreeNumber();
-      Notify();
    }
    return centry;
-}
-
-Bool_t AnalysisEvent::Notify()
-{
-  //  std::cout << "Does the notify." << std::endl;
-   // The Notify() function is called when a new file is opened. This
-   // can be either for a new TTree in a TChain or when when a new TTree
-   // is started when using PROOF. It is normally not necessary to make changes
-   // to the generated code, but the routine can be extended by the
-   // user if needed. The return value is currently not used.
-
-   return kTRUE;
 }
 
 void AnalysisEvent::Show(Long64_t entry)
@@ -2373,13 +2357,6 @@ void AnalysisEvent::Show(Long64_t entry)
 // If entry is not specified, print current entry
    if (!fChain) return;
    fChain->Show(entry);
-}
-Int_t AnalysisEvent::Cut(Long64_t entry)
-{
-// This function may be called from Loop.
-// returns  1 if entry is accepted.
-// returns -1 otherwise.
-   return 1;
 }
 
 void AnalysisEvent::Loop()
@@ -2402,13 +2379,7 @@ void AnalysisEvent::Loop()
         }
         nb = fChain->GetEntry(jentry);
         nbytes += nb;
-        // if (Cut(ientry) < 0) continue;
     }
-}
-
-float AnalysisEvent::getEventWeight(Long64_t /*entry*/)
-{
-    return 1.;
 }
 
 #endif
