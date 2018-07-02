@@ -84,8 +84,10 @@ int main(int argc, char* argv[])
             const std::string numName{std::to_string(fileNum)};
             const std::string numNamePlus{std::to_string(fileNum + 2)};
             const std::string dataDir{"/scratch/data/tZqSkimsRun201"s
-                                      + (is2016 ? "6/" : "7/")};
-            const std::string outFilePath{dataDir + "/skimFile" + numName + ".root"};
+                                      + (is2016 ? "6/" : "7/") + datasetName
+                                      + "/"};
+            const std::string outFilePath{dataDir + "skimFile" + numName
+                                          + ".root"};
 
             if (fs::is_regular_file(outFilePath))
             { // don't overwrite existing skim files, except for the last two
