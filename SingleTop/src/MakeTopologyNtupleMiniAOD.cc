@@ -558,24 +558,24 @@ void MakeTopologyNtupleMiniAOD::fillElectrons(
         if (is2016rereco_)
         {
             electronSortedCutIdVeto[ID][numEle[ID] - 1] =
-                ele.userInt("cutBasedElectronID-Fall17-94X-V1-veto");
+                ele.electronID("cutBasedElectronID-Fall17-94X-V1-veto");
             electronSortedCutIdLoose[ID][numEle[ID] - 1] =
-                ele.userInt("cutBasedElectronID-Fall17-94X-V1-loose");
+                ele.electronID("cutBasedElectronID-Fall17-94X-V1-loose");
             electronSortedCutIdMedium[ID][numEle[ID] - 1] =
-                ele.userInt("cutBasedElectronID-Fall17-94X-V1-medium");
+                ele.electronID("cutBasedElectronID-Fall17-94X-V1-medium");
             electronSortedCutIdTight[ID][numEle[ID] - 1] =
-                ele.userInt("cutBasedElectronID-Fall17-94X-V1-tight");
+                ele.electronID("cutBasedElectronID-Fall17-94X-V1-tight");
         }
         else
         {
             electronSortedCutIdVeto[ID][numEle[ID] - 1] =
-                ele.userInt("cutBasedElectronID-Summer16-80X-V1-veto");
+                ele.electronID("cutBasedElectronID-Summer16-80X-V1-veto");
             electronSortedCutIdLoose[ID][numEle[ID] - 1] =
-                ele.userInt("cutBasedElectronID-Summer16-80X-V1-loose");
+                ele.electronID("cutBasedElectronID-Summer16-80X-V1-loose");
             electronSortedCutIdMedium[ID][numEle[ID] - 1] =
-                ele.userInt("cutBasedElectronID-Summer16-80X-V1-medium");
+                ele.electronID("cutBasedElectronID-Summer16-80X-V1-medium");
             electronSortedCutIdTight[ID][numEle[ID] - 1] =
-                ele.userInt("cutBasedElectronID-Summer16-80X-V1-tight");
+                ele.electronID("cutBasedElectronID-Summer16-80X-V1-tight");
         }
         electronSortedChargedHadronIso[ID][numEle[ID] - 1] =
             ele.chargedHadronIso();
