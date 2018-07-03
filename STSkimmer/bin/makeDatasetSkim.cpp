@@ -144,11 +144,20 @@ int main(int argc, char* argv[])
 
                 // Lepton cuts
                 int numLeps{0};
+
+                constexpr double MIN_ELE_PATPT{9};
+                constexpr double MAX_ELE_ETA{2.7};
+                constexpr double MAX_ELE_RELISO{0.5};
+                constexpr double MIN_MUON_PATPT{9};
+                constexpr double MAX_MUON_ETA{2.8};
+                constexpr double MAX_MUON_RELISO{0.5};
+                constexpr int MIN_LEPTONS{2};
+
                 for (int j{0}; j < event.numElePF2PAT; j++)
                 {
-                    if (event.elePF2PATPT[j] < 9
-                        || std::abs(event.elePF2PATEta[j]) > 2.7
-                        || event.elePF2PATComRelIsoRho[j] > 0.5)
+                    if (event.elePF2PATPT[j] < MIN_ELE_PATPT
+                        || std::abs(event.elePF2PATEta[j]) > MAX_ELE_ETA
+                        || event.elePF2PATComRelIsoRho[j] > MAX_ELE_RELISO)
                     {
                         continue;
                     }
@@ -156,15 +165,15 @@ int main(int argc, char* argv[])
                 }
                 for (int j{0}; j < event.numMuonPF2PAT; j++)
                 {
-                    if (event.muonPF2PATPt[j] < 9
-                        || std::abs(event.muonPF2PATEta[j]) > 2.8
-                        || event.muonPF2PATComRelIsodBeta[j] > 0.5)
+                    if (event.muonPF2PATPt[j] < MIN_MUON_PATPT
+                        || std::abs(event.muonPF2PATEta[j]) > MAX_MUON_ETA
+                        || event.muonPF2PATComRelIsodBeta[j] > MAX_MUON_RELISO)
                     {
                         continue;
                     }
                     numLeps++;
                 }
-                if (numLeps >= 2)
+                if (numLeps >= MIN_LEPTONS)
                 {
                     outTree->Fill();
                 }
