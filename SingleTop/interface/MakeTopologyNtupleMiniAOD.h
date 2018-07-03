@@ -477,42 +477,42 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     int VQQBosonAbsId{};
 
     static constexpr size_t NTOPMCINFOSMAX{20};
-    float T_hadronicMCTruthE[20]{};
-    float T_hadronicMCTruthEt[20]{};
-    float T_hadronicMCTruthPx[20]{};
-    float T_hadronicMCTruthPy[20]{};
-    float T_hadronicMCTruthPz[20]{};
-    int T_hadronicMotherIndex[20]{};
+    float T_hadronicMCTruthE[NTOPMCINFOSMAX]{};
+    float T_hadronicMCTruthEt[NTOPMCINFOSMAX]{};
+    float T_hadronicMCTruthPx[NTOPMCINFOSMAX]{};
+    float T_hadronicMCTruthPy[NTOPMCINFOSMAX]{};
+    float T_hadronicMCTruthPz[NTOPMCINFOSMAX]{};
+    int T_hadronicMotherIndex[NTOPMCINFOSMAX]{};
 
-    float T_leptonicMCTruthE[20]{};
-    float T_leptonicMCTruthEt[20]{};
-    float T_leptonicMCTruthPx[20]{};
-    float T_leptonicMCTruthPy[20]{};
-    float T_leptonicMCTruthPz[20]{};
-    int T_leptonicMotherIndex[20]{};
+    float T_leptonicMCTruthE[NTOPMCINFOSMAX]{};
+    float T_leptonicMCTruthEt[NTOPMCINFOSMAX]{};
+    float T_leptonicMCTruthPx[NTOPMCINFOSMAX]{};
+    float T_leptonicMCTruthPy[NTOPMCINFOSMAX]{};
+    float T_leptonicMCTruthPz[NTOPMCINFOSMAX]{};
+    int T_leptonicMotherIndex[NTOPMCINFOSMAX]{};
 
-    float bMCTruthE[20]{};
-    float bMCTruthEt[20]{};
-    float bMCTruthPx[20]{};
-    float bMCTruthPy[20]{};
-    float bMCTruthPz[20]{};
-    int bMCTruthMother[20]{};
+    float bMCTruthE[NTOPMCINFOSMAX]{};
+    float bMCTruthEt[NTOPMCINFOSMAX]{};
+    float bMCTruthPx[NTOPMCINFOSMAX]{};
+    float bMCTruthPy[NTOPMCINFOSMAX]{};
+    float bMCTruthPz[NTOPMCINFOSMAX]{};
+    int bMCTruthMother[NTOPMCINFOSMAX]{};
 
-    float W_hadronicMCTruthE[20]{};
-    float W_hadronicMCTruthEt[20]{};
-    float W_hadronicMCTruthPx[20]{};
-    float W_hadronicMCTruthPy[20]{};
-    float W_hadronicMCTruthPz[20]{};
-    int W_hadronicMCTruthPID[20]{};
-    int W_hadronicMCTruthMother[20]{};
+    float W_hadronicMCTruthE[NTOPMCINFOSMAX]{};
+    float W_hadronicMCTruthEt[NTOPMCINFOSMAX]{};
+    float W_hadronicMCTruthPx[NTOPMCINFOSMAX]{};
+    float W_hadronicMCTruthPy[NTOPMCINFOSMAX]{};
+    float W_hadronicMCTruthPz[NTOPMCINFOSMAX]{};
+    int W_hadronicMCTruthPID[NTOPMCINFOSMAX]{};
+    int W_hadronicMCTruthMother[NTOPMCINFOSMAX]{};
 
-    float W_leptonicMCTruthE[20]{};
-    float W_leptonicMCTruthEt[20]{};
-    float W_leptonicMCTruthPx[20]{};
-    float W_leptonicMCTruthPy[20]{};
-    float W_leptonicMCTruthPz[20]{};
-    int W_leptonicMCTruthPID[20]{};
-    int W_leptonicMCTruthMother[20]{};
+    float W_leptonicMCTruthE[NTOPMCINFOSMAX]{};
+    float W_leptonicMCTruthEt[NTOPMCINFOSMAX]{};
+    float W_leptonicMCTruthPx[NTOPMCINFOSMAX]{};
+    float W_leptonicMCTruthPy[NTOPMCINFOSMAX]{};
+    float W_leptonicMCTruthPz[NTOPMCINFOSMAX]{};
+    int W_leptonicMCTruthPID[NTOPMCINFOSMAX]{};
+    int W_leptonicMCTruthMother[NTOPMCINFOSMAX]{};
 
     int isElePlusJets{};
 
@@ -749,37 +749,41 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
 
     // generalTracks are used to subtract photon conversion background
     static constexpr size_t NTRACKSMAX{40};
-    float generalTracksPt[1000]{};
-    float generalTracksEta[1000]{};
-    float generalTracksTheta[1000]{};
-    float generalTracksPhi[1000]{};
-    float generalTracksBeamSpotCorrectedD0[1000]{};
-    int generalTracksCharge[1000]{};
+    float generalTracksPt[NTRACKSMAX]{};
+    float generalTracksEta[NTRACKSMAX]{};
+    float generalTracksTheta[NTRACKSMAX]{};
+    float generalTracksPhi[NTRACKSMAX]{};
+    float generalTracksBeamSpotCorrectedD0[NTRACKSMAX]{};
+    int generalTracksCharge[NTRACKSMAX]{};
 
     // gen particle vars
     static constexpr size_t NGENPARMAX{50};
     size_t nGenPar{};
-    int genParStatus[50]{}; // 150927 - ADM - Added as Pythia 8 uses different
-                            // status codes - cannot just select events which
-                            // are used in the matrix element calculation!
-    float genParEta[50]{};
-    float genParPhi[50]{};
-    float genParE[50]{};
-    float genParPt[50]{};
-    int genParId[50]{};
-    int genParNumMothers[50]{}; // 150318 - ADM - Added so one can look for b's
-                                // from gluon splitting - need to know how many
-                                // parents
-    int genParMotherId[50]{}; // 150318 - ADM - Added son one can look for b's
-                              // from gluon splitting - need to know what
-                              // parent was
-    int genParNumDaughters[50]{}; // 150318 - ADM - Added so one can look for
-                                  // b's from gluon splitting - need to know
-                                  // how many decay product(s)
-    int genParDaughterId[50][50]{}; // 150318 - ADM - Added so one can look for
-                                    // b's from gluon splitting - need to know
-                                    // what decay product(s) are
-    int genParCharge[50]{};
+    int genParStatus[NGENPARMAX]{}; // 1NGENPARMAX927 - ADM - Added as Pythia 8
+                                    // uses different status codes - cannot just
+                                    // select events which are used in the
+                                    // matrix element calculation!
+    float genParEta[NGENPARMAX]{};
+    float genParPhi[NGENPARMAX]{};
+    float genParE[NGENPARMAX]{};
+    float genParPt[NGENPARMAX]{};
+    int genParId[NGENPARMAX]{};
+    int genParNumMothers[NGENPARMAX]{}; // 1NGENPARMAX318 - ADM - Added so one
+                                        // can look for b's from gluon splitting
+                                        // - need to know how many parents
+    int genParMotherId[NGENPARMAX]{}; // 1NGENPARMAX318 - ADM - Added son one
+                                      // can look for b's from gluon splitting -
+                                      // need to know what parent was
+    int genParNumDaughters[NGENPARMAX]{}; // 1NGENPARMAX318 - ADM - Added so one
+                                          // can look for b's from gluon
+                                          // splitting - need to know how many
+                                          // decay product(s)
+    int genParDaughterId[NGENPARMAX]
+                        [NGENPARMAX]{}; // 1NGENPARMAX318 - ADM - Added so one
+                                        // can look for b's from gluon splitting
+                                        // - need to know what decay product(s)
+                                        // are
+    int genParCharge[NGENPARMAX]{};
     // PDF info
     float genPDFScale{};
     float genPDFx1{};
@@ -809,8 +813,10 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     std::vector<int> triggerRes;
     std::vector<int> metFilterRes;
     std::vector<int> HLT_fakeTriggerValues;
+
+    static constexpr size_t NTRIGGERBITSMAX{700};
     int nTriggerBits{};
-    int TriggerBits[700]{};
+    int TriggerBits[NTRIGGERBITSMAX]{};
 
     float topo_sphericity{};
     float topo_aplanarity{};
