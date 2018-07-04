@@ -1539,10 +1539,10 @@ class AnalysisEvent
 
     AnalysisEvent(bool isMC, std::string triggerFlag, TTree* tree, bool is2016);
     virtual ~AnalysisEvent();
-    virtual Int_t GetEntry(Long64_t entry);
+    virtual Int_t GetEntry(Long64_t entry) const;
     virtual Long64_t LoadTree(Long64_t entry);
     virtual void Loop();
-    virtual void Show(Long64_t entry = -1);
+    virtual void Show(Long64_t entry = -1) const;
 };
 
 AnalysisEvent::AnalysisEvent(bool isMC,
@@ -2370,7 +2370,7 @@ AnalysisEvent::~AnalysisEvent()
     delete fChain->GetCurrentFile();
 }
 
-Int_t AnalysisEvent::GetEntry(Long64_t entry)
+Int_t AnalysisEvent::GetEntry(Long64_t entry) const
 {
     // Read contents of entry.
     if (!fChain)
@@ -2399,7 +2399,7 @@ Long64_t AnalysisEvent::LoadTree(Long64_t entry)
     return centry;
 }
 
-void AnalysisEvent::Show(Long64_t entry)
+void AnalysisEvent::Show(Long64_t entry) const
 {
     // Print contents of entry.
     // If entry is not specified, print current entry
