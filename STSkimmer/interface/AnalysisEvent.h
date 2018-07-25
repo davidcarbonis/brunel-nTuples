@@ -1516,6 +1516,12 @@ class AnalysisEvent
     TBranch* b_eventNum; //!
     TBranch* b_eventLumiblock; //!
 
+    bool isMC_{};
+
+    std::vector<float> muonMomentumSF;
+    std::vector<float> jetSmearValue;
+    std::vector<int> cTagIndex;
+
     std::vector<int> electronIndexTight;
     std::vector<int> electronIndexLoose;
     std::vector<int> muonIndexTight;
@@ -1550,6 +1556,7 @@ AnalysisEvent::AnalysisEvent(bool isMC,
                              TTree* tree,
                              bool is2016)
     : fChain{nullptr}
+    , isMC_{isMC}
 {
     // if parameter tree is not specified (or zero), connect the file
     // used to generate this class and read the Tree.
