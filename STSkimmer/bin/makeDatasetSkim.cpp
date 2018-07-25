@@ -104,9 +104,9 @@ int main(int argc, char* argv[])
             // std::cout << path;
             // TFile inFile(path.c_str());
 
-            TTree* const outTree = datasetChain.CloneTree(0);
-
             TFile outFile{outFilePath.c_str(), "RECREATE"};
+            outFile.cd();
+            TTree* const outTree = datasetChain.CloneTree(0);
 
             // std::cout << outFilePath << std::endl;
 
@@ -203,7 +203,6 @@ int main(int argc, char* argv[])
                 }
             }
 
-            outFile.cd();
             outTree->Write();
             if (isMC)
             {
@@ -213,8 +212,6 @@ int main(int argc, char* argv[])
             outFile.Write();
             outFile.Close();
             // inFile.Close();
-
-            delete outTree;
 
             fileNum++;
 
