@@ -371,6 +371,9 @@ void MakeTopologyNtupleMiniAOD::fillMissingET(const edm::Event& iEvent, const ed
     metEtUncorrected[ ID ] = metHandle->front().uncorPt();
     metPhiUncorrected[ ID ] = metHandle->front().uncorPhi();
 
+    metUnclusteredEnUp[ ID ] = metHandle->front().shiftedPt(pat::MET::UnclusteredEnUp);
+    metUnclusteredEnDown[ ID ] = metHandle->front().shiftedPt(pat::MET::UnclusteredEnDown);
+
     if(metHandle->front().isCaloMET()){
 	metMaxEtEM[ ID ] = metHandle->front().maxEtInEmTowers();
 	metMaxEtHad[ ID ] = metHandle->front().maxEtInHadTowers();
@@ -1832,6 +1835,8 @@ void MakeTopologyNtupleMiniAOD::clearMetArrays(std::string ID)
   metScalarEt[ ID ] = -99999.0;
   metEtUncorrected[ ID ] = -99999.0;
   metPhiUncorrected[ ID ] = -99999.0;
+  metUnclusteredEnUp[ ID ] = -99999.0;
+  metUnclusteredEnDown[ ID ] = -99999.0;
   metMaxEtEM[ ID ] = -99999.0;
   metMaxEtHad[ ID ] = -99999.0;
   metEtFracHad[ ID ] = -99999.0;
@@ -2846,6 +2851,8 @@ void MakeTopologyNtupleMiniAOD::bookMETBranches(std::string ID, std::string name
     metScalarEt[ ID ] = -1.0;
     metEtUncorrected[ ID ] = -1.0;
     metPhiUncorrected[ ID ] = -99999;
+    metUnclusteredEnUp[ ID ] = -99999;
+    metUnclusteredEnDown[ ID ] = -99999;
     genMetE[ ID ] = -1.0; 
     genMetEt[ ID ] = -1.0; 
     genMetPhi[ ID ] = -99999;
@@ -2866,7 +2873,8 @@ void MakeTopologyNtupleMiniAOD::bookMETBranches(std::string ID, std::string name
     mytree_->Branch( (prefix + "ScalarEt").c_str(), &metScalarEt[ ID ], (prefix + "ScalarEt/F").c_str());
     mytree_->Branch( (prefix + "EtUncorrected").c_str(), &metEtUncorrected[ ID ], (prefix + "EtUncorrected/F").c_str());
     mytree_->Branch( (prefix + "PhiUncorrected").c_str(), &metPhiUncorrected[ ID ], (prefix + "PhiUncorrected/F").c_str());
-
+    mytree_->Branch( (prefix + "UnclusteredEnUp").c_str(), &metUnclusteredEnUp[ ID ], (prefix + "UnclusteredEnUp/F").c_str());
+    mytree_->Branch( (prefix + "UnclusteredEnDown").c_str(), &metUnclusteredEnDown[ ID ], (prefix + "UnclusteredEnDown/F").c_str());
     prefix = "genMet" + name;
     if( runMCInfo_ )
     {
