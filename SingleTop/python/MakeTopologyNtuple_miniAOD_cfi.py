@@ -106,19 +106,14 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v6',	 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v2', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v3', 		#DoubleMuon
-	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v4', 		#DoubleMuon
-	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v6',		#DoubleMuon
+	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v5', 		#DoubleMuon
 
 	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4', 		#DoubleMuon
-	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5', 		#DoubleMuon
-	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v7', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3', 		#DoubleMuon
-	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4', 		#DoubleMuon
-	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6', 		#DoubleMuon
 
 	'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v3', #MuonEG Unprescaled for Runs B,C,D 
