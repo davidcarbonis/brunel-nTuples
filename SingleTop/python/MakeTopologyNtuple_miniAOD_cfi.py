@@ -33,9 +33,9 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 					   isLHEflag = cms.bool(True),
 					   externalLHEToken = cms.InputTag("externalLHEProducer"), # "externalLHEProducer", "source" for THQ 
 
-					   pdfIdStart = cms.int32(10),
-					   pdfIdEnd = cms.int32(110),
-					   hasAlphaWeightFlag = cms.bool(False),
+					   pdfIdStart = cms.int32(2001),
+					   pdfIdEnd = cms.int32(2100),
+					   hasAlphaWeightFlag = cms.bool(True),
 					   alphaIdStart = cms.int32(2101),
 					   alphaIdEnd = cms.int32(2102),
 
@@ -99,6 +99,15 @@ makeTopologyNtupleMiniAOD = cms.EDAnalyzer('MakeTopologyNtupleMiniAOD',
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7',         #DoubleElectron
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8',         #DoubleElectron
 	'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9',         #DoubleElectron
+
+	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v2', 			#DoubleMuon
+	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v3', 			#DoubleMuon
+	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v4', 			#DoubleMuon
+	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v6',	 		#DoubleMuon
+	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v2', 		#DoubleMuon
+	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v3', 		#DoubleMuon
+	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v4', 		#DoubleMuon
+	'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v6',		#DoubleMuon
 
 	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2', 		#DoubleMuon
 	'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3', 		#DoubleMuon
