@@ -8,3 +8,5 @@ __init__.py
 *.root
 *.txt
 *.exe
+*.log
+SingleTop/test/crab_projects/
