@@ -233,11 +233,9 @@ class AnalysisEvent
     Float_t jetPF2PATSVDX[NJETSMAX];
     Float_t jetPF2PATSVDY[NJETSMAX];
     Float_t jetPF2PATSVDZ[NJETSMAX];
-    Float_t jetPF2PATpfCombinedInclusiveSecondaryVertexV2BJetTags
-        [NJETSMAX];
-    Float_t jetPF2PATpfCombinedMVAV2BJetTags[NJETSMAX];
-    Float_t jetPF2PATpfCombinedCvsLJetTags[NJETSMAX];
-    Float_t jetPF2PATpfCombinedCvsBJetTags[NJETSMAX];
+    Float_t jetPF2PATBDiscriminator[NJETSMAX];
+    // Float_t	jetPF2PATCvsLDiscriminator[NJETSMAX];
+    // Float_t	jetPF2PATCvsBDiscriminator[NJETSMAX];
     Int_t jetPF2PATNConstituents[NJETSMAX];
     Int_t jetPF2PATPID[NJETSMAX];
     Float_t jetPF2PATClosestBPartonDeltaR[NJETSMAX];
@@ -279,6 +277,8 @@ class AnalysisEvent
     Float_t metPF2PATScalarEt;
     Float_t metPF2PATEtUncorrected;
     Float_t metPF2PATPhiUncorrected;
+    Float_t metPF2PATUnclusteredEnUp;
+    Float_t metPF2PATUnclusteredEnDown;
     Float_t genMetPF2PATE;
     Float_t genMetPF2PATEt;
     Float_t genMetPF2PATPhi;
@@ -990,10 +990,9 @@ class AnalysisEvent
     TBranch* b_jetPF2PATSVDX; //!
     TBranch* b_jetPF2PATSVDY; //!
     TBranch* b_jetPF2PATSVDZ; //!
-    TBranch* b_jetPF2PATpfCombinedInclusiveSecondaryVertexV2BJetTags; //!
-    TBranch* b_jetPF2PATpfCombinedMVAV2BJetTags; //!
-    TBranch* b_jetPF2PATpfCombinedCvsLJetTags; //!
-    TBranch* b_jetPF2PATpfCombinedCvsBJetTags; //!
+    TBranch* b_jetPF2PATBDiscriminator;
+    TBranch* b_jetPF2PATCvsLDiscriminator;
+    TBranch* b_jetPF2PATCvsBDiscriminator;
     TBranch* b_jetPF2PATNConstituents; //!
     TBranch* b_jetPF2PATPID; //!
     TBranch* b_jetPF2PATClosestBPartonDeltaR; //!
@@ -1034,6 +1033,8 @@ class AnalysisEvent
     TBranch* b_metPF2PATScalarEt; //!
     TBranch* b_metPF2PATEtUncorrected; //!
     TBranch* b_metPF2PATPhiUncorrected; //!
+    TBranch* b_metPF2PATUnclusteredEnUp;
+    TBranch* b_metPF2PATUnclusteredEnDown;
     TBranch* b_genMetPF2PATE; //!
     TBranch* b_genMetPF2PATEt; //!
     TBranch* b_genMetPF2PATPhi; //!
@@ -1803,13 +1804,9 @@ AnalysisEvent::AnalysisEvent(bool isMC,
    fChain->SetBranchAddress("jetPF2PATSVDX", jetPF2PATSVDX, &b_jetPF2PATSVDX);
    fChain->SetBranchAddress("jetPF2PATSVDY", jetPF2PATSVDY, &b_jetPF2PATSVDY);
    fChain->SetBranchAddress("jetPF2PATSVDZ", jetPF2PATSVDZ, &b_jetPF2PATSVDZ);
-   fChain->SetBranchAddress("jetPF2PATpfCombinedInclusiveSecondaryVertexV2BJetTags", jetPF2PATpfCombinedInclusiveSecondaryVertexV2BJetTags, &b_jetPF2PATpfCombinedInclusiveSecondaryVertexV2BJetTags);
-   if (is2016)
-   {
-       fChain->SetBranchAddress("jetPF2PATpfCombinedMVAV2BJetTags", jetPF2PATpfCombinedMVAV2BJetTags, &b_jetPF2PATpfCombinedMVAV2BJetTags);
-   }
-   fChain->SetBranchAddress("jetPF2PATpfCombinedCvsLJetTags", jetPF2PATpfCombinedCvsLJetTags, &b_jetPF2PATpfCombinedCvsLJetTags);
-   fChain->SetBranchAddress("jetPF2PATpfCombinedCvsBJetTags", jetPF2PATpfCombinedCvsBJetTags, &b_jetPF2PATpfCombinedCvsBJetTags);
+   fChain->SetBranchAddress("jetPF2PATBDiscriminator", jetPF2PATBDiscriminator, &b_jetPF2PATBDiscriminator);
+   // fChain->SetBranchAddress("jetPF2PATCvsLDiscriminator", jetPF2PATCvsLDiscriminator, &b_jetPF2PATCvsLDiscriminator);
+   // fChain->SetBranchAddress("jetPF2PATCvsBDiscriminator", jetPF2PATCvsBDiscriminator, &b_jetPF2PATCvsBDiscriminator);
    fChain->SetBranchAddress("jetPF2PATNConstituents", jetPF2PATNConstituents, &b_jetPF2PATNConstituents);
    fChain->SetBranchAddress("jetPF2PATPID", jetPF2PATPID, &b_jetPF2PATPID);
    fChain->SetBranchAddress("jetPF2PATClosestBPartonDeltaR", jetPF2PATClosestBPartonDeltaR, &b_jetPF2PATClosestBPartonDeltaR);
@@ -1853,6 +1850,8 @@ AnalysisEvent::AnalysisEvent(bool isMC,
    fChain->SetBranchAddress("metPF2PATScalarEt", &metPF2PATScalarEt, &b_metPF2PATScalarEt);
    fChain->SetBranchAddress("metPF2PATEtUncorrected", &metPF2PATEtUncorrected, &b_metPF2PATEtUncorrected);
    fChain->SetBranchAddress("metPF2PATPhiUncorrected", &metPF2PATPhiUncorrected, &b_metPF2PATPhiUncorrected);
+   fChain->SetBranchAddress("metPF2PATUnclusteredEnUp", &metPF2PATUnclusteredEnUp, &b_metPF2PATUnclusteredEnUp);
+   fChain->SetBranchAddress("metPF2PATUnclusteredEnDown", &metPF2PATUnclusteredEnDown, &b_metPF2PATUnclusteredEnDown);
    if (isMC)
    {
        fChain->SetBranchAddress("genMetPF2PATE", &genMetPF2PATE, &b_genMetPF2PATE);

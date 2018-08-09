@@ -342,6 +342,10 @@ void MakeTopologyNtupleMiniAOD::fillMissingET(
     metScalarEt[ID] = metHandle->front().sumEt();
     metEtUncorrected[ID] = metHandle->front().uncorPt();
     metPhiUncorrected[ID] = metHandle->front().uncorPhi();
+    metUnclusteredEnUp[ID] =
+        metHandle->front().shiftedPt(pat::MET::UnclusteredEnUp);
+    metUnclusteredEnDown[ID] =
+        metHandle->front().shiftedPt(pat::MET::UnclusteredEnDown);
 
     if (metHandle->front().isCaloMET())
     {
@@ -2287,6 +2291,8 @@ void MakeTopologyNtupleMiniAOD::clearMetArrays(const std::string& ID)
     metScalarEt[ID] = -99999.0;
     metEtUncorrected[ID] = -99999.0;
     metPhiUncorrected[ID] = -99999.0;
+    metUnclusteredEnUp[ID] = -99999.0;
+    metUnclusteredEnDown[ID] = -99999.0;
     metMaxEtEM[ID] = -99999.0;
     metMaxEtHad[ID] = -99999.0;
     metEtFracHad[ID] = -99999.0;
@@ -3735,6 +3741,8 @@ void MakeTopologyNtupleMiniAOD::bookMETBranches(const std::string& ID,
     metScalarEt[ID] = -1.0;
     metEtUncorrected[ID] = -1.0;
     metPhiUncorrected[ID] = -99999;
+    metUnclusteredEnUp[ID] = -99999;
+    metUnclusteredEnDown[ID] = -99999;
     genMetE[ID] = -1.0;
     genMetEt[ID] = -1.0;
     genMetPhi[ID] = -99999;
@@ -3770,6 +3778,12 @@ void MakeTopologyNtupleMiniAOD::bookMETBranches(const std::string& ID,
     mytree_->Branch((prefix + "PhiUncorrected").c_str(),
                     &metPhiUncorrected[ID],
                     (prefix + "PhiUncorrected/F").c_str());
+    mytree_->Branch((prefix + "UnclusteredEnUp").c_str(),
+                    &metUnclusteredEnUp[ID],
+                    (prefix + "UnclusteredEnUp/F").c_str());
+    mytree_->Branch((prefix + "UnclusteredEnDown").c_str(),
+                    &metUnclusteredEnDown[ID],
+                    (prefix + "UnclusteredEnDown/F").c_str());
 
     prefix = "genMet" + name;
     if (runMCInfo_)

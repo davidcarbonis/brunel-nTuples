@@ -530,6 +530,8 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     std::map<std::string, float> metScalarEt;
     std::map<std::string, float> metEtUncorrected;
     std::map<std::string, float> metPhiUncorrected;
+    std::map<std::string, float> metUnclusteredEnUp;
+    std::map<std::string, float> metUnclusteredEnDown;
     std::map<std::string, float> metMaxEtEM;
     std::map<std::string, float> metMaxEtHad;
     std::map<std::string, float> metEtFracHad;
