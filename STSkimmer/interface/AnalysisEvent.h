@@ -233,7 +233,8 @@ class AnalysisEvent
     Float_t jetPF2PATSVDX[NJETSMAX];
     Float_t jetPF2PATSVDY[NJETSMAX];
     Float_t jetPF2PATSVDZ[NJETSMAX];
-    Float_t jetPF2PATpfCombinedInclusiveSecondaryVertexV2BJetTags[NJETSMAX];
+    Float_t jetPF2PATpfCombinedInclusiveSecondaryVertexV2BJetTags
+        [NJETSMAX];
     Float_t jetPF2PATpfCombinedMVAV2BJetTags[NJETSMAX];
     Float_t jetPF2PATpfCombinedCvsLJetTags[NJETSMAX];
     Float_t jetPF2PATpfCombinedCvsBJetTags[NJETSMAX];
