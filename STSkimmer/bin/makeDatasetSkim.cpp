@@ -105,7 +105,6 @@ int main(int argc, char* argv[])
             // TFile inFile(path.c_str());
 
             TFile outFile{outFilePath.c_str(), "RECREATE"};
-            outFile.cd();
             TTree* const outTree = datasetChain.CloneTree(0);
 
             // std::cout << outFilePath << std::endl;
