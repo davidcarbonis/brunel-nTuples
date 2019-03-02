@@ -3044,13 +3044,13 @@ void MakeTopologyNtupleMiniAOD::bookElectronBranches(const std::string& ID,
                     (prefix + "ET[numEle" + name + "]/F").c_str());
     mytree_->Branch((prefix + "PX").c_str(),
                     &electronSortedPx[ID][0],
-                    (prefix + "Px[numEle" + name + "]/F").c_str());
+                    (prefix + "PX[numEle" + name + "]/F").c_str());
     mytree_->Branch((prefix + "PY").c_str(),
                     &electronSortedPy[ID][0],
-                    (prefix + "Py[numEle" + name + "]/F").c_str());
+                    (prefix + "PY[numEle" + name + "]/F").c_str());
     mytree_->Branch((prefix + "PZ").c_str(),
                     &electronSortedPz[ID][0],
-                    (prefix + "Pz[numEle" + name + "]/F").c_str());
+                    (prefix + "PZ[numEle" + name + "]/F").c_str());
     mytree_->Branch((prefix + "Phi").c_str(),
                     &electronSortedPhi[ID][0],
                     (prefix + "Phi[numEle" + name + "]/F").c_str());
@@ -3495,13 +3495,13 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(const std::string& ID,
                     (prefix + "Pt[numMuon" + name + "]/F").c_str());
     mytree_->Branch((prefix + "PX").c_str(),
                     &muonSortedPx[ID][0],
-                    (prefix + "Px[numMuon" + name + "]/F").c_str());
+                    (prefix + "PX[numMuon" + name + "]/F").c_str());
     mytree_->Branch((prefix + "PY").c_str(),
                     &muonSortedPy[ID][0],
-                    (prefix + "Py[numMuon" + name + "]/F").c_str());
+                    (prefix + "PY[numMuon" + name + "]/F").c_str());
     mytree_->Branch((prefix + "PZ").c_str(),
                     &muonSortedPz[ID][0],
-                    (prefix + "Pz[numMuon" + name + "]/F").c_str());
+                    (prefix + "PZ[numMuon" + name + "]/F").c_str());
     mytree_->Branch((prefix + "Phi").c_str(),
                     &muonSortedPhi[ID][0],
                     (prefix + "Phi[numMuon" + name + "]/F").c_str());
@@ -3686,13 +3686,13 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(const std::string& ID,
                         (prefix + "ET[numMuon" + name + "]/F").c_str());
         mytree_->Branch((prefix + "PX").c_str(),
                         &genMuonSortedPx[ID][0],
-                        (prefix + "Px[numMuon" + name + "]/F").c_str());
+                        (prefix + "PX[numMuon" + name + "]/F").c_str());
         mytree_->Branch((prefix + "PY").c_str(),
                         &genMuonSortedPy[ID][0],
-                        (prefix + "Py[numMuon" + name + "]/F").c_str());
+                        (prefix + "PY[numMuon" + name + "]/F").c_str());
         mytree_->Branch((prefix + "PZ").c_str(),
                         &genMuonSortedPz[ID][0],
-                        (prefix + "Pz[numMuon" + name + "]/F").c_str());
+                        (prefix + "PZ[numMuon" + name + "]/F").c_str());
         mytree_->Branch((prefix + "Phi").c_str(),
                         &genMuonSortedPhi[ID][0],
                         (prefix + "Phi[numMuon" + name + "]/F").c_str());
@@ -4228,13 +4228,13 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(const std::string& ID,
                         (prefix + "PT[numJet" + name + "]/F").c_str());
         mytree_->Branch((prefix + "PX").c_str(),
                         &genJetSortedPx[ID][0],
-                        (prefix + "Px[numJet" + name + "]/F").c_str());
+                        (prefix + "PX[numJet" + name + "]/F").c_str());
         mytree_->Branch((prefix + "PY").c_str(),
                         &genJetSortedPy[ID][0],
-                        (prefix + "Py[numJet" + name + "]/F").c_str());
+                        (prefix + "PY[numJet" + name + "]/F").c_str());
         mytree_->Branch((prefix + "PZ").c_str(),
                         &genJetSortedPz[ID][0],
-                        (prefix + "Pz[numJet" + name + "]/F").c_str());
+                        (prefix + "PZ[numJet" + name + "]/F").c_str());
         // mytree_->Branch((prefix + "ID").c_str(),
         //                 &genJetSortedID[ID][0],
         //                 (prefix + "ID[numJet" + name + "]/I").c_str());
