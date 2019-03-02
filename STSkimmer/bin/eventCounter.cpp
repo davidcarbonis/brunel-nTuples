@@ -9,7 +9,7 @@ namespace fs = boost::filesystem;
 int main(int argc, char* argv[])
 {
     const std::regex mask{R"(.*\.root)"};
-    TChain datasetChain{"makeTopologyNtupleMiniAOD/tree"};
+    TChain datasetChain{"tree"};
 
     for (int i{1}; i < argc; i++)
     { // for each directory given on the command line
