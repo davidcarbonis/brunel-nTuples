@@ -2015,6 +2015,10 @@ void MakeTopologyNtupleMiniAOD::fillJets(
     {
         clearjetarrays(ID);
     }
+
+    edm::Handle<double> rhoHand_;
+    iEvent.getByToken(rhoToken_, rhoHand_);
+    fixedGridRhoFastjetAll[ID] = *(rhoHand_.product());
 }
 
 void MakeTopologyNtupleMiniAOD::fillGeneralTracks(
@@ -2477,6 +2481,8 @@ void MakeTopologyNtupleMiniAOD::clearjetarrays(const std::string& ID)
     genJetSortedPID[ID].clear();
     genJetSortedClosestB[ID].clear();
     genJetSortedClosestC[ID].clear();
+
+    fixedGridRhoFastjetAll[ID] = -999.0f;
 }
 
 /////////////////////////////////////
@@ -4251,6 +4257,10 @@ void MakeTopologyNtupleMiniAOD::bookJetBranches(const std::string& ID,
                         &genJetSortedPID[ID][0],
                         (prefix + "PID[numJet" + name + "]/I").c_str());
     }
+
+    mytree_->Branch("fixedGridRhoFastjetAll",
+                    &fixedGridRhoFastjetAll[ID],
+                    "fixedGridRhoFastjetAll]/F");
 
     bookBIDInfoBranches(ID, name);
 }

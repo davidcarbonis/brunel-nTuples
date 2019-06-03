@@ -749,6 +749,8 @@ class MakeTopologyNtupleMiniAOD : public edm::EDAnalyzer
     std::map<std::string, std::vector<float>> genJetSortedClosestB;
     std::map<std::string, std::vector<float>> genJetSortedClosestC;
 
+    std::map<std::string, float> fixedGridRhoFastjetAll;
+
     // generalTracks are used to subtract photon conversion background
     static constexpr size_t NTRACKSMAX{40};
     float generalTracksPt[NTRACKSMAX]{};
