@@ -223,6 +223,18 @@ MakeTopologyNtupleMiniAOD::MakeTopologyNtupleMiniAOD(
     , isMCatNLO_{iConfig.getParameter<bool>("isMCatNLO")}
     , isLHEflag_{iConfig.getParameter<bool>("isLHEflag")}
     , hasAlphaWeightFlag_{iConfig.getParameter<bool>("hasAlphaWeightFlag")}
+    , isrRedHi{1.0}
+    , fsrRedHi{1.0}
+    , isrRedLo{1.0}
+    , fsrRedLo{1.0}
+    , isrDefHi{1.0}
+    , fsrDefHi{1.0}
+    , isrDefLo{1.0}
+    , fsrDefLo{1.0}
+    , isrConHi{1.0}
+    , fsrConHi{1.0}
+    , isrConLo{1.0}
+    , fsrConLo{1.0}
 {
     // now do what ever initialization is needed
 
@@ -1303,9 +1315,20 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
     // Get the top gen events for top pt reweighting - so I guess this is
     // irrelevant.
 
+    edm::Handle<LHEEventProduct> EventHandle;
+    edm::Handle<GenEventInfoProduct> genEventInfo;
+
+    if (isMCatNLO_)
+    {
+        iEvent.getByToken(pdfInfoToken_, genEventInfo);
+    }
+    else
+    {
+        iEvent.getByToken(generatorToken_, genEventInfo);
+    }
+
     if (isLHEflag_)
     {
-        edm::Handle<LHEEventProduct> EventHandle;
         iEvent.getByToken(externalLHEToken_, EventHandle);
 
         weight_muF0p5_ = EventHandle->weights()[6].wgt; // muF = 0.5 | muR = 1
@@ -1469,15 +1492,63 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
         weight_alphaMin_ = 1.0;
     }
 
-    edm::Handle<GenEventInfoProduct> genEventInfo;
+    if (!is2016rereco_)
+    {
+        // Perform the recommended rescaling
+        // The TWiki says:
+        // https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW#Retrieving_the_weights
+        // final_weight = nominal_weight * systematic_weight / original_weight
+        // but we want to turn these into an easy to use SF
+        // sf = final_weight / original_weight
+        //    = nominal_weight * systematic_weight / (original_weight ^ 2)
+        auto weight_sf = [&](const double w) {
+            return w * genEventInfo->weight()
+                   / std::pow(EventHandle->originalXWGTUP(), 2);
+        };
 
-    if (isMCatNLO_)
-    {
-        iEvent.getByToken(pdfInfoToken_, genEventInfo);
-    }
-    else
-    {
-        iEvent.getByToken(generatorToken_, genEventInfo);
+        for (size_t i{2}; i < genEventInfo->weights().size(); ++i)
+        {
+            switch (i)
+            {
+                case 2:
+                    isrRedHi = weight_sf(genEventInfo->weights()[i]);
+                    break;
+                case 3:
+                    fsrRedHi = weight_sf(genEventInfo->weights()[i]);
+                    break;
+                case 4:
+                    isrRedLo = weight_sf(genEventInfo->weights()[i]);
+                    break;
+                case 5:
+                    fsrRedLo = weight_sf(genEventInfo->weights()[i]);
+                    break;
+                case 6:
+                    isrDefHi = weight_sf(genEventInfo->weights()[i]);
+                    break;
+                case 7:
+                    fsrDefHi = weight_sf(genEventInfo->weights()[i]);
+                    break;
+                case 8:
+                    isrDefLo = weight_sf(genEventInfo->weights()[i]);
+                    break;
+                case 9:
+                    fsrDefLo = weight_sf(genEventInfo->weights()[i]);
+                    break;
+                case 10:
+                    isrConHi = weight_sf(genEventInfo->weights()[i]);
+                    break;
+                case 11:
+                    fsrConHi = weight_sf(genEventInfo->weights()[i]);
+                    break;
+                case 12:
+                    isrConLo = weight_sf(genEventInfo->weights()[i]);
+                    break;
+                case 13:
+                    fsrConLo = weight_sf(genEventInfo->weights()[i]);
+                    break;
+                default: break;
+            }
+        }
     }
 
     processPtHat_ = genEventInfo->qScale();
