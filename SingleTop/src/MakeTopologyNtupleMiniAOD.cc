@@ -1916,7 +1916,8 @@ void MakeTopologyNtupleMiniAOD::fillJets(
             {
                 jecCalo->setJetEta(jet.eta());
                 jecCalo->setJetPt(jet.pt());
-                correctedJetEts.emplace_back(jet.et() * jecCalo->getCorrection());
+                correctedJetEts.emplace_back(jet.et()
+                                             * jecCalo->getCorrection());
             }
             else if (jet.isPFJet())
             {
@@ -1929,7 +1930,8 @@ void MakeTopologyNtupleMiniAOD::fillJets(
             {
                 jecJPT->setJetEta(jet.eta());
                 jecJPT->setJetPt(jet.pt());
-                correctedJetEts.emplace_back(jet.et() * jecJPT->getCorrection());
+                correctedJetEts.emplace_back(jet.et()
+                                             * jecJPT->getCorrection());
             }
         }
         else
