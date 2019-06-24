@@ -1331,63 +1331,21 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
     {
         iEvent.getByToken(externalLHEToken_, EventHandle);
 
-        weight_muF0p5_ = EventHandle->weights()[6].wgt; // muF = 0.5 | muR = 1
-        weight_muF2_ = EventHandle->weights()[3].wgt; // muF = 2 | muR = 1
-        weight_muR0p5_ = EventHandle->weights()[2].wgt; // muF = 1 | muR = 0.5
-        weight_muR2_ = EventHandle->weights()[1].wgt; // muF = 1 | muR = 2
-        weight_muF0p5muR0p5_ =
-            EventHandle->weights()[8].wgt; // muF = 0.5 | muR = 0.5
-        weight_muF2muR2_ = EventHandle->weights()[4].wgt; // muF = 2 | muR = 2
-
-        if (!is2016rereco_)
-        {
-            for (const auto w : EventHandle->weights())
-            {
-                switch (std::stoi(w.id))
-                {
-                    case 2:
-                        isrRedHi = w.wgt;
-                        break;
-                    case 3:
-                        fsrRedHi = w.wgt;
-                        break;
-                    case 4:
-                        isrRedLo = w.wgt;
-                        break;
-                    case 5:
-                        fsrRedLo = w.wgt;
-                        break;
-                    case 6:
-                        isrDefHi = w.wgt;
-                        break;
-                    case 7:
-                        fsrDefHi = w.wgt;
-                        break;
-                    case 8:
-                        isrDefLo = w.wgt;
-                        break;
-                    case 9:
-                        fsrDefLo = w.wgt;
-                        break;
-                    case 10:
-                        isrConHi = w.wgt;
-                        break;
-                    case 11:
-                        fsrConHi = w.wgt;
-                        break;
-                    case 12:
-                        isrConLo = w.wgt;
-                        break;
-                    case 13:
-                        fsrConLo = w.wgt;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
         origWeightForNorm_ = EventHandle->originalXWGTUP();
+
+        // Weights must be rescaled
+        // https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW
+        auto rescale_weight = [&](const double w) {
+            return w * genEventInfo->weight() / origWeightForNorm_;
+        };
+
+        weight_muF0p5_ = rescale_weight(EventHandle->weights()[6].wgt); // muF = 0.5 | muR = 1
+        weight_muF2_ = rescale_weight(EventHandle->weights()[3].wgt); // muF = 2 | muR = 1
+        weight_muR0p5_ = rescale_weight(EventHandle->weights()[2].wgt); // muF = 1 | muR = 0.5
+        weight_muR2_ = rescale_weight(EventHandle->weights()[1].wgt); // muF = 1 | muR = 2
+        weight_muF0p5muR0p5_ =
+            rescale_weight(EventHandle->weights()[8].wgt); // muF = 0.5 | muR = 0.5
+        weight_muF2muR2_ = rescale_weight(EventHandle->weights()[4].wgt); // muF = 2 | muR = 2
 
         int initialIndex{pdfIdStart_};
         int finalIndex{pdfIdEnd_ + 1};
@@ -1401,7 +1359,7 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
             {
                 if (EventHandle->weights()[w].id == std::to_string(i))
                 {
-                    pdfSum += (EventHandle->weights()[w].wgt);
+                    pdfSum += rescale_weight(EventHandle->weights()[w].wgt);
                 }
             }
         }
@@ -1413,8 +1371,8 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
             {
                 if (EventHandle->weights()[w].id == std::to_string(i))
                 {
-                    pdfSum2 += (EventHandle->weights()[w].wgt - meanObs)
-                               * (EventHandle->weights()[w].wgt - meanObs);
+                    pdfSum2 += (rescale_weight(EventHandle->weights()[w].wgt) - meanObs)
+                               * (rescale_weight(EventHandle->weights()[w].wgt) - meanObs);
                 }
             }
         }
@@ -1450,25 +1408,19 @@ void MakeTopologyNtupleMiniAOD::fillMCInfo(const edm::Event& iEvent,
             {
                 if (EventHandle->weights()[w].id == alphaIdStart_)
                 {
-                    alphaMax = EventHandle->weights()[w].wgt
+                    alphaMax = rescale_weight(EventHandle->weights()[w].wgt)
                                / EventHandle->originalXWGTUP();
                 }
                 if (EventHandle->weights()[w].id == alphaIdEnd_)
                 {
-                    alphaMin = EventHandle->weights()[w].wgt
+                    alphaMin = rescale_weight(EventHandle->weights()[w].wgt)
                                / EventHandle->originalXWGTUP();
                 }
             }
-            if (alphaMax > alphaMin)
-            {
-                weight_alphaMax_ = alphaMax;
-                weight_alphaMin_ = alphaMin;
-            }
-            else
-            {
-                weight_alphaMax_ = alphaMin;
-                weight_alphaMin_ = alphaMax;
-            }
+            weight_alphaMax_ = alphaMax;
+            weight_alphaMin_ = alphaMin;
+            weight_alphaMax_ = alphaMin;
+            weight_alphaMin_ = alphaMax;
         }
         else
         {
