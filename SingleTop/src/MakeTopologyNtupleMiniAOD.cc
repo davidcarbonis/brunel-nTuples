@@ -108,6 +108,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <limits>
 
 // relIso stuff
 #include "DataFormats/PatCandidates/interface/Isolation.h"
@@ -285,6 +286,8 @@ MakeTopologyNtupleMiniAOD::~MakeTopologyNtupleMiniAOD()
 {
     // do anything here that needs to be done at desctruction time
     // (e.g. close files, deallocate resources etc.)
+
+    mytree_->FlushBaskets();
 }
 
 //
@@ -2751,7 +2754,9 @@ void MakeTopologyNtupleMiniAOD::analyze(const edm::Event& iEvent,
 void MakeTopologyNtupleMiniAOD::bookBranches()
 {
     // std::cout << "bookBranches CHECK" << std::endl;
+    TTree::SetMaxTreeSize(std::numeric_limits<Long64_t>::max());
     mytree_ = new TTree("tree", "tree");
+    mytree_->SetAutoSave(-std::numeric_limits<Long64_t>::max());
 
     // bookElectronBranches("Calo", "Calo");
     // bookMuonBranches("Calo", "Calo");
