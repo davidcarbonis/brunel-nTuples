@@ -1,5 +1,6 @@
 #include "../interface/AnalysisEvent.h"
 
+#include <Compression.h>
 #include <TChain.h>
 #include <TFile.h>
 #include <TH1I.h>
@@ -10,6 +11,7 @@
 #include <boost/progress.hpp>
 #include <boost/range/iterator_range.hpp>
 #include <iostream>
+#include <limits>
 #include <regex>
 #include <string>
 #include <vector>
@@ -21,6 +23,8 @@ namespace fs = boost::filesystem;
 
 int main(int argc, char* argv[])
 {
+    TTree::SetMaxTreeSize(std::numeric_limits<Long64_t>::max());
+
     std::vector<std::string> inDirs;
     std::string datasetName;
     bool isMC;
@@ -105,7 +109,11 @@ int main(int argc, char* argv[])
             // TFile inFile(path.c_str());
 
             TFile outFile{outFilePath.c_str(), "RECREATE"};
+            outFile.SetCompressionSettings(
+                ROOT::CompressionSettings(ROOT::kLZ4, 4));
             TTree* const outTree = datasetChain.CloneTree(0);
+
+            outTree->SetAutoSave(-std::numeric_limits<Long64_t>::max());
 
             // std::cout << outFilePath << std::endl;
 
@@ -202,7 +210,7 @@ int main(int argc, char* argv[])
                 }
             }
 
-            outTree->Write();
+            outTree->FlushBaskets();
             if (isMC)
             {
                 weightHisto.Write();
