@@ -3687,7 +3687,7 @@ void MakeTopologyNtupleMiniAOD::bookMuonBranches(const std::string& ID,
                     (prefix + "ComRelIsodBeta[numMuon" + name + "]/F").c_str());
     mytree_->Branch((prefix + "IsPFMuon").c_str(),
                     &muonSortedIsPFMuon[ID][0],
-                    (prefix + "IsPFMuon[numMuon" + name + "]/F").c_str());
+                    (prefix + "IsPFMuon[numMuon" + name + "]/I").c_str());
 
     mytree_->Branch((prefix + "NChambers").c_str(),
                     &muonSortedNumChambers[ID][0],
